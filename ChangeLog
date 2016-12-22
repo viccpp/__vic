@@ -9,6 +9,12 @@ Legend:
         + to_text_append()
     + string_buffer.h
         + string_buffer
+    + posix/error.h
+        + is_ENOENT(), is_EAGAIN()
+    + posix/file.h
+        + posix::file
+    + posix/file_stat.h
+        + posix::file_stat
 
 2016-12-21  __vic
     + defs.h

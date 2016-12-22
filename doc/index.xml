@@ -8,9 +8,12 @@
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY posix.error.h SYSTEM "posix.error.h.xml">
+    <!ENTITY posix.file.h SYSTEM "posix.file.h.xml">
+    <!ENTITY posix.file_stat.h SYSTEM "posix.file_stat.h.xml">
 ]>
 <document lang="en" version="1.0" status="Draft">
-<title>__vic's foundation C++ library</title>
+<title>__vic's foundation C++ library (POSIX)</title>
 
 <annotation><documentation><![CDATA[
 Tags used to format this document:
@@ -86,6 +89,9 @@ TODO
 &static_string.h;
 &string_buffer.h;
 &to_text.h;
+&posix.error.h;
+&posix.file.h;
+&posix.file_stat.h;
 </chapter>
 
 </document>

@@ -1,0 +1,44 @@
+<chapter>
+<title><tt>__vic/posix/error.h</tt></title>
+
+<chapter>
+<title><tt>posix::is_ENOENT()</tt>, <tt>posix::is_EAGAIN()</tt></title>
+
+<code-block lang="C++">
+namespace posix {
+
+bool is_ENOENT(int err_no);
+bool is_EAGAIN(int err_no);
+
+#define __VIC_CASE_ENOENT <nt>case &lt;val1>: case &lt;val2>: ...</nt>
+#define __VIC_CASE_EAGAIN <nt>case &lt;val1>: case &lt;val2>: ...</nt>
+
+}
+</code-block>
+
+<p>The first function checks if error code is <tt>ENOENT</tt>, <tt>ESTALE</tt>
+or any other error code that means "file not found".</p>
+
+<p>The second function checks if code is either <tt>EAGAIN</tt> or
+<tt>EWOULDBLOCK</tt>. It works regardless of these codes have the same numeric
+value or not on the current platform.</p>
+
+<p>Macros meant to be used inside <tt>switch</tt>. They are expanded either to
+the single <tt>case</tt> with colon or to the set of <tt>case</tt>s, and have
+the same meaning as the corresponding functions.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+switch(errno)
+{
+    __VIC_CASE_ENOENT
+        std::cout << "No file found!\n"; break;
+    case EPERM:
+       ...
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

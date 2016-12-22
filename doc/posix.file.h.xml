@@ -1,0 +1,186 @@
+<chapter>
+<title><tt>__vic/posix/file.h</tt></title>
+
+<chapter>
+<title><tt>posix::file</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::file : private non_copyable
+{
+public:
+    explicit constexpr file(int fd = -1);
+    file(const char *name, int flags, ::mode_t mode = 0666);
+    ~file();
+
+    // BEGIN C++11 only
+    file(file &&o) noexcept;
+    file &operator=(file &&o) noexcept;
+    // END C++11 only
+
+    bool open(const char *name, int flags, ::mode_t mode = 0666);
+    void close();
+    bool close_nt() noexcept;
+    bool is_open() const;
+    int detach() noexcept;
+    void attach(int fd) noexcept;
+    void swap(file &o) noexcept;
+    int handle() const;
+    int descriptor() const { return handle(); }
+
+    size_t read_max(void *buf, size_t n)
+        { return read_max(handle(), buf, n); }
+    size_t read_some(void *buf, size_t n)
+        { return read_some(handle(), buf, n); }
+    void write_all(const void *buf, size_t n)
+        { write_all(handle(), buf, n); }
+    size_t write_all_nt(const void *buf, size_t n) noexcept
+        { return write_all_nt(handle(), buf, n); }
+
+    static size_t read_max(int fd, void *buf, size_t n);
+    static size_t read_some(int fd, void *buf, size_t n);
+    static void write_all(int fd, const void *buf, size_t n);
+    static size_t write_all_nt(int fd, const void *buf, size_t n) noexcept;
+    static void close_reset(int &fd);
+    static bool close_nt(int fd) noexcept;
+};
+]]></code-block>
+
+<p>RAII-wrapper for POSIX file descriptors and wrappers for <tt>::read()</tt>
+and <tt>::write()</tt> system calls.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit constexpr file(int fd = -1)</prototype>
+<p>Wraps already existing descriptor.</p>
+<precondition><tt>fd</tt> is either an open descriptor or <tt>-1</tt>.</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>file(const char *name, int flags, ::mode_t mode = 0666)</prototype>
+<p>Calls <tt>open()</tt>. The result should be checked using subsequent
+<tt>is_open()</tt> call.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~file()</prototype>
+<p>Calls <tt>::close()</tt> if <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>file(file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>file &amp;operator=(file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Copy operations for C++11 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool open(const char *name, int flags, ::mode_t mode = 0666)</prototype>
+<p>Calls <tt>::open()</tt> with the specified parameters. Returns
+<tt>is_open()</tt>. <tt>errno</tt> contains the error code in case of failure.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Unconditionally calls <tt>::close()</tt>. No preliminary checks whether the
+file is open are performed! Correctly handles interruptions by signals. Throws
+in case of error. The postcondition is always satisfied, even if the function
+throws.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>static void close_reset(int &amp;fd)</prototype>
+<p>Unconditionally calls <tt>::close()</tt> with the specified descriptor and
+assigns <tt>-1</tt> to it. No preliminary checks are performed! Correctly
+handles interruptions by signals. Throws in case of error. The postcondition
+is always satisfied, even if the function throws.</p>
+<precondition><tt>fd >= 0</tt></precondition>
+<postcondition><tt>fd == -1</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool close_nt() noexcept</prototype>
+<prototype>static bool close_nt(int fd) noexcept</prototype>
+<p>Counterpart of <tt>close()</tt> but newer throws. <tt>false</tt> is returned
+in case of error, and <tt>errno</tt> contains error code.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Returns <tt>true</tt> if the file is open.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int detach() noexcept</prototype>
+<p>Releases the descriptor out of the object's control and returns it.</p>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void attach(int fd) noexcept</prototype>
+<p>Takes <tt>fd</tt> under control. Previous descriptor IS NOT closed if was
+open! No preliminary checks are performed.</p>
+<precondition><tt>fd</tt> is ether an open descriptor or <tt>-1</tt>.</precondition>
+<postcondition><tt>handle() == fd</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(file &amp;o) noexcept</prototype>
+<p>Swaps the value with <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int handle() const</prototype>
+<prototype>int descriptor() const { return handle(); }</prototype>
+<p>Returns file descriptor.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static size_t read_max(int fd, void *buf, size_t n)</prototype>
+<prototype>size_t read_max(void *buf, size_t n) { return read_max(handle(), buf, n); }</prototype>
+<p>Tries to read <tt>n</tt> bytes to the specified buffer. Returns number of
+bytes read. Returned value can be less than requested only when end of file
+was reached. Accumulates received chunks until the buffer becomes full. Is not
+interrupted by signals. Throws <tt>libc_error</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static size_t read_some(int fd, void *buf, size_t n)</prototype>
+<prototype>size_t read_some(void *buf, size_t n) { return read_some(handle(), buf, n); }</prototype>
+<p>Reads no more than <tt>n</tt> bytes to the specified buffer. Returns number
+of bytes read or <tt>0</tt> in case of end-of-file. Function returns after
+first chunk was successfully received. Is not interrupted by signals. Throws
+<tt>libc_error</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static void write_all(int fd, const void *buf, size_t n);</prototype>
+<prototype>void write_all(const void *buf, size_t n) { write_all(handle(), buf, n); }</prototype>
+<p>Writes the whole buffer to the descriptor. Is not interrupted by signals.
+Throws <tt>libc_error</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static size_t write_all_nt(int fd, const void *buf, size_t n) noexcept</prototype>
+<prototype>size_t write_all_nt(const void *buf, size_t n) noexcept</prototype>
+<p>Counterpart of <tt>write_all()</tt> but never throws, returns value less
+than <tt>n</tt> instead and <tt>errno</tt> contains error code.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+__vic::posix::file file("path/file", O_WRONLY | O_CREAT);
+if(!file.is_open()) throw __vic::libc_error("Cannot create file");
+const char msg[] = "Hello";
+file.write_all(msg, sizeof msg - 1); // write without nul-terminator
+file.close();
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>
