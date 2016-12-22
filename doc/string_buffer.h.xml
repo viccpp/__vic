@@ -1,0 +1,282 @@
+<chapter>
+<title><tt>__vic/string_buffer.h</tt></title>
+
+<chapter>
+<title><tt>string_buffer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class string_buffer : public std::string
+{
+public:
+    string_buffer();
+    explicit string_buffer(size_type n);
+    string_buffer(const char *str);
+    string_buffer(const std::string &str,
+                    size_type off = 0, size_type n = npos);
+    string_buffer(string_ref sr);
+    string_buffer(const char *char_buf, size_type n);
+    string_buffer(const char *begin, const char *end);
+    template<class InputIterator>
+    string_buffer(InputIterator begin, InputIterator end);
+
+    string_buffer &operator<<(const char *str);
+    string_buffer &operator<<(const std::string &str);
+    string_buffer &operator<<(string_ref sr);
+    string_buffer &operator<<(char ch);
+
+    string_buffer &operator<<(long long n);
+    string_buffer &operator<<(long n);
+    string_buffer &operator<<(int n);
+    string_buffer &operator<<(short n);
+    string_buffer &operator<<(signed char ch);
+
+    string_buffer &operator<<(unsigned long long n);
+    string_buffer &operator<<(unsigned long n);
+    string_buffer &operator<<(unsigned n);
+    string_buffer &operator<<(unsigned short n);
+    string_buffer &operator<<(unsigned char ch);
+
+    string_buffer &operator<<(long double n);
+    string_buffer &operator<<(double n);
+    string_buffer &operator<<(float n);
+
+    string_buffer &operator<<(bool flag);
+    string_buffer &operator<<(const void *p);
+
+    string_buffer &operator=(string_ref sr);
+    string_buffer &operator+=(string_ref sr);
+    string_buffer &assign(string_ref sr);
+    string_buffer &append(string_ref sr);
+
+    // improved std::string calls
+    string_buffer &assign(const std::string &str,
+                            size_type off, size_type n = npos);
+    string_buffer &append(const std::string &str,
+                            size_type off, size_type n = npos);
+    string_buffer &insert(size_type pos, const std::string &str,
+                            size_type off, size_type n = npos);
+
+    string_buffer &reserve(size_type n);
+    string_buffer &clear();
+
+    // missing container interface of std::string
+    reference front();
+    reference back();
+    const_reference front() const;
+    const_reference back() const;
+    void pop_back();
+
+    operator const char *() const;
+};
+
+string_buffer operator+(const string_buffer &s1, const string_buffer &s2);
+string_buffer operator+(const string_buffer &s1, const std::string &s2);
+string_buffer operator+(const std::string &s1, const string_buffer &s2);
+
+string_buffer operator+(const string_buffer &s1, const char *s2);
+string_buffer operator+(const char *s1, const string_buffer &s2);
+
+string_buffer operator+(const string_buffer &s, char ch);
+string_buffer operator+(char ch, const string_buffer &s);
+
+typedef string_buffer msg;
+]]></code-block>
+
+<p>Class is an extended and improved <tt>std::string</tt>. It has following
+advantages:</p>
+
+<list style="numbered">
+
+<item>Left-associative append operator (<tt>&lt;&lt;</tt>) that allows
+constructions like this:
+<code-block lang="C++"><![CDATA[
+str << "Error message: " << err_msg << "\n";
+]]></code-block></item>
+
+<item>Specific amount of bytes can be reserved using constructor as well as
+<tt>reserve()</tt> call. Reserving required amount of space in advance can
+greatly improve performance.
+<code-block lang="C++">
+__vic::string_buffer st(4096);
+
+// is same as
+std::string st;
+st.reserve(4096);
+</code-block></item>
+
+<item>Operator <tt>&lt;&lt;</tt> accepts all fundamental types: numbers, chars,
+pointers, <tt>bool</tt>:
+<code-block lang="C++"><![CDATA[
+for(int i=0; i<10; i++)
+    str << "i = " << i << '\n';
+]]></code-block></item>
+
+<item>All input <tt>nullptr</tt> values of <tt>const char *</tt> are treated as
+an empty string. Such values usually cause crash with <tt>std::string</tt>.
+<code-block lang="C++">
+std::string s1("Str");
+const char *p = nullptr;
+s1.append(p); // Oops.... Null pointer access!
+
+__vic::string_buffer s2("Str");
+s2.append(p); // Ok. s2 == "Str" still
+s2 = p; // Ok. s2.empty() == true
+</code-block></item>
+
+<item>Automatic conversion to <tt>const char *</tt> that allows usage of the
+object in context requires C-string, without explicit <tt>c_str()</tt> call.
+<code-block lang="C++">
+std::string fname(...);
+FILE *fp = fopen(fname.c_str(), "r");
+
+__vic::string_buffer fname(...);
+FILE *fp = fopen(fname, "r");)
+</code-block></item>
+
+<item>Some design irregularities of std::string are corrected. For instance
+<tt>std::string</tt> is a complete container but operations <tt>front()</tt>
+and <tt>back()</tt> are missed in C++98. There is <tt>push_back()</tt> but
+no <tt>pop_back()</tt>.</item>
+
+</list>
+
+<p>For all that improvements, interface of this class is completely compatible
+with <tt>std::string</tt>. Objects can be passed in contexts that require
+<tt>std::string</tt>. Class has no additional data-members.</p>
+
+<p>Using of inserter (operator <tt>&lt;&lt;</tt>) provides the easiest way to
+convert numbers to decimal string representation. Using of
+<tt>std::ostringstream</tt> for this purposes is more functional (you can
+specify radix, formatting, etc) but too tedious and not efficient in most
+cases.</p>
+
+<p>Additionally this type has a short synonym <tt>msg</tt>. It is very
+convenient for usage when one need to construct complex message with a
+single expression, without introducing unnecessary variables:</p>
+
+<code-block lang="C++"><![CDATA[
+oresult res = db_open(db_name);
+if(res != 0) throw __vic::exception(
+    __vic::msg(64) << "Cannot open DB " << db_name << ". res = " << res
+);
+]]></code-block>
+
+<p>As you can see, expected maximum size of the message is specified in the
+constructor for optimization purposes.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>string_buffer()</prototype>
+<p>Create an empty string.</p>
+<postcondition><tt>empty() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit string_buffer(size_type n)</prototype>
+<p>Calls <tt>reserve(n)</tt>.</p>
+<postcondition><tt>capacity() >= n</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer(const char *str)</prototype>
+<prototype>string_buffer(const std::string &amp;str, size_type off = 0, size_type n = npos)</prototype>
+<p>Creates the copy of <tt>str</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer(const char *char_buf, size_type n)</prototype>
+<p>Creates string using buffer and its length.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer(string_ref sr)</prototype>
+<prototype>string_buffer(const char *begin, const char *end)</prototype>
+<prototype>template&lt;class InputIterator>
+string_buffer(InputIterator begin, InputIterator end)</prototype>
+<p>Creates string from the chars range.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer &amp;operator&lt;&lt;(const char *str)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(const std::string &amp;str)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(string_ref sr)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(char ch)</prototype>
+<p>Calls <tt>std::string::append()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer &amp;operator&lt;&lt;(long long n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(long n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(int n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(short n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(signed char ch)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(unsigned long long n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(unsigned long n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(unsigned n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(unsigned short n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(unsigned char ch)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(long double n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(double n)</prototype>
+<prototype>string_buffer &amp;operator&lt;&lt;(float n)</prototype>
+<p>Appends decimal representaion of <tt>n</tt> to the string.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer &amp;operator&lt;&lt;(const void *p)</prototype>
+<p>Appends pointers value in <tt>%p</tt> format of <tt>std::printf</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer &amp;operator&lt;&lt;(bool flag)</prototype>
+<p>Appends <tt>1</tt> (for <tt>true</tt>) or <tt>0</tt> (for <tt>false</tt>)
+to the string.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer &amp;operator=(string_ref sr)</prototype>
+<prototype>string_buffer &amp;operator+=(string_ref sr)</prototype>
+<prototype>string_buffer &amp;assign(string_ref sr)</prototype>
+<prototype>string_buffer &amp;append(string_ref sr)</prototype>
+<p>Operations for <tt>string_ref</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer &amp;reserve(size_type n)</prototype>
+<prototype>string_buffer &amp;clear()</prototype>
+<p>Calls the corresponding <tt>std::string</tt> operation and additionally
+returns the reference to itself, so the call can be used in complex
+expressions.</p>
+</synopsis>
+
+<synopsis>
+<prototype>reference front()</prototype>
+<prototype>reference back()</prototype>
+<prototype>const_reference front() const</prototype>
+<prototype>const_reference back() const</prototype>
+<prototype>void pop_back()</prototype>
+<p>Absent container operations in the <tt>std::string</tt> interface in
+C++98.</p>
+</synopsis>
+
+<synopsis>
+<prototype>operator const char *() const</prototype>
+<p>Calls <tt>std::string::c_str()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer operator+(const string_buffer &amp;s1, const string_buffer &amp;s2)</prototype>
+<prototype>string_buffer operator+(const string_buffer &amp;s1, const std::string &amp;s2)</prototype>
+<prototype>string_buffer operator+(const std::string &amp;s1, const string_buffer &amp;s2)</prototype>
+<prototype>string_buffer operator+(const string_buffer &amp;s1, const char *s2)</prototype>
+<prototype>string_buffer operator+(const char *s1, const string_buffer &amp;s2)</prototype>
+<prototype>string_buffer operator+(const string_buffer &amp;s, char ch)</prototype>
+<prototype>string_buffer operator+(char ch, const string_buffer &amp;s)</prototype>
+<p>Concatenation of strings and characters.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

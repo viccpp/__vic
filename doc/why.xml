@@ -1,0 +1,6 @@
+<chapter>
+<title>Why this library was created?</title>
+<p>This library contains the features I'm missing in the Standard C++
+library. It's a kind of my personal
+<link href="http://www.boost.org/">Boost</link>.</p>
+</chapter>

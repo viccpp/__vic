@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="xsl/html.xsl"?>
+<!DOCTYPE document SYSTEM "document.dtd" [
+    <!ENTITY why SYSTEM "why.xml">
+    <!ENTITY general SYSTEM "general.xml">
+    <!ENTITY defs.h SYSTEM "defs.h.xml">
+    <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY static_string.h SYSTEM "static_string.h.xml">
+    <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
+    <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+]>
+<document lang="en" version="1.0" status="Draft">
+<title>__vic's foundation C++ library</title>
+
+<annotation><documentation><![CDATA[
+Tags used to format this document:
+
+document
+    Root element. Attributes:
+        * lang - document's language,
+        * version - like "1.0",
+        * status - "Release" or "Draft".
+chapter
+    A chapter. An entry of the table of contents (TOC). Can be nested to each
+    other.
+section
+    A section of text. Included in a chapter. Not a part of TOC.
+title
+    Title of the document, chapter or section. Required. Must be the first
+    element.
+p
+    A paragraph.
+list
+    List. Required attribute "style" has one of following values:
+        * numbered - numbered,
+        * bulleted - bulleted,
+        * nomarks  - without any bullet marks.
+    Every list element is placed to <item>.
+code-block
+    Rectangular text block with the code. "lang" attribute specifies used
+    language. Formatting is preserved.
+tty
+    Rectangular text block with the text terminal output. Formatting is
+    preserved.
+note
+    A note.
+b
+    Specifies bold text.
+u
+    Specifies underlined text.
+tt
+    Monospace text for elements of code, filenames, etc.
+nt
+    "Nonterminal symbol" (formal grammar term). Placeholder text which must be
+    replaced by something before usage.
+link
+    A hyperlink. Either URL or text + URL in the "href" attribute.
+synopsis
+    Reference to component (function, type, etc). Function prototype or type
+    definition is enclosed in <prototype>. Formatting is preserved.
+    Text description is enclosed in <p>. Precodition is encloded in
+    <precondition>, postcondition - in <postcondition>, invariant - in
+    <invariant>.
+precondition
+    Precondition. Part of <synopsis>.
+postcondition
+    Postcondition. Part of <synopsis>.
+invariant
+    Invariant. Part of <synopsis>.
+sign
+    Tiny marker on a word or on a line.
+TODO
+    TODO-marker for the editor of this document.
+]]></documentation></annotation>
+
+<chapter>
+<title>Introduction</title>
+&why;
+&general;
+</chapter>
+
+<chapter>
+<title>Library components reference</title>
+&defs.h;
+&error.h;
+&static_string.h;
+&string_buffer.h;
+&to_text.h;
+</chapter>
+
+</document>

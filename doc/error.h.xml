@@ -1,0 +1,172 @@
+<chapter>
+<title><tt>__vic/error.h</tt></title>
+
+<p>Error handling tools.</p>
+
+
+<chapter>
+<title><tt>exception</tt></title>
+
+<code-block lang="C++">
+class exception : public std::exception
+{
+public:
+    exception();
+    explicit exception(const char *message);
+    const char *what() const noexcept;
+protected:
+    void set_message(const char *message);
+};
+</code-block>
+
+<p>Small extension of <tt>std::exception</tt> - the object carries message
+specified in the constructor, <tt>what()</tt> returns this message. Can be used
+either as a base or concrete exception class. Does not use/depend on
+<tt>std::string</tt> as opposed to <tt>std::logic_error</tt> and
+<tt>std::runtime_error</tt>. You also don't have to decide which one of the
+formers you should use in the particular case.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>exception()</prototype>
+<p>Creates the object with an empty message.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit exception(const char *message)</prototype>
+<p>Creates the object with the specified message.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *what() const noexcept</prototype>
+<p>Returns the message specified before.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void set_message(const char *message)</prototype>
+<p>Sets new message.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++">
+struct custom_exception : public __vic::exception
+{
+    explicit custom_exception(const char *msg) : __vic::exception(msg) {}
+};
+
+throw custom_exception("Error condition description");
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>libc_error</tt></title>
+
+<code-block lang="C++">
+class libc_error : public std::exception
+{
+public:
+    explicit libc_error(int err_no = errno);
+    explicit libc_error(const char *prompt, int err_no = errno);
+
+    const char *what() const noexcept;
+    int code() const;
+    int get_errno() const;
+};
+</code-block>
+
+<p>This class is an easy and straightforward replacement of the standard error
+handling machinery used in the C-world - <tt>errno</tt>, with exceptions. The
+class also is suitable for usage in the multithread environment instead of
+not always reentrant call <tt>std::strerror()</tt>.</p>
+<p>Below you can see typical C code:</p>
+
+<code-block lang="C">
+// C:
+
+int fd;
+if((fd = open("qqqq", O_RDONLY)) == -1)
+{
+    perror("open");
+    if(errno == ENOENT) exit(1);
+}
+</code-block>
+
+<p>If the file is not found, message like this</p>
+<tty>
+open: No such file or directory
+</tty>
+<p>is printed to <tt>stderr</tt> and program exits with the status
+<tt>1</tt>.</p>
+
+<p>What issues are inherent in this code? Firstly, not every program has
+<tt>stderr</tt>, so a library function is not allowed to print error messages
+there. Secondly, the value of the global variable <tt>errno</tt> can be
+rewritten by any subsequent call unless the value is saved explicitly right
+after the call. Thirdly, decision about termination of the process can only
+be made by the application. Ordinary library function is not allowed to do
+this. Fourthly, in general case C++ program cannot call <tt>std::exit()</tt>,
+because destructors of the live objects allocated on the stack won't be
+called, and program's logic can be corrupted.</p>
+
+<p>The example adapted for C++ using our class:</p>
+
+<code-block lang="C++"><![CDATA[
+// C++:
+
+try
+{
+    int fd = open("qqqq", O_RDONLY);
+    if(fd == -1) throw __vic::libc_error("open");
+    // or just
+    // if(fd == -1) throw __vic::libc_error();
+}
+catch(const __vic::libc_error &ex)
+{
+    std::cerr << ex.what() << '\n';
+    if(ex.code() == ENOENT) return 1;
+}
+]]></code-block>
+
+<p>As it can be seen, the function handles erroneous situation correctly and
+reports it to the caller. Afterwards the caller can handle the error
+appropriately. In the elementary case it acts as the former C-program: prints
+the message to the standard error output stream and terminates. Moreover,
+error code now is saved in the exception and cannot be rewritten by accident.
+</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit libc_error(int err_no = errno)</prototype>
+<p><tt>err_no</tt> - error code.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit libc_error(const char *prompt, int err_no = errno)</prototype>
+<p><tt>prompt</tt> - a title of the error message. The parameter has the same
+meaning as the parameter of <tt>std::perror()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *what() const noexcept</prototype>
+<p>Returns error description in the <tt>std::perror()</tt> format.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int code() const</prototype>
+<prototype>int get_errno() const</prototype>
+<p>Returns stored error code.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+</chapter>

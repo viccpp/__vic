@@ -1,0 +1,40 @@
+<chapter>
+<title>General structure and usage</title>
+
+<p>The topmost structural units of the library are headers and the library file
+(or archive) - <tt>lib__vic.a</tt> or <tt>__vic.lib</tt>. All the headers are
+located in the <tt>__vic/</tt> subdirectory. One should include them like
+this:</p>
+
+<code-block lang="C++">
+#include &lt;__vic/<nt>header.h</nt>>
+</code-block>
+
+<p>Where <tt><nt>header.h</nt></tt> is the name of the desired header.</p>
+
+<p>Almost all the code is placed within <tt>__vic</tt> namespace, including
+other namespaces.</p>
+
+<p>During program linking, the library file must be given to the linker.
+Example:</p>
+
+<tty>
+$ g++ -std=с++11 prog.cpp -l__vic
+</tty>
+
+<p>The library has 2 modes: C++11 mode and C++98 mode. Features available
+only in C++11 mode are marked with <sign>C++11</sign> sign. Features available
+only in C++98 mode are marked with <sign>C++98</sign> sign, respectively. Also
+in C++98 mode the library file has slightly different name:</p>
+
+<tty>
+$ g++ -std=с++98 prog.cpp -l__vic98
+</tty>
+
+<note>C++11 mode is used for C++14 as well.</note>
+
+<p>Detailed description of the library components provided in subsequent
+chapters. Descriptions are grouped by headers. Mainly C++11 language syntax
+is used as more complete and expressive.</p>
+
+</chapter>

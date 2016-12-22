@@ -1,0 +1,24 @@
+// Template for test files
+#include<__vic/PLACE-HEADER-HERE>
+#include<iostream>
+#include<exception>
+#include<cassert>
+
+void run_tests()
+{
+    // TODO: place code here
+}
+
+int main()
+{
+    try
+    {
+        run_tests();
+        return 0;
+    }
+    catch(const std::exception &ex)
+    {
+        std::cerr << ex.what() << '\n';
+    }
+    return 1;
+}

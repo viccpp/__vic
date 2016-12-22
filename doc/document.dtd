@@ -1,0 +1,54 @@
+<!ELEMENT document (title, (annotation | chapter | TODO)*)>
+<!ATTLIST document
+    version CDATA #IMPLIED
+    status  (Release | Draft) #IMPLIED>
+
+<!ENTITY % section-content "p | list | code-block | tty | note | precondition | postcondition | invariant | synopsis | TODO">
+<!ENTITY % text-with-markup "#PCDATA | tt | u | b | nt | link | sign">
+
+<!ELEMENT chapter (title, (section | %section-content;)*, (chapter | TODO)*)>
+
+<!ELEMENT section (title, (%section-content;)*)>
+
+<!ELEMENT title (%text-with-markup;)*>
+
+<!ELEMENT tty        (#PCDATA | nt)*>
+<!ELEMENT code-block (#PCDATA | nt)*>
+<!ATTLIST code-block
+    lang CDATA #IMPLIED>
+
+<!ELEMENT p (%text-with-markup;)*>
+
+<!ELEMENT synopsis (prototype+, (p | precondition | postcondition | invariant | note | list)*)>
+
+<!ELEMENT prototype (#PCDATA | nt | sign)*>
+
+<!ELEMENT tt (#PCDATA | nt)*>
+
+<!ELEMENT u (#PCDATA | b | nt)*>
+
+<!ELEMENT b (#PCDATA | u | nt)*>
+
+<!ELEMENT nt (#PCDATA)>
+
+<!ELEMENT link (#PCDATA)>
+<!ATTLIST link
+    href CDATA #IMPLIED>
+
+<!ELEMENT list (item+)>
+<!ATTLIST list
+    style (numbered | bulleted | nomarks) #REQUIRED>
+
+<!ELEMENT item (%text-with-markup; | %section-content;)*>
+
+<!ELEMENT note (%text-with-markup; | %section-content;)*>
+<!ELEMENT precondition (%text-with-markup; | %section-content;)*>
+<!ELEMENT postcondition (%text-with-markup; | %section-content;)*>
+<!ELEMENT invariant (%text-with-markup; | %section-content;)*>
+
+<!ELEMENT annotation (documentation*)>
+<!ELEMENT documentation (#PCDATA)> <!-- ANY ? -->
+
+<!ELEMENT sign (#PCDATA)>
+
+<!ELEMENT TODO (#PCDATA)>

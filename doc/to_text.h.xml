@@ -1,0 +1,77 @@
+<chapter>
+<title><tt>__vic/to_text.h</tt></title>
+
+<p>Converters of types to text representation.</p>
+
+
+<chapter>
+<title><tt>to_text_append()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void to_text_append(long long n, std::string &str);
+void to_text_append(long n, std::string &str);
+void to_text_append(int n, std::string &str);
+void to_text_append(short n, std::string &str);
+void to_text_append(signed char n, std::string &str);
+
+void to_text_append(unsigned long long , std::string &str);
+void to_text_append(unsigned long n, std::string &str);
+void to_text_append(unsigned n, std::string &str);
+void to_text_append(unsigned short n, std::string &str);
+void to_text_append(unsigned char n, std::string &str);
+
+void to_text_append(long double n, std::string &str);
+void to_text_append(double n, std::string &str);
+void to_text_append(float n, std::string &str);
+
+void to_text_append(bool f, std::string &str);
+
+void to_text_append(const void *p, std::string &str);
+]]></code-block>
+
+<p>Converters of non-character C++ fundamental types to some text
+representation. Second parameter <tt>str</tt> is an output parameter, result
+is appended to it.</p>
+
+<note><tt>signed char</tt> and <tt>unsigned char</tt> types are treated as
+integers not characters!</note>
+
+<synopsis>
+<prototype>void to_text_append(long long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(int n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(short n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(signed char n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned long long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned short n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned  char n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(long double n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(double n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(float n, std::string &amp;str)</prototype>
+<p>Converts a number to decimal representation.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void to_text_append(bool f, std::string &amp;str)</prototype>
+<p>Converts a boolean value to <tt>0</tt> or <tt>1</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void to_text_append(const void *p, std::string &amp;str)</prototype>
+<p>Converts a pointer to some platform-specific representation.</p>
+</synopsis>
+
+<section><title>Example</title>
+<code-block lang="C++">
+int n = 5;
+std::string st = "n = ";
+__vic::to_text_append(n, st);
+assert(st == "n = 5");
+</code-block>
+</section>
+
+</chapter>
+
+</chapter>

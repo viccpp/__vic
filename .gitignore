@@ -1,0 +1,8 @@
+/src/Makefile
+/test/Makefile
+*.o
+*.a
+*.d
+*.obj
+*.lib
+*.exe

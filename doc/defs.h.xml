@@ -1,0 +1,208 @@
+<chapter>
+<title><tt>__vic/defs.h</tt></title>
+<p>Misc. fundamental definitions.</p>
+
+
+<chapter>
+<title><tt>nullptr</tt> <sign>C++98</sign></title>
+
+<p>Null pointer literal. Can be used instead of <tt>NULL</tt> or <tt>0</tt>.
+In ISO C++ 98 mode defined as</p>
+
+<code-block lang="C++">
+const int nullptr = 0;
+</code-block>
+
+<p>This definition allows to write C++11-style code using C++98 standard.</p>
+
+<p>It is one of the few global definitions inroduced by the library. Definition
+can be prevented by definition <tt>__VIC_NO_NULLPTR_DEF</tt> macro before
+inclusion.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+int *p = nullptr;
+pthread_create(&tid, nullptr, thread_func, nullptr);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>noexcept</tt> <sign>C++98</sign></title>
+
+<p>A macro in С++98 mode, synonym for <tt>throw()</tt>. In С++11 mode
+the definition is absent.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>array_size()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, size_t N>
+constexpr size_t array_size(T (&array)[N]);
+]]></code-block>
+
+<p>Returns number of elements in the array. Can be used as a compile-time
+expression.</p>
+
+<section><title>Example</title>
+<code-block lang="C++">
+int m[] = { 1, 2, 3, 5, 7 };
+
+size_t n = __vic::array_size(m); // n == 5
+
+int *dup = new int[n];
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>non_copyable</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class non_copyable
+{
+    non_copyable(const non_copyable &) = delete;
+    non_copyable &operator=(const non_copyable &) = delete;
+protected:
+    non_copyable() = default;
+};
+]]></code-block>
+
+<p>Inheriting of this class suppresses generation of copy constructor and
+copy assignment. Same as <tt>boost::noncopyable</tt>.</p>
+
+<section><title>Example</title>
+<code-block lang="C++">
+class C : private __vic::non_copyable
+{
+};
+
+C c1;
+C c2 = c1; // Error! Non-copyable object
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>non_heap_allocatable</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class non_heap_allocatable
+{
+    void *operator new(std::size_t ) = delete;
+    void *operator new(std::size_t , const std::nothrow_t & ) = delete;
+    void *operator new[](std::size_t ) = delete;
+    void *operator new[](std::size_t , const std::nothrow_t & ) = delete;
+protected:
+    non_heap_allocatable() = default;
+};
+]]></code-block>
+
+<p>Inheriting of this class prevents creation of the class object on a free
+store using operator <tt>new</tt>.</p>
+
+<section><title>Example</title>
+<code-block lang="C++">
+class C : private __vic::non_heap_allocatable
+{
+};
+
+C c; // Ok. Allocation on stack
+C *p = new C; // Error! Attempt to allocate on heap
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>uninizialized</tt></title>
+
+<code-block lang="C++">
+class uninitialized;
+
+constexpr uninitialized noinit;
+</code-block>
+
+<p>The type has single value - <tt>noinit</tt>. Can be used as a constructor
+tag to suppress object initialization. Default constructor usually has to
+initialize the object with the default value, so if uninitialized object
+is required for some reason, it should be specified explicitly in the code.</p>
+
+<section><title>Example</title>
+<code-block lang="C++">
+class Complex
+{
+    double re, im;
+public:
+    Complex() : re(0.0), im(0.0) {}
+    Complex(__vic::uninitialized) {}
+    Complex(double r, double i) : re(r), im(i) {}
+};
+
+Complex с1;                // c1 == Complex(0, 0)
+Complex c2(__vic::noinit); // с2 contains unknown garbage value
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>std::move()</tt>, <tt>std::forward()</tt>, <tt>std::swap()</tt>
+<sign>C++11</sign></title>
+
+<p>The header always includes this utilities in C++11 mode.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>__VIC_SWAP_HEADER</tt></title>
+
+<p>A macro for <tt>#include</tt>. Expands to the header name that contains
+<tt>std::swap()</tt> definition, dependig on the used language standard.</p>
+
+<section><title>Example</title>
+<code-block lang="C++">
+#include __VIC_SWAP_HEADER
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title>Platform-dependent macros</title>
+
+<p>The library provides set of compiler-independent macros that help to
+determine the target platform and some platform-specific traits by checking
+macro presence using <tt>#ifdef</tt>.</p>
+
+<p>List of hardware platforms (processors):</p>
+<list style="bulleted">
+    <item><tt>__VIC_X86__</tt> - Intel x86 (IA32)</item>
+    <item><tt>__VIC_X64__</tt> - x64 aka AMD 64</item>
+    <item><tt>__VIC_IA64__</tt> - Intel IA64</item>
+    <item><tt>__VIC_POWERPC__</tt> - PowerPC</item>
+</list>
+
+<p>Other macros:</p>
+<list style="bulleted">
+    <item><tt>__VIC_STRICT_RAM_ALIGNMENT__</tt> - attempt to read unaligned
+        data will cause bus error</item>
+</list>
+
+</chapter>
+
+
+</chapter>

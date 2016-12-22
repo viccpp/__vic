@@ -1,0 +1,200 @@
+<chapter>
+<title><tt>__vic/static_string.h</tt></title>
+
+<chapter>
+<title><tt>static_string</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class static_string
+{
+public:
+    static_string();
+    static_string(const char *str);
+    static_string(const char *begin, const char *end);
+    static_string(const char *chars, size_t n);
+    static_string(const static_string &str);
+    ~static_string() noexcept;
+
+    // BEGIN C++11 only
+    static_string(static_string &&str) noexcept;
+    static_string &operator=(static_string &&str) noexcept;
+    // END C++11 only
+
+    static_string &operator=(const char *str);
+    static_string &operator=(const static_string &str);
+    static_string &assign(const char *begin, const char *end);
+    static_string &assign(const char *chars, size_t n);
+
+    char *reserve(size_t n);
+
+    int compare(const char *str) const;
+    bool empty() const;
+    const char *c_str() const;
+    operator const char*() const;
+
+    void swap(static_string &str) noexcept;
+};
+
+int compare(const static_string &s1, const static_string &s2);
+int compare(const static_string &s1, const char *s2);
+int compare(const char *s1, const static_string &s2);
+
+bool operator==(const static_string &s1, const static_string &s2);
+bool operator!=(const static_string &s1, const static_string &s2);
+bool operator<(const static_string &s1, const static_string &s2);
+bool operator>(const static_string &s1, const static_string &s2);
+bool operator<=(const static_string &s1, const static_string &s2);
+bool operator>=(const static_string &s1, const static_string &s2);
+
+bool operator==(const static_string &s1, const char *s2);
+bool operator!=(const static_string &s1, const char *s2);
+bool operator<(const static_string &s1, const char *s2);
+bool operator>(const static_string &s1, const char *s2);
+bool operator<=(const static_string &s1, const char *s2);
+bool operator>=(const static_string &s1, const char *s2);
+
+bool operator==(const char *s1, const static_string &s2);
+bool operator!=(const char *s1, const static_string &s2);
+bool operator<(const char *s1, const static_string &s2);
+bool operator>(const char *s1, const static_string &s2);
+bool operator<=(const char *s1, const static_string &s2);
+bool operator>=(const char *s1, const static_string &s2);
+
+void swap(static_string &s1, static_string &s2) noexcept;
+]]></code-block>
+
+<p>Elementary class for handling strings allocated on free store and automatic
+memory management. Has simple and predictable structure that can be useful when
+ABI compatibility/stability is required or when usage of <tt>std::string</tt>
+is objectionable for some reason. The functionality provided by the class is
+also minimal. It provides string copying and storing and read access to it.
+One cannot modify string parts - only replace the whole value.</p>
+
+<p>If one need to store a string value in a class, usage of this class may be a
+good choice. It's easier-to-use, more clear and safer than array of chars
+(<tt>char[]</tt>) and can be more efficient than <tt>std::string</tt>,
+though, of course, less universal. If modifications of the string parts are
+expected, usage of another string class should be considered, for instance,
+<tt>__vic::string_buffer</tt>. Class <tt>static_string</tt> is not designed
+for such purposes.</p>
+
+<section><title>Guarantees provided by the class design</title>
+<list style="bulleted">
+    <item>Null pointer value is treated as an empty string.</item>
+    <item>Cast to C-string (<tt>const char *</tt>) always returns valid
+        pointer, never <tt>nullptr</tt>.</item>
+    <item>For each string value, exact amount of memory is allocated. No extra
+        memory reserved.</item>
+    <item>Class contains single data member - pointer to the holded string,
+        so the total object's size is likely one pointer.</item>
+</list>
+</section>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>static_string()</prototype>
+<p>Creates an empty string.</p>
+<postcondition><tt>empty() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>static_string(const char *str)</prototype>
+<prototype>static_string(const static_string &amp;str)</prototype>
+<p>Creates a copy of <tt>str</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static_string(const char *begin, const char *end)</prototype>
+<prototype>static_string(const char *chars, size_t n)</prototype>
+<p>Creates a string from characters range.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static_string &amp;operator=(const char *str)</prototype>
+<prototype>static_string &amp;operator=(const static_string &amp;str)</prototype>
+<p>Assigns <tt>str</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static_string(static_string &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
+<prototype>static_string &amp;operator=(static_string &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
+<p>Move operations for C++11 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static_string &amp;assign(const char *begin, const char *end)</prototype>
+<prototype>static_string &amp;assign(const char *chars, size_t n)</prototype>
+<p>Assigns the string constructed from characters range.</p>
+</synopsis>
+
+<synopsis>
+<prototype>char *reserve(size_t n)</prototype>
+<p>Allocates internal buffer for <tt>n</tt> chars and returns the pointer to
+it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p>
+<note>Try to avoid this unsafe function!</note>
+</synopsis>
+
+<synopsis>
+<prototype>int compare(const char *str) const</prototype>
+<p>Compares the string with <tt>str</tt>. Return values are similar to
+<tt>std::strcmp</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool empty() const</prototype>
+<p>Returns <tt>true</tt> if string is empty.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *c_str() const</prototype>
+<prototype>operator const char*() const</prototype>
+<p>Returns a pointer to the stored string. The pointer is newer null.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(static_string &amp;str) noexcept</prototype>
+<p>Swaps the value with <tt>str</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Free functions</title>
+
+<synopsis>
+<prototype>int compare(const static_string &amp;s1, const static_string &amp;s2)</prototype>
+<prototype>int compare(const static_string &amp;s1, const char *s2)</prototype>
+<prototype>int compare(const char *s1, const static_string &amp;s2)</prototype>
+<p>Compares two strings as <tt>std::strcpy</tt> does.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool operator==(const static_string &amp;s1, const static_string &amp;s2)</prototype>
+<prototype>...</prototype>
+<prototype>bool operator>=(const char *s1, const static_string &amp;s2)</prototype>
+<p>Full set of comparators for <tt>static_string</tt> и <tt>const char *</tt>
+in all combinations.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(static_string &amp;s1, static_string &amp;s2) noexcept</prototype>
+<p>Specialization of the standard algorithm.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++">
+class C
+{
+    __vic::static_string st;
+public:
+    explicit C(const char *str) : st(str) {}
+    const char *get_str() const { return st; }
+};
+</code-block>
+</section>
+
+</chapter>
+
+</chapter>

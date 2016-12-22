@@ -1,0 +1,27 @@
+Legend:
+    - Bug fix
+    + New feature
+    * Changes
+    ! Important
+
+2016-12-22  __vic
+    + to_text.h
+        + to_text_append()
+    + string_buffer.h
+        + string_buffer
+
+2016-12-21  __vic
+    + defs.h
+        + nullptr
+        + non_copyable
+        + non_heap_allocatable
+        + array_size()
+    + static_string.h
+        + static_string
+    + error.h
+        + exception
+        + libc_error
+        + throw_errno()
+
+2016-06-23  __vic
+    * Total revision an rework started in order to publish the code
