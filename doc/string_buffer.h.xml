@@ -79,7 +79,7 @@ string_buffer operator+(const char *s1, const string_buffer &s2);
 string_buffer operator+(const string_buffer &s, char ch);
 string_buffer operator+(char ch, const string_buffer &s);
 
-typedef string_buffer msg;
+using msg = string_buffer;
 ]]></code-block>
 
 <p>Class is an extended and improved <tt>std::string</tt>. It has following

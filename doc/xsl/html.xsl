@@ -9,7 +9,7 @@
 <xsl:template match="annotation"/>
 
 <xsl:template match="document">
-<html lang="{@lang}">
+<html lang="{@xml:lang}">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title><xsl:value-of select="title"/></title>

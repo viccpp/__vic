@@ -4,6 +4,14 @@ Legend:
     * Changes
     ! Important
 
+2016-12-23  __vic
+    + io.h:
+        + stdio_file
+        + getline()
+    + object_pool.h
+        + object_pool
+    + tchar.h
+
 2016-12-22  __vic
     + to_text.h
         + to_text_append()

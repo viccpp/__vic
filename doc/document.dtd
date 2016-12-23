@@ -1,5 +1,6 @@
 <!ELEMENT document (title, (annotation | chapter | TODO)*)>
 <!ATTLIST document
+    xml:lang CDATA #REQUIRED
     version CDATA #IMPLIED
     status  (Release | Draft) #IMPLIED>
 

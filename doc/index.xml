@@ -5,11 +5,14 @@
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY io.h SYSTEM "io.h.xml">
+    <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
+    <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
 ]>
-<document lang="en" version="1.0" status="Draft">
+<document xml:lang="en" version="1.0" status="Draft">
 <title>__vic's foundation C++ library</title>
 
 <annotation><documentation><![CDATA[
@@ -83,8 +86,11 @@ TODO
 <title>Library components reference</title>
 &defs.h;
 &error.h;
+&io.h;
+&object_pool.h;
 &static_string.h;
 &string_buffer.h;
+&tchar.h;
 &to_text.h;
 </chapter>
 
