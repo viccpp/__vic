@@ -63,7 +63,7 @@ pre.code {
 	padding-left: 2pt;
 	font-family: monospace;
 	font-size: 10pt;
-	width: 16.5cm;
+	width: 17.3cm; /* 80ch */
 }
 pre.prototype {
 	font-family: monospace;

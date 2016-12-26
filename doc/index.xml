@@ -9,8 +9,10 @@
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
+    <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY trim.h SYSTEM "trim.h.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
 <title>__vic's foundation C++ library</title>
@@ -90,8 +92,10 @@ TODO
 &object_pool.h;
 &static_string.h;
 &string_buffer.h;
+&string_ref.h;
 &tchar.h;
 &to_text.h;
+&trim.h;
 </chapter>
 
 </document>

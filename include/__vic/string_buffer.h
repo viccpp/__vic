@@ -11,6 +11,7 @@
 
 #include<__vic/defs.h>
 #include<__vic/to_text.h>
+#include<__vic/string_ref.h>
 #include<string>
 #include<cstring>
 
@@ -28,6 +29,7 @@ public:
     string_buffer(const char *st) : base(st ? st : "") {}
     string_buffer(const std::string &st, size_type off = 0,
                         size_type n = npos) : base(st, off, n) {}
+    string_buffer(string_ref sr) : base(sr.begin(), sr.size()) {}
     string_buffer(const char *st, size_type n) : base(st, n) {}
     string_buffer(const char *b, const char *e) : base(b, e - b) {}
     template<class InputIterator>
@@ -35,6 +37,7 @@ public:
 
     string_buffer &operator<<(const char *st) { return append(st); }
     string_buffer &operator<<(const std::string &st) { return append(st); }
+    string_buffer &operator<<(string_ref sr) { return append(sr); }
     string_buffer &operator<<(char ch) { return *this += ch; }
 
     string_buffer &operator<<(long n) { to_text_append(n, *this); return *this; }
@@ -72,10 +75,12 @@ public:
     string_buffer &operator=(char ch) { base::operator=(ch); return *this; }
     string_buffer &operator=(const char *st) { return assign(st); }
     string_buffer &operator=(const std::string &st) { return assign(st); }
+    string_buffer &operator=(string_ref sr) { return assign(sr); }
 
     string_buffer &operator+=(char ch) { base::operator+=(ch); return *this; }
     string_buffer &operator+=(const char *st) { return append(st); }
     string_buffer &operator+=(const std::string &st) { return append(st); }
+    string_buffer &operator+=(string_ref sr) { return append(sr); }
 
     string_buffer &assign(const char *st) { base::assign(st ? st : ""); return *this; }
     string_buffer &assign(const char *st, size_type n) { if(st) base::assign(st,n) ; return *this; }
@@ -84,6 +89,7 @@ public:
     string_buffer &assign(size_type n, char ch) { base::assign(n,ch); return *this; }
     template<class InputIterator>
     string_buffer &assign(InputIterator ib, InputIterator ie) { base::assign(ib,ie); return *this; }
+    string_buffer &assign(string_ref sr) { base::assign(sr.begin(),sr.size()); return *this; }
 
     string_buffer &append(const char *st) { if(st) base::append(st); return *this; }
     string_buffer &append(const char *st, size_type n) { if(st) base::append(st,n); return *this; }
@@ -92,6 +98,7 @@ public:
     string_buffer &append(size_type n, char ch) { base::append(n,ch); return *this; }
     template<class InputIterator>
     string_buffer &append(InputIterator b, InputIterator e) { base::append(b,e); return *this; }
+    string_buffer &append(string_ref sr) { base::append(sr.begin(),sr.size()); return *this; }
 
     using base::insert;
     string_buffer &insert(size_type pos, const char *st) { if(st) base::insert(pos,st); return *this; }

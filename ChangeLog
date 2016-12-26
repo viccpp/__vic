@@ -4,6 +4,14 @@ Legend:
     * Changes
     ! Important
 
+2016-12-26  __vic
+    + string_ref.h:
+        + basic_string_ref (string_ref)
+    + string_buffer: string_ref support
+    + trim.h:
+        + trim(), trimmed(), trim_left(), ...
+        + sift(), sift_if()
+
 2016-12-23  __vic
     + io.h:
         + stdio_file

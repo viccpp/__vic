@@ -1,0 +1,275 @@
+<chapter>
+<title><tt>__vic/string_ref.h</tt></title>
+
+<chapter>
+<title><tt>string_ref</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+class basic_string_ref
+{
+public:
+    using value_type = charT;
+    using iterator = const value_type *;
+    using const_iterator = iterator;
+
+    // Constructors
+    basic_string_ref();
+    basic_string_ref(const charT *str);
+    basic_string_ref(const charT *chars, size_t n);
+    basic_string_ref(const charT *begin, const charT *end);
+    template<class Traits, class Alloc>
+    explicit basic_string_ref(
+        const std::basic_string<charT,Traits,Alloc> &str);
+    basic_string_ref(
+        typename std::basic_string<charT>::const_iterator begin,
+        typename std::basic_string<charT>::const_iterator end);
+    // BEGIN C++11 only
+    basic_string_ref(std::initializer_list<charT> );
+    // END C++11 only
+
+    // Accessors
+    iterator begin() const;
+    iterator end() const;
+    iterator cbegin() const;
+    iterator cend() const;
+
+    charT front() const;
+    charT back() const;
+    charT operator[](size_t i) const;
+    const charT *data() const;
+
+    bool empty() const;
+    size_t size() const;
+    size_t length() const;
+
+    int compare(basic_string_ref s) const;
+
+    // Converters
+    std::basic_string<charT> str() const;
+    template<class Traits>
+    std::basic_string<charT,Traits> str() const;
+    template<class Traits, class Alloc>
+    std::basic_string<charT,Traits,Alloc> str(const Alloc &a = Alloc())const;
+
+    operator std::basic_string<charT>() const;
+};
+
+using string_ref = basic_string_ref<char> ;
+
+template<class charT>
+bool operator==(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+template<class charT>
+bool operator!=(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+template<class charT>
+bool operator<(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+template<class charT>
+bool operator>(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+template<class charT>
+bool operator<=(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+template<class charT>
+bool operator>=(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+
+#ifdef __VIC_DEFINE_OSTREAM_INSERTERS
+template<class charT, class Traits>
+std::basic_ostream<charT,Traits> &operator<<(
+    std::basic_ostream<charT,Traits> &os, const basic_string_ref<charT> &sr);
+#endif
+]]></code-block>
+
+<p>The class represents a reference to the read-only continuous range of
+characters. When used as a return value, it is significantly more lightweight
+than <tt>std::string</tt>, because no string copy or memory allocation
+performed. But, when <tt>std::string</tt> is required, automatic conversion
+happens. Let's consider the example:</p>
+
+<code-block lang="C++">
+class C
+{
+    std::string v;
+public:
+    std::string       get_v_1() const { return v; }
+    __vic::string_ref get_v_2() const { return v; }
+};
+</code-block>
+
+<p>As you can see, class contains one string field. Two read-only
+access-functions are defined. The first as usual returns <tt>std::string</tt>,
+the second - <tt>string_ref</tt>. When the first is used, temporay string is
+created every time. When the second is used, just reference is returned.</p>
+
+<p>Another use case - input read-only string argument. The class is a drop-in
+replacement for <tt>const std::string &amp;</tt>. In most cases, it can also
+be used instead of <tt>const char *</tt>. The overhead in this case is an
+additional scan of the string to find the NUL-terminator, which is nothing in
+cases when we need the string end or length anyway. Let's consider 3 sets of
+overloaded functions:</p>
+
+<code-block lang="C++"><![CDATA[
+void f1(const std::string & );
+
+void f2(const std::string & );
+void f2(const char * );
+
+void f3(string_ref );
+]]></code-block>
+
+<p>Each of them can be used as</p>
+
+<code-block lang="C++">
+fx("Nul-terminated string");
+</code-block>
+
+<p>as well as</p>
+
+<code-block lang="C++">
+fx(std::string("std::string"));
+</code-block>
+
+<p>But with <tt>f1()</tt> we will have redundant string copying in the first
+case, just to read the value. With <tt>f2()</tt> several overloads are
+required. And while it isn't a big issue when function has single argument,
+with two or more string arguments it quickly becomes very tedious. The last
+alternative - <tt>f3()</tt> - is at the same time as short and universal as
+<tt>f1()</tt> and "friendlier" to the string literals and strings from the
+C-world - they are not copied to the heap and not converted to
+<tt>std::string</tt>.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>basic_string_ref()</prototype>
+<postcondition><tt>empty() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>basic_string_ref(const charT *str)</prototype>
+<prototype>template&lt;class Traits, class Alloc>
+basic_string_ref(const std::basic_string&lt;charT,Traits,Alloc> &amp;str)</prototype>
+<p>Creates reference to <tt>str</tt>.</p>
+<postcondition><tt>*this == str</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>basic_string_ref(const charT *chars, size_t n)</prototype>
+<prototype>basic_string_ref(const charT *begin, const charT *end)</prototype>
+<prototype>basic_string_ref(const charT *chars, size_t n)</prototype>
+<prototype>basic_string_ref(
+    typename std::basic_string&lt;charT>::const_iterator begin,
+    typename std::basic_string&lt;charT>::const_iterator end)</prototype>
+<prototype>basic_string_ref(std::initializer_list&lt;charT> ) <sign>C++11</sign></prototype>
+<p>Create reference to the range of the characters.</p>
+</synopsis>
+
+<synopsis>
+<prototype>iterator begin() const</prototype>
+<prototype>iterator cbegin() const</prototype>
+<prototype>const charT *data() const</prototype>
+<p>Begin of the range of the characters.</p>
+</synopsis>
+
+<synopsis>
+<prototype>iterator end() const</prototype>
+<prototype>iterator cend() const</prototype>
+<p>End of the range of the characters.</p>
+</synopsis>
+
+<synopsis>
+<prototype>charT front() const</prototype>
+<prototype>charT back() const</prototype>
+<p>The first and the last character of the string correspondingly.</p>
+<precondition><tt>!empty()</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>charT operator[](size_t i) const</prototype>
+<p><tt>i</tt>-th character of the string.</p>
+<precondition><tt>i &lt; length()</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool empty() const</prototype>
+<p>Returns <tt>begin() == end()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>size_t size() const</prototype>
+<prototype>size_t length() const</prototype>
+<p>Size of the string.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int compare(basic_string_ref s) const</prototype>
+<p>Compares the string with <tt>s</tt>. Returning values are the same as for
+<tt>std::string::compare()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>std::basic_string&lt;charT> str() const</prototype>
+<prototype>template&lt;class Traits>
+std::basic_string&lt;charT,Traits> str() const</prototype>
+<prototype>template&lt;class Traits, class Alloc>
+std::basic_string&lt;charT,Traits,Alloc> str(const Alloc &amp;a = Alloc()) const</prototype>
+<p>Explicit converter to <tt>std::basic_string</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>operator std::basic_string&lt;charT>() const</prototype>
+<p>Implicit converter to <tt>std::basic_string</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Free functions</title>
+
+<synopsis>
+<prototype>template&lt;class charT>
+bool operator==(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+<prototype>template&lt;class charT>
+bool operator!=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+<prototype>template&lt;class charT>
+bool operator&lt;(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+<prototype>template&lt;class charT>
+bool operator>(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+<prototype>template&lt;class charT>
+bool operator&lt;=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+<prototype>template&lt;class charT>
+bool operator>=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+<p>Full set of the comparison operators.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class charT, class Traits>
+std::basic_ostream&lt;charT,Traits> &amp;operator&lt;&lt;(
+    std::basic_ostream&lt;charT,Traits> &amp;os, const basic_string_ref&lt;charT> &amp;sr)</prototype>
+<p>Inserter to an output stream. Defined (and <tt>&lt;ostream></tt> is included)
+only if <tt>__VIC_DEFINE_OSTREAM_INSERTERS</tt> macro was defined before the
+header inclusion.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+C c; // see the class description above
+__vic::string_ref s = c. get_v_2();
+
+// print the string using different ways
+for(__vic::string_ref::iterator it = s.begin(); it != s.end(); ++it)
+    std::cout << *it;
+
+// C++11
+for(auto ch : s) std::cout << ch;
+
+std::copy(s.begin(), s.end(), std::ostream_iterator<char>(std::cout));
+
+std::cout << s;
+
+// automatic conversion to std::string
+std::string ss = s;
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>
