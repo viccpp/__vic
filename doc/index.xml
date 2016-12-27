@@ -8,9 +8,15 @@
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY posix.dir_entries.h SYSTEM "posix.dir_entries.h.xml">
+    <!ENTITY posix.dir_files.h SYSTEM "posix.dir_files.h.xml">
     <!ENTITY posix.error.h SYSTEM "posix.error.h.xml">
     <!ENTITY posix.file.h SYSTEM "posix.file.h.xml">
     <!ENTITY posix.file_stat.h SYSTEM "posix.file_stat.h.xml">
+    <!ENTITY posix.iov.h SYSTEM "posix.iov.h.xml">
+    <!ENTITY posix.process.h SYSTEM "posix.process.h.xml">
+    <!ENTITY posix.signal.h SYSTEM "posix.signal.h.xml">
+    <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
 ]>
 <document lang="en" version="1.0" status="Draft">
 <title>__vic's foundation C++ library (POSIX)</title>
@@ -89,9 +95,15 @@ TODO
 &static_string.h;
 &string_buffer.h;
 &to_text.h;
+&posix.dir_entries.h;
+&posix.dir_files.h;
 &posix.error.h;
 &posix.file.h;
 &posix.file_stat.h;
+&posix.iov.h;
+&posix.process.h;
+&posix.signal.h;
+&posix.thread.h;
 </chapter>
 
 </document>

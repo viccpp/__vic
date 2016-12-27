@@ -1,0 +1,145 @@
+<chapter>
+<title><tt>__vic/posix/iov.h</tt></title>
+
+<p>Vectoring I/O tools.</p>
+
+
+<chapter>
+<title><tt>posix::ovectors</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<unsigned N>
+class posix::ovectors
+{
+public:
+    ovectors();
+
+    void add(const void *buf, size_t buf_len);
+
+    ::iovec *ptr();
+    const ::iovec *ptr() const;
+    unsigned size() const;
+
+    static constexpr unsigned max_size() { return N; }
+    size_t total_bytes() const;
+};
+]]></code-block>
+
+<p>Wrapper for static array of system structs <tt>iovec</tt> that serves
+gathered output from the set of buffers. Template argument is the maximun
+number of the buffers.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>ovectors()</prototype>
+<postcondition><tt>size() == 0 &amp;&amp; total_bytes() == 0</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void add(const void *buf, size_t buf_len)</prototype>
+<p>Adds the specified buffer to the set.</p>
+<precondition><tt>size() &lt; max_size()</tt></precondition>
+<postcondition><tt>size()</tt> is increased by <tt>1</tt>,
+<tt>total_bytes()</tt> is increased by <tt>buf_len</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>::iovec *ptr()</prototype>
+<prototype>const ::iovec *ptr() const</prototype>
+<p>Returns the pointer to the array of the output vectors.</p>
+</synopsis>
+
+<synopsis>
+<prototype>unsigned size() const</prototype>
+<p>Returns current number of the vectors in the array.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static constexpr unsigned max_size()</prototype>
+<p>Returns <tt>N</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>size_t total_bytes() const</prototype>
+<p>Returns total amount of bytes in all buffers of the array.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+__vic::posix::ovectors<3> v;
+v.add("ovectors", 8);
+v.add(" in work", 8);
+const char nl = '\n';
+v.add(&nl, 1);
+
+// Prints:
+// ovectors in work
+__vic::posix::writev_all(1, v); // ::writev(1, v.ptr(), v.size());
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>posix::total(iovec[])</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+size_t total(const ::iovec vec[], unsigned vec_len);
+template<unsigned vsize> size_t total(const ::iovec (&vec)[vsize]);
+
+}
+]]></code-block>
+
+<p>Calculates total size of the buffers in the array <tt>vec</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>posix::cut_prefix(iovec[])</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void posix::cut_prefix(::iovec *&vec, unsigned &vec_len, size_t n);
+]]></code-block>
+
+<p>Removes first <tt>n</tt> bytes from the set of vectors <tt>vec</tt>. Returns
+the pointer to the modified set and the new length of the set. If <tt>n</tt> is
+greater than total size of the all buffers, <tt>vec_len</tt> becomes
+<tt>0</tt> and the value of <tt>vec</tt> is undefined.</p>
+
+<p>The function is useful to retry the interrrupted by signal system call when
+only part of data was written.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>posix::writev_all()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+void writev_all(int fd, ::iovec vec[], unsigned vec_len, size_t total);
+
+template<unsigned vsize>
+void writev_all(int fd, ovectors<vsize> &vec);
+
+}
+]]></code-block>
+
+<p>The functions write contents of the all buffers in the set <tt>vec</tt> to
+the descriptor <tt>fd</tt>. The parameter <tt>total</tt> must contain the total
+size of the all buffers (can be calculated using <tt>__vic::posix::total(vec,
+vec_len)</tt> or <tt>__vic::posix::total(vec)</tt>). The functions are not
+interrupted by signals. Exceptions are thrown on errors.</p>
+
+</chapter>
+
+
+</chapter>

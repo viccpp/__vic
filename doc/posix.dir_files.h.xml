@@ -1,0 +1,44 @@
+<chapter>
+<title><tt>__vic/posix/dir_files.h</tt></title>
+
+<chapter>
+<title><tt>posix::dir_files</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::dir_files : private non_copyable
+{
+public:
+    dir_files();
+    explicit dir_files(const char *dir, const char *pattern = nullptr);
+    ~dir_files();
+
+    // BEGIN C++11 only
+    dir_files(dir_files &&o);
+    dir_files &operator=(dir_files &&o);
+    // END C++11 only
+
+    void reopen(const char *dir, const char *pattern = nullptr);
+    void close();
+    bool is_open() const;
+
+    const char *next();
+    void rewind();
+};
+]]></code-block>
+
+<p>The class is similar to <tt>dir_entries</tt> but ignores all directory
+entries that are not a regular files. Additionally, one can specify the file
+mask using <tt>pattern</tt> parameter.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+// Prints the listing of the cpp-files in the current directory
+__vic::posix::dir_files files(".", "*.cpp");
+while(const char *file = files.next())
+    std::cout << file << '\n';
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

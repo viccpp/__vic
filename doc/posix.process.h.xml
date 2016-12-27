@@ -1,0 +1,19 @@
+<chapter>
+<title><tt>__vic/posix/process.h</tt></title>
+
+<p>OS processes-related tools.</p>
+
+<chapter>
+<title><tt>posix::daemon()</tt></title>
+
+<code-block lang="C++">
+void posix::daemon(bool nochdir, bool noclose = false);
+</code-block>
+
+<p>Makes the calling process a UNIX daemon. The function is just a redirector
+to the system call if the OS implements it, like *BSD, Linux, QNX. The function
+throws on errors.</p>
+
+</chapter>
+
+</chapter>

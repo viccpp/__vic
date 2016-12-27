@@ -1,0 +1,168 @@
+<chapter>
+<title><tt>__vic/posix/signal.h</tt></title>
+
+<p>UNIX signals-related tools.</p>
+
+
+<chapter>
+<title><tt>posix::sigset</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::sigset
+{
+public:
+    sigset() = default;
+    sigset(const ::sigset_t &set);
+    // BEGIN C++11 only
+    sigset(std::initializer_list<int> sigs);
+    // END C++11 only
+
+    sigset &add(int signo);
+    sigset &del(int signo);
+    sigset &operator+=(int signo);
+    sigset &operator-=(int signo);
+    sigset &operator<<(int signo);
+    sigset &operator>>(int signo);
+
+    sigset &fill();
+    sigset &clear();
+
+    static sigset full();
+    static sigset empty();
+
+    bool is_member(int signo) const;
+    bool contains(int signo) const;
+
+    operator ::sigset_t &();
+    operator const ::sigset_t &() const;
+
+    ::sigset_t *operator&();
+    const ::sigset_t *operator&() const;
+};
+]]></code-block>
+
+<p>Handy C++ wrapper for the system type <tt>sigset_t</tt>. Set operations are
+defined as C++-operators and member-functions.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>sigset()</prototype>
+<p>Creates the uninitialized object.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset(const ::sigset_t &amp;set)</prototype>
+<p>Creates the copy of <tt>set</tt>. Implicit converter from the
+<tt>sigset_t</tt> type.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset(std::initializer_list&lt;int> sigs) <sign>C++11</sign></prototype>
+<p>Creates the set filled with signals from <tt>sigs</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;add(int signo)</prototype>
+<prototype>sigset &amp;operator+=(int signo)</prototype>
+<prototype>sigset &amp;operator&lt;&lt;(int signo)</prototype>
+<p>Adds the signal to the set.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;del(int signo)</prototype>
+<prototype>sigset &amp;operator-=(int signo)</prototype>
+<prototype>sigset &amp;operator>>(int signo)</prototype>
+<p>Removes the signal from the set.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;fill()</prototype>
+<p>Fills the set with all signals (<tt>sigfillset()</tt>).</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;clear()</prototype>
+<p>Clears the set - removes all signals from the set (<tt>sigemptyset()</tt>).
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>static sigset full()</prototype>
+<p>Creates the set filled with all signals.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static sigset empty()</prototype>
+<p>Creates the empty set of signals.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_member(int signo)</prototype>
+<prototype>bool contains(int signo)</prototype>
+<p>Checks if the set contains <tt>signo</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>operator ::sigset_t &amp;()</prototype>
+<prototype>operator const ::sigset_t &amp;() const</prototype>
+<p>Implicit conversion to the <tt>sigset_t</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>::sigset_t *operator&amp;()</prototype>
+<prototype>const ::sigset_t *operator&amp;() const</prototype>
+<p>Overloaded address operator.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+using __vic::posix::sigset;
+using namespace __vic::posix::this_thread;
+
+// Waiting for all but SIGTERM and SIGQUIT
+int sig = this_thread::sigwait( sigset::full() >> SIGTERM >> SIGQUIT );
+
+// Waiting for Ctrl+C
+this_thread::sigwait( sigset::empty() << SIGINT );
+// or for C++11
+this_thread::sigwait( sigset{ SIGINT } );
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>posix::ignore_signals()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+void ignore_signals(const int sigs[], size_t sigs_len);
+template<size_t Size> void ignore_signals(const int (&sigs)[Size]);
+// BEGIN C++11 only
+void ignore_signals(std::initializer_list<int> sigs);
+// END C++11 only
+
+}
+]]></code-block>
+
+<p>Ignore the specified signals (<tt>sigaction()</tt> call is used).</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+int sigs[] = { SIGINT, SIGQUIT, SIGTERM };
+__vic::posix::ignore_signals(sigs);
+
+// or in C++11 just
+__vic::posix::ignore_signals({SIGINT, SIGQUIT, SIGTERM});
+]]></code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

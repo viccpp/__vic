@@ -1,0 +1,63 @@
+<chapter>
+<title><tt>__vic/posix/thread.h</tt></title>
+
+<p>C++ wrappers for Pthreads.</p>
+
+
+<chapter>
+<title><tt>posix::this_thread</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix::this_thread
+{
+    int sigwait(const ::sigset_t &set);
+    ::siginfo_t sigwaitinfo(const ::sigset_t &set);
+
+    void block_signals(const ::sigset_t &mask,
+                                ::sigset_t *oldmask = nullptr);
+    void unblock_signals(const ::sigset_t &mask,
+                                ::sigset_t *oldmask = nullptr);
+    void set_sigmask(const ::sigset_t &mask, ::sigset_t *oldmask = nullptr);
+}
+]]></code-block>
+
+<p>Set of the functions to control the current thread.</p>
+
+<synopsis>
+<prototype>int sigwait(const ::sigset_t &amp;set)</prototype>
+<p>Suspends the current thread until the signal from <tt>set</tt> is received.
+Received signal is returned as a result.</p>
+</synopsis>
+
+<synopsis>
+<prototype>::siginfo_t sigwaitinfo(const ::sigset_t &amp;set)</prototype>
+<p>Counterpart of <tt>sigwait()</tt> but returns additional information about
+the received signal. The signal is returned in <tt>si_signo</tt> field.</p>
+<note>The function is not interrupted by signal handlers as opposed to the
+system call of the same name.</note>
+<note><tt>::sigaction()</tt> with <tt>sa_flags</tt> containing
+<tt>SA_SIGINFO</tt> has to be called for each signal from <tt>set</tt> before
+usage! Otherwise the returned value will contain garbage!</note>
+</synopsis>
+
+<synopsis>
+<prototype>void block_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
+<p>Adds the signals from the set to the blocked ones in the calling thread.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void unblock_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
+<p>Removes the signals from the set from the blocked ones in the calling
+thread.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void set_sigmask(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
+<p>Sets the mask of blocked signals for the calling thread. All signals from
+the set are blocked, others - aren't.</p>
+</synopsis>
+
+</chapter>
+
+
+</chapter>

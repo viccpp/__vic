@@ -1,0 +1,115 @@
+<chapter>
+<title><tt>__vic/posix/dir_entries.h</tt></title>
+
+<chapter>
+<title><tt>posix::dir_entries</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::dir_entries : private non_copyable
+{
+public:
+    dir_entries();
+    explicit dir_entries(const char *dir);
+    ~dir_entries();
+
+    // BEGIN C++11 only
+    dir_entries(dir_entries &&o) noexcept;
+    dir_entries &operator=(dir_entries &&o) noexcept;
+    // END C++11 only
+
+    void reopen(const char *dir);
+    void close();
+    bool is_open() const;
+
+    const char *next();
+#ifdef _DIRENT_HAVE_D_TYPE
+    unsigned char type() const;
+#endif
+    void rewind();
+};
+]]></code-block>
+
+<p>Using this class one can iterate over content of the specified directory.
+Special links <tt>.</tt> and <tt>..</tt> are newer included in the resulting
+set.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>dir_entries()</prototype>
+<p>Creates the closed object.</p>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit dir_entries(const char *dir)</prototype>
+<p>Opens the directory <tt>dir</tt> for listing. Throws on errors.</p>
+<postcondition><tt>is_open() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~dir_entries()</prototype>
+<p>Calls <tt>close()</tt> if <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>dir_entries(dir_entries &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>dir_entries &amp;operator=(dir_entries &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Move operations for C++11 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void reopen(const char *dir)</prototype>
+<p>Initializes new listing. Calls <tt>close()</tt> before as needed.</p>
+<postcondition><tt>is_open() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Frees the resources. Throws on errors.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Returns <tt>true</tt> if <tt>next()</tt> can be called.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *next()</prototype>
+<p>Returns the next entry or <tt>nullptr</tt> if the end of the list was
+reached.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>unsigned char type() const</prototype>
+<p>Returns the type of the entry: <tt>DT_REG</tt>, <tt>DT_DIR</tt>, et al (see
+the <tt>dirent</tt> doc for your system). The member is available only if
+<tt>_DIRENT_HAVE_D_TYPE</tt> macro is defined. But anyway, in some situations
+the file type could not be determined and the value <tt>DT_UNKNOWN</tt> is
+returned. All applications must properly handle such situations falling back
+to the <tt>stat()</tt> call!</p>
+</synopsis>
+
+<synopsis>
+<prototype>void rewind()</prototype>
+<p>Rewinds the cursor of the listing to the beginning.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+// Prints the listing of the current directory
+__vic::posix::dir_entries list(".");
+while(const char *entry = list.next())
+    std::cout << entry << '\n';
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>
