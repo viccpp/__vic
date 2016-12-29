@@ -4,6 +4,21 @@ Legend:
     * Changes
     ! Important
 
+2016-12-29  __vic
+    + stdint.h:
+        + [u]int<N>_t, [u]int_least<N>_t, [u]int_fast<N>_t, [u]intmax_t,
+          [u]intptr_t
+        + int_exactly_bytes<>, uint_exactly_bytes<>
+    + bits.h:
+        + lo_nibble(), hi_nibble()
+        + msb_ones(), lsb_ones()
+        + get_lsbs()
+        + ord()
+        + to_hex_digit_upper(), to_hex_digit_lower()
+        + hex_to_number()
+        + swapped_nibbles()
+        + rotl(), rotr()
+
 2016-12-28  __vic
     + string_buffer: move constructor for std::string
     + logger.h:

@@ -1,0 +1,113 @@
+<chapter>
+<title><tt>__vic/bits.h</tt></title>
+
+<p>Bits and bytes manipulation tools.</p>
+
+
+<chapter>
+<title><tt>lo_nibble()</tt>, <tt>hi_nibble()</tt></title>
+
+<code-block lang="C++">
+constexpr int lo_nibble(uint8_t byte);
+constexpr int hi_nibble(uint8_t byte);
+</code-block>
+
+<p>Return the value of the low-order/high-order half-byte (tetrad),
+respectively.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>msb_ones()</tt>, <tt>lsb_ones()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> T lsb_ones(unsigned bits_num);
+template<class T> T msb_ones(unsigned bits_num);
+]]></code-block>
+
+<p>Return the value of the type <tt>T</tt> with all least/most significant
+<tt>bits_num</tt> bits filled with <tt>1</tt>, respectively. All other bits
+are set to <tt>0</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>get_lsbs()</tt></title>
+
+<code-block lang="C++">
+template&lt;class T> T get_lsbs(T v, unsigned bits_num);
+</code-block>
+
+<p>Returns <tt>bits_num</tt> least significant bits of <tt>v</tt>. In other
+words, zeroes all but <tt>bits_num</tt> least significant bits.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ord()</tt></title>
+
+<code-block lang="C++">
+constexpr int ord(char ch);
+</code-block>
+
+<p>Returns the character code from 0 to 255.</p>
+<postcondition>ord(ch) >= 0</postcondition>
+
+</chapter>
+
+
+<chapter>
+<title><tt>to_hex_digit_upper()</tt>, <tt>to_hex_digit_lower()</tt></title>
+
+<code-block lang="C++">
+constexpr char to_hex_digit_upper(int tetrad);
+constexpr char to_hex_digit_lower(int tetrad);
+</code-block>
+
+<p>Converts the value from 0 to 15 to the hexadecimal digit. The first one
+uses upper case for <tt>A</tt>-<tt>F</tt>, the latter - lower. The result
+is undefined if the input value goes beyond the range.</p>
+<precondition><![CDATA[0 <= tetrad && tetrad <= 15]]></precondition>
+
+</chapter>
+
+
+<chapter>
+<title><tt>hex_to_number()</tt></title>
+
+<code-block lang="C++">
+constexpr int hex_to_number(char ch);
+</code-block>
+
+<p>Converts the hexadecimal digit to the number. If the characted is not a
+hexadecimal digit, <tt>-1</tt> is returned.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>rotl()</tt>, <tt>rotr()</tt></title>
+
+<code-block lang="C++">
+uint8_t  rotl(uint8_t  v, int shift);
+uint16_t rotl(uint16_t v, int shift);
+uint32_t rotl(uint32_t v, int shift);
+uint64_t rotl(uint64_t v, int shift);
+
+uint8_t  rotr(uint8_t  v, int shift);
+uint16_t rotr(uint16_t v, int shift);
+uint32_t rotr(uint32_t v, int shift);
+uint64_t rotr(uint64_t v, int shift);
+</code-block>
+
+<p>The functions perform circular left (<tt>rotl</tt>) or right
+(<tt>rotr</tt>) bitwise shift (rotation).</p>
+<precondition>shift >= 0</precondition>
+
+</chapter>
+
+
+</chapter>

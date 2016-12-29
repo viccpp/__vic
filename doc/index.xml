@@ -4,11 +4,13 @@
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
+    <!ENTITY bits.h SYSTEM "bits.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY io.h SYSTEM "io.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
+    <!ENTITY stdint.h SYSTEM "stdint.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
@@ -88,11 +90,13 @@ TODO
 <chapter>
 <title>Library components reference</title>
 &defs.h;
+&bits.h;
 &error.h;
 &io.h;
 &logger.h;
 &object_pool.h;
 &static_string.h;
+&stdint.h;
 &string_buffer.h;
 &string_ref.h;
 &tchar.h;
