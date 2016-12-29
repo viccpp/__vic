@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2016-12-28  __vic
+    + string_buffer: move constructor for std::string
+    + logger.h:
+        + logger
+
 2016-12-26  __vic
     + string_ref.h:
         + basic_string_ref (string_ref)
@@ -16,25 +21,25 @@ Legend:
     + io.h:
         + stdio_file
         + getline()
-    + object_pool.h
+    + object_pool.h:
         + object_pool
     + tchar.h
 
 2016-12-22  __vic
-    + to_text.h
+    + to_text.h:
         + to_text_append()
-    + string_buffer.h
+    + string_buffer.h:
         + string_buffer
 
 2016-12-21  __vic
-    + defs.h
+    + defs.h:
         + nullptr
         + non_copyable
         + non_heap_allocatable
         + array_size()
-    + static_string.h
+    + static_string.h:
         + static_string
-    + error.h
+    + error.h:
         + exception
         + libc_error
         + throw_errno()

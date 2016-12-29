@@ -27,7 +27,12 @@ public:
     string_buffer() __VIC_DEFAULT_CTR
     explicit string_buffer(size_type n) { base::reserve(n); }
     string_buffer(const char *st) : base(st ? st : "") {}
-    string_buffer(const std::string &st, size_type off = 0,
+#if __cpp_rvalue_references
+    string_buffer(std::string st) : base(std::move(st)) {}
+#else
+    string_buffer(const std::string &st) : base(st) {}
+#endif
+    string_buffer(const std::string &st, size_type off,
                         size_type n = npos) : base(st, off, n) {}
     string_buffer(string_ref sr) : base(sr.begin(), sr.size()) {}
     string_buffer(const char *st, size_type n) : base(st, n) {}

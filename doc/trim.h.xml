@@ -91,7 +91,7 @@ char *sift(char *str, const char *trash_chars);
 std::string &sift(std::string &str, const char *trash_chars);
 ]]></code-block>
 
-<p>Removes all the characters from the set from the string.</p>
+<p>Removes all characters from the set from the string.</p>
 
 <section><title>Example</title>
 <code-block lang="C++">
@@ -114,7 +114,7 @@ template<class Pred>
 std::string &sift(std::string &str, Pred pred);
 ]]></code-block>
 
-<p>Removes all the characters satify the predicate <tt>pred</tt>.</p>
+<p>Removes all characters satify the predicate <tt>pred</tt>.</p>
 
 </chapter>
 

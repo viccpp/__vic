@@ -11,9 +11,9 @@ public:
     string_buffer();
     explicit string_buffer(size_type n);
     string_buffer(const char *str);
-    string_buffer(const std::string &str,
-                    size_type off = 0, size_type n = npos);
+    string_buffer(std::string str);
     string_buffer(string_ref sr);
+    string_buffer(const std::string &str, size_type off, size_type n = npos);
     string_buffer(const char *char_buf, size_type n);
     string_buffer(const char *begin, const char *end);
     template<class InputIterator>
@@ -180,8 +180,13 @@ constructor for optimization purposes.</p>
 
 <synopsis>
 <prototype>string_buffer(const char *str)</prototype>
-<prototype>string_buffer(const std::string &amp;str, size_type off = 0, size_type n = npos)</prototype>
+<prototype>string_buffer(std::string str)</prototype>
 <p>Creates the copy of <tt>str</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>string_buffer(const std::string &amp;str, size_type off, size_type n = npos)</prototype>
+<p>Creates the copy of <tt>str</tt> substring.</p>
 </synopsis>
 
 <synopsis>

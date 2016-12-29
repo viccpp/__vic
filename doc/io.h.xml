@@ -133,7 +133,7 @@ file.close();
 
 
 <chapter>
-<title><tt>getline()</tt></title>
+<title><tt>getline(FILE)</tt></title>
 
 <code-block lang="C++"><![CDATA[
 bool getline(std::FILE *fp, std::string &str, char delim = '\n');
