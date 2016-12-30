@@ -1,8 +1,8 @@
 <chapter>
 <title><tt>__vic/stdint.h</tt></title>
 
-<p>ISO C99 <tt>stdint.h</tt> for C++98. In C++11 mode - just redirector to
-<tt>cstdint</tt>.</p>
+<p>ISO C99 <tt>&lt;stdint.h></tt> for C++98. In C++11 mode - just redirector
+to <tt>&lt;cstdint></tt>.</p>
 <p>Additionally, some metafunctions for template metaprogramming are provided.
 </p>
 

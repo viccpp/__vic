@@ -1,0 +1,81 @@
+<chapter>
+<title><tt>__vic/ascii.h</tt></title>
+
+<p>Fast, compact and locale-independent tools for ASCII-characters
+processing. All the tools are located within <tt>__vic::ascii</tt>
+namespace.</p>
+
+
+<chapter>
+<title><tt>ascii::is</tt>-functions</title>
+
+<code-block lang="C++">
+namespace ascii {
+
+constexpr bool isdigit(char c);
+constexpr bool isxdigit(char c);
+constexpr bool islower(char c);
+constexpr bool isupper(char c);
+constexpr bool isalpha(char c);
+constexpr bool isalnum(char c);
+constexpr bool isspace(char c);
+constexpr bool isascii(char c);
+
+}
+</code-block>
+
+<p>Counterparts of the corresponding <tt>&lt;cctype></tt> functions.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ascii::tolower()</tt>, <tt>ascii::toupper()</tt></title>
+
+<code-block lang="C++">
+namespace ascii {
+
+constexpr char tolower(char c);
+constexpr char toupper(char c);
+constexpr char upper_to_lower(char upper);
+constexpr char lower_to_upper(char lower);
+
+}
+</code-block>
+
+<synopsis>
+<prototype>constexpr char tolower(char c)</prototype>
+<prototype>constexpr char toupper(char c)</prototype>
+<p>Counterparts of the corresponding <tt>&lt;cctype></tt> functions.</p>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr char upper_to_lower(char upper)</prototype>
+<p>More restricted counterpart of <tt>tolower()</tt>. The result is undefined
+if the argument is not an ASCII capital letter.</p>
+<precondition><tt>ascii::isupper(upper)</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr char lower_to_upper(char lower)</prototype>
+<p>More restricted counterpart of <tt>toupper()</tt>. The result is undefined
+if the argument is not an ASCII small letter.</p>
+<precondition><tt>ascii::islower(lower)</tt></precondition>
+</synopsis>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ascii::equal_icase()</tt></title>
+
+<code-block lang="C++">
+constexpr bool ascii::equal_icase(char ch1, char ch2);
+</code-block>
+
+<p>Checks the equality of the two characters ignoring the case.</p>
+
+</chapter>
+
+
+</chapter>

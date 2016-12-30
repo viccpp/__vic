@@ -4,6 +4,18 @@ Legend:
     * Changes
     ! Important
 
+2016-12-30  __vic
+    + ascii.h:
+        + isdigit(), isxdigit(), isalpha(), isalnum(), isspace(), isascii()
+        + islower(), isupper()
+        + tolower(), toupper(), upper_to_lower(), lower_to_upper()
+        + equal_icase(char,char)
+    + date_time.h:
+        + is_leap_year()
+        + days_in_month()
+        + days_between_years()
+        + validate_date(), validate_time(), validate_date_time()
+
 2016-12-29  __vic
     + stdint.h:
         + [u]int<N>_t, [u]int_least<N>_t, [u]int_fast<N>_t, [u]intmax_t,
