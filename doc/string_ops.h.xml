@@ -1,9 +1,11 @@
 <chapter>
-<title><tt>__vic/trim.h</tt></title>
+<title><tt>__vic/string_ops.h</tt></title>
+
+<p>Miscellaneous strings-related utilities.</p>
 
 
 <chapter>
-<title>The set <tt>trim</tt> functions</title>
+<title><tt>trim</tt> functions</title>
 
 <code-block lang="C++"><![CDATA[
 char *trim(char *str);

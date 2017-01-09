@@ -1,12 +1,12 @@
-// Trim and Sift functions
+// String utilities
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2007
 
-#ifndef __VIC_TRIM_H
-#define __VIC_TRIM_H
+#ifndef __VIC_STRING_OPS_H
+#define __VIC_STRING_OPS_H
 
 #include<__vic/defs.h>
 #include<algorithm>
@@ -81,6 +81,7 @@ std::string &sift_if(std::string &st, Pred pred)
 //----------------------------------------------------------------------------
 } // namespace
 
+//----------------------------------------------------------------------------
 char *sift(char * , const char * );
 std::string &sift(std::string & , const char * );
 
@@ -89,6 +90,7 @@ char *sift_if(char *s, Pred pred) { return impl::sift_if(s, pred); }
 
 template<class Pred>
 std::string &sift_if(std::string &s, Pred pred) { return impl::sift_if(s, pred);}
+//----------------------------------------------------------------------------
 
 } // namespace
 

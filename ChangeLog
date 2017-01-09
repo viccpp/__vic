@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2016-01-09  __vic
+    * Renamed trim.h -> string_ops.h
+
 2016-12-30  __vic
     + ascii.h:
         + isdigit(), isxdigit(), isalpha(), isalnum(), isspace(), isascii()
