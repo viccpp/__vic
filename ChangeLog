@@ -6,6 +6,12 @@ Legend:
 
 2016-01-09  __vic
     * Renamed trim.h -> string_ops.h
+    * string_ops.h:
+        + pad_left(), pad_right()
+        * sift() treats nullptr as an empty string
+    + ascii_string.h:
+        + toupper(), tolower() for strings
+        + equal_icase() for strings
 
 2016-12-30  __vic
     + ascii.h:

@@ -92,6 +92,13 @@ template<class Pred>
 std::string &sift_if(std::string &s, Pred pred) { return impl::sift_if(s, pred);}
 //----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+std::string &pad_left(std::string & , size_t , char = ' ');
+std::string &pad_right(std::string & , size_t , char = ' ');
+char *pad_left(char * , size_t , char = ' ');
+char *pad_right(char * , size_t , char = ' ');
+//----------------------------------------------------------------------------
+
 } // namespace
 
 #endif // header guard

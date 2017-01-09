@@ -21,12 +21,14 @@ public:
 //----------------------------------------------------------------------------
 char *sift(char *st, const char *trash_chars)
 {
-    return impl::sift_if(st, is_trash(trash_chars));
+    if(trash_chars) impl::sift_if(st, is_trash(trash_chars));
+    return st;
 }
 //----------------------------------------------------------------------------
 std::string &sift(std::string &st, const char *trash_chars)
 {
-    return impl::sift_if(st, is_trash(trash_chars));
+    if(trash_chars) impl::sift_if(st, is_trash(trash_chars));
+    return st;
 }
 //----------------------------------------------------------------------------
 

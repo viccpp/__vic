@@ -1,0 +1,65 @@
+<chapter>
+<title><tt>__vic/ascii_string.h</tt></title>
+
+<p>ASCII-strings processing tools.</p>
+
+
+<chapter>
+<title><tt>ascii::tolower()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace ascii {
+
+char *tolower(char *str);
+std::string &tolower(std::string &str);
+
+}
+]]></code-block>
+
+<p>Translates all Latin capital letters of <tt>str</tt> to the small ones.
+Returns <tt>str</tt>. C-string must not be <tt>nullptr</tt>!</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ascii::toupper()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace ascii {
+
+char *toupper(char *str);
+std::string &toupper(std::string &str);
+
+}
+]]></code-block>
+
+<p>Translates all Latin small letters of <tt>str</tt> to the capital ones.
+Returns <tt>str</tt>. C-string must not be <tt>nullptr</tt>!</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ascii::equal_icase()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace ascii {
+
+bool equal_icase(const char *s1, const char *s2);
+bool equal_icase(const std::string &s1, const std::string &s2);
+bool equal_icase(const std::string &s1, const char *s2);
+bool equal_icase(const char *s1, const std::string &s2);
+bool equal_icase(const char *s1, size_t s1_len,
+                 const char *s2, size_t s2_len);
+
+}
+]]></code-block>
+
+<p>Checks equality of the two strings ignoring the case. The pointers must not
+be <tt>nullptr</tt>!</p>
+
+</chapter>
+
+
+</chapter>

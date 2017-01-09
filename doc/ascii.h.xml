@@ -30,7 +30,7 @@ constexpr bool isascii(char c);
 
 
 <chapter>
-<title><tt>ascii::tolower()</tt>, <tt>ascii::toupper()</tt></title>
+<title><tt>ascii::tolower(char)</tt>, <tt>ascii::toupper(char)</tt></title>
 
 <code-block lang="C++">
 namespace ascii {
@@ -67,13 +67,13 @@ if the argument is not an ASCII small letter.</p>
 
 
 <chapter>
-<title><tt>ascii::equal_icase()</tt></title>
+<title><tt>ascii::equal_icase(char,char)</tt></title>
 
 <code-block lang="C++">
 constexpr bool ascii::equal_icase(char ch1, char ch2);
 </code-block>
 
-<p>Checks the equality of the two characters ignoring the case.</p>
+<p>Checks equality of the two characters ignoring the case.</p>
 
 </chapter>
 
