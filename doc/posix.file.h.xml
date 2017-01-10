@@ -70,7 +70,7 @@ and <tt>::write()</tt> system calls.</p>
 <synopsis>
 <prototype>file(file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
 <prototype>file &amp;operator=(file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
-<p>Copy operations for C++11 mode.</p>
+<p>Move operations for C++11 mode.</p>
 </synopsis>
 
 <synopsis>
@@ -134,7 +134,7 @@ open! No preliminary checks are performed.</p>
 <synopsis>
 <prototype>int handle() const</prototype>
 <prototype>int descriptor() const { return handle(); }</prototype>
-<p>Returns file descriptor.</p>
+<p>Returns the wrapped descriptor.</p>
 </synopsis>
 
 <synopsis>
@@ -150,9 +150,9 @@ interrupted by signals. Throws <tt>libc_error</tt> on error.</p>
 <prototype>static size_t read_some(int fd, void *buf, size_t n)</prototype>
 <prototype>size_t read_some(void *buf, size_t n) { return read_some(handle(), buf, n); }</prototype>
 <p>Reads no more than <tt>n</tt> bytes to the specified buffer. Returns number
-of bytes read or <tt>0</tt> in case of end-of-file. Function returns after
-first chunk was successfully received. Is not interrupted by signals. Throws
-<tt>libc_error</tt> on error.</p>
+of bytes read or <tt>0</tt> in case of end-of-file. The function returns after
+first chunk of any size was successfully received. Is not interrupted by
+signals. Throws <tt>libc_error</tt> on error.</p>
 </synopsis>
 
 <synopsis>

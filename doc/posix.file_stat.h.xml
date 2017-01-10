@@ -31,7 +31,6 @@ struct file_stat : public ::stat
     bool try_get_for_link(const char *path);
     bool try_get_for_link(const std::string &path);
 
-
     bool get_if_exists(const char *path);
     bool get_if_exists(const std::string &path);
 
@@ -119,7 +118,7 @@ error code is placed to <tt>errno</tt>.</p>
 <prototype>bool try_get(const std::string &amp;path)</prototype>
 <prototype>bool try_get_for_link(const char *path)</prototype>
 <prototype>bool try_get_for_link(const std::string &amp;path)</prototype>
-<p>Counterparts of <tt>get()</tt> and <tt>try_get()</tt> but return
+<p>Counterparts of <tt>get()</tt> and <tt>get_for_link()</tt> but return
 <tt>false</tt> instead of throwing exceptions.</p>
 </synopsis>
 
