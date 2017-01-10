@@ -19,9 +19,10 @@
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY windows.error.h SYSTEM "windows.error.h.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
-<title>__vic's foundation C++ library</title>
+<title>__vic's foundation C++ library (Windows)</title>
 
 <annotation><documentation><![CDATA[
 Tags used to format this document:
@@ -108,6 +109,7 @@ TODO
 &string_ref.h;
 &tchar.h;
 &to_text.h;
+&windows.error.h;
 </chapter>
 
 </document>

@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2016-01-10  __vic
+    + windows/error.h
+        + windows::error
+        + windows::throw_last_error()
+
 2016-01-09  __vic
     * Renamed trim.h -> string_ops.h
     * string_ops.h:
