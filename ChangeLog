@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2017-01-10  __vic
+    * posix/thread.h:
+        + posix::mutex, posix::mutex_lock
+        + posix::cond_variable
+
 2016-12-27  __vic
     + posix/process.h:
         + posix::daemon()
