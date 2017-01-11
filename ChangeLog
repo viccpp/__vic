@@ -4,6 +4,13 @@ Legend:
     * Changes
     ! Important
 
+2017-01-11  __vic
+    + posix/time.h:
+        + posix::time_spec
+        + posix::nanoseconds_since_epoch()
+        + posix::realtime_clock, posix::monotonic_clock
+    + posix/thread.h: posix::cond_variable: wait_for()
+
 2017-01-10  __vic
     * posix/thread.h:
         + posix::mutex, posix::mutex_lock

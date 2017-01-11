@@ -17,6 +17,7 @@
     <!ENTITY posix.process.h SYSTEM "posix.process.h.xml">
     <!ENTITY posix.signal.h SYSTEM "posix.signal.h.xml">
     <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
+    <!ENTITY posix.time.h SYSTEM "posix.time.h.xml">
 ]>
 <document lang="en" version="1.0" status="Draft">
 <title>__vic's foundation C++ library (POSIX)</title>
@@ -104,6 +105,7 @@ TODO
 &posix.process.h;
 &posix.signal.h;
 &posix.thread.h;
+&posix.time.h;
 </chapter>
 
 </document>

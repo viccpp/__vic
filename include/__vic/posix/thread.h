@@ -105,6 +105,10 @@ public:
     bool wait_until(mutex &m, const ::timespec &abstime)
         { return wait_until(*m.handle(), abstime); }
 
+    bool wait_for(::pthread_mutex_t & , unsigned long ); // msec
+    bool wait_for(mutex &m, unsigned long msec)
+        { return wait_for(*m.handle(), msec); }
+
     void signal();
     void broadcast();
 

@@ -1,0 +1,222 @@
+<chapter>
+<title><tt>__vic/posix/time.h</tt></title>
+
+<p>POSIX time-related utilities.</p>
+
+
+<chapter>
+<title><tt>posix::time_spec</tt></title>
+
+<code-block lang="C++"><![CDATA[
+struct posix::time_spec : ::timespec
+{
+    // Unit tags
+    enum sec_units { sec };
+    enum msec_units { msec };
+    enum mksec_units { mksec };
+    enum nsec_units { nsec };
+
+    time_spec() = default;
+    time_spec(time_t secs, long nsecs);
+
+    time_spec(time_t secs, sec_units);
+    time_spec(time_t msecs, msec_units);
+    time_spec(time_t mksecs, mksec_units);
+    time_spec(time_t nsecs, nsec_units);
+
+    // BEGIN C++11 only
+    template<class Rep, class Period>
+    time_spec(std::chrono::duration<Rep,Period> d);
+
+    operator std::chrono::nanoseconds() const;
+
+    template<class Rep, class Period>
+    time_spec &operator+=(std::chrono::duration<Rep,Period> t2);
+    template<class Rep, class Period>
+    time_spec &operator-=(std::chrono::duration<Rep,Period> t2);
+    // END C++11 only
+
+    time_spec &operator+=(time_spec t2);
+    time_spec &operator-=(time_spec t2);
+};
+
+bool operator==(time_spec t1, time_spec t2);
+bool operator!=(time_spec t1, time_spec t2);
+bool operator< (time_spec t1, time_spec t2);
+bool operator> (time_spec t1, time_spec t2);
+bool operator<=(time_spec t1, time_spec t2);
+bool operator>=(time_spec t1, time_spec t2);
+
+time_spec operator+(time_spec t1, time_spec t2);
+time_spec operator-(time_spec t1, time_spec t2);
+]]></code-block>
+
+<p>Handy C++ wrapper for the system type <tt>timespec</tt>. Allows to specify
+time using various units as well as sum up, subtract and compare the values
+using C++ operators.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>enum sec_units { sec }</prototype>
+<prototype>enum msec_units { msec }</prototype>
+<prototype>enum mksec_units { mksec }</prototype>
+<prototype>enum nsec_units { nsec }</prototype>
+<p>Constructor tags to specify units.</p>
+</synopsis>
+
+<synopsis>
+<prototype>time_spec()</prototype>
+<p>Creates uninitialized object.</p>
+</synopsis>
+
+<synopsis>
+<prototype>time_spec(time_t secs, long nsecs)</prototype>
+<p>Fills the fields of the structure with the specified values.</p>
+</synopsis>
+
+<synopsis>
+<prototype>time_spec(time_t secs, sec_units)</prototype>
+<prototype>time_spec(time_t msecs, msec_units)</prototype>
+<prototype>time_spec(time_t mksecs, mksec_units)</prototype>
+<prototype>time_spec(time_t nsecs, nsec_units)</prototype>
+<p>Specifies time in seconds, milliseconds, microseconds and nanoseconds,
+respectively.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Rep, class Period>
+time_spec(std::chrono::duration&lt;Rep,Period> d) <sign>C++11</sign></prototype>
+<p>Creates <tt>time_spec</tt> from <tt>std::chrono::duration</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>operator std::chrono::nanoseconds() const <sign>C++11</sign></prototype>
+<p>Converts the value to nanoseconds.</p>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class Rep, class Period>
+time_spec &operator+=(std::chrono::duration<Rep,Period> t2)]]> <sign>C++11</sign></prototype>
+<prototype>time_spec &amp;operator+=(time_spec t2)</prototype>
+<prototype>time_spec operator+(time_spec t1, time_spec t2)</prototype>
+<p>Sums up two values.</p>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class Rep, class Period>
+time_spec &operator-=(std::chrono::duration<Rep,Period> t2)]]> <sign>C++11</sign></prototype>
+<prototype>time_spec &amp;operator-=(time_spec t2)</prototype>
+<prototype>time_spec operator-(time_spec t1, time_spec t2)</prototype>
+<p>Calculates the difference between two values.</p>
+<precondition><tt>t2 &lt;= t1</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool operator==(time_spec t1, time_spec t2)</prototype>
+<prototype>bool operator!=(time_spec t1, time_spec t2)</prototype>
+<prototype>bool operator&lt; (time_spec t1, time_spec t2)</prototype>
+<prototype>bool operator> (time_spec t1, time_spec t2)</prototype>
+<prototype>bool operator&lt;=(time_spec t1, time_spec t2)</prototype>
+<prototype>bool operator>=(time_spec t1, time_spec t2)</prototype>
+<p>Comparison operators.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+__vic::posix::time_spec t(5, __vic::posix::time_spec::sec);
+::nanosleep(&t, nullptr); // sleep for 5 sec
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>posix::nanoseconds_since_epoch()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+posix::time_spec posix::nanoseconds_since_epoch();
+]]></code-block>
+
+<p>Returns the current number of seconds and nanoseconds since the Epoch
+(UNIX-time). Uses <tt>posix::realtime_clock::get_time()</tt> to obtain the
+result when available. The actual precision depends on the used platform.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>posix::realtime_clock</tt>, <tt>posix::monotonic_clock</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#if _POSIX_TIMERS > 0
+
+class posix::realtime_clock
+{
+public:
+    static constexpr clockid_t id = CLOCK_REALTIME;
+    static constexpr bool is_steady = false;
+    // BEGIN C++11 only
+    using duration   = std::chrono::nanoseconds;
+    using period     = duration::period;
+    using rep        = duration::rep;
+    using time_point = std::chrono::time_point<realtime_clock, duration>;
+
+    static time_point now();
+    // END C++11 only
+
+    static posix::time_spec get_time();
+};
+#ifdef _POSIX_MONOTONIC_CLOCK
+class posix::monotonic_clock
+{
+public:
+    static constexpr clockid_t id = CLOCK_MONOTONIC;
+    static constexpr bool is_steady = true;
+    // BEGIN C++11 only
+    using duration   = std::chrono::nanoseconds;
+    using period     = duration::period;
+    using rep        = duration::rep;
+    using time_point = std::chrono::time_point<monotonic_clock, duration>;
+
+    static time_point now();
+    // END C++11 only
+
+    static posix::time_spec get_time();
+};
+#endif
+
+#endif
+]]></code-block>
+
+<p>POSIX system clocks (<tt>clock_gettime()</tt>) with
+<tt>&lt;chrono></tt>-clock interface. Absent in system not supporting them
+(check <tt>_POSIX_TIMERS</tt> macro). Additionally <tt>monotonic_clock</tt>
+is available only if <tt>_POSIX_MONOTONIC_CLOCK</tt> macro is defined.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>static constexpr clockid_t id</prototype>
+<p>System ID of the clock.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static time_spec get_time()</prototype>
+<p>Returns the current time as <tt>posix::time_spec</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static time_point now() <sign>C++11</sign></prototype>
+<p>Returns the current time as <tt>time_point</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+</chapter>
