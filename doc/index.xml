@@ -11,6 +11,7 @@
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY io.h SYSTEM "io.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
+    <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
@@ -100,6 +101,7 @@ TODO
 &error.h;
 &io.h;
 &logger.h;
+&meta.h;
 &object_pool.h;
 &static_string.h;
 &stdint.h;

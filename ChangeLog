@@ -4,6 +4,15 @@ Legend:
     * Changes
     ! Important
 
+2016-01-12  __vic
+    + meta.h:
+        + integral_constant, true_type, false_type
+        + is_same, is_const
+        + remove_const, remove_volatile, remove_cv
+        + remove_pointer
+        + is_signed_integer, is_unsigned_integer
+        + enable_if, disable_if
+
 2016-01-09  __vic
     * Renamed trim.h -> string_ops.h
     * string_ops.h:
