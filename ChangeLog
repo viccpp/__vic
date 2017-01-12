@@ -12,6 +12,8 @@ Legend:
         + remove_pointer
         + is_signed_integer, is_unsigned_integer
         + enable_if, disable_if
+    + set_of_chars.h:
+        + set_of_chars
 
 2016-01-09  __vic
     * Renamed trim.h -> string_ops.h

@@ -13,6 +13,7 @@
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
+    <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
@@ -103,6 +104,7 @@ TODO
 &logger.h;
 &meta.h;
 &object_pool.h;
+&set_of_chars.h;
 &static_string.h;
 &stdint.h;
 &string_buffer.h;
