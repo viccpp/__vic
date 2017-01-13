@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2016-01-13  __vic
+    + str2num.h
+        + decimal_to_number()
+        + decimal_to_number_range()
+
 2016-01-12  __vic
     + meta.h:
         + integral_constant, true_type, false_type
