@@ -2,6 +2,7 @@
 // $Id$
 //
 
+#include<__vic/windows/throw_last_error.h>
 #include<__vic/windows/error.h>
 #include<windows.h>
 

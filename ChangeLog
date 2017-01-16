@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2016-01-15  __vic
+    * windows::throw_last_error() moved: windows/error.h ->
+      windows/throw_last_error.h
+
 2016-01-10  __vic
     + windows/error.h
         + windows::error

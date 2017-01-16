@@ -11,10 +11,13 @@
 #include<__vic/defs.h>
 #include<__vic/static_string.h>
 #include<exception>
+#ifdef _MSC_VER
+#include<windows.h>
+#else
 #include<windef.h>
-
 // To not include huge windows.h
 extern "C" DWORD WINAPI GetLastError(void);
+#endif
 
 namespace __vic { namespace windows {
 
@@ -34,9 +37,6 @@ public:
     DWORD code() const { return code_; }
 };
 //////////////////////////////////////////////////////////////////////////////
-
-__VIC_NORETURN void throw_last_error(const char * );
-__VIC_NORETURN void throw_last_error(const char * , DWORD );
 
 }} // namespace
 
