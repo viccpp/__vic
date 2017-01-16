@@ -48,9 +48,6 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 
-__VIC_NORETURN void throw_errno(const char * );
-__VIC_NORETURN void throw_errno(const char * , int );
-
 } // namespace
 
 #endif // header guard

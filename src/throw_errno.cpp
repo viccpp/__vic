@@ -2,6 +2,7 @@
 // $Id$
 //
 
+#include<__vic/throw_errno.h>
 #include<__vic/error.h>
 #include<cerrno>
 

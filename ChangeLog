@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2016-01-16  __vic
+    * throw_errno() moved: error.h -> throw_errno.h
+
 2016-01-13  __vic
     + str2num.h
         + decimal_to_number()

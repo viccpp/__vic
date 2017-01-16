@@ -24,7 +24,7 @@
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
-<title>__vic's foundation C++ library</title>
+<title>__vic's C++ library</title>
 
 <annotation><documentation><![CDATA[
 Tags used to format this document:
