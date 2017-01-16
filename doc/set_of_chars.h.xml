@@ -1,0 +1,107 @@
+<chapter>
+<title><tt>__vic/set_of_chars.h</tt></title>
+
+<chapter>
+<title><tt>set_of_chars</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class set_of_chars
+{
+public:
+    constexpr set_of_chars();
+    template<class Iter> set_of_chars(Iter begin, Iter end);
+    set_of_chars(std::initializer_list<char> set); // C++11 only
+    set_of_chars(const char *c_str);
+
+    bool contains(char ch) const;
+
+    void add(char ch);
+    void remove(char ch);
+
+    template<class Iter> void add(Iter begin, Iter end);
+    void add(const char *c_str);
+    void add(std::initializer_list<char> set); // C++11 only
+
+    template<class Iter> void assign(Iter begin, Iter end);
+    void assign(const char *c_str)
+    void assign(std::initializer_list<char> set); // C++11 only
+
+    void clear();
+};
+]]></code-block>
+
+<p>Compact (only 32 bytes) and very fast implemetation of a set of chars. The
+cost of the <tt>contains()</tt> operation is always constant regardles of the
+argument and number of elements in the set.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>constexpr set_of_chars()</prototype>
+<p>Creates an empty set.</p>
+<postcondition><tt>contains(char(ch)) == false</tt> for any char
+</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Iter> set_of_chars(Iter begin, Iter end)</prototype>
+<prototype>set_of_chars(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<p>Creates a set filled with characters from the specified range of values.</p>
+</synopsis>
+
+
+<synopsis>
+<prototype>set_of_chars(const char *c_str)</prototype>
+<p>Creates a set filled with characters from the specified C-string excluding
+NUL-terminator.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool contains(char ch) const</prototype>
+<p>Checks whether the set contains <tt>ch</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void add(char ch)</prototype>
+<p>Adds <tt>ch</tt> to the set.</p>
+<postcondition><tt>contains(ch) == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void remove(char ch)</prototype>
+<p>Removes <tt>ch</tt> from the set.</p>
+<postcondition><tt>contains(ch) == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Iter> void add(Iter begin, Iter end)</prototype>
+<prototype>void add(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<p>Calls <tt>add(ch)</tt> for each value in the range.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void add(const char *c_str)</prototype>
+<p>Calls <tt>add(ch)</tt> for each character in the C-string excluding
+NUL-terminator.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Iter> void assign(Iter begin, Iter end)</prototype>
+<prototype>void assign(const char *c_str)</prototype>
+<prototype>void assign(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<p>Calls <tt>clear()</tt> then <tt>add()</tt> with the specified parameters.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>void clear()</prototype>
+<p>Removes all elements from the set.</p>
+<postcondition><tt>contains(char(ch)) == false</tt> for any char
+</postcondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

@@ -52,6 +52,45 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
+// Visual C++ 7.1 (Visual Studio 2003) or higher
+//////////////////////////////////////////////////////////////////////////////
+#elif defined(_MSC_VER) && _MSC_VER >= 1310
+
+// VC++ features: https://msdn.microsoft.com/en-us/library/hh567368.aspx
+#if _MSC_VER >= 1600 // VC 10.0 (VS 2010)
+
+#define __VIC_NO_NULLPTR_DEF 1
+#if !__cpp_rvalue_references
+#   define __cpp_rvalue_references 1
+#endif
+#if !__cpp_lambdas
+#   define __cpp_lambdas 1
+#endif
+
+#if _MSC_VER >= 1800 // VC 12.0 (VS 2013)
+
+#if !__cpp_initializer_lists
+#   define __cpp_initializer_lists 1
+#endif
+#if !__cpp_alias_templates
+#   define __cpp_alias_templates 1
+#endif
+#if !__cpp_variadic_templates
+#   define __cpp_variadic_templates 1
+#endif
+
+#if _MSC_VER >= 1900 // VS 14.0 (2015)
+#define __VIC_NO_NOEXCEPT_DEF 1
+#if !__cpp_attributes
+#   define __cpp_attributes 1
+#endif
+#endif // VS 2015
+
+#endif // VS 2013
+
+#endif // VS 2010
+
+//////////////////////////////////////////////////////////////////////////////
 // Compiler is not recognized
 //////////////////////////////////////////////////////////////////////////////
 #else
@@ -60,6 +99,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Detect CPU type
+//////////////////////////////////////////////////////////////////////////////
 #if defined(__GNUC__) || defined(__clang__)
 
 #if defined(__i386__)
@@ -96,6 +136,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Detect OS
+//////////////////////////////////////////////////////////////////////////////
 #if defined(__linux__)
 #define __VIC_LINUX__ 1
 #elif defined(__FreeBSD__)
@@ -128,6 +169,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // C++14/C++11/C++98 compatibility macros
+//////////////////////////////////////////////////////////////////////////////
 #if __cplusplus < 201103L && !defined(__VIC_NO_NOEXCEPT_DEF)
 #define noexcept throw()
 #endif
@@ -139,9 +181,13 @@
 #endif
 
 #if __cplusplus >= 201103L // C++11
+#   if !__cpp_constexpr
+#       define __cpp_constexpr 1
+#   endif
+#   if !__cpp_attributes
+#       define __cpp_attributes 1
+#   endif
 #   define __VIC_THROWS noexcept(false)
-#   define __VIC_CONSTEXPR_FUNC constexpr
-#   define __VIC_CONSTEXPR_VAR constexpr
 #   define __VIC_DEFAULT_CTR =default;
 #   if defined(__GNUC__) && __GNUC__ < 5
 #       define __VIC_CXX11_CONST_ITERATOR iterator
@@ -149,14 +195,24 @@
 #       define __VIC_CXX11_CONST_ITERATOR const_iterator
 #   endif
 #   define __VIC_SWAP_HEADER <algorithm>
-#   define __VIC_NORETURN [[noreturn]]
 #else // C++98
 #   define __VIC_THROWS
-#   define __VIC_CONSTEXPR_FUNC inline
-#   define __VIC_CONSTEXPR_VAR const
 #   define __VIC_DEFAULT_CTR {}
 #   define __VIC_CXX11_CONST_ITERATOR iterator
 #   define __VIC_SWAP_HEADER <utility>
+#endif
+
+#if __cpp_constexpr
+#   define __VIC_CONSTEXPR_FUNC constexpr
+#   define __VIC_CONSTEXPR_VAR constexpr
+#else
+#   define __VIC_CONSTEXPR_FUNC inline
+#   define __VIC_CONSTEXPR_VAR const
+#endif
+
+#if __cpp_attributes
+#   define __VIC_NORETURN [[noreturn]]
+#else
 #   if defined(__GNUC__) || defined(__clang__)
 #       define __VIC_NORETURN __attribute__((noreturn))
 #   elif defined(_MSC_VER)

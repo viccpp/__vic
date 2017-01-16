@@ -1,0 +1,160 @@
+<chapter>
+<title><tt>__vic/string_ops.h</tt></title>
+
+<p>Miscellaneous strings-related utilities.</p>
+
+
+<chapter>
+<title><tt>trim</tt> functions</title>
+
+<code-block lang="C++"><![CDATA[
+char *trim(char *str);
+char *trim_left(char *str);
+char *trim_right(char *str);
+char *trim(char *str, char ch);
+char *trim_left(char *str, char ch);
+char *trim_right(char *str, char ch);
+char *trim(char *str, const char *set);
+char *trim_left(char *str, const char *set);
+char *trim_right(char *str, const char *set);
+
+std::string &trim(std::string &str);
+std::string &trim_left(std::string &str);
+std::string &trim_right(std::string &str);
+std::string &trim(std::string &str, char ch);
+std::string &trim_left(std::string &str, char ch);
+std::string &trim_right(std::string &str, char ch);
+std::string &trim(std::string &str, const char *set);
+std::string &trim_left(std::string &str, const char *set);
+std::string &trim_right(std::string &str, const char *set);
+
+std::string trimmed(const std::string &str);
+std::string trimmed_left(const std::string &str);
+std::string trimmed_right(const std::string &str);
+std::string trimmed(const std::string &str, char ch);
+std::string trimmed_left(const std::string &str, char ch);
+std::string trimmed_right(const std::string &str, char ch);
+std::string trimmed(const std::string &str, const char *set);
+std::string trimmed_left(const std::string &str, const char *set);
+std::string trimmed_right(const std::string &str, const char *set);
+]]></code-block>
+
+<p>The set of functions stripping unwanted characters from the string edges.
+Characters to strip can be specified. One can specify single character
+<tt>ch</tt> as well as the set of characters <tt>set</tt>. If no characters
+is specified, all ASCII-whitespaces are implied. Following naming rules for
+the functions are used:</p>
+<list style="bulleted">
+    <item><tt>trim</tt> - strips from both edges,</item>
+    <item><tt>trim_left</tt> - strips from the beginning,</item>
+    <item><tt>trim_right</tt> - strips from the end.</item>
+</list>
+
+<p>Functions <tt>trim</tt> modify the string in-situ and return the pointer or
+reference to it. If the original value should be preserved, <tt>trimmed</tt>
+functions should be used.</p>
+<list style="bulleted">
+    <item><tt>trimmed</tt> - return stripped copy of the string, argument
+        itself is not modified.</item>
+</list>
+
+<p>The implementation is optimized for common case when the string does not have
+anything to trim. In such cases no modifications of the argument are performed,
+the function returns immediately after the checks are completed, and the call
+is maximally cheap.</p>
+
+<p>All <tt>nullptr</tt> values are treated as an empty string.</p>
+
+<section><title>Example</title>
+<code-block lang="C++">
+char st1[] = "\t value    \n";
+
+// CHOICE:
+__vic::trim(st1);       // result: "value"
+__vic::trim_left(st1);  // result: "value    \n"
+__vic::trim_right(st1); // result: "\t value"
+
+std::string st2("...value123");
+
+// CHOICE:
+// trim dot chars
+__vic::trim_left(st1, '.');          // result: "value123"
+// trim all digits
+__vic::trim_right(st1, "123456789"); // result: "...value"
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>sift()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+char *sift(char *str, const char *trash_chars);
+std::string &sift(std::string &str, const char *trash_chars);
+]]></code-block>
+
+<p>Removes all characters from the set from the string. All <tt>nullptr</tt>
+values are treated as an empty string.</p>
+
+<section><title>Example</title>
+<code-block lang="C++">
+char st[] = "..ab.c..d.e.";
+__vic::sift(st, ".");
+assert(std::strcmp(st, "abcde") == 0);
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>sift_if()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class Pred>
+char *sift(char *str, Pred pred);
+template<class Pred>
+std::string &sift(std::string &str, Pred pred);
+]]></code-block>
+
+<p>Removes all characters satify the predicate <tt>pred</tt>. All
+<tt>nullptr</tt> values are treated as an empty string.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>pad_left()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+std::string &pad_left(std::string &str, size_t size, char pad_ch = ' ');
+char *pad_left(char *str, size_t size, char pad_ch = ' ');
+]]></code-block>
+
+<p>Complements the string up to length <tt>size</tt> by adding the required
+number of <tt>pad_ch</tt> chars to the left (beginning). Nothing happens if
+<tt>str</tt> length is equal or greather than <tt>size</tt> or the pointer is
+null. Returns <tt>str</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>pad_right()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+std::string &pad_right(std::string &str, size_t size, char pad_ch = ' ');
+char *pad_right(char *str, size_t size, char pad_ch = ' ');
+]]></code-block>
+
+<p>Complements the string up to length <tt>size</tt> by adding the required
+number of <tt>pad_ch</tt> chars to the right (end). Nothing happens if
+<tt>str</tt> length is equal or greather than <tt>size</tt> or the pointer is
+null. Returns
+<tt>str</tt>.</p>
+
+</chapter>
+
+</chapter>

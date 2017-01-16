@@ -1,0 +1,234 @@
+<chapter>
+<title><tt>__vic/object_pool.h</tt></title>
+
+<chapter>
+<title><tt>object_pool</tt></title>
+<code-block lang="C++"><![CDATA[
+template<class T>
+class object_pool : private non_copyable
+{
+public:
+    using object_type    = T;
+    using value_type     = object_type; // standard synonym
+    using iterator       = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
+    using const_iterator = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
+    class overflow; // : public std::exception
+
+    object_pool();
+    explicit object_pool(size_t max_size);
+    ~object_pool();
+
+    // BEGIN C++11 only
+    object_pool(object_pool &&o) noexcept;
+    object_pool &operator=(object_pool &&o) noexcept;
+    template<class... Args> void emplace(Args &&... args)
+    // END C++11 only
+
+    // size in objects
+    size_t size() const;
+    size_t capacity() const;
+    bool empty();
+
+    void recreate(size_t new_max_size, bool size_exact = false);
+    void *alloc(); // returns pointer to memory for object allocation
+    void push();   // adds last allocated object to the pool
+    void pop();
+    void clear();
+    void swap(object_pool &o) noexcept;
+
+    // element access
+    object_type &operator[](size_t i);
+    iterator begin();
+    iterator end();
+    object_type &front();
+    object_type &back();
+
+    const object_type &operator[](size_t i) const;
+    const_iterator begin() const;
+    const_iterator end() const;
+    const_iterator cbegin() const;
+    const_iterator cend() const;
+    const object_type &front() const;
+    const object_type &back() const;
+};
+template<class T>
+void swap(object_pool<T> &o1, object_pool<T> &o2) noexcept;
+]]></code-block>
+
+<p>The standard containers in C++98 don't allow to store non-copiable elements.
+Even in C++11 elements of containers like <tt>std::vector</tt> have to be at
+least movable. This class solves the problem. It is an array for non-copyable
+objects.</p>
+
+<p>Without <tt>emplace()</tt> it is impossible to create arbitrary new object
+right in the container's memory. C++98 lacks forwarding references so it is
+near impossible to pass arbitrary parameters to the element's constructor.
+<tt>object_pool</tt> solves this problem using the following mechanism.
+The new element is created using several phases:</p>
+<list style="numbered">
+    <item>Requesting memory for the new element in the container -
+        <tt>alloc()</tt>,</item>
+    <item>Creation of the object using placement new -
+        <tt>new(ptr) type(...)</tt>,</item>
+    <item>Fixation of the newly created object in the container -
+        <tt>push()</tt>.</item>
+</list>
+<p>See the example at the end of the article.</p>
+
+<p>Maximum pool capacity is specified on creation of the container. Later it
+can be changed but all the elements has to be destroyed before. In other words,
+the pool can be recreated.</p>
+
+<p>When available, <tt>emplace()</tt> must be used for elements creation. If
+not, the unsafe interface described above must be used with care. It is very
+ugly and error-prone but solves the task. After the element is created in the
+pool, you operate with it almost as easy as with any other copyable object in
+the standard container. Anyway, it is more efficient and convenient to use in
+general than alternative approaches like creating the objects on the free
+store and placing only pointers to the container, even if we have
+<tt>std::unique_ptr</tt> to manage lifetime of the objects.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>typename object_type</prototype>
+<prototype>typename value_type</prototype>
+<p>Type of the elements.</p>
+</synopsis>
+
+<synopsis>
+<prototype>typename iterator</prototype>
+<prototype>typename const_iterator</prototype>
+<p>Iterators.</p>
+</synopsis>
+
+<synopsis>
+<prototype>class overflow</prototype>
+<p>Exception, thrown on attempts to add new element to the full container.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_pool()</prototype>
+<p>Create the object without memory allocation.</p>
+<postcondition><tt>capacity() == 0</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit object_pool(size_t max_size)</prototype>
+<p>Allocates memory for <tt>max_size</tt> elements.</p>
+<postcondition><tt>capacity() == max_size</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~object_pool()</prototype>
+<p>Calls <tt>clear()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_pool(object_pool &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>object_pool &amp;operator=(object_pool &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Move operations for C++11 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>size_t size() const</prototype>
+<prototype>size_t capacity() const</prototype>
+<p>Current size and capacity of the container.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool empty()</prototype>
+<p>Returns <tt>size() == 0</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void recreate(size_t new_max_size, bool size_exact = false)</prototype>
+<p>Recreates the container. At first calls <tt>clear()</tt>, then reallocates
+memory buffer if <tt>new_max_size > capacity()</tt> or <tt>size_exact</tt> is
+<tt>true</tt> and <tt>new_max_size != capacity()</tt>.</p>
+<postcondition><tt>capacity() >= new_max_size &amp;&amp; empty() == true</tt>
+(if <tt>size_exact == true</tt> then <tt>capacity() == new_max_size &amp;&amp;
+empty() == true</tt>)</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void *alloc()</prototype>
+<p>Returns the raw memory block where new instance of <tt>object_type</tt>
+can be allocated. <tt>overflow</tt> is thrown if the container is full.</p>
+<note>Use <tt>emplace()</tt> in C++11 mode.</note>
+</synopsis>
+
+<synopsis>
+<prototype>void push()</prototype>
+<p>This call right after <tt>alloc()</tt> adds the just created object to the
+pool.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args> void emplace(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Constructs new object and adds it to the container (<tt>alloc()</tt> +
+<tt>new</tt> + <tt>push()</tt> with a single call).</p>
+</synopsis>
+
+<synopsis>
+<prototype>void pop()</prototype>
+<p>Remove the last element from the container if exists.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void clear()</prototype>
+<p>Destroys the elements in the reverse order they were created.</p>
+<postcondition><tt>size() == 0</tt> (<tt>empty() == true</tt>)</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(object_pool &amp;o)</prototype>
+<prototype><![CDATA[template<class T> void swap(object_pool<T> &o1, object_pool<T> &o2) noexcept]]></prototype>
+<p>Swaps the value with <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_type &amp;operator[](size_t i)</prototype>
+<prototype>const object_type &amp;operator[](size_t i) const</prototype>
+<p>Access to the elements by index.</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_type &amp;front()</prototype>
+<prototype>const object_type &amp;front() const</prototype>
+<prototype>object_type &amp;back()</prototype>
+<prototype>const object_type &amp;back() const</prototype>
+<p>Access to the first and the last elements.</p>
+<precondition>!empty()</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>iterator begin()</prototype>
+<prototype>const_iterator begin() const</prototype>
+<prototype>const_iterator cbegin() const</prototype>
+<prototype>iterator end()</prototype>
+<prototype>const_iterator end() const</prototype>
+<prototype>const_iterator cend() const</prototype>
+<p>Access to the elements via iterators.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+// Creating the pool for 2 objects of class C
+__vic::object_pool<C> pool(2);
+
+// Creating new object in C++98 mode:
+new(pool.alloc()) C(...); // Request memory and construct the object
+pool.push(); // Fixate successfully created object in the container
+
+// Creating new object in C++11 mode:
+pool.emplace(...);
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

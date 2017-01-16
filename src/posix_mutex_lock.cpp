@@ -3,7 +3,8 @@
 //
 
 #include<__vic/posix/thread.h>
-#include<__vic/error.h>
+#include<__vic/throw_errno.h>
+#include<exception>
 
 namespace __vic { namespace posix {
 

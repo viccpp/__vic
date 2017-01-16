@@ -1,0 +1,85 @@
+<chapter>
+<title><tt>__vic/date_time.h</tt></title>
+
+<p>Date and time utilies.</p>
+
+
+<chapter>
+<title><tt>is_leap_year()</tt></title>
+
+<code-block lang="C++">
+constexpr bool is_leap_year(int year);
+</code-block>
+
+<p>Determines if the year is a leap year according to Gregorian calendar.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>days_in_month()</tt></title>
+
+<code-block lang="C++">
+int days_in_month(int month, int year);
+</code-block>
+
+<p>Returns number of days in the month. Month is a number from 1 to 12.
+The second parameter is used only if the month is 2 (february), otherwise
+is just ignored.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>days_between_years()</tt></title>
+
+<code-block lang="C++">
+long days_between_years(unsigned year1, unsigned year2);
+</code-block>
+
+<p>Returns the difference in days between the beginning of the 2nd year and
+the beginning of the 1st year.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>invalid_date</tt></title>
+
+<code-block lang="C++">
+class invalid_date; // : public std::exception
+</code-block>
+
+<p>The exception thrown when the value of the date or time element is
+invalid.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>validate_date()</tt>, <tt>validate_time()</tt>,
+<tt>validate_date_time()</tt></title>
+
+<code-block lang="C++">
+void validate_date(int yy, int mm, int dd);
+void validate_time(int hh, int mi, int ss);
+void validate_date_time(int yy, int mm, int dd, int hh, int mi, int ss);
+</code-block>
+
+<p>Checks if the date/time value is valid. Following constraints are checked:
+</p>
+<list style="bulleted">
+    <item><tt>yy</tt> (year) - cannot be <tt>0</tt>,</item>
+    <item><tt>mm</tt> (month) - <tt>1..12</tt>,</item>
+    <item><tt>dd</tt> (day of the month) - <tt>1..{28..31}</tt>, depending
+        on the month,</item>
+    <item><tt>hh</tt> (hour) - <tt>0..23</tt>,</item>
+    <item><tt>mi</tt> (minute), ss (second) - <tt>0..59</tt>.</item>
+</list>
+
+<p><tt>invalid_date</tt> is thrown in case of the constraint violation.</p>
+
+</chapter>
+
+
+</chapter>

@@ -26,6 +26,10 @@
 #define __VIC_POSIX_BAR__ 1
 #endif
 
+#ifdef __USE_UNIX98
+#define __VIC_POSIX_XSI__ 1
+#endif
+
 #ifdef __USE_POSIX199309
 #define __VIC_POSIX_RT__ 1
 #endif

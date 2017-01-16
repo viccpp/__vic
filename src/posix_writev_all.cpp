@@ -3,7 +3,7 @@
 //
 
 #include<__vic/posix/iov.h>
-#include<__vic/error.h>
+#include<__vic/throw_errno.h>
 #include<cassert>
 #include<cerrno>
 

@@ -3,7 +3,7 @@
 //
 
 #include<__vic/posix/time.h>
-#include<__vic/error.h>
+#include<__vic/throw_errno.h>
 
 namespace __vic { namespace posix {
 

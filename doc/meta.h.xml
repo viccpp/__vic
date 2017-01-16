@@ -1,0 +1,178 @@
+<chapter>
+<title><tt>__vic/meta.h</tt></title>
+
+<p>Template metaprogramming support.</p>
+<p>All the predicate metafunctions have boolean member <tt>value</tt> and,
+usually, derived from <tt>integral_constant</tt>.</p>
+<p>All the type transformer metafunctions have type member <tt>type</tt>
+containing the conversion result.</p>
+
+
+<chapter>
+<title><tt>integral_constant</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, T Val>
+struct integral_constant
+{
+    using value_type = T;
+    using type = integral_constant<T, Val>;
+
+    static constexpr T value = Val;
+};
+]]></code-block>
+
+<p>The topmost base class of the most metafunctions.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>true_type</tt></title>
+
+<code-block lang="C++"><![CDATA[
+using true_type = integral_constant<bool, true>;
+]]></code-block>
+
+<p>Base class for predicate metafunctions that have value <tt>true</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>false_type</tt></title>
+
+<code-block lang="C++"><![CDATA[
+using false_type = integral_constant<bool, false>;
+]]></code-block>
+
+<p>Base class for predicate metafunctions that have value <tt>false</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>is_same</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T1, class T2> struct is_same;
+]]></code-block>
+
+<p>A predicate. True if <tt>T1</tt> and <tt>T2</tt> are exactly the same
+type.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>is_const</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct is_const;
+]]></code-block>
+
+<p>A predicate. True if <tt>T</tt> has <tt>const</tt> qualifier.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>is_signed_integer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct is_signed_integer;
+]]></code-block>
+
+<p>A predicate. True if <tt>T</tt> is a one of the "standard signed integer
+types" (see the Standard).</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>is_unsigned_integer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct is_unsigned_integer;
+]]></code-block>
+
+<p>A predicate. True if <tt>T</tt> is a one of the "standard unsigned integer
+types" (see the Standard).</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>remove_const</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_const;
+]]></code-block>
+
+<p>A type transformer. Removes the top-level <tt>const</tt> qualifier or just
+returns <tt>T</tt> if it doesn't have such qualifier.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>remove_volatile</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_volatile;
+]]></code-block>
+
+<p>A type transformer. Removes the top-level <tt>volatile</tt> qualifier or just
+returns <tt>T</tt> if it doesn't have such qualifier.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>remove_cv</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_cv;
+]]></code-block>
+
+<p>A type transformer. Removes any top-level cv-qualifier or just returns
+<tt>T</tt> if it doesn't have such qualifiers.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>remove_pointer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_pointer;
+]]></code-block>
+
+<p>A type transformer. Returns the type of the object to that the pointer type
+points. If <tt>T</tt> is not a pointer just <tt>T</tt> itself is returned.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>enable_if</tt>, <tt>disable_if</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<bool Test, class T = void>
+struct enable_if
+{
+    using type = T;
+};
+template<class T>
+struct enable_if<false, T> {};
+
+template<bool Test, class T = void>
+struct disable_if : enable_if<!Test, T> {};
+]]></code-block>
+
+<p>Classical tools for SFINAE-magic.</p>
+
+</chapter>
+
+
+</chapter>

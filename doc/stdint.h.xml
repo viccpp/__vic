@@ -1,0 +1,136 @@
+<chapter>
+<title><tt>__vic/stdint.h</tt></title>
+
+<p>ISO C99 <tt>&lt;stdint.h></tt> for C++98. In C++11 mode - just redirector
+to <tt>&lt;cstdint></tt>.</p>
+<p>Additionally, some metafunctions for template metaprogramming are provided.
+</p>
+
+
+<chapter>
+<title>Exact-width integer types</title>
+
+<p>Following types are guaranteed to be available in the <b>global
+namespace</b>:</p>
+<list style="bulleted">
+    <item><tt>int8_t</tt></item>
+    <item><tt>int16_t</tt></item>
+    <item><tt>int32_t</tt></item>
+    <item><tt>int64_t</tt></item>
+    <item><tt>uint8_t</tt></item>
+    <item><tt>uint16_t</tt></item>
+    <item><tt>uint32_t</tt></item>
+    <item><tt>uint64_t</tt></item>
+</list>
+
+</chapter>
+
+
+<chapter>
+<title>Minimum-width integer types</title>
+
+<p>Following types are guaranteed to be available in the <b>global
+namespace</b>:</p>
+<list style="bulleted">
+    <item><tt>int_least8_t</tt></item>
+    <item><tt>int_least16_t</tt></item>
+    <item><tt>int_least32_t</tt></item>
+    <item><tt>int_least64_t</tt></item>
+    <item><tt>uint_least8_t</tt></item>
+    <item><tt>uint_least16_t</tt></item>
+    <item><tt>uint_least32_t</tt></item>
+    <item><tt>uint_least64_t</tt></item>
+</list>
+
+</chapter>
+
+
+<chapter>
+<title>Fastest minimum-width integer types</title>
+
+<p>Following types are guaranteed to be available in the <b>global
+namespace</b>:</p>
+<list style="bulleted">
+    <item><tt>int_fast8_t</tt></item>
+    <item><tt>int_fast16_t</tt></item>
+    <item><tt>int_fast32_t</tt></item>
+    <item><tt>int_fast64_t</tt></item>
+    <item><tt>uint_fast8_t</tt></item>
+    <item><tt>uint_fast16_t</tt></item>
+    <item><tt>uint_fast32_t</tt></item>
+    <item><tt>uint_fast64_t</tt></item>
+</list>
+
+</chapter>
+
+
+<chapter>
+<title>Greatest-width integer types</title>
+
+<p>Following types are guaranteed to be available in the <b>global
+namespace</b>:</p>
+<list style="bulleted">
+    <item><tt>intmax_t</tt></item>
+    <item><tt>uintmax_t</tt></item>
+</list>
+
+</chapter>
+
+
+<chapter>
+<title>Integer types capable of holding object pointers</title>
+
+<p>Following types are guaranteed to be available in the <b>global
+namespace</b>:</p>
+<list style="bulleted">
+    <item><tt>intptr_t</tt></item>
+    <item><tt>uintptr_t</tt></item>
+</list>
+
+</chapter>
+
+
+<chapter>
+<title><tt>int_exactly_bytes&lt;></tt>, <tt>uint_exactly_bytes&lt;></tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<unsigned SizeInBytes>
+struct int_exactly_bytes
+{
+    using type = ]]><nt>&lt;signed-integer-type-of-the-corresponding-size></nt><![CDATA[;
+};
+
+template<unsigned SizeInBytes>
+struct uint_exactly_bytes
+{
+    using type = ]]><nt>&lt;unsigned-integer-type-of-the-corresponding-size></nt><![CDATA[;
+};
+
+// BEGIN C++11 only
+template<unsigned N>
+using int_exact_bytes = typename int_exactly_bytes<N>::type;
+
+template<unsigned N>
+using uint_exact_bytes = typename uint_exactly_bytes<N>::type;
+// END C++11 only
+]]></code-block>
+
+<p>Metafunctions returning the signed/unsigned interger type of the requested
+exact size in bytes. Shorter aliases are available in C++11 mode.
+Valid <tt>SizeInBytes</tt> values are <tt>1</tt>, <tt>2</tt>, <tt>4</tt>,
+<tt>8</tt>.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+typedef __vic::int_exactly_bytes< sizeof(void *) >::type my_intptr_t;
+// or in C++11
+using my_intptr_t = __vic::int_exact_bytes< sizeof(void *) >
+assert( sizeof(my_intptr) == sizeof(intptr_t) );
+]]></code-block>
+</section>
+
+
+</chapter>
+
+
+</chapter>

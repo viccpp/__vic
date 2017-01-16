@@ -3,7 +3,7 @@
 //
 
 #include<__vic/posix/process.h>
-#include<__vic/error.h>
+#include<__vic/throw_errno.h>
 #include<sys/fcntl.h>
 #include<unistd.h>
 #include<stdlib.h> // BSD

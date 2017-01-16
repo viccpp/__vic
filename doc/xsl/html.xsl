@@ -9,7 +9,7 @@
 <xsl:template match="annotation"/>
 
 <xsl:template match="document">
-<html lang="{@lang}">
+<html lang="{@xml:lang}">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title><xsl:value-of select="title"/></title>
@@ -63,7 +63,7 @@ pre.code {
 	padding-left: 2pt;
 	font-family: monospace;
 	font-size: 10pt;
-	width: 16.5cm;
+	width: 17.3cm; /* 80ch */
 }
 pre.prototype {
 	font-family: monospace;

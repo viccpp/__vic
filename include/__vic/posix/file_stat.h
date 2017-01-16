@@ -8,7 +8,8 @@
 #ifndef __VIC_POSIX_FILE_STAT_H
 #define __VIC_POSIX_FILE_STAT_H
 
-#include<__vic/error.h>
+#include<__vic/defs.h>
+#include<__vic/throw_errno.h>
 #include<sys/types.h>
 #include<sys/stat.h>
 #include<string>

@@ -4,9 +4,23 @@
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
+    <!ENTITY ascii.h SYSTEM "ascii.h.xml">
+    <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
+    <!ENTITY bits.h SYSTEM "bits.h.xml">
+    <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY io.h SYSTEM "io.h.xml">
+    <!ENTITY logger.h SYSTEM "logger.h.xml">
+    <!ENTITY meta.h SYSTEM "meta.h.xml">
+    <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
+    <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
+    <!ENTITY stdint.h SYSTEM "stdint.h.xml">
+    <!ENTITY str2num.h SYSTEM "str2num.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
+    <!ENTITY string_ops.h SYSTEM "string_ops.h.xml">
+    <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
+    <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
     <!ENTITY posix.dir_entries.h SYSTEM "posix.dir_entries.h.xml">
     <!ENTITY posix.dir_files.h SYSTEM "posix.dir_files.h.xml">
@@ -19,8 +33,8 @@
     <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
     <!ENTITY posix.time.h SYSTEM "posix.time.h.xml">
 ]>
-<document lang="en" version="1.0" status="Draft">
-<title>__vic's foundation C++ library (POSIX)</title>
+<document xml:lang="en" version="1.0" status="Draft">
+<title>__vic's C++ library (POSIX)</title>
 
 <annotation><documentation><![CDATA[
 Tags used to format this document:
@@ -92,9 +106,23 @@ TODO
 <chapter>
 <title>Library components reference</title>
 &defs.h;
+&ascii.h;
+&ascii_string.h;
+&bits.h;
+&date_time.h;
 &error.h;
+&io.h;
+&logger.h;
+&meta.h;
+&object_pool.h;
+&set_of_chars.h;
 &static_string.h;
+&stdint.h;
+&str2num.h;
 &string_buffer.h;
+&string_ops.h;
+&string_ref.h;
+&tchar.h;
 &to_text.h;
 &posix.dir_entries.h;
 &posix.dir_files.h;

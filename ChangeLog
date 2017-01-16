@@ -4,6 +4,26 @@ Legend:
     * Changes
     ! Important
 
+2016-01-16  __vic
+    * throw_errno() moved: error.h -> throw_errno.h
+    * stdio_file: errno value is thrown in case of error
+
+2016-01-13  __vic
+    + str2num.h
+        + decimal_to_number()
+        + decimal_to_number_range()
+
+2016-01-12  __vic
+    + meta.h:
+        + integral_constant, true_type, false_type
+        + is_same, is_const
+        + remove_const, remove_volatile, remove_cv
+        + remove_pointer
+        + is_signed_integer, is_unsigned_integer
+        + enable_if, disable_if
+    + set_of_chars.h:
+        + set_of_chars
+
 2017-01-11  __vic
     + posix/time.h:
         + posix::time_spec
@@ -15,6 +35,47 @@ Legend:
     * posix/thread.h:
         + posix::mutex, posix::mutex_lock
         + posix::cond_variable
+
+2016-01-09  __vic
+    * Renamed trim.h -> string_ops.h
+    * string_ops.h:
+        + pad_left(), pad_right()
+        * sift() treats nullptr as an empty string
+    + ascii_string.h:
+        + toupper(), tolower() for strings
+        + equal_icase() for strings
+
+2016-12-30  __vic
+    + ascii.h:
+        + isdigit(), isxdigit(), isalpha(), isalnum(), isspace(), isascii()
+        + islower(), isupper()
+        + tolower(), toupper(), upper_to_lower(), lower_to_upper()
+        + equal_icase(char,char)
+    + date_time.h:
+        + is_leap_year()
+        + days_in_month()
+        + days_between_years()
+        + validate_date(), validate_time(), validate_date_time()
+
+2016-12-29  __vic
+    + stdint.h:
+        + [u]int<N>_t, [u]int_least<N>_t, [u]int_fast<N>_t, [u]intmax_t,
+          [u]intptr_t
+        + int_exactly_bytes<>, uint_exactly_bytes<>
+    + bits.h:
+        + lo_nibble(), hi_nibble()
+        + msb_ones(), lsb_ones()
+        + get_lsbs()
+        + ord()
+        + to_hex_digit_upper(), to_hex_digit_lower()
+        + hex_to_number()
+        + swapped_nibbles()
+        + rotl(), rotr()
+
+2016-12-28  __vic
+    + string_buffer: move constructor for std::string
+    + logger.h:
+        + logger
 
 2016-12-27  __vic
     + posix/process.h:
@@ -36,10 +97,26 @@ Legend:
         + posix::cut_prefix(iovec[])
         + posix::writev_all()
 
+2016-12-26  __vic
+    + string_ref.h:
+        + basic_string_ref (string_ref)
+    + string_buffer: string_ref support
+    + trim.h:
+        + trim(), trimmed(), trim_left(), ...
+        + sift(), sift_if()
+
+2016-12-23  __vic
+    + io.h:
+        + stdio_file
+        + getline()
+    + object_pool.h:
+        + object_pool
+    + tchar.h
+
 2016-12-22  __vic
-    + to_text.h
+    + to_text.h:
         + to_text_append()
-    + string_buffer.h
+    + string_buffer.h:
         + string_buffer
     + posix/error.h:
         + is_ENOENT(), is_EAGAIN()
@@ -49,14 +126,14 @@ Legend:
         + posix::file_stat
 
 2016-12-21  __vic
-    + defs.h
+    + defs.h:
         + nullptr
         + non_copyable
         + non_heap_allocatable
         + array_size()
-    + static_string.h
+    + static_string.h:
         + static_string
-    + error.h
+    + error.h:
         + exception
         + libc_error
         + throw_errno()

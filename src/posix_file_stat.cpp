@@ -4,7 +4,7 @@
 
 #include<__vic/posix/file_stat.h>
 #include<__vic/string_buffer.h>
-#include<__vic/error.h>
+#include<__vic/throw_errno.h>
 #include<__vic/posix/error.h>
 
 namespace __vic { namespace posix {

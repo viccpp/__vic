@@ -1,0 +1,147 @@
+<chapter>
+<title><tt>__vic/io.h</tt></title>
+
+<p>Input/output tools.</p>
+
+
+<chapter>
+<title><tt>stdio_file</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class stdio_file : private non_copyable
+{
+public:
+    explicit stdio_file(std::FILE *fp = nullptr);
+    stdio_file(const char *name, const char *mode);
+    ~stdio_file();
+
+    // BEGIN C++11 only
+    stdio_file(stdio_file &&o) noexcept;
+    stdio_file &operator=(stdio_file &&o) noexcept;
+    // END C++11 only
+
+    bool open(const char *name, const char *mode);
+    void close();
+    bool is_open() const;
+    bool close_nt() noexcept;
+    std::FILE *detach() noexcept;
+    void attach(std::FILE *fp) noexcept;
+    void swap(stdio_file &o) noexcept;
+    operator std::FILE*() const;
+};
+]]></code-block>
+
+<p>Thin RAII-wrapper for <tt>std::FILE *</tt>. Controls file's life time.
+Automatic conversion to <tt>std::FILE *</tt> allows usage of the object
+whereever the file pointer is allowed/required.</p>
+
+<note>Although the class destructor closes the open file, it is more safe
+to use explicit <tt>close()</tt> call. Errors can happen when closing file,
+and <tt>close()</tt> can throw exception in such cases, while destructor -
+can't, so the error will be unnoticed by the application.</note>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit stdio_file(std::FILE *fp = nullptr)</prototype>
+<p>Wraps already existing stream pointer.</p>
+<precondition><tt>fp</tt> is either a pointer to the open file or
+<tt>nullptr</tt>.</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>stdio_file(const char *name, const char *mode)</prototype>
+<p>Calls <tt>open(name, mode)</tt>. The result should be checked using
+subsequent <tt>is_open()</tt> call!</p>
+</synopsis>
+
+<synopsis>
+<prototype>~stdio_file()</prototype>
+<p>Calls std::fclose() if <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>stdio_file(stdio_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>stdio_file &amp;operator=(stdio_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Move operations for C++11 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool open(const char *name, const char *mode)</prototype>
+<p>Calls <tt>std::fopen(name, mode)</tt>. Returns <tt>true</tt> in case of
+success.</p>
+<precondition><tt>is_open() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Calls <tt>std::fclose()</tt>. No preliminary checks whether the file is open
+are performed! Throws if <tt>std::fclose()</tt> fails.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool close_nt() noexcept</prototype>
+<p>Counterpart of <tt>close()</tt> but never throws, returns <tt>false</tt>
+instead in case of error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Returns <tt>true</tt> if file is open.</p>
+</synopsis>
+
+<synopsis>
+<prototype>std::FILE *detach() noexcept</prototype>
+<p>Releases the file out of the object's control.</p>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void attach(std::FILE *fp) noexcept</prototype>
+<p>Takes <tt>fp</tt> under control. Previous file IS NOT closed if was open!
+No preliminary checks are performed.</p>
+<precondition><tt>fp</tt> is either a poiner to the open file or
+<tt>nullptr</tt>.</precondition>
+<postcondition><tt>static_cast&lt;std::FILE*>(*this) == fp</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(stdio_file &amp;o) noexcept</prototype>
+<p>Swaps the value with <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>operator std::FILE*() const</prototype>
+<p>Allows usage of the object as <tt>std::FILE *</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++">
+__vic::stdio_file file("file.txt", "w");
+if(!file.is_open()) throw __vic::exception("Cannot open file");
+std::fprintf(file, "Message");
+file.close();
+// fclose() also will be called in case of exception by destructor
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>getline(FILE)</tt></title>
+
+<code-block lang="C++"><![CDATA[
+bool getline(std::FILE *fp, std::string &str, char delim = '\n');
+]]></code-block>
+
+<p>Counterpart of <tt>std::getline</tt> but for C-stream. Returns <tt>false</tt>
+if the end of the file was reached and nothing was read.</p>
+</chapter>
+
+
+</chapter>

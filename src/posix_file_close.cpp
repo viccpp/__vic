@@ -3,7 +3,7 @@
 //
 
 #include<__vic/posix/file.h>
-#include<__vic/error.h>
+#include<__vic/throw_errno.h>
 #include<cerrno>
 
 namespace __vic { namespace posix {

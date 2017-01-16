@@ -38,8 +38,8 @@ inline const char *call(char *(*strerror_r)(int, char *, size_t),
 #endif // __VIC_USE_STRERROR_R
 
 //----------------------------------------------------------------------------
-libc_error::libc_error(const char *prompt)
-    : code_(errno), formatted(false), msg(prompt)
+libc_error::libc_error(int no)
+    : code_(no), formatted(false)
 {
 }
 //----------------------------------------------------------------------------

@@ -1,0 +1,351 @@
+<chapter>
+<title><tt>__vic/tchar.h</tt></title>
+
+<p>Generic functions to manipulate C-strings regardless of the underlying
+char-type, like <tt>std::char_traits&lt;></tt>. All the functions are located
+within <tt>__vic::tchar</tt> namespace.</p>
+
+<p>Most of the functions are just generic redirectors to calls like
+<tt>strcpy</tt>, <tt>wcscpy</tt>, et al. Searching functions have more
+intelligible names that ones in the C-library and unified parameters: they
+always take pointers and never indices. Also the set of the functions is
+complemented with "logically symmetrical" ones. Searching functions return
+<tt>nullptr</tt> in case of failure.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *generic_dup(const charT *st)
+{
+    namespace tchar = __vic::tchar;
+
+    charT *st_copy = new charT[tchar::length(st) + 1];
+    tchar::copy(st_copy, st);
+    return st_copy;
+}
+]]></code-block>
+</section>
+
+
+<chapter>
+<title><tt>tchar::length()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+size_t tchar::length(const charT *str);
+]]></code-block>
+
+<p>String length in elements. Generic <tt>strlen</tt> / <tt>wcslen</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::end()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *end(const charT *str);
+
+template<class charT>
+charT *end(charT *str);
+
+}
+]]></code-block>
+
+<p>Pointer to the NUL-terminator. Generic <tt>strchr(str, '\0')</tt> /
+<tt>wcschr(str, L'\0')</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::compare()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+int tchar::compare(const charT *str1, const charT *str2);
+]]></code-block>
+
+<p>Compare two strings. Generic <tt>strcmp</tt> / <tt>wcscmp</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::copy()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *tchar::copy(charT *dest, const charT *src);
+]]></code-block>
+
+<p>Copy string. Generic <tt>strcpy</tt> / <tt>wcscpy</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::move()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *tchar::move(charT *dest, const charT *src);
+]]></code-block>
+
+<p>Move the string in memory (<tt>memmove</tt>).</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::concat()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *tchar::concat(charT *dest, const charT *src);
+]]></code-block>
+
+<p>Concatenate two strings. Generic <tt>strcat</tt> / <tt>wcscat</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::find()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find(const charT *str, charT ch);
+
+template<class charT>
+charT *find(charT *str, charT ch);
+
+template<class charT>
+const charT *find(const charT *str, const charT *sub);
+
+template<class charT>
+charT *find(charT *str, const charT *sub);
+
+}
+]]></code-block>
+
+<p>Find the first occurrence of the character or substring. Generic
+<tt>strchr</tt> / <tt>wcschr</tt> / <tt>strstr</tt> / <tt>wcsstr</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::rfind()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *rfind(const charT *str, charT ch);
+
+template<class charT>
+charT *rfind(charT *str, charT ch);
+
+}
+]]></code-block>
+
+<p>Find the last occurrence of the character. Generic <tt>strrchr</tt> /
+<tt>wcsrchr</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::find_if()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *find_if(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *find_if(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Find the first occurrence of the character that satisfies the specified
+predicate.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::find_if_not()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *find_if_not(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *find_if_not(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Find the first occurrence of the character that doesn't satisfy the
+specified predicate.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::rfind_if()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *rfind_if(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *rfind_if(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Find the last occurrence of the character that satisfies the specified
+predicate.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::rfind_if_not()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *rfind_if_not(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *rfind_if_not(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Find the last occurrence of the character that doesn't satisfy the specified
+predicate.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::find_first_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_first_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_first_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Find the first occurrence of the character from the specified set. Generic
+<tt>strpbrk</tt> / <tt>wcspbrk</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::find_first_not_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_first_not_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_first_not_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Find the first occurrence of the character absent in the specified set.
+Generic <tt>strspn</tt> / <tt>wcsspn</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::find_last_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_last_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_last_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Find the last occurrence of the character from the specified set.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::find_last_not_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_last_not_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_last_not_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Find the last occurrence of the character absent in the specified set.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>tchar::skip()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *skip(const charT *str, charT ch);
+
+template<class charT>
+charT *skip(charT *str, charT ch);
+
+}
+]]></code-block>
+
+<p>Skip all occurrences of the specified character and return the pointer.
+Pointer to NUL-terminator is returned if no other characters is presented.</p>
+
+</chapter>
+
+
+</chapter>
