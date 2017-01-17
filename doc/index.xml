@@ -27,6 +27,7 @@
     <!ENTITY posix.error.h SYSTEM "posix.error.h.xml">
     <!ENTITY posix.file.h SYSTEM "posix.file.h.xml">
     <!ENTITY posix.file_stat.h SYSTEM "posix.file_stat.h.xml">
+    <!ENTITY posix.fs.h SYSTEM "posix.fs.h.xml">
     <!ENTITY posix.iov.h SYSTEM "posix.iov.h.xml">
     <!ENTITY posix.process.h SYSTEM "posix.process.h.xml">
     <!ENTITY posix.signal.h SYSTEM "posix.signal.h.xml">
@@ -129,6 +130,7 @@ TODO
 &posix.error.h;
 &posix.file.h;
 &posix.file_stat.h;
+&posix.fs.h;
 &posix.iov.h;
 &posix.process.h;
 &posix.signal.h;

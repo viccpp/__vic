@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2016-01-17  __vic
+    + posix/fs.h:
+        + posix::dirname(), posix::basename()
+        + posix::append_dirname(), posix::append_basename()
+        + posix::add_trailing_slash(), posix::with_trailing_slash()
+
 2016-01-16  __vic
     * throw_errno() moved: error.h -> throw_errno.h
     * stdio_file: errno value is thrown in case of error

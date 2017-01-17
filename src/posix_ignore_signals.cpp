@@ -1,3 +1,7 @@
+//
+// $Id$
+//
+
 #include<__vic/posix/signal.h>
 #include<__vic/string_buffer.h>
 #include<__vic/throw_errno.h>
