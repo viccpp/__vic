@@ -9,6 +9,7 @@
 #define __VIC_FS_H
 
 #include<__vic/defs.h>
+#include<__vic/stdint.h>
 #include<string>
 
 namespace __vic {
@@ -153,6 +154,12 @@ inline bool rmdir_if_exists(const std::string &path)
 {
     return rmdir_if_exists(path.c_str());
 }
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+uint64_t file_size(const char * );
+inline uint64_t file_size(const std::string &path)
+{ return file_size(path.c_str()); }
 //----------------------------------------------------------------------------
 
 std::string get_current_dir();

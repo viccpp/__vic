@@ -17,6 +17,7 @@ Legend:
           move_file_replace_if_exists()
         + rename_file(), rename_file_if_exists(), rename_file_replace(),
           rename_file_replace_if_exists()
+        + file_size()
 
 2016-01-16  __vic
     * throw_errno() moved: error.h -> throw_errno.h
