@@ -9,11 +9,15 @@
     <!ENTITY bits.h SYSTEM "bits.h.xml">
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY fs.h SYSTEM "fs.h.xml">
     <!ENTITY io.h SYSTEM "io.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
+    <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
+    <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
     <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
+    <!ENTITY str2num.h SYSTEM "str2num.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
     <!ENTITY string_ops.h SYSTEM "string_ops.h.xml">
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
@@ -22,7 +26,7 @@
     <!ENTITY windows.error.h SYSTEM "windows.error.h.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
-<title>__vic's foundation C++ library (Windows)</title>
+<title>__vic's C++ library (Windows)</title>
 
 <annotation><documentation><![CDATA[
 Tags used to format this document:
@@ -99,11 +103,15 @@ TODO
 &bits.h;
 &date_time.h;
 &error.h;
+&fs.h;
 &io.h;
 &logger.h;
+&meta.h;
 &object_pool.h;
+&set_of_chars.h;
 &static_string.h;
 &stdint.h;
+&str2num.h;
 &string_buffer.h;
 &string_ops.h;
 &string_ref.h;

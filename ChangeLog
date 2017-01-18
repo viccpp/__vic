@@ -4,9 +4,42 @@ Legend:
     * Changes
     ! Important
 
+2016-01-18  __vic
+    + fs.h:
+        + path_exists(), file_exists(), dir_exists()
+        + mkdir(), mkdir_if_absent()
+        + rmdir(), rmdir_if_exists()
+        + get_current_dir()
+        + remove_file(), remove_file_if_exists(), remove_file_nt()
+        + copy_file(), copy_file_if_exists(), copy_file_replace(),
+          copy_file_replace_if_exists()
+        + move_file(), move_file_if_exists(), move_file_replace(),
+          move_file_replace_if_exists()
+        + rename_file(), rename_file_if_exists(), rename_file_replace(),
+          rename_file_replace_if_exists()
+
+2016-01-16  __vic
+    * throw_errno() moved: error.h -> throw_errno.h
+
 2016-01-15  __vic
     * windows::throw_last_error() moved: windows/error.h ->
       windows/throw_last_error.h
+
+2016-01-13  __vic
+    + str2num.h
+        + decimal_to_number()
+        + decimal_to_number_range()
+
+2016-01-12  __vic
+    + meta.h:
+        + integral_constant, true_type, false_type
+        + is_same, is_const
+        + remove_const, remove_volatile, remove_cv
+        + remove_pointer
+        + is_signed_integer, is_unsigned_integer
+        + enable_if, disable_if
+    + set_of_chars.h:
+        + set_of_chars
 
 2016-01-10  __vic
     + windows/error.h

@@ -1,0 +1,85 @@
+<chapter>
+<title><tt>__vic/str2num.h</tt></title>
+
+
+<chapter>
+<title><tt>decimal_to_number()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void decimal_to_number(const std::string &s, long long &res);
+void decimal_to_number(const std::string &s, long &res);
+void decimal_to_number(const std::string &s, int &res);
+void decimal_to_number(const std::string &s, short &res);
+void decimal_to_number(const std::string &s, signed char &res);
+
+void decimal_to_number(const std::string &s, unsigned long long &res);
+void decimal_to_number(const std::string &s, unsigned long &res);
+void decimal_to_number(const std::string &s, unsigned &res);
+void decimal_to_number(const std::string &s, unsigned short &res);
+void decimal_to_number(const std::string &s, unsigned char &res);
+
+void decimal_to_number(const char *s, long long &res);
+void decimal_to_number(const char *s, long &res);
+void decimal_to_number(const char *s, int &res);
+void decimal_to_number(const char *s, short &res);
+void decimal_to_number(const char *s, signed char &res);
+
+void decimal_to_number(const char *s, unsigned long long &res);
+void decimal_to_number(const char *s, unsigned long &res);
+void decimal_to_number(const char *s, unsigned &res);
+void decimal_to_number(const char *s, unsigned short &res);
+void decimal_to_number(const char *s, unsigned char &res);
+
+template<class TInteger>
+TInteger decimal_to_number(const std::string &s);
+
+template<class TInteger>
+TInteger decimal_to_number(const char *s);
+]]></code-block>
+
+<p>The set of functions converts a string, that represents an integer in
+decimal notation, to one of the standard C++ integer types. The string can be
+a C-string as well as <tt>std::string</tt>.</p>
+
+<p>As opposed to the standard converters, like <tt>std::strtol()</tt>, strict
+validation of the format of the whole string and value range is performed. In
+particular leading spaces and non-digit characters at the end are not allowed.
+For unsigned types minus (<tt>'-'</tt>) is disallowed, which is happily accepted
+by <tt>std::strtoul()</tt> by unknown reason.</p>
+
+<p>In case of errors the following exceptions are thrown:</p>
+<list style="bulleted">
+    <item><tt>std::invalid_argument</tt> - the string is not a correct decimal
+        integer;</item>
+    <item><tt>std::range_error</tt> - the string is probably correct but the
+        result cannot be represented by the used type (integer overflow).</item>
+</list>
+
+<p>There are two kinds of the function prototypes:</p>
+<list style="numbered">
+    <item>The result is returned via additional output parameter and</item>
+    <item>The result is returned using the natural way, the type is specified
+        using the template parameter.</item>
+</list>
+
+</chapter>
+
+
+<chapter>
+<title><tt>decimal_to_number_range()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, class InputIterator>
+void decimal_to_number_range(InputIterator begin, InputIterator end, T &res);
+
+template<class T, class InputIterator>
+T decimal_to_number_range(InputIterator begin, InputIterator end);
+]]></code-block>
+
+<p>The functions are complete analogs of <tt>decimal_to_number()</tt> except
+they work with generic ranges of characters instead of strings.</p>
+
+</chapter>
+
+
+</chapter>

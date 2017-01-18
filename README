@@ -1,0 +1,22 @@
+The essential information about the library can be found in doc/ subdirectory
+that contains XML-sources of the documentation that can be converted to HTML.
+
+BRANCHES
+
+iso
+    Potentially terminal branch containing only facilities that can be built
+    strictly on top of some version of ISO C++ standard.
+
+posix, windows
+    Terminal branches containing platform-specific facilities and facilities
+    from iso branch optimized for the platform.
+
+generic
+    Nonterminal branch containing common parts (usually interfaces and doc) of
+    platform-specific branches.
+
+Typical workflow of merging the branches looks like this:
+
+                  / posix
+iso -> generic ->
+                  \ windows

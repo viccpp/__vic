@@ -39,18 +39,14 @@ class libc_error : public std::exception
     mutable bool formatted;
     mutable static_string msg;
 public:
-    explicit libc_error(int no = errno) : code_(no), formatted(false) {}
-    explicit libc_error(const char * );
-    libc_error(const char * , int );
+    explicit libc_error(int = errno);
+    explicit libc_error(const char * , int = errno);
 
     const char *what() const noexcept;
     int code() const { return code_; }
     int get_errno() const { return code(); }
 };
 //////////////////////////////////////////////////////////////////////////////
-
-__VIC_NORETURN void throw_errno(const char * );
-__VIC_NORETURN void throw_errno(const char * , int );
 
 } // namespace
 

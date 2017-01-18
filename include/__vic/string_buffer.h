@@ -73,7 +73,7 @@ public:
     reference back() { return *rbegin(); }
     const_reference front() const { return *begin(); }
     const_reference back() const { return *rbegin(); }
-    void pop_back() { erase(length() - 1); }
+    void pop_back() { base::erase(length() - 1); }
 #endif
 
     // mapping for std::string operations

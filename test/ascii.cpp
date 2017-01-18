@@ -3,6 +3,10 @@
 #include<iostream>
 #include<cassert>
 
+#ifdef isascii
+#undef isascii
+#endif
+
 namespace tests {
 
 namespace ascii = __vic::ascii;

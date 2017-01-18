@@ -50,6 +50,16 @@ void run_tests()
     assert(sizeof(__vic::uint_exactly_bytes<2>::type) == 2);
     assert(sizeof(__vic::uint_exactly_bytes<4>::type) == 4);
     assert(sizeof(__vic::uint_exactly_bytes<8>::type) == 8);
+
+    typedef
+#if __cpp_alias_templates
+        __vic::int_exact_bytes<sizeof(void*)>
+#else
+        __vic::int_exactly_bytes<sizeof(void*)>::type
+#endif
+        my_intptr_t;
+
+    assert(sizeof(void*) == sizeof(my_intptr_t));
 }
 
 int main()
