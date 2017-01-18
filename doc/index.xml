@@ -9,6 +9,7 @@
     <!ENTITY bits.h SYSTEM "bits.h.xml">
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY fs.h SYSTEM "fs.h.xml">
     <!ENTITY io.h SYSTEM "io.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY meta.h SYSTEM "meta.h.xml">
@@ -112,6 +113,7 @@ TODO
 &bits.h;
 &date_time.h;
 &error.h;
+&fs.h;
 &io.h;
 &logger.h;
 &meta.h;
