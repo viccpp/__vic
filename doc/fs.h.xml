@@ -212,4 +212,17 @@ if <tt>src_path</tt> doesn't exist.</p>
 </chapter>
 
 
+<chapter>
+<title><tt>file_size()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+uint64_t file_size(const char *path);
+uint64_t file_size(const std::string &path);
+]]></code-block>
+
+<p>Returns file size in bytes.</p>
+
+</chapter>
+
+
 </chapter>

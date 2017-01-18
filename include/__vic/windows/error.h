@@ -11,12 +11,12 @@
 #include<__vic/defs.h>
 #include<__vic/static_string.h>
 #include<exception>
-#ifdef _MSC_VER
-#include<windows.h>
-#else
+#ifdef __MINGW32__
 #include<windef.h>
 // To not include huge windows.h
 extern "C" DWORD WINAPI GetLastError(void);
+#else
+#include<windows.h>
 #endif
 
 namespace __vic { namespace windows {

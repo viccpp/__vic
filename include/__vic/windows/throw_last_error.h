@@ -9,7 +9,11 @@
 #define __VIC_WINDOWS_THROW_LAST_ERROR_H
 
 #include<__vic/defs.h>
+#ifdef __MINGW32__
 #include<windef.h>
+#else
+#include<windows.h>
+#endif
 
 namespace __vic { namespace windows {
 
