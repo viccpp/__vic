@@ -1,0 +1,215 @@
+<chapter>
+<title><tt>__vic/fs.h</tt></title>
+
+<p>Filesystem utilities.</p>
+
+
+<chapter>
+<title><tt>path_exists()</tt>, <tt>file_exists()</tt>, <tt>dir_exists()</tt>
+</title>
+
+<code-block lang="C++"><![CDATA[
+bool path_exists(const char *path);
+bool path_exists(const std::string &path);
+
+bool file_exists(const char *path);
+bool file_exists(const std::string &path);
+
+bool dir_exists(const char *path);
+bool dir_exists(const std::string &path);
+]]></code-block>
+
+<p><tt>path_exists()</tt> checks whether the path exists in the system. Second
+and third functions additionally check, besides the presence, if the path
+references to a regular file or to a directory, respectively.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>mkdir()</tt>, <tt>mkdir_if_absent()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void mkdir(const char *path);
+void mkdir(const std::string &path);
+
+bool mkdir_if_absent(const char *path);
+bool mkdir_if_absent(const std::string &path);
+]]></code-block>
+
+<p>Creates a directory. Throws exception in case of failure.
+<tt>mkdir_if_absent()</tt> returns <tt>false</tt> instead of throwing if
+the directory already exists.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>rmdir()</tt>, <tt>rmdir_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void rmdir(const char *path);
+void rmdir(const std::string &path);
+
+bool rmdir_if_exists(const char *path);
+bool rmdir_if_exists(const std::string &path);
+]]></code-block>
+
+<p>Deletes an empty directory. Throws exception in case of failure.
+<tt>rmdir_if_exists()</tt> returns <tt>false</tt> instead of throwing if
+the directory doesn't exist.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>get_current_dir()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+std::string get_current_dir();
+]]></code-block>
+
+<p>Returns current working directory.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>remove_file()</tt>, <tt>remove_file_if_exists()</tt>,
+<tt>remove_file_nt()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void remove_file(const char *path);
+void remove_file(const std::string &path);
+
+bool remove_file_if_exists(const char *path);
+bool remove_file_if_exists(const std::string &path);
+
+bool remove_file_nt(const char *path) noexcept;
+bool remove_file_nt(const std::string &path) noexcept;
+]]></code-block>
+
+<p>Deletes the file. Throws exception in case of failure.</p>
+
+<p><tt>remove_file_if_exists()</tt> returns <tt>false</tt> instead of throwing
+if the file doesn't exist.</p>
+
+<p><tt>remove_file_nt()</tt> doestn't throw any exceptions at all,
+<tt>false</tt> is returned  in case of failure.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>copy_file()</tt>, <tt>copy_file_if_exists()</tt>,
+<tt>copy_file_replace()</tt>, <tt>copy_file_replace_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void copy_file(
+    const char *src_path, const char *dest_path, bool replace = false);
+void copy_file(
+    const std::string &src_path, const std::string &dest_path,
+    bool replace = false);
+
+bool copy_file_if_exists(
+    const char *src_path, const char *dest_path, bool replace = false);
+bool copy_file_if_exists(
+    const std::string &src_path, const std::string &dest_path,
+    bool replace = false);
+
+void copy_file_replace(
+    const char *src_path, const char *dest_path);
+void copy_file_replace(
+    const std::string &src_path, const std::string &dest_path);
+
+bool copy_file_replace_if_exists(
+    const char *src_path, const char *dest_path);
+bool copy_file_replace_if_exists(
+    const std::string &src_path, const std::string &dest_path);
+]]></code-block>
+
+<p>Creates a new file <tt>dest_path</tt> which is a copy of a file
+<tt>src_path</tt>. If the new file exists and <tt>replace == false</tt>,
+the functions fail.</p>
+
+<p><tt>copy_file_if_exists()</tt> returns <tt>false</tt> instead of throwing
+if <tt>src_path</tt> doesn't exist.</p>
+
+<p><tt>copy_file_replace()</tt> is the same as <tt>copy_file(..., true)</tt>.
+</p>
+
+<p><tt>copy_file_replace_if_exists()</tt> is the same as
+<tt>copy_file_if_exists(..., true)</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>move_file()</tt>, <tt>move_file_if_exists()</tt>,
+<tt>move_file_replace()</tt>, <tt>move_file_replace_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void move_file(const char *src_path, const char *dest_path);
+void move_file(const std::string &src_path, const std::string &dest_path);
+
+bool move_file_if_exists(const char *src_path, const char *dest_path);
+bool move_file_if_exists(
+    const std::string &src_path, const std::string &dest_path);
+
+void move_file_replace(const char *src_path, const char *dest_path);
+void move_file_replace(
+    const std::string &src_path, const std::string &dest_path);
+
+bool move_file_replace_if_exists(
+    const char *src_path, const char *dest_path);
+bool move_file_replace_if_exists(
+    const std::string &src_path, const std::string &dest_path);
+]]></code-block>
+
+<p>Moves a file <tt>src_path</tt> to new location specified by
+<tt>dest_path</tt>.</p>
+
+<p>The functions with <tt>_replace</tt> suffix overwrite existing destination
+file if exists, others - fail in such case.</p>
+
+<p><tt>move_file_if_exists()</tt> returns <tt>false</tt> instead of throwing
+if <tt>src_path</tt> doesn't exist.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>rename_file()</tt>, <tt>rename_file_if_exists()</tt>,
+    <tt>rename_file_replace()</tt>, <tt>rename_file_replace_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void rename_file(const char *src_name, const char *dest_name);
+void rename_file(const std::string &src_name, const std::string &dest_name);
+
+bool rename_file_if_exists(const char *src_name, const char *dest_name);
+bool rename_file_if_exists(
+    const std::string &src_name, const std::string &dest_name);
+
+void rename_file_replace(const char *src_name, const char *dest_name);
+void rename_file_replace(
+    const std::string &src_name, const std::string &dest_name);
+
+bool rename_file_replace_if_exists(
+    const char *src_name, const char *dest_name);
+bool rename_file_replace_if_exists(
+    const std::string &src_name, const std::string &dest_name);
+]]></code-block>
+
+<p>Renames a file <tt>src_path</tt> to <tt>dest_path</tt>. The new path
+has to be located within the same physical filesystem.</p>
+
+<p>As opposed to <tt>std::rename()</tt>, the functions without
+<tt>_replace</tt> suffix fail if <tt>dest_path</tt> exists.</p>
+
+<p><tt>rename_file_if_exists()</tt> returns <tt>false</tt> instead of throwing
+if <tt>src_path</tt> doesn't exist.</p>
+
+</chapter>
+
+
+</chapter>
