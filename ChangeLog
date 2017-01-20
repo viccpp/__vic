@@ -10,6 +10,9 @@ Legend:
     + str2num.h: decimal_parser
     + base16.h:
         + base16::encode_lower(), base16::encode_upper(), base16::decode()
+    + base64.h:
+        + base64::encode(), base64::decode()
+        + base64::encoded_length(), base64::max_decoded_length()
 
 2016-01-16  __vic
     * throw_errno() moved: error.h -> throw_errno.h
