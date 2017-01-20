@@ -1,0 +1,177 @@
+<chapter>
+<title><tt>__vic/bin_file.h</tt></title>
+
+<chapter>
+<title><tt>bin_file</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class bin_file : private non_copyable
+{
+public:
+    enum in_t { in };
+    enum out_t { out };
+    enum append_t { append };
+
+    bin_file();
+    bin_file(const char *fname, in_t);
+    bin_file(const char *fname, out_t);
+    bin_file(const char *fname, append_t);
+    ~bin_file();
+
+    // BEGIN C++11 only
+    bin_file(bin_file &&o) noexcept;
+    bin_file &operator=(bin_file &&o) noexcept;
+    // END C++11 only
+
+    bool open_in(const char *fname);
+    bool open_out(const char *fname);
+    bool open_append(const char *fname);
+
+    size_t read_max(void *buf, size_t n);
+    size_t read_some(void *buf, size_t n);
+
+    void write_all(const void *buf, size_t n);
+
+    bool is_open() const;
+    void close();
+    bool close_nt() noexcept;
+
+    void swap(bin_file &o) noexcept;
+
+    [[noreturn]] void throw_last_error(const char *msg);
+    void throw_if_closed(const char *msg);
+};
+]]></code-block>
+
+<p>Unbuffered binary file. OS-independent wrapper for low-level system API.</p>
+
+<p>Following open modes are available:</p>
+<list style="bulleted">
+    <item><tt>in</tt> - open existing file for reading;</item>
+    <item><tt>out</tt> - create new file for writing, overwrite if exists;</item>
+    <item><tt>append</tt> - open existing file for appending (writing at end of
+        file), create if does not exist.</item>
+</list>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>enum in_t { in }</prototype>
+<prototype>enum out_t { out }</prototype>
+<prototype>enum append_t { append }</prototype>
+<p>Constructor tags.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bin_file()</prototype>
+<postcondition><tt>is_open() == false()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bin_file(const char *fname, in_t)</prototype>
+<prototype>bin_file(const char *fname, out_t)</prototype>
+<prototype>bin_file(const char *fname, append_t)</prototype>
+<p>Call <tt>open_in(fname)</tt>, <tt>open_out(fname)</tt> or
+<tt>open_append(fname)</tt>, correspondingly. <tt>is_open()</tt> or
+<tt>throw_if_closed()</tt> has to be called then to check the result.</p>
+</synopsis>
+
+
+<synopsis>
+<prototype>~bin_file()</prototype>
+<p>Closes the file if <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bin_file(bin_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>bin_file &amp;operator=(bin_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Move operations for C++11 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool open_in(const char *fname)</prototype>
+<prototype>bool open_out(const char *fname)</prototype>
+<prototype>bool open_append(const char *fname)</prototype>
+<p>Open file for reading, writing or appending, correspondingly. Return
+<tt>is_open()</tt>.</p>
+<precondition><tt>is_open() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Returns <tt>true</tt> if file is open.</p>
+</synopsis>
+
+<synopsis>
+<prototype>size_t read_max(void *buf, size_t n)</prototype>
+<p>Tries to read <tt>n</tt> bytes to the specified buffer. Returns number of
+bytes read. Returned value can be less than requested only when end of file
+was reached. Throws on error.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>size_t read_some(void *buf, size_t n)</prototype>
+<p>Reads no more than <tt>n</tt> bytes to the specified buffer. Returns number
+of bytes read or <tt>0</tt> in case of end-of-file. The function returns after
+first chunk of any size was successfully received. Throws on error.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>void write_all(const void *buf, size_t n)</prototype>
+<p>Writes the whole buffer to the file. Throws on error.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Closes the file. Throws on error.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool close_nt() noexcept</prototype>
+<p>Counterpart of <tt>close()</tt> but never throws, returns <tt>false</tt>
+instead in case of error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(bin_file &amp;o) noexcept</prototype>
+<p>Swaps the value with <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>[[noreturn]] void throw_last_error(const char *msg)</prototype>
+<p>Throws exception with the last error description if available.
+<tt>what()</tt> will contain <tt>msg</tt> as a substring anyway.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void throw_if_closed(const char *msg)</prototype>
+<p>Calls <tt>throw_last_error(msg)</tt> if <tt>!is_open()</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+// Copy file
+__vic::bin_file in("file", __vic::bin_file::in);
+in.throw_if_closed("Cannot open file")
+__vic::bin_file out("file.copy", __vic::bin_file::out);
+out.throw_if_closed("Cannot create file")
+
+char buf[512];
+while(size_t n = in.read_some(buf, sizeof buf))
+    out.write_all(buf, n);
+
+out.close();
+// in will be closed by destructor
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

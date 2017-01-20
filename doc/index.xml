@@ -6,6 +6,7 @@
     <!ENTITY defs.h SYSTEM "defs.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
+    <!ENTITY bin_file.h SYSTEM "bin_file.h.xml">
     <!ENTITY bits.h SYSTEM "bits.h.xml">
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
@@ -110,6 +111,7 @@ TODO
 &defs.h;
 &ascii.h;
 &ascii_string.h;
+&bin_file.h;
 &bits.h;
 &date_time.h;
 &error.h;

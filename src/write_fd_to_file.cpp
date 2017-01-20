@@ -17,8 +17,7 @@ void write_fd_to_file(int fd_src, const char *dest_path, bool replace)
     if(!dest.is_open()) throw_errno("Cannot create output file");
 
     char buf[BUFSIZ];
-    size_t n;
-    while(n = posix::file::read_some(fd_src, buf, sizeof buf))
+    while(size_t n = posix::file::read_some(fd_src, buf, sizeof buf))
         dest.write_all(buf, n);
     dest.close();
 }
