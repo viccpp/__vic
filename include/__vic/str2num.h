@@ -35,7 +35,7 @@ inline UInt decimal_to_uinteger(InputIterator begin, InputIterator end)
     do {
         if(!ascii::isdigit(*begin)) throw_non_digit_char();
         UInt dig = *begin++ - '0';
-        // check if the next increment will cause owerflow
+        // check if the next increment will cause overflow
         if(res > decs || (res == decs && dig > ones))
             throw_integer_too_long();
         res *= UInt(10); // decimal left shift (one digit)
@@ -64,7 +64,7 @@ inline Int decimal_to_integer(InputIterator begin, InputIterator end)
     do {
         if(!ascii::isdigit(*begin)) throw_non_digit_char();
         Int dig = *begin++ - '0';
-        // check if the next increment will cause owerflow
+        // check if the next increment will cause overflow
         if(res > decs) throw_integer_too_long();
         else if(res == decs && dig > ones)
         {

@@ -66,6 +66,9 @@
 #if !__cpp_lambdas
 #   define __cpp_lambdas 1
 #endif
+#if !__cpp_static_assert
+#   define __cpp_static_assert 1
+#endif
 
 #if _MSC_VER >= 1800 // VC 12.0 (VS 2013)
 
@@ -174,7 +177,7 @@
 #define noexcept throw()
 #endif
 
-#if defined(_MSC_VER) && _MSC_VER < 0x1400
+#if defined(_MSC_VER) && _MSC_VER < 0x1400 // VC 8.0 (VS 2005)
 #define __VIC_LONGLONG __int64
 #else
 #define __VIC_LONGLONG long long
