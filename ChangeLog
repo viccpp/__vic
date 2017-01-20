@@ -7,6 +7,7 @@ Legend:
 2016-01-20  __vic
     + bin_file.h
         + bin_file
+    + str2num.h: decimal_parser
 
 2016-01-16  __vic
     * throw_errno() moved: error.h -> throw_errno.h

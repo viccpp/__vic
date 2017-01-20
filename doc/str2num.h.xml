@@ -82,4 +82,71 @@ they work with generic ranges of characters instead of strings.</p>
 </chapter>
 
 
+<chapter>
+<title><tt>decimal_parser</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class decimal_parser
+{
+public:
+    template<class InputIterator>
+    int parse(InputIterator begin, InputIterator end);
+    int parse(const std::string &str);
+    int parse(const char *str);
+    T result() const;
+};
+]]></code-block>
+
+<p>Counterpart of <tt>decimal_to_number()</tt> functions but never throws
+exceptions, <tt>errno</tt> codes are returned instead by <tt>parse()</tt>.</p>
+
+<p>Full list of returned error codes:</p>
+<list style="bulleted">
+    <item><tt>0</tt> - success, the result can be obtained using
+        <tt>result()</tt> function;</item>
+    <item><tt>EDOM</tt> - the string is not a correct decimal integer;</item>
+    <item><tt>ERANGE</tt> - the string is probably correct but the result
+        cannot be represented by the used type (integer overflow).</item>
+</list>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>template&lt;class InputIterator>
+int parse(InputIterator begin, InputIterator end)</prototype>
+<prototype>int parse(const std::string &amp;str)</prototype>
+<prototype>int parse(const char *str)</prototype>
+<p>Converts a range of characters or a string to a number. Returns <tt>0</tt>
+on success or an error code.</p>
+<postcondition><tt>result()</tt> will return the result of conversion if
+<tt>0</tt> was returned.
+</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>T result() const</prototype>
+<p>Returns the result of conversion produced by the the last <tt>parse()</tt>
+call.</p>
+<precondition>The last <tt>parse()</tt> call returned <tt>0</tt>.</precondition>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+template<class T>
+bool to_number(const std::string &s, T &result) noexcept
+{
+    __vic::decimal_parser<T> p;
+    if(p.parse(s) != 0) return false;
+    result = p.result();
+    returt true; // 'result' contains the result of conversion
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
 </chapter>
