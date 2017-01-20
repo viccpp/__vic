@@ -8,6 +8,8 @@ Legend:
     + bin_file.h
         + bin_file
     + str2num.h: decimal_parser
+    + base16.h:
+        + base16::encode_lower(), base16::encode_upper(), base16::decode()
 
 2016-01-16  __vic
     * throw_errno() moved: error.h -> throw_errno.h
