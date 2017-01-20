@@ -15,7 +15,7 @@ void run()
 {
     assert( check_path("."));
     assert( check_path("path_exists.cpp"));
-    assert(!check_path("path_doesnt_exists"));
+    assert(!check_path("path_doesnt_exist"));
     assert( check_path("../src"));
 
     assert( __vic::file_exists("path_exists.cpp"));
