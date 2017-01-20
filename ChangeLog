@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2016-01-20  __vic
+    + bin_file.h
+        + bin_file
+
 2016-01-18  __vic
     + fs.h:
         + path_exists(), file_exists(), dir_exists()
