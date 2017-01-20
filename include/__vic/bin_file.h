@@ -43,6 +43,10 @@ public:
     bool close_nt() noexcept { return f.close_nt(); }
 
     void swap(bin_file &o) noexcept { f.swap(o.f); }
+
+    __VIC_NORETURN void throw_last_error(const char * );
+    void throw_if_closed(const char *msg)
+        { if(!is_open()) throw_last_error(msg); }
 };
 //////////////////////////////////////////////////////////////////////////////
 

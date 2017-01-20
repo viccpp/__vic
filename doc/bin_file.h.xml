@@ -37,6 +37,9 @@ public:
     bool close_nt() noexcept;
 
     void swap(bin_file &o) noexcept;
+
+    [[noreturn]] void throw_last_error(const char *msg);
+    void throw_if_closed(const char *msg);
 };
 ]]></code-block>
 
@@ -69,8 +72,8 @@ public:
 <prototype>bin_file(const char *fname, out_t)</prototype>
 <prototype>bin_file(const char *fname, append_t)</prototype>
 <p>Call <tt>open_in(fname)</tt>, <tt>open_out(fname)</tt> or
-<tt>open_append(fname)</tt>, correspondingly. <tt>is_open()</tt>
-has to be called then to check the result.</p>
+<tt>open_append(fname)</tt>, correspondingly. <tt>is_open()</tt> or
+<tt>throw_if_closed()</tt> has to be called then to check the result.</p>
 </synopsis>
 
 
@@ -139,15 +142,26 @@ instead in case of error.</p>
 <p>Swaps the value with <tt>o</tt>.</p>
 </synopsis>
 
+<synopsis>
+<prototype>[[noreturn]] void throw_last_error(const char *msg)</prototype>
+<p>Throws exception with the last error description if available.
+<tt>what()</tt> will contain <tt>msg</tt> as a substring anyway.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void throw_if_closed(const char *msg)</prototype>
+<p>Calls <tt>throw_last_error(msg)</tt> if <tt>!is_open()</tt>.</p>
+</synopsis>
+
 </section>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 // Copy file
 __vic::bin_file in("file", __vic::bin_file::in);
-if(!in.is_open()) throw __vic::exception("Cannot open file");
+in.throw_if_closed("Cannot open file")
 __vic::bin_file out("file.copy", __vic::bin_file::out);
-if(!out.is_open()) throw __vic::exception("Cannot create file");
+out.throw_if_closed("Cannot create file")
 
 char buf[512];
 while(size_t n = in.read_some(buf, sizeof buf))
