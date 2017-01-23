@@ -83,7 +83,7 @@ are performed! Throws if <tt>std::fclose()</tt> fails.</p>
 
 <synopsis>
 <prototype>bool close_nt() noexcept</prototype>
-<p>Counterpart of <tt>close()</tt> but never throws, returns <tt>false</tt>
+<p>A counterpart of <tt>close()</tt> but never throws, returns <tt>false</tt>
 instead in case of error.</p>
 </synopsis>
 
@@ -139,8 +139,8 @@ file.close();
 bool getline(std::FILE *fp, std::string &str, char delim = '\n');
 ]]></code-block>
 
-<p>Counterpart of <tt>std::getline</tt> but for C-stream. Returns <tt>false</tt>
-if the end of the file was reached and nothing was read.</p>
+<p>A counterpart of <tt>std::getline</tt> but for C-stream. Returns
+<tt>false</tt> if the end of the file was reached and nothing was read.</p>
 </chapter>
 
 

@@ -6,6 +6,9 @@ Legend:
 
 2016-01-23  __vic
     - str2num.h: C++98 mode
+    + iterator.h:
+        + begin(T[]), end(T[]), cbegin(T[]), cend(T[])
+        + advance(), next(), prev()
 
 2016-01-20  __vic
     + bin_file.h
