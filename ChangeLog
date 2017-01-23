@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2016-01-23  __vic
+    - str2num.h: C++98 mode
+
 2016-01-20  __vic
     + bin_file.h
         + bin_file

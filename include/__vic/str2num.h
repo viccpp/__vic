@@ -22,15 +22,21 @@ namespace impl {
 template<class UInt>
 class unsigned_decimal_parser
 {
-    static __VIC_CONSTEXPR_VAR UInt
+#if __cpp_constexpr
+    static constexpr UInt
         decs = std::numeric_limits<UInt>::max() / UInt(10), // count of full decades in maximum value
         ones = std::numeric_limits<UInt>::max() % UInt(10); // count of the rest ones in maximum value
+#endif
     UInt res;
 public:
     template<class InputIterator>
     int parse(InputIterator begin, InputIterator end)
     {
         if(begin == end) return EDOM;
+#if !__cpp_constexpr
+        const UInt decs = std::numeric_limits<UInt>::max() / UInt(10),
+                   ones = std::numeric_limits<UInt>::max() % UInt(10);
+#endif
         UInt res = 0;
         do {
             if(!ascii::isdigit(*begin)) return EDOM;
@@ -51,15 +57,21 @@ public:
 template<class Int>
 class signed_decimal_parser
 {
-    static __VIC_CONSTEXPR_VAR Int
+#if __cpp_constexpr
+    static constexpr Int
         decs = std::numeric_limits<Int>::max() / Int(10), // count of full decades in maximum value
         ones = std::numeric_limits<Int>::max() % Int(10); // count of the rest ones in maximum value
+#endif
     Int res;
 public:
     template<class InputIterator>
     int parse(InputIterator begin, InputIterator end)
     {
         if(begin == end) return EDOM;
+#if !__cpp_constexpr
+        const Int decs = std::numeric_limits<Int>::max() / Int(10),
+                  ones = std::numeric_limits<Int>::max() % Int(10);
+#endif
         bool negative = false;
         switch(*begin)
         {

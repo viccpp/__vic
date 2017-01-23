@@ -82,7 +82,7 @@ void base16::decode(InIter begin, InIter end, OutIter out)
         else *out++ = uint8_t((hi_part << 4) | d);
         first = !first;
     }
-    if(!first) throw bad_format(); // the length if odd
+    if(!first) throw bad_format(); // the length is odd
 }
 //----------------------------------------------------------------------------
 
