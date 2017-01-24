@@ -1,0 +1,137 @@
+<chapter>
+<title><tt>__vic/windows/critical_section.h</tt></title>
+
+
+<chapter>
+<title><tt>windows::CriticalSection</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class CriticalSection : private non_copyable
+{
+public:
+    CriticalSection();
+    ~CriticalSection();
+
+    void Enter();
+    bool TryEnter();
+    void Leave() noexcept;
+
+    ::CRITICAL_SECTION *handle();
+    const ::CRITICAL_SECTION *handle() const;
+};
+]]></code-block>
+
+<p>A C++ wrapper for Win32 API <tt>CRITICAL_SECTION</tt>.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>CriticalSection()</prototype>
+<p>Calls <tt>::InitializeCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~CriticalSection()</prototype>
+<p>Calls <tt>::LeaveCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Enter()</prototype>
+<p>Calls <tt>::EnterCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool TryEnter()</prototype>
+<p>Calls <tt>::TryEnterCriticalSection()</tt> and returs the result.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Leave() noexcept</prototype>
+<p>Calls <tt>::LeaveCriticalSection()</tt>.</p>
+</synopsis>
+
+</section>
+
+<note>Direct calls of <tt>Enter()</tt>/<tt>Leave()</tt> should be avoided, use
+<tt>CSGuard</tt> objects instead.</note>
+
+</chapter>
+
+
+<chapter>
+<title><tt>windows::CSGuard</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class CSGuard : private non_copyable
+{
+public:
+    enum adopt_t { adopt };
+
+    explicit CSGuard(::CRITICAL_SECTION &cs);
+    CSGuard(::CRITICAL_SECTION &cs, adopt_t);
+
+    explicit CSGuard(CriticalSection &cs);
+    CSGuard(CriticalSection &cs, adopt_t);
+
+    ~CSGuard();
+};
+]]></code-block>
+
+<p>A scoped lock guard. Works with <tt>::CRITICAL_SECTION</tt> as well as with
+<tt>__vic::windows::CriticalSection</tt> objects.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit CSGuard(::CRITICAL_SECTION &amp;cs)</prototype>
+<prototype>explicit CSGuard(CriticalSection &amp;cs)</prototype>
+<p>Calls <tt>::EnterCriticalSection(&amp;cs)</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>CSGuard(::CRITICAL_SECTION &amp;cs, adopt_t)</prototype>
+<prototype>CSGuard(CriticalSection &amp;cs, adopt_t)</prototype>
+<p>Only saves the reference to <tt>cs</tt> without
+<tt>::EnterCriticalSection()</tt> call.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~CSGuard()</prototype>
+<p>Calls <tt>::LeaveCriticalSection(&amp;cs)</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++">
+// Typical usage
+void reentrant_function()
+{
+    static __vic::windows::CriticalSection cs;
+    __vic::windows::CSGuard guard(cs);
+    // Critical section code until the end of the block
+    ...
+}
+
+// Usage of the adopt-constructor
+__vic::windows::CriticalSection cs;
+if(cs.TryEnter()) // Try to enter the critical section
+{
+    // Success
+    using __vic::windows::CSGuard;
+    CSGuard guard(cs, CSGuard::adopt);
+    // Critical section code until the end of the block
+    ...
+}
+else
+{
+    // The critical section is busy
+    ...
+}
+</code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

@@ -1,6 +1,6 @@
 // Internal implementation header
 //
-// Platform: ISO C++ 98/11 - Win32
+// Platform: ISO C++ 98/11 - Windows
 // $Id$
 //
 // (c) __vic 2017

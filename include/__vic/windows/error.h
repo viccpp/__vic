@@ -1,6 +1,6 @@
 // Windows-specific error handling and diagnostic utilities
 //
-// Platform: ISO C++ 98/11 - Win32
+// Platform: ISO C++ 98/11 - Windows
 // $Id$
 //
 // (c) __vic 2007
