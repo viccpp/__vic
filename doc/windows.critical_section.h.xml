@@ -6,7 +6,7 @@
 <title><tt>windows::CriticalSection</tt></title>
 
 <code-block lang="C++"><![CDATA[
-class CriticalSection : private non_copyable
+class windows::CriticalSection : private non_copyable
 {
 public:
     CriticalSection();
@@ -62,7 +62,7 @@ public:
 <title><tt>windows::CSGuard</tt></title>
 
 <code-block lang="C++"><![CDATA[
-class CSGuard : private non_copyable
+class windows::CSGuard : private non_copyable
 {
 public:
     enum adopt_t { adopt };

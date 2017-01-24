@@ -16,7 +16,7 @@
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-class bin_file
+class bin_file : private non_copyable
 {
     HANDLE hFile;
     bool open_(const char * , DWORD , DWORD );

@@ -8,6 +8,9 @@ Legend:
     + windows/critical_section.h
         + windows::CriticalSection
         + windows::CSGuard
+    + windows/handle.h
+        + windows::Handle
+        + windows::WaitAbandoned
 
 2016-01-20  __vic
     + bin_file.h

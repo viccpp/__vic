@@ -20,9 +20,7 @@ bool bin_file::open_(
 //----------------------------------------------------------------------------
 void bin_file::close()
 {
-    bool st = ::CloseHandle(hFile);
-    reset_handle();
-    if(!st) windows::throw_last_error("CloseHandle");
+    if(!close_nt()) windows::throw_last_error("CloseHandle");
 }
 //----------------------------------------------------------------------------
 

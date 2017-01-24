@@ -1,0 +1,99 @@
+<chapter>
+<title><tt>__vic/windows/handle.h</tt></title>
+
+
+<chapter>
+<title><tt>windows::Handle</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::Handle
+{
+public:
+    Handle() = default; // uninitialized
+    constexpr Handle(HANDLE h);
+
+    bool CloseNT() noexcept;
+    bool Wait(DWORD timeout = INFINITE);
+
+    bool IsInvalid() const;
+    void SetInvalid();
+    operator HANDLE() const;
+
+    void swap(Handle &o) noexcept;
+};
+]]></code-block>
+
+<p>A C++ wrapper for Win32 API <tt>HANDLE</tt>.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>Handle() = default</prototype>
+<p>Creates an uninitialized value.</p>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr Handle(HANDLE h)</prototype>
+<p>Implicit converter from <tt>HANDLE</tt>.</p>
+<postcondition><tt>*this == h</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>operator HANDLE() const</prototype>
+<p>Implicit converter to <tt>HANDLE</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool IsInvalid() const</prototype>
+<p>Returns <tt>true</tt> is the handle has value <tt>INVALID_HANDLE_VALUE</tt>.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetInvalid()</prototype>
+<p>Assigns value <tt>INVALID_HANDLE_VALUE</tt> to the handle.</p>
+<postcondition><tt>IsInvalid() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool CloseNT() noexcept</prototype>
+<p>Calls <tt>::CloseHandle()</tt> and returns <tt>true</tt> on success.
+On failure <tt>::GetLastError()</tt> can be used to get the error
+description.</p>
+<precondition>The same as for <tt>::CloseHandle()</tt>.</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool Wait(DWORD timeout = INFINITE)</prototype>
+<p>Calls <tt>::WaitForSingleObject()</tt> with the specified timeout. Rerturns
+<tt>false</tt> in case of <tt>WAIT_TIMEOUT</tt>. Throws on error.
+<tt>__vic::windows::WaitAbandoned</tt> is thrown in case of
+<tt>WAIT_ABANDONED</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(Handle &amp;o) noexcept</prototype>
+<p>Swaps the value with <tt>o</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>windows::WaitAbandoned</tt></title>
+
+<code-block lang="C++"><![CDATA[
+struct windows::WaitAbandoned : public std::exception
+{
+    const char *what() const noexcept;
+};
+]]></code-block>
+
+<p>An exception class thrown by <tt>__vic::windows::Handle::Wait()</tt>.</p>
+
+</chapter>
+
+
+</chapter>

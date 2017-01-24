@@ -26,6 +26,7 @@
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
     <!ENTITY windows.critical_section.h SYSTEM "windows.critical_section.h.xml">
     <!ENTITY windows.error.h SYSTEM "windows.error.h.xml">
+    <!ENTITY windows.handle.h SYSTEM "windows.handle.h.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
 <title>__vic's C++ library (Windows)</title>
@@ -122,6 +123,7 @@ TODO
 &to_text.h;
 &windows.critical_section.h;
 &windows.error.h;
+&windows.handle.h;
 </chapter>
 
 </document>
