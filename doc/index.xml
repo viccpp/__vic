@@ -4,14 +4,19 @@
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
+    <!ENTITY readers.h SYSTEM "readers.h.xml">
+    <!ENTITY writers.h SYSTEM "writers.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
+    <!ENTITY base16.h SYSTEM "base16.h.xml">
+    <!ENTITY base64.h SYSTEM "base64.h.xml">
     <!ENTITY bin_file.h SYSTEM "bin_file.h.xml">
     <!ENTITY bits.h SYSTEM "bits.h.xml">
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY fs.h SYSTEM "fs.h.xml">
     <!ENTITY io.h SYSTEM "io.h.xml">
+    <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
@@ -98,14 +103,19 @@ TODO
 <chapter>
 <title>Library components reference</title>
 &defs.h;
+&readers.h;
+&writers.h;
 &ascii.h;
 &ascii_string.h;
+&base16.h;
+&base64.h;
 &bin_file.h;
 &bits.h;
 &date_time.h;
 &error.h;
 &fs.h;
 &io.h;
+&iterator.h;
 &logger.h;
 &meta.h;
 &object_pool.h;
