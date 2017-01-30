@@ -1,7 +1,7 @@
 <chapter>
 <title><tt>__vic/base16.h</tt></title>
 
-<p>BASE16 encoder and decoder.</p>
+<p>Base16 encoder and decoder.</p>
 
 
 <chapter>
@@ -33,13 +33,12 @@ struct base16::bad_format : public std::exception
 
 <code-block lang="C++"><![CDATA[
 // Bytes -> Text
-template<class InIter, class OutIter>
-void base16::encode_lower(InIter begin, InIter end, OutIter out);
+template<class ByteReader, class CharWriter>
+void base16::encode_lower(ByteReader reader, CharWriter writer);
 ]]></code-block>
 
-<p>Encodes [<tt>begin</tt>, <tt>end</tt>) range of bytes and writes the
-resulting characters to <tt>out</tt>. Lower case is used for hexadecimal
-digits.</p>
+<p>Encodes bytes from <tt>reader</tt> and writes the resulting characters to
+<tt>writer</tt>. Lower case is used for hexadecimal digits.</p>
 
 </chapter>
 
@@ -49,22 +48,32 @@ digits.</p>
 
 <code-block lang="C++"><![CDATA[
 // Bytes -> Text
-template<class InIter, class OutIter>
-void base16::encode_upper(InIter begin, InIter end, OutIter out);
+template<class ByteReader, class CharWriter>
+void base16::encode_upper(ByteReader reader, CharWriter writer);
 ]]></code-block>
 
-<p>Encodes [<tt>begin</tt>, <tt>end</tt>) range of bytes and writes the
-resulting characters to <tt>out</tt>. Upper case is used for hexadecimal
-digits.</p>
+<p>Encodes bytes from <tt>reader</tt> and writes the resulting characters to
+<tt>writer</tt>. Upper case is used for hexadecimal digits.</p>
+
+<p><tt>ByteReader</tt> has to model <tt>Reader&lt;unsigned char></tt> concept.
+See <tt>__vic/readers.h</tt>.</p>
+
+<p><tt>CharWriter</tt> has to model <tt>Writer&lt;char></tt> concept.
+See <tt>__vic/writers.h</tt>.</p>
+
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
+#include<__vic/readers.h>
+#include<__vic/string_ops.h>
+
 using bytes = std::string;
+using bytes_reader = __vic::container_reader<bytes, unsigned char>;
 std::string encode_base16(const bytes &s)
 {
     std::string res;
     res.reserve(s.length() * 2);
-    __vic::base16::encode_upper(s.begin(), s.end(), std::back_inserter(res));
+    __vic::base16::encode_upper(bytes_reader(s), __vic::string_writer(res));
     return res;
 }
 ]]></code-block>
@@ -78,22 +87,32 @@ std::string encode_base16(const bytes &s)
 
 <code-block lang="C++"><![CDATA[
 // Text -> Bytes
-template<class InIter, class OutIter>
-void base16::decode(InIter begin, InIter end, OutIter out);
+template<class CharReader, class ByteWriter>
+void base16::decode(CharReader reader, ByteWriter writer);
 ]]></code-block>
 
-<p>Decodes [<tt>begin</tt>, <tt>end</tt>) range of characters and writes the
-resulting bytes to <tt>out</tt>. <tt>bad_format</tt> is thrown if the input
-sequence has invalid BASE16 format.</p>
+<p>Decodes characters from <tt>reader</tt> and writes the resulting bytes to
+<tt>writer</tt>. <tt>base16::bad_format</tt> is thrown if the input sequence
+has invalid Base16 format.</p>
+
+<p><tt>CharReader</tt> has to model <tt>Reader&lt;char></tt> concept.
+See <tt>__vic/readers.h</tt>.</p>
+
+<p><tt>ByteWriter</tt> has to model <tt>Writer&lt;unsigned char></tt> concept.
+See <tt>__vic/writers.h</tt>.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
+#include<__vic/writers.h>
+#include<__vic/string_ops.h>
+
 using bytes = std::string;
+using bytes_writer = __vic::push_back_writer<bytes, unsigned char>;
 bytes decode_base16(const std::string &s)
 {
     bytes res;
     res.reserve(s.length() / 2);
-    __vic::base16::decode(s.begin(), s.end(), std::back_inserter(res));
+    __vic::base16::decode(__vic::string_reader(s), bytes_writer(res));
     return res;
 }
 ]]></code-block>

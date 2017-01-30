@@ -1,0 +1,123 @@
+<chapter>
+<title><tt>__vic/readers.h</tt></title>
+
+
+<chapter>
+<title><tt>Reader</tt> concept</title>
+
+<code-block lang="C++"><![CDATA[
+template<class ElementT>
+class ]]><nt>Reader</nt><![CDATA[
+{
+public:
+    Reader(Reader &&o); or Reader(const Reader &o);
+    bool read(ElementT &v); // throws on errors
+};
+]]></code-block>
+
+<p>A concept used by the library algorihms to read logical sequence of elements
+of type <tt>ElementT</tt> element by element. It is a generalization and rework
+of the <tt>InputIterator</tt> concept. In particular it better handles streams,
+NUL-terminated strings and other sequences where <tt>end</tt>-iterator is
+meaningless or expensive to obtain. At the same time, traditional
+[<tt>begin</tt>,<tt>end</tt>) pair of iterators is just a particular case and
+fully and well handled by <tt>__vic::range_reader</tt> adapter.</p>
+
+<p>When the particular class meets the requirements of this concept for some
+<tt>ElementT = T</tt> it is said <b>to model</b> the <tt>Reader&lt;T></tt>
+concept.</p>
+
+<p>Each instance of the class has to be move- or copy-constructible.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>bool read(ElementT &amp;v)</prototype>
+<p>Attempts to get the next element of the sequence. Returns <tt>true</tt> and
+places the value to <tt>v</tt> on success. Returns <tt>false</tt> if no element
+available (EOF). Throws an exception in other cases.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>range_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class InputIterator,
+         class T = typename std::iterator_traits<InputIterator>::value_type>
+class range_reader
+{
+public:
+    range_reader(InputIterator begin, InputIterator end);
+    bool read(T &v);
+};
+]]></code-block>
+
+<p>An adapter for traditional [<tt>begin</tt>,<tt>end</tt>) pair of iterators.
+</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>range_reader_n</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class InputIterator,
+         class T = typename std::iterator_traits<InputIterator>::value_type>
+class range_reader_n
+{
+public:
+    range_reader_n(InputIterator begin, size_t n);
+    bool read(T &v);
+};
+]]></code-block>
+
+<p>An adapter for iterator + elements counter.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>container_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class Cont, class T = typename Cont::value_type>
+class container_reader
+{
+public:
+    explicit container_reader(const Cont &c);
+    bool read(T &v);
+};
+]]></code-block>
+
+<p>An adapter for STL-style container classes wint <tt>begin()</tt> and
+<tt>end()</tt> members.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>cstring_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+class basic_cstring_reader
+{
+public:
+    explicit basic_cstring_reader(const charT *st);
+    bool read(charT &v);
+};
+using cstring_reader = basic_cstring_reader<char>;
+]]></code-block>
+
+<p>An adapter for NUL-terminated C-style strings.</p>
+
+</chapter>
+
+
+</chapter>

@@ -4,6 +4,8 @@
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
+    <!ENTITY readers.h SYSTEM "readers.h.xml">
+    <!ENTITY writers.h SYSTEM "writers.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
     <!ENTITY base16.h SYSTEM "base16.h.xml">
@@ -100,6 +102,8 @@ TODO
 <chapter>
 <title>Library components reference</title>
 &defs.h;
+&readers.h;
+&writers.h;
 &ascii.h;
 &ascii_string.h;
 &base16.h;

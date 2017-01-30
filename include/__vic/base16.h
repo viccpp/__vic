@@ -17,8 +17,8 @@ namespace __vic {
 //////////////////////////////////////////////////////////////////////////////
 class base16
 {
-    template<class InIter, class OutIter, class Func>
-    static void encode_(InIter , InIter , OutIter , Func );
+    template<class ByteReader, class CharWriter, class Func>
+    static void encode_(ByteReader & , CharWriter & , Func );
     struct to_hex_digit_lower
     {
         char operator()(int d) const { return __vic::to_hex_digit_lower(d); }
@@ -34,52 +34,52 @@ public:
     };
 
     // Bytes -> Text
-    template<class InIter, class OutIter>
-    static void encode_lower(InIter , InIter , OutIter );
-    template<class InIter, class OutIter>
-    static void encode_upper(InIter , InIter , OutIter );
+    template<class ByteReader, class CharWriter>
+    static void encode_lower(ByteReader , CharWriter );
+    template<class ByteReader, class CharWriter>
+    static void encode_upper(ByteReader , CharWriter );
 
     // Text -> Bytes
-    template<class InIter, class OutIter>
-    static void decode(InIter , InIter , OutIter );
+    template<class CharReader, class ByteWriter>
+    static void decode(CharReader , ByteWriter );
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class InIter, class OutIter, class Func>
-inline void base16::encode_(
-    InIter begin, InIter end, OutIter out, Func to_hex_digit)
+template<class ByteReader, class CharWriter, class Func>
+inline void base16::encode_(ByteReader &r, CharWriter &w, Func to_hex_digit)
 {
-    for(; begin != end; ++begin)
+    unsigned char byte;
+    while(r.read(byte))
     {
-        uint8_t b = *begin;
-        *out++ = to_hex_digit(hi_nibble(b));
-        *out++ = to_hex_digit(lo_nibble(b));
+        w.write(to_hex_digit(hi_nibble(byte)));
+        w.write(to_hex_digit(lo_nibble(byte)));
     }
 }
 //----------------------------------------------------------------------------
-template<class InIter, class OutIter>
-void base16::encode_lower(InIter begin, InIter end, OutIter out)
+template<class ByteReader, class CharWriter>
+void base16::encode_lower(ByteReader r, CharWriter w)
 {
-    encode_(begin, end, out, to_hex_digit_lower());
+    encode_(r, w, to_hex_digit_lower());
 }
 //----------------------------------------------------------------------------
-template<class InIter, class OutIter>
-void base16::encode_upper(InIter begin, InIter end, OutIter out)
+template<class ByteReader, class CharWriter>
+void base16::encode_upper(ByteReader r, CharWriter w)
 {
-    encode_(begin, end, out, to_hex_digit_upper());
+    encode_(r, w, to_hex_digit_upper());
 }
 //----------------------------------------------------------------------------
-template<class InIter, class OutIter>
-void base16::decode(InIter begin, InIter end, OutIter out)
+template<class CharReader, class ByteWriter>
+void base16::decode(CharReader r, ByteWriter w)
 {
     bool first = true;
     int hi_part;
-    for(; begin != end; ++begin)
+    char ch;
+    while(r.read(ch))
     {
-        int d = hex_to_number(*begin);
+        int d = hex_to_number(ch);
         if(d < 0) throw bad_format();
         if(first) hi_part = d;
-        else *out++ = uint8_t((hi_part << 4) | d);
+        else w.write(static_cast<unsigned char>((hi_part << 4) | d));
         first = !first;
     }
     if(!first) throw bad_format(); // the length is odd

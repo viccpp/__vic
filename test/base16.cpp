@@ -1,32 +1,37 @@
 #include<__vic/base16.h>
-#include<iterator>
+#include<__vic/readers.h>
+#include<__vic/writers.h>
+#include<__vic/string_ops.h>
 #include<iostream>
 #include<exception>
 #include<cassert>
+#include<string>
 
 namespace tests {
 
 typedef std::string bytes;
+typedef __vic::container_reader<bytes, unsigned char> bytes_reader;
+typedef __vic::push_back_writer<bytes, unsigned char> bytes_writer;
 
 std::string encode_lower(const bytes &s)
 {
     std::string res;
     res.reserve(s.length() * 2);
-    __vic::base16::encode_lower(s.begin(), s.end(), std::back_inserter(res));
+    __vic::base16::encode_lower(bytes_reader(s), __vic::string_writer(res));
     return res;
 }
 std::string encode_upper(const bytes &s)
 {
     std::string res;
     res.reserve(s.length() * 2);
-    __vic::base16::encode_upper(s.begin(), s.end(), std::back_inserter(res));
+    __vic::base16::encode_upper(bytes_reader(s), __vic::string_writer(res));
     return res;
 }
 bytes decode(const std::string &s)
 {
     bytes res;
     res.reserve(s.length() / 2);
-    __vic::base16::decode(s.begin(), s.end(), std::back_inserter(res));
+    __vic::base16::decode(__vic::string_reader(s), bytes_writer(res));
     return res;
 }
 void run()

@@ -26,12 +26,12 @@ struct base64
     static const char abc[]; // BASE64 alphabet
 
     // Bytes -> Text
-    template<class InIter, class OutIter>
-    static void encode(InIter , InIter , OutIter );
+    template<class ByteReader, class CharWriter>
+    static void encode(ByteReader , CharWriter );
 
     // Text -> Bytes
-    template<class InIter, class OutIter>
-    static void decode(InIter , InIter , OutIter );
+    template<class CharReader, class ByteWriter>
+    static void decode(CharReader , ByteWriter );
 
     static __VIC_CONSTEXPR_FUNC size_t encoded_length(size_t orig_len)
     {
@@ -45,52 +45,52 @@ struct base64
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class InIter, class OutIter>
-void base64::encode(InIter begin, InIter end, OutIter out)
+template<class ByteReader, class CharWriter>
+void base64::encode(ByteReader r, CharWriter w)
 {
     unsigned char triad[3];
     int pos = 0;
-    for(; begin != end; ++begin)
+    while(r.read(triad[pos]))
     {
-        triad[pos++] = *begin;
-        if(pos == 3)
+        if(pos == 2)
         {
-            *out++ = abc[triad[0] >> 2];
-            *out++ = abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)];
-            *out++ = abc[((triad[1] & 0x0F) << 2) | (triad[2] >> 6)];
-            *out++ = abc[triad[2] & 0x3F];
+            w.write(abc[triad[0] >> 2]);
+            w.write(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
+            w.write(abc[((triad[1] & 0x0F) << 2) | (triad[2] >> 6)]);
+            w.write(abc[triad[2] & 0x3F]);
             pos = 0;
         }
+        else pos++;
     }
     if(pos > 0)
     {
-        *out++ = abc[triad[0] >> 2];
+        w.write(abc[triad[0] >> 2]);
         if(pos == 2)
         {
-            *out++ = abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)];
-            *out++ = abc[(triad[1] & 0x0F) << 2];
+            w.write(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
+            w.write(abc[(triad[1] & 0x0F) << 2]);
         }
         else // if(pos == 1)
         {
-            *out++ = abc[(triad[0] & 0x03) << 4];
-            *out++ = '=';
+            w.write(abc[(triad[0] & 0x03) << 4]);
+            w.write('=');
         }
-        *out++ = '=';
+        w.write('=');
     }
 }
 //----------------------------------------------------------------------------
-template<class InIter, class OutIter>
-void base64::decode(InIter begin, InIter end, OutIter out)
+template<class CharReader, class ByteWriter>
+void base64::decode(CharReader r, ByteWriter w)
 {
     char quad[4];
     unsigned char code[4];
     int pos = 0;
-    for(; begin != end; ++begin)
+    char ch;
+    while(r.read(ch))
     {
-        char ch = *begin;
         if(ascii::isspace(ch)) continue; // skip whitespace
-        quad[pos++] = ch;
-        if(pos == 4)
+        quad[pos] = ch;
+        if(pos == 3)
         {
             for(int i=0; i<4; i++)
             {
@@ -102,15 +102,16 @@ void base64::decode(InIter begin, InIter end, OutIter out)
                 }
                 else code[i] = 255;
             }
-            *out++ = (code[0] << 2) | (code[1] >> 4);
+            w.write((code[0] << 2) | (code[1] >> 4));
             if(code[2] != 255)
             {
-                *out++ = ((code[1] & 0x0F) << 4) | (code[2] >> 2);
+                w.write(((code[1] & 0x0F) << 4) | (code[2] >> 2));
                 if(code[3] != 255)
-                    *out++ = ((code[2] & 0x03) << 6) | code[3];
+                    w.write(((code[2] & 0x03) << 6) | code[3]);
             }
             pos = 0;
         }
+        else pos++;
     }
     if(pos) throw bad_format();
 }

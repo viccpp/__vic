@@ -76,7 +76,6 @@ public:
 <tt>throw_if_closed()</tt> has to be called then to check the result.</p>
 </synopsis>
 
-
 <synopsis>
 <prototype>~bin_file()</prototype>
 <p>Closes the file if <tt>is_open() == true</tt>.</p>

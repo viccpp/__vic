@@ -4,6 +4,20 @@ Legend:
     * Changes
     ! Important
 
+2016-01-30  __vic
+    + readers.h:
+        + range_reader
+        + range_reader_n
+        + container_reader
+        + basic_cstring_reader, cstring_reader
+    + writers.h:
+        + push_back_writer
+    * string_ops.h:
+        + string_reader
+        + string_writer
+    * base16.h: base16: uses readers and writers
+    * base64.h: base64: uses readers and writers
+
 2016-01-23  __vic
     - str2num.h: C++98 mode
     + iterator.h:
