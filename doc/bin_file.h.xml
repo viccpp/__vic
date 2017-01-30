@@ -76,7 +76,6 @@ public:
 <tt>throw_if_closed()</tt> has to be called then to check the result.</p>
 </synopsis>
 
-
 <synopsis>
 <prototype>~bin_file()</prototype>
 <p>Closes the file if <tt>is_open() == true</tt>.</p>
@@ -133,7 +132,7 @@ first chunk of any size was successfully received. Throws on error.</p>
 
 <synopsis>
 <prototype>bool close_nt() noexcept</prototype>
-<p>Counterpart of <tt>close()</tt> but never throws, returns <tt>false</tt>
+<p>A counterpart of <tt>close()</tt> but never throws, returns <tt>false</tt>
 instead in case of error.</p>
 </synopsis>
 

@@ -11,7 +11,7 @@
 #include<__vic/_cfg.h>
 #include<cstddef>
 #include<new>
-#if __cplusplus >= 201103L
+#if __cpp_rvalue_references
 #include<utility> // for std::move(), std::forward(), std::swap()
 #endif
 

@@ -3,36 +3,19 @@
 //
 
 #include<__vic/io.h>
-#include<__vic/throw_errno.h>
 
 namespace __vic {
 
-namespace {
-//----------------------------------------------------------------------------
-inline bool read_char(std::FILE *fp, char &ch)
-{
-    using namespace std; // cannot write "std::getc" if getc is macro
-    int c = getc(fp);
-    if(c == EOF)
-    {
-        if(ferror(fp)) throw_errno("I/O error: read failed");
-        return false; // feof(fp)
-    }
-    ch = c;
-    return true;
-}
-//----------------------------------------------------------------------------
-}
 //----------------------------------------------------------------------------
 bool getline(std::FILE *fp, std::string &buf, char delim)
 {
     char ch;
-    if(!read_char(fp, ch)) return false; // end-of-file
+    if(!read(fp, ch)) return false; // end-of-file
     buf.clear();
     do {
         if(ch == delim) break;
         buf.push_back(ch);
-    } while(read_char(fp, ch));
+    } while(read(fp, ch));
     return true;
 }
 //----------------------------------------------------------------------------

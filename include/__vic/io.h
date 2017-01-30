@@ -44,8 +44,51 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 
+__VIC_NORETURN void throw_stdio_read_error();
+__VIC_NORETURN void throw_stdio_write_error();
+//----------------------------------------------------------------------------
+inline bool read(std::FILE *fp, char &ch)
+{
+    using namespace std; // cannot write "std::getc" if getc is a macro
+    int c = getc(fp);
+    if(c == EOF)
+    {
+        if(ferror(fp)) throw_stdio_read_error();
+        return false; // feof(fp)
+    }
+    ch = c;
+    return true;
+}
+//----------------------------------------------------------------------------
+inline void write(std::FILE *fp, char ch)
+{
+    using namespace std; // cannot write "std::putc" if putc is a macro
+    if(putc(ch, fp) == EOF) throw_stdio_write_error();
+}
+//----------------------------------------------------------------------------
+
 // Read std::string from C-stream
 bool getline(std::FILE * , std::string & , char = '\n');
+
+//////////////////////////////////////////////////////////////////////////////
+// Reader<char>
+class cstream_reader
+{
+    std::FILE *fp;
+public:
+    explicit cstream_reader(std::FILE *fp) : fp(fp) {}
+    bool read(char &ch) { return __vic::read(fp, ch); }
+};
+//////////////////////////////////////////////////////////////////////////////
+// Writer<char>
+class cstream_writer
+{
+    std::FILE *fp;
+public:
+    explicit cstream_writer(std::FILE *fp) : fp(fp) {}
+    void write(char ch) { __vic::write(fp, ch); }
+};
+//////////////////////////////////////////////////////////////////////////////
 
 } // namespace
 

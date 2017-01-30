@@ -1,0 +1,81 @@
+<chapter>
+<title><tt>__vic/iterator.h</tt></title>
+
+<p>Iterators-related utilities.</p>
+
+
+<chapter>
+<title><tt>begin(T[])</tt>, <tt>end(T[])</tt>, <tt>cbegin(T[])</tt>,
+<tt>cend(T[])</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, size_t N> constexpr T *begin(T (&arr)[N]);
+template<class T, size_t N> constexpr T *end(T (&arr)[N]);
+
+template<class T, size_t N> constexpr const T *cbegin(T (&arr)[N]);
+template<class T, size_t N> constexpr const T *cend(T (&arr)[N]);
+]]></code-block>
+
+<p>Return a pointer to the beginning and past-the-end of the array.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+int vals[] = { 1, 2, 3 };
+std::list<int> lst(__vic::begin(vals), __vic::end(vals));
+assert(lst.size() == 3);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>advance()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class Iter>
+void advance(Iter &it, Iter end, size_t n);
+]]></code-block>
+
+<p>A counterpart of <tt>std::advance()</tt> but differs in parameters and
+behaviour:</p>
+<list style="numbered">
+    <item>Allows only forward movement (<tt>++</tt>),</item>
+    <item>Checks the range bounds. Returns immediately if <tt>end</tt> is
+        reached.</item>
+</list>
+
+</chapter>
+
+
+<chapter>
+<title><tt>next()</tt>, <tt>prev()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ForwardIterator>
+ForwardIterator next(ForwardIterator it, size_t n = 1);
+template<class BidirectionalIterator>
+BidirectionalIterator prev(BidirectionalIterator it, size_t n = 1);
+]]></code-block>
+
+<p><tt>next()</tt> returns an iterator advanced by <tt>n</tt> positions.
+<tt>prev()</tt> does the same but in reverse order. As opposed to C++11 STL
+functions of the same name, the offset cannot be negative.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+template<class Container>
+void f(const Container &c)
+{
+    // Begin a traversal starting from the second element
+    // v.begin() + 1 works only with RandomAccessIterator
+    // ++v.begin() may cause a compile error
+    for(auto it = __vic::next(c.begin()); it != c.end(); ++it) ...;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+</chapter>
