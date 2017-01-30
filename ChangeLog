@@ -17,6 +17,11 @@ Legend:
         + string_writer
     * base16.h: base16: uses readers and writers
     * base64.h: base64: uses readers and writers
+    * io.h:
+        + read(std::FILE *, char &)
+        + write(std::FILE *, char)
+        + cstream_reader
+        + cstream_writer
 
 2016-01-23  __vic
     - str2num.h: C++98 mode

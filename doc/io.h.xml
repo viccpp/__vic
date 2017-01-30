@@ -133,6 +133,29 @@ file.close();
 
 
 <chapter>
+<title><tt>read(FILE, char&amp;)</tt></title>
+
+<code-block lang="C++"><![CDATA[
+bool read(std::FILE *fp, char &ch);
+]]></code-block>
+
+<p>Attempts to read a byte from the C-stream. Returns <tt>true</tt> on succes,
+<tt>false</tt> on EOF or throws on error.</p>
+</chapter>
+
+
+<chapter>
+<title><tt>write(FILE, char)</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void write(std::FILE *fp, char ch);
+]]></code-block>
+
+<p>Writes a byte to the C-stream. Throws on error.</p>
+</chapter>
+
+
+<chapter>
 <title><tt>getline(FILE)</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -141,6 +164,40 @@ bool getline(std::FILE *fp, std::string &str, char delim = '\n');
 
 <p>A counterpart of <tt>std::getline</tt> but for C-stream. Returns
 <tt>false</tt> if the end of the file was reached and nothing was read.</p>
+</chapter>
+
+
+<chapter>
+<title><tt>cstream_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class cstream_reader
+{
+public:
+    explicit cstream_reader(std::FILE *fp);
+    bool read(char &ch) { return __vic::read(fp, ch); }
+};
+]]></code-block>
+
+<p>Models <tt>Reader&lt;char></tt> for <tt>std::FILE</tt>. See
+<tt>__vic/readers.h</tt>.</p>
+</chapter>
+
+
+<chapter>
+<title><tt>cstream_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class cstream_writer
+{
+public:
+    explicit cstream_writer(std::FILE *fp);
+    void write(char ch) { __vic::write(fp, ch); }
+};
+]]></code-block>
+
+<p>Models <tt>Writer&lt;char></tt> for <tt>std::FILE</tt>. See
+<tt>__vic/writers.h</tt>.</p>
 </chapter>
 
 
