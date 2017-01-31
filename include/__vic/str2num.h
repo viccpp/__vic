@@ -10,7 +10,7 @@
 
 #include<__vic/defs.h>
 #include<__vic/ascii.h>
-#include<cstring>
+#include<__vic/tchar.h>
 #include<string>
 #include<limits>
 #include<cerrno>
@@ -50,7 +50,7 @@ public:
         return 0;
     }
     int parse(const std::string &s) { return parse(&*s.begin(), &*s.end()); }
-    int parse(const char *s) { return s ? parse(s, std::strchr(s,0)) : EDOM; }
+    int parse(const char *s) { return s ? parse(s, tchar::end(s)) : EDOM; }
     UInt result() const { return res; }
 };
 //////////////////////////////////////////////////////////////////////////////
@@ -101,7 +101,7 @@ public:
         return 0;
     }
     int parse(const std::string &s) { return parse(&*s.begin(), &*s.end()); }
-    int parse(const char *s) { return s ? parse(s, std::strchr(s,0)) : EDOM; }
+    int parse(const char *s) { return s ? parse(s, tchar::end(s)) : EDOM; }
     Int result() const { return res; }
 };
 //////////////////////////////////////////////////////////////////////////////
