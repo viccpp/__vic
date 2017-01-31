@@ -157,4 +157,41 @@ null. Returns
 
 </chapter>
 
+
+<chapter>
+<title><tt>string_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class string_reader
+{
+public:
+    explicit string_reader(const std::string &s);
+    bool read(char &ch);
+};
+]]></code-block>
+
+<p>Models <tt>Reader&lt;char></tt> for <tt>std::string</tt>. See
+<tt>__vic/readers.h</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>string_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class string_writer
+{
+public:
+    explicit string_writer(std::string &s);
+    void write(char ch);
+};
+]]></code-block>
+
+<p>Models <tt>Writer&lt;char></tt> for <tt>std::string</tt>. See
+<tt>__vic/writers.h</tt>.</p>
+
+</chapter>
+
+
 </chapter>

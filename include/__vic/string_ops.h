@@ -9,10 +9,15 @@
 #define __VIC_STRING_OPS_H
 
 #include<__vic/defs.h>
+#include<__vic/readers.h>
+#include<__vic/writers.h>
 #include<algorithm>
 #include<string>
 
 namespace __vic {
+
+typedef container_reader<std::string> string_reader;
+typedef push_back_writer<std::string> string_writer;
 
 //----------------------------------------------------------------------------
 char *trim(char * ) noexcept;

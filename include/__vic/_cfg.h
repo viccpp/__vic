@@ -84,6 +84,9 @@
 
 #if _MSC_VER >= 1900 // VS 14.0 (2015)
 #define __VIC_NO_NOEXCEPT_DEF 1
+#if !__cpp_constexpr
+#   define __cpp_constexpr 1
+#endif
 #if !__cpp_attributes
 #   define __cpp_attributes 1
 #endif
@@ -121,7 +124,7 @@
 
 #elif defined(_MSC_VER)
 
-#if defined(_M_X86)
+#if defined(_M_IX86)
 #define __VIC_X86__ 1
 #define __VIC_CPU_DEFINED 1
 #elif defined(_M_X64) || defined(_M_AMD64)

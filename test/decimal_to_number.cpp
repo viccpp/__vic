@@ -52,9 +52,9 @@ void integer_tests()
     }
     catch(const std::invalid_argument & ) {}
 
-    long long n;
+    __VIC_LONGLONG n;
     decimal_to_number(std::string("10000"), n);
-    assert(n == 10000LL);
+    assert(n == 10000);
 
     int min_int = std::numeric_limits<int>::min();
     char buf[64];

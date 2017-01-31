@@ -4,6 +4,25 @@ Legend:
     * Changes
     ! Important
 
+2016-01-30  __vic
+    + readers.h:
+        + range_reader
+        + range_reader_n
+        + container_reader
+        + basic_cstring_reader, cstring_reader
+    + writers.h:
+        + push_back_writer
+    * string_ops.h:
+        + string_reader
+        + string_writer
+    * base16.h: base16: uses readers and writers
+    * base64.h: base64: uses readers and writers
+    * io.h:
+        + read(std::FILE *, char &)
+        + write(std::FILE *, char)
+        + cstream_reader
+        + cstream_writer
+
 2016-01-24  __vic
     + windows/critical_section.h
         + windows::CriticalSection
@@ -12,9 +31,21 @@ Legend:
         + windows::Handle
         + windows::WaitAbandoned
 
+2016-01-23  __vic
+    - str2num.h: C++98 mode
+    + iterator.h:
+        + begin(T[]), end(T[]), cbegin(T[]), cend(T[])
+        + advance(), next(), prev()
+
 2016-01-20  __vic
     + bin_file.h
         + bin_file
+    + str2num.h: decimal_parser
+    + base16.h:
+        + base16::encode_lower(), base16::encode_upper(), base16::decode()
+    + base64.h:
+        + base64::encode(), base64::decode()
+        + base64::encoded_length(), base64::max_decoded_length()
 
 2016-01-18  __vic
     + fs.h:
