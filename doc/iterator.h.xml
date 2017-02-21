@@ -53,14 +53,23 @@ behaviour:</p>
 
 <code-block lang="C++"><![CDATA[
 template<class ForwardIterator>
-ForwardIterator next(ForwardIterator it, size_t n = 1);
+ForwardIterator next(ForwardIterator it);
+
+template<class ForwardIterator>
+ForwardIterator next(ForwardIterator it, size_t n);
+
 template<class BidirectionalIterator>
-BidirectionalIterator prev(BidirectionalIterator it, size_t n = 1);
+BidirectionalIterator prev(BidirectionalIterator it);
+
+template<class BidirectionalIterator>
+BidirectionalIterator prev(BidirectionalIterator it, size_t n);
 ]]></code-block>
 
 <p><tt>next()</tt> returns an iterator advanced by <tt>n</tt> positions.
 <tt>prev()</tt> does the same but in reverse order. As opposed to C++11 STL
-functions of the same name, the offset cannot be negative.</p>
+functions of the same name, the offset cannot be negative. The versions with
+single parameter just call <tt>++it</tt>/<tt>--it</tt> and return the result.
+</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
