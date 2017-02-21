@@ -3,6 +3,7 @@
 #include<iostream>
 #include<exception>
 #include<cassert>
+#include<csignal>
 
 void run_tests()
 {
@@ -12,8 +13,11 @@ void run_tests()
     __vic::posix::sigset set = __vic::posix::sigset::empty() << SIGINT;
 #endif
     __vic::posix::this_thread::block_signals(set);
-    std::cout << "*** PRESS Ctrl+C ***" << std::endl;
-    __vic::posix::this_thread::sigwait(set);
+    std::raise(SIGINT);
+    std::cout << "Catching SIGINT... " << std::flush;
+    int sig = __vic::posix::this_thread::sigwait(set);
+    std::cout << "Caught!" << std::endl;
+    assert(sig == SIGINT);
 }
 
 int main()

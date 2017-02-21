@@ -8,7 +8,7 @@
 namespace __vic {
 
 //----------------------------------------------------------------------------
-uint64_t file_size(const char *path)
+uintmax_t file_size(const char *path)
 {
     return posix::file_stat(path).size();
 }
