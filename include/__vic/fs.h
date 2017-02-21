@@ -157,8 +157,8 @@ inline bool rmdir_if_exists(const std::string &path)
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-uint64_t file_size(const char * );
-inline uint64_t file_size(const std::string &path)
+uintmax_t file_size(const char * );
+inline uintmax_t file_size(const std::string &path)
 { return file_size(path.c_str()); }
 //----------------------------------------------------------------------------
 

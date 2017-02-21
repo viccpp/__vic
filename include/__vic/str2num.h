@@ -11,7 +11,6 @@
 #include<__vic/defs.h>
 #include<__vic/ascii.h>
 #include<__vic/tchar.h>
-#include<cstring>
 #include<string>
 #include<limits>
 #include<cerrno>

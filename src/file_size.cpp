@@ -9,7 +9,7 @@
 namespace __vic {
 
 //----------------------------------------------------------------------------
-uint64_t file_size(const char *path)
+uintmax_t file_size(const char *path)
 {
     WIN32_FILE_ATTRIBUTE_DATA attr;
     if(!::GetFileAttributesExA(path, GetFileExInfoStandard, &attr))

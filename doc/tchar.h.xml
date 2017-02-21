@@ -58,6 +58,10 @@ charT *end(charT *str);
 <p>Pointer to the NUL-terminator. Generic <tt>strchr(str, '\0')</tt> /
 <tt>wcschr(str, L'\0')</tt>.</p>
 
+<note>Some buggy implementations of <tt>std::strchr()</tt> like MinGW return
+non-const <tt>char *</tt> even if the argument is <tt>const char *</tt> so
+this function can be used as a workaround in the similar use case.</note>
+
 </chapter>
 
 

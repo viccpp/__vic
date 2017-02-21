@@ -108,11 +108,12 @@
 //////////////////////////////////////////////////////////////////////////////
 #if defined(__GNUC__) || defined(__clang__)
 
-#if defined(__i386__)
-#define __VIC_X86__ 1
-#define __VIC_CPU_DEFINED 1
-#elif defined(__x86_64__) || defined(__amd64__)
+// x64 should be checked first because somtimes x86 macros are defined too
+#if defined(__x86_64__) || defined(__amd64__)
 #define __VIC_X64__ 1
+#define __VIC_CPU_DEFINED 1
+#elif defined(__i386__)
+#define __VIC_X86__ 1
 #define __VIC_CPU_DEFINED 1
 #elif defined(__IA64__)
 #define __VIC_IA64__ 1
@@ -124,11 +125,11 @@
 
 #elif defined(_MSC_VER)
 
-#if defined(_M_IX86)
-#define __VIC_X86__ 1
-#define __VIC_CPU_DEFINED 1
-#elif defined(_M_X64) || defined(_M_AMD64)
+#if defined(_M_X64) || defined(_M_AMD64)
 #define __VIC_X64__ 1
+#define __VIC_CPU_DEFINED 1
+#elif defined(_M_IX86)
+#define __VIC_X86__ 1
 #define __VIC_CPU_DEFINED 1
 #endif
 
