@@ -1,12 +1,13 @@
-// The simple static string class
+// The simple non-mutable null-terminated string class
+// with automatic memory management
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2007
 
-#ifndef __VIC_STATIC_STRING_H
-#define __VIC_STATIC_STRING_H
+#ifndef __VIC_READONLY_CSTRING_H
+#define __VIC_READONLY_CSTRING_H
 
 #include<__vic/defs.h>
 #include __VIC_SWAP_HEADER
@@ -15,27 +16,26 @@
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-// Simple, safe and lightweight implementation of non-mutable string
-class static_string
+class readonly_cstring
 {
     const char *st;
     static const char *dup(const char * , size_t = size_t(-1));
 public:
-    __VIC_CONSTEXPR_FUNC static_string() : st(nullptr) {}
-    static_string(const char *s) : st(dup(s)) {}
-    static_string(const char *begin, const char *end) : st(dup(begin, end-begin)) {}
-    static_string(const char *s, size_t n) : st(dup(s, n)) {}
-    static_string(const static_string &s) : st(dup(s.st)) {}
-    ~static_string() noexcept; // for error.h
+    __VIC_CONSTEXPR_FUNC readonly_cstring() : st(nullptr) {}
+    readonly_cstring(const char *s) : st(dup(s)) {}
+    readonly_cstring(const char *begin, const char *end) : st(dup(begin, end-begin)) {}
+    readonly_cstring(const char *s, size_t n) : st(dup(s, n)) {}
+    readonly_cstring(const readonly_cstring &s) : st(dup(s.st)) {}
+    ~readonly_cstring() noexcept; // for error.h
 
-    static_string &operator=(const char * );
-    static_string &operator=(const static_string & );
-    static_string &assign(const char * , const char * );
-    static_string &assign(const char * , size_t );
+    readonly_cstring &operator=(const char * );
+    readonly_cstring &operator=(const readonly_cstring & );
+    readonly_cstring &assign(const char * , const char * );
+    readonly_cstring &assign(const char * , size_t );
 
 #if __cpp_rvalue_references
-    static_string(static_string &&s) noexcept : st(s.st) { s.st = nullptr; }
-    static_string &operator=(static_string &&s) noexcept
+    readonly_cstring(readonly_cstring &&s) noexcept : st(s.st) { s.st = nullptr; }
+    readonly_cstring &operator=(readonly_cstring &&s) noexcept
         { swap(s); return *this; }
 #endif
 
@@ -48,22 +48,22 @@ public:
     const char *c_str() const { return st ? st : ""; }
     operator const char*() const { return c_str(); }
 
-    void swap(static_string &s) noexcept { std::swap(st, s.st); }
+    void swap(readonly_cstring &s) noexcept { std::swap(st, s.st); }
 };
 //////////////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------
-// static_string compare function and operators
+// readonly_cstring compare function and operators
 //----------------------------------------------------------------------------
-inline int compare(const static_string &s1, const static_string &s2)
+inline int compare(const readonly_cstring &s1, const readonly_cstring &s2)
 {
     return std::strcmp(s1, s2);
 }
-inline int compare(const static_string &s1, const char *s2)
+inline int compare(const readonly_cstring &s1, const char *s2)
 {
     return s1.compare(s2);
 }
-inline int compare(const char *s1, const static_string &s2)
+inline int compare(const char *s1, const readonly_cstring &s2)
 {
     return s2.compare(s1);
 }
@@ -71,30 +71,33 @@ inline int compare(const char *s1, const static_string &s2)
 #define __VIC_DEFINE_OP(OP,T1,T2) \
     inline bool operator OP(T1 s1, T2 s2) { return compare(s1, s2) OP 0; }
 
-__VIC_DEFINE_OP(==, const static_string &, const static_string &)
-__VIC_DEFINE_OP(!=, const static_string &, const static_string &)
-__VIC_DEFINE_OP(< , const static_string &, const static_string &)
-__VIC_DEFINE_OP(> , const static_string &, const static_string &)
-__VIC_DEFINE_OP(<=, const static_string &, const static_string &)
-__VIC_DEFINE_OP(>=, const static_string &, const static_string &)
+__VIC_DEFINE_OP(==, const readonly_cstring &, const readonly_cstring &)
+__VIC_DEFINE_OP(!=, const readonly_cstring &, const readonly_cstring &)
+__VIC_DEFINE_OP(< , const readonly_cstring &, const readonly_cstring &)
+__VIC_DEFINE_OP(> , const readonly_cstring &, const readonly_cstring &)
+__VIC_DEFINE_OP(<=, const readonly_cstring &, const readonly_cstring &)
+__VIC_DEFINE_OP(>=, const readonly_cstring &, const readonly_cstring &)
 
-__VIC_DEFINE_OP(==, const static_string &, const char *)
-__VIC_DEFINE_OP(!=, const static_string &, const char *)
-__VIC_DEFINE_OP(< , const static_string &, const char *)
-__VIC_DEFINE_OP(> , const static_string &, const char *)
-__VIC_DEFINE_OP(<=, const static_string &, const char *)
-__VIC_DEFINE_OP(>=, const static_string &, const char *)
+__VIC_DEFINE_OP(==, const readonly_cstring &, const char *)
+__VIC_DEFINE_OP(!=, const readonly_cstring &, const char *)
+__VIC_DEFINE_OP(< , const readonly_cstring &, const char *)
+__VIC_DEFINE_OP(> , const readonly_cstring &, const char *)
+__VIC_DEFINE_OP(<=, const readonly_cstring &, const char *)
+__VIC_DEFINE_OP(>=, const readonly_cstring &, const char *)
 
-__VIC_DEFINE_OP(==, const char *, const static_string &)
-__VIC_DEFINE_OP(!=, const char *, const static_string &)
-__VIC_DEFINE_OP(< , const char *, const static_string &)
-__VIC_DEFINE_OP(> , const char *, const static_string &)
-__VIC_DEFINE_OP(<=, const char *, const static_string &)
-__VIC_DEFINE_OP(>=, const char *, const static_string &)
+__VIC_DEFINE_OP(==, const char *, const readonly_cstring &)
+__VIC_DEFINE_OP(!=, const char *, const readonly_cstring &)
+__VIC_DEFINE_OP(< , const char *, const readonly_cstring &)
+__VIC_DEFINE_OP(> , const char *, const readonly_cstring &)
+__VIC_DEFINE_OP(<=, const char *, const readonly_cstring &)
+__VIC_DEFINE_OP(>=, const char *, const readonly_cstring &)
 
 #undef __VIC_DEFINE_OP
 //----------------------------------------------------------------------------
-inline void swap(static_string &s1, static_string &s2) noexcept { s1.swap(s2); }
+inline void swap(readonly_cstring &s1, readonly_cstring &s2) noexcept
+{
+    s1.swap(s2);
+}
 //----------------------------------------------------------------------------
 
 } // namespace

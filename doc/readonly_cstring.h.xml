@@ -1,29 +1,29 @@
 <chapter>
-<title><tt>__vic/static_string.h</tt></title>
+<title><tt>__vic/readonly_cstring.h</tt></title>
 
 <chapter>
-<title><tt>static_string</tt></title>
+<title><tt>readonly_cstring</tt></title>
 
 <code-block lang="C++"><![CDATA[
-class static_string
+class readonly_cstring
 {
 public:
-    static_string();
-    static_string(const char *str);
-    static_string(const char *begin, const char *end);
-    static_string(const char *chars, size_t n);
-    static_string(const static_string &str);
-    ~static_string() noexcept;
+    readonly_cstring();
+    readonly_cstring(const char *str);
+    readonly_cstring(const char *begin, const char *end);
+    readonly_cstring(const char *chars, size_t n);
+    readonly_cstring(const readonly_cstring &str);
+    ~readonly_cstring() noexcept;
 
     // BEGIN C++11 only
-    static_string(static_string &&str) noexcept;
-    static_string &operator=(static_string &&str) noexcept;
+    readonly_cstring(readonly_cstring &&str) noexcept;
+    readonly_cstring &operator=(readonly_cstring &&str) noexcept;
     // END C++11 only
 
-    static_string &operator=(const char *str);
-    static_string &operator=(const static_string &str);
-    static_string &assign(const char *begin, const char *end);
-    static_string &assign(const char *chars, size_t n);
+    readonly_cstring &operator=(const char *str);
+    readonly_cstring &operator=(const readonly_cstring &str);
+    readonly_cstring &assign(const char *begin, const char *end);
+    readonly_cstring &assign(const char *chars, size_t n);
 
     char *reserve(size_t n);
 
@@ -32,39 +32,39 @@ public:
     const char *c_str() const;
     operator const char*() const;
 
-    void swap(static_string &str) noexcept;
+    void swap(readonly_cstring &str) noexcept;
 };
 
-int compare(const static_string &s1, const static_string &s2);
-int compare(const static_string &s1, const char *s2);
-int compare(const char *s1, const static_string &s2);
+int compare(const readonly_cstring &s1, const readonly_cstring &s2);
+int compare(const readonly_cstring &s1, const char *s2);
+int compare(const char *s1, const readonly_cstring &s2);
 
-bool operator==(const static_string &s1, const static_string &s2);
-bool operator!=(const static_string &s1, const static_string &s2);
-bool operator<(const static_string &s1, const static_string &s2);
-bool operator>(const static_string &s1, const static_string &s2);
-bool operator<=(const static_string &s1, const static_string &s2);
-bool operator>=(const static_string &s1, const static_string &s2);
+bool operator==(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator!=(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator<(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator>(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator<=(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator>=(const readonly_cstring &s1, const readonly_cstring &s2);
 
-bool operator==(const static_string &s1, const char *s2);
-bool operator!=(const static_string &s1, const char *s2);
-bool operator<(const static_string &s1, const char *s2);
-bool operator>(const static_string &s1, const char *s2);
-bool operator<=(const static_string &s1, const char *s2);
-bool operator>=(const static_string &s1, const char *s2);
+bool operator==(const readonly_cstring &s1, const char *s2);
+bool operator!=(const readonly_cstring &s1, const char *s2);
+bool operator<(const readonly_cstring &s1, const char *s2);
+bool operator>(const readonly_cstring &s1, const char *s2);
+bool operator<=(const readonly_cstring &s1, const char *s2);
+bool operator>=(const readonly_cstring &s1, const char *s2);
 
-bool operator==(const char *s1, const static_string &s2);
-bool operator!=(const char *s1, const static_string &s2);
-bool operator<(const char *s1, const static_string &s2);
-bool operator>(const char *s1, const static_string &s2);
-bool operator<=(const char *s1, const static_string &s2);
-bool operator>=(const char *s1, const static_string &s2);
+bool operator==(const char *s1, const readonly_cstring &s2);
+bool operator!=(const char *s1, const readonly_cstring &s2);
+bool operator<(const char *s1, const readonly_cstring &s2);
+bool operator>(const char *s1, const readonly_cstring &s2);
+bool operator<=(const char *s1, const readonly_cstring &s2);
+bool operator>=(const char *s1, const readonly_cstring &s2);
 
-void swap(static_string &s1, static_string &s2) noexcept;
+void swap(readonly_cstring &s1, readonly_cstring &s2) noexcept;
 ]]></code-block>
 
-<p>Elementary class for handling strings allocated on free store and automatic
-memory management. Has simple and predictable structure that can be useful when
+<p>The simple non-mutable null-terminated string class with automatic memory
+management. Has simple and predictable structure that can be useful when
 ABI compatibility/stability is required or when usage of <tt>std::string</tt>
 is objectionable for some reason. The functionality provided by the class is
 also minimal. It provides string copying and storing and read access to it.
@@ -75,7 +75,7 @@ good choice. It's easier-to-use, more clear and safer than array of chars
 (<tt>char[]</tt>) and can be more efficient than <tt>std::string</tt>,
 though, of course, less universal. If modifications of the string parts are
 expected, usage of another string class should be considered, for instance,
-<tt>__vic::string_buffer</tt>. Class <tt>static_string</tt> is not designed
+<tt>__vic::string_buffer</tt>. Class <tt>readonly_cstring</tt> is not designed
 for such purposes.</p>
 
 <section><title>Guarantees provided by the class design</title>
@@ -93,38 +93,38 @@ for such purposes.</p>
 <section><title>Class members</title>
 
 <synopsis>
-<prototype>static_string()</prototype>
+<prototype>readonly_cstring()</prototype>
 <p>Creates an empty string.</p>
 <postcondition><tt>empty() == true</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>static_string(const char *str)</prototype>
-<prototype>static_string(const static_string &amp;str)</prototype>
+<prototype>readonly_cstring(const char *str)</prototype>
+<prototype>readonly_cstring(const readonly_cstring &amp;str)</prototype>
 <p>Creates a copy of <tt>str</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>static_string(const char *begin, const char *end)</prototype>
-<prototype>static_string(const char *chars, size_t n)</prototype>
+<prototype>readonly_cstring(const char *begin, const char *end)</prototype>
+<prototype>readonly_cstring(const char *chars, size_t n)</prototype>
 <p>Creates a string from characters range.</p>
 </synopsis>
 
 <synopsis>
-<prototype>static_string &amp;operator=(const char *str)</prototype>
-<prototype>static_string &amp;operator=(const static_string &amp;str)</prototype>
+<prototype>readonly_cstring &amp;operator=(const char *str)</prototype>
+<prototype>readonly_cstring &amp;operator=(const readonly_cstring &amp;str)</prototype>
 <p>Assigns <tt>str</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>static_string(static_string &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
-<prototype>static_string &amp;operator=(static_string &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
+<prototype>readonly_cstring(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
+<prototype>readonly_cstring &amp;operator=(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
 <p>Move operations for C++11 mode.</p>
 </synopsis>
 
 <synopsis>
-<prototype>static_string &amp;assign(const char *begin, const char *end)</prototype>
-<prototype>static_string &amp;assign(const char *chars, size_t n)</prototype>
+<prototype>readonly_cstring &amp;assign(const char *begin, const char *end)</prototype>
+<prototype>readonly_cstring &amp;assign(const char *chars, size_t n)</prototype>
 <p>Assigns the string constructed from characters range.</p>
 </synopsis>
 
@@ -153,7 +153,7 @@ it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p
 </synopsis>
 
 <synopsis>
-<prototype>void swap(static_string &amp;str) noexcept</prototype>
+<prototype>void swap(readonly_cstring &amp;str) noexcept</prototype>
 <p>Swaps the value with <tt>str</tt>.</p>
 </synopsis>
 
@@ -162,22 +162,22 @@ it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p
 <section><title>Free functions</title>
 
 <synopsis>
-<prototype>int compare(const static_string &amp;s1, const static_string &amp;s2)</prototype>
-<prototype>int compare(const static_string &amp;s1, const char *s2)</prototype>
-<prototype>int compare(const char *s1, const static_string &amp;s2)</prototype>
+<prototype>int compare(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
+<prototype>int compare(const readonly_cstring &amp;s1, const char *s2)</prototype>
+<prototype>int compare(const char *s1, const readonly_cstring &amp;s2)</prototype>
 <p>Compares two strings as <tt>std::strcpy</tt> does.</p>
 </synopsis>
 
 <synopsis>
-<prototype>bool operator==(const static_string &amp;s1, const static_string &amp;s2)</prototype>
+<prototype>bool operator==(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
 <prototype>...</prototype>
-<prototype>bool operator>=(const char *s1, const static_string &amp;s2)</prototype>
-<p>Full set of comparators for <tt>static_string</tt> и <tt>const char *</tt>
+<prototype>bool operator>=(const char *s1, const readonly_cstring &amp;s2)</prototype>
+<p>Full set of comparators for <tt>readonly_cstring</tt> и <tt>const char *</tt>
 in all combinations.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void swap(static_string &amp;s1, static_string &amp;s2) noexcept</prototype>
+<prototype>void swap(readonly_cstring &amp;s1, readonly_cstring &amp;s2) noexcept</prototype>
 <p>Specialization of the standard algorithm.</p>
 </synopsis>
 
@@ -187,7 +187,7 @@ in all combinations.</p>
 <code-block lang="C++">
 class C
 {
-    __vic::static_string st;
+    __vic::readonly_cstring st;
 public:
     explicit C(const char *str) : st(str) {}
     const char *get_str() const { return st; }

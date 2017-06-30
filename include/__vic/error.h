@@ -9,7 +9,7 @@
 #define __VIC_ERROR_H
 
 #include<__vic/defs.h>
-#include<__vic/static_string.h>
+#include<__vic/readonly_cstring.h>
 #include<cerrno>
 #include<exception>
 
@@ -20,7 +20,7 @@ namespace __vic {
 //////////////////////////////////////////////////////////////////////////////
 class exception : public std::exception
 {
-    static_string msg;
+    readonly_cstring msg;
 public:
     explicit exception(const char *msg) : msg(msg) {}
     const char *what() const noexcept { return msg; }
@@ -37,7 +37,7 @@ class libc_error : public std::exception
 {
     int code_;
     mutable bool formatted;
-    mutable static_string msg;
+    mutable readonly_cstring msg;
 public:
     explicit libc_error(int = errno);
     explicit libc_error(const char * , int = errno);

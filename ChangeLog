@@ -6,6 +6,7 @@ Legend:
 
 2017-06-30  __vic
     * Renamed string_ops.h -> string_utils.h
+    * Renamed static_string -> readonly_cstring
 
 2017-01-31  __vic
     * str2num.h: std::strchr(s,0) returns non-const pointer on MinGW so

@@ -66,7 +66,7 @@ const char *libc_error::what() const noexcept
             else
             {
                 size_t n = std::strlen(msg) + std::strlen(err_msg) + 3; // 3 is ": " + '\0'
-                static_string tmp;
+                readonly_cstring tmp;
                 std::sprintf(tmp.reserve(n), "%s: %s",
                                 static_cast<const char *>(msg), err_msg);
                 msg.swap(tmp);
