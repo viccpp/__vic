@@ -24,8 +24,8 @@
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
     <!ENTITY str2num.h SYSTEM "str2num.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
-    <!ENTITY string_ops.h SYSTEM "string_ops.h.xml">
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
+    <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
 ]>
@@ -122,8 +122,8 @@ TODO
 &stdint.h;
 &str2num.h;
 &string_buffer.h;
-&string_ops.h;
 &string_ref.h;
+&string_utils.h;
 &tchar.h;
 &to_text.h;
 </chapter>

@@ -1,5 +1,5 @@
 <chapter>
-<title><tt>__vic/string_ops.h</tt></title>
+<title><tt>__vic/string_utils.h</tt></title>
 
 <p>Miscellaneous strings-related utilities.</p>
 

@@ -4,11 +4,14 @@ Legend:
     * Changes
     ! Important
 
-2016-01-31  __vic
+2017-06-30  __vic
+    * Renamed string_ops.h -> string_utils.h
+
+2017-01-31  __vic
     * str2num.h: std::strchr(s,0) returns non-const pointer on MinGW so
       tchar::end(s) is used instead
 
-2016-01-30  __vic
+2017-01-30  __vic
     + readers.h:
         + range_reader
         + range_reader_n
@@ -27,13 +30,13 @@ Legend:
         + cstream_reader
         + cstream_writer
 
-2016-01-23  __vic
+2017-01-23  __vic
     - str2num.h: C++98 mode
     + iterator.h:
         + begin(T[]), end(T[]), cbegin(T[]), cend(T[])
         + advance(), next(), prev()
 
-2016-01-20  __vic
+2017-01-20  __vic
     + bin_file.h
         + bin_file
     + str2num.h: decimal_parser
@@ -43,15 +46,15 @@ Legend:
         + base64::encode(), base64::decode()
         + base64::encoded_length(), base64::max_decoded_length()
 
-2016-01-16  __vic
+2017-01-16  __vic
     * throw_errno() moved: error.h -> throw_errno.h
 
-2016-01-13  __vic
+2017-01-13  __vic
     + str2num.h
         + decimal_to_number()
         + decimal_to_number_range()
 
-2016-01-12  __vic
+2017-01-12  __vic
     + meta.h:
         + integral_constant, true_type, false_type
         + is_same, is_const
@@ -62,7 +65,7 @@ Legend:
     + set_of_chars.h:
         + set_of_chars
 
-2016-01-09  __vic
+2017-01-09  __vic
     * Renamed trim.h -> string_ops.h
     * string_ops.h:
         + pad_left(), pad_right()

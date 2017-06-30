@@ -5,8 +5,8 @@
 //
 // (c) __vic 2007
 
-#ifndef __VIC_STRING_OPS_H
-#define __VIC_STRING_OPS_H
+#ifndef __VIC_STRING_UTILS_H
+#define __VIC_STRING_UTILS_H
 
 #include<__vic/defs.h>
 #include<__vic/readers.h>

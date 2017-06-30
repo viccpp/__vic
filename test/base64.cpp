@@ -1,7 +1,7 @@
 #include<__vic/base64.h>
 #include<__vic/readers.h>
 #include<__vic/writers.h>
-#include<__vic/string_ops.h>
+#include<__vic/string_utils.h>
 #include<iostream>
 #include<exception>
 #include<cassert>

@@ -2,7 +2,7 @@
 // $Id$
 //
 
-#include<__vic/string_ops.h>
+#include<__vic/string_utils.h>
 #include<__vic/tchar.h>
 
 namespace __vic {

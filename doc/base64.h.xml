@@ -49,7 +49,7 @@ See <tt>__vic/writers.h</tt>.</p>
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 #include<__vic/readers.h>
-#include<__vic/string_ops.h>
+#include<__vic/string_utils.h>
 
 using bytes = std::string;
 using bytes_reader = __vic::container_reader<bytes, unsigned char>;
@@ -88,7 +88,7 @@ See <tt>__vic/writers.h</tt>.</p>
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 #include<__vic/writers.h>
-#include<__vic/string_ops.h>
+#include<__vic/string_utils.h>
 
 using bytes = std::string;
 using bytes_writer = __vic::push_back_writer<bytes, unsigned char>;
