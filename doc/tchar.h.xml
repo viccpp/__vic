@@ -55,7 +55,7 @@ charT *end(charT *str);
 }
 ]]></code-block>
 
-<p>Pointer to the NUL-terminator. Generic <tt>strchr(str, '\0')</tt> /
+<p>Pointer to the NULL-terminator. Generic <tt>strchr(str, '\0')</tt> /
 <tt>wcschr(str, L'\0')</tt>.</p>
 
 <note>Some buggy implementations of <tt>std::strchr()</tt> like MinGW return
@@ -347,7 +347,7 @@ charT *skip(charT *str, charT ch);
 ]]></code-block>
 
 <p>Skip all occurrences of the specified character and return the pointer.
-Pointer to NUL-terminator is returned if no other characters is presented.</p>
+Pointer to NULL-terminator is returned if no other characters is presented.</p>
 
 </chapter>
 

@@ -4,9 +4,8 @@
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
-    <!ENTITY readers.h SYSTEM "readers.h.xml">
+    <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
-    <!ENTITY writers.h SYSTEM "writers.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
     <!ENTITY base16.h SYSTEM "base16.h.xml">
@@ -28,6 +27,7 @@
     <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY writers SYSTEM "writers.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
 <title>__vic's C++ library</title>
@@ -102,9 +102,8 @@ TODO
 <chapter>
 <title>Library components reference</title>
 &defs.h;
-&readers.h;
+&readers;
 &readonly_cstring.h;
-&writers.h;
 &ascii.h;
 &ascii_string.h;
 &base16.h;
@@ -126,6 +125,7 @@ TODO
 &string_utils.h;
 &tchar.h;
 &to_text.h;
+&writers;
 </chapter>
 
 </document>

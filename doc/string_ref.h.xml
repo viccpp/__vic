@@ -101,7 +101,7 @@ created every time. When the second is used, just reference is returned.</p>
 <p>Another use case - input read-only string argument. The class is a drop-in
 replacement for <tt>const std::string &amp;</tt>. In most cases, it can also
 be used instead of <tt>const char *</tt>. The overhead in this case is an
-additional scan of the string to find the NUL-terminator, which is nothing in
+additional scan of the string to find the NULL-terminator, which is nothing in
 cases when we need the string end or length anyway. Let's consider 3 sets of
 overloaded functions:</p>
 

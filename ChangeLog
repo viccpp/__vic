@@ -4,6 +4,33 @@ Legend:
     * Changes
     ! Important
 
+2017-09-14  __vic
+    * readers.h removed. All content moved to:
+        + readers/range.h (range_reader, range_reader_n)
+        + readers/container.h (container_reader)
+        + readers/cstring.h (basic_cstring_reader, cstring_reader)
+    * writers.h removed. All content moved to:
+        + writers/push_back.h (push_back_writer)
+    * string_utils.h:
+        * string_reader moved to:
+            + readers/string.h
+        * string_writer moved to:
+            + writers/string.h
+    * io.h:
+        * cstream_reader moved to:
+            + readers/cstream.h
+        * cstream_writer moved to:
+            + writers/cstream.h
+        + read(std::FILE *, unsigned char &)
+    + readers/cstream.h: cstream_reader: read(unsigned char &)
+    * readers/cstring.h:
+        + basic_cstring_reader<char>: read(unsigned char &)
+    * readers/string.h:
+        + basic_string_reader
+        + basic_string_reader<char>: read(unsigned char &)
+    * writers/string.h:
+        + basic_string_writer
+
 2017-06-30  __vic
     * Renamed string_ops.h -> string_utils.h
     * Renamed static_string -> readonly_cstring

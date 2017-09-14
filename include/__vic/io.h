@@ -60,6 +60,11 @@ inline bool read(std::FILE *fp, char &ch)
     return true;
 }
 //----------------------------------------------------------------------------
+inline bool read(std::FILE *fp, unsigned char &ch)
+{
+    return read(fp, reinterpret_cast<char &>(ch));
+}
+//----------------------------------------------------------------------------
 inline void write(std::FILE *fp, char ch)
 {
     using namespace std; // cannot write "std::putc" if putc is a macro
@@ -69,26 +74,6 @@ inline void write(std::FILE *fp, char ch)
 
 // Read std::string from C-stream
 bool getline(std::FILE * , std::string & , char = '\n');
-
-//////////////////////////////////////////////////////////////////////////////
-// Reader<char>
-class cstream_reader
-{
-    std::FILE *fp;
-public:
-    explicit cstream_reader(std::FILE *fp) : fp(fp) {}
-    bool read(char &ch) { return __vic::read(fp, ch); }
-};
-//////////////////////////////////////////////////////////////////////////////
-// Writer<char>
-class cstream_writer
-{
-    std::FILE *fp;
-public:
-    explicit cstream_writer(std::FILE *fp) : fp(fp) {}
-    void write(char ch) { __vic::write(fp, ch); }
-};
-//////////////////////////////////////////////////////////////////////////////
 
 } // namespace
 
