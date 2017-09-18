@@ -8,7 +8,7 @@
 #ifndef __VIC_WRITERS_CSTREAM_H
 #define __VIC_WRITERS_CSTREAM_H
 
-#include<__vic/io.h>
+#include<__vic/stdio_file.h>
 #include<cstdio>
 
 namespace __vic {

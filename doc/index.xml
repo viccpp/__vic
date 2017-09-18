@@ -14,13 +14,13 @@
     <!ENTITY bits.h SYSTEM "bits.h.xml">
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
-    <!ENTITY io.h SYSTEM "io.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
+    <!ENTITY stdio_file.h SYSTEM "stdio_file.h.xml">
     <!ENTITY str2num.h SYSTEM "str2num.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
@@ -112,13 +112,13 @@ TODO
 &bits.h;
 &date_time.h;
 &error.h;
-&io.h;
 &iterator.h;
 &logger.h;
 &meta.h;
 &object_pool.h;
 &set_of_chars.h;
 &stdint.h;
+&stdio_file.h;
 &str2num.h;
 &string_buffer.h;
 &string_ref.h;

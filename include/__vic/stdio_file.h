@@ -1,12 +1,12 @@
-// I/O utilities
+// std::FILE * wrapper
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2007
 
-#ifndef __VIC_IO_H
-#define __VIC_IO_H
+#ifndef __VIC_STDIO_FILE_H
+#define __VIC_STDIO_FILE_H
 
 #include<__vic/defs.h>
 #include __VIC_SWAP_HEADER
@@ -15,8 +15,6 @@
 
 namespace __vic {
 
-//////////////////////////////////////////////////////////////////////////////
-// FILE * wrapper
 //////////////////////////////////////////////////////////////////////////////
 class stdio_file : private non_copyable
 {

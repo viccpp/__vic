@@ -1,7 +1,7 @@
 <chapter>
-<title><tt>__vic/io.h</tt></title>
+<title><tt>__vic/stdio_file.h</tt></title>
 
-<p>Input/output tools.</p>
+<p><tt>std::FILE</tt>-related C++ wrappers.</p>
 
 
 <chapter>

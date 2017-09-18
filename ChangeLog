@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-09-18  __vic
+    * Renamed io.h -> stdio_file.h
+
 2017-09-14  __vic
     * readers.h removed. All content moved to:
         + readers/range.h (range_reader, range_reader_n)
