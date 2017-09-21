@@ -4,8 +4,6 @@
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
-    <!ENTITY readers SYSTEM "readers.xml">
-    <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
     <!ENTITY base16.h SYSTEM "base16.h.xml">
@@ -18,6 +16,8 @@
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
+    <!ENTITY readers SYSTEM "readers.xml">
+    <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
     <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
     <!ENTITY stdio_file.h SYSTEM "stdio_file.h.xml">
@@ -102,8 +102,6 @@ TODO
 <chapter>
 <title>Library components reference</title>
 &defs.h;
-&readers;
-&readonly_cstring.h;
 &ascii.h;
 &ascii_string.h;
 &base16.h;
@@ -116,6 +114,8 @@ TODO
 &logger.h;
 &meta.h;
 &object_pool.h;
+&readers;
+&readonly_cstring.h;
 &set_of_chars.h;
 &stdint.h;
 &stdio_file.h;

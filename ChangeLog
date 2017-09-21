@@ -4,6 +4,15 @@ Legend:
     * Changes
     ! Important
 
+2017-09-21  __vic
+    * ascii.h:
+        * Moved from bits.h:
+            * to_hex_digit_upper() -> ascii::toxdigit_upper()
+            * to_hex_digit_lower() -> ascii::toxdigit_lower()
+            * hex_to_number() -> ascii::xdigit_to_number()
+        + ascii::todigit()
+        + ascii::digit_to_number()
+
 2017-09-18  __vic
     * Renamed io.h -> stdio_file.h
 
