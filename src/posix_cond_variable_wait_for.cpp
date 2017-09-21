@@ -2,7 +2,7 @@
 // $Id$
 //
 
-#include<__vic/posix/thread.h>
+#include<__vic/posix/cond_variable.h>
 #include<__vic/posix/time.h>
 
 namespace __vic { namespace posix {

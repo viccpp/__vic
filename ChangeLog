@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2017-09-21  __vic
+    + posix/mutex.h:
+        * posix::mutex, posix::mutex_lock moved from posix/thread.h
+    + posix/cond_variable.h
+        * posix::cond_variable moved from posix/thread.h
+
 2016-02-21  __vic
     * fs.h: file_size(): uintmax_t is used as a return type
 
@@ -61,7 +67,7 @@ Legend:
           rename_file_replace_if_exists()
         + file_size()
 
-2016-01-17  __vic
+2017-01-17  __vic
     + posix/fs.h:
         + posix::dirname(), posix::basename()
         + posix::append_dirname(), posix::append_basename()

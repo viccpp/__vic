@@ -29,6 +29,7 @@
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY posix.cond_variable.h SYSTEM "posix.cond_variable.h.xml">
     <!ENTITY posix.dir_entries.h SYSTEM "posix.dir_entries.h.xml">
     <!ENTITY posix.dir_files.h SYSTEM "posix.dir_files.h.xml">
     <!ENTITY posix.error.h SYSTEM "posix.error.h.xml">
@@ -36,6 +37,7 @@
     <!ENTITY posix.file_stat.h SYSTEM "posix.file_stat.h.xml">
     <!ENTITY posix.fs.h SYSTEM "posix.fs.h.xml">
     <!ENTITY posix.iov.h SYSTEM "posix.iov.h.xml">
+    <!ENTITY posix.mutex.h SYSTEM "posix.mutex.h.xml">
     <!ENTITY posix.process.h SYSTEM "posix.process.h.xml">
     <!ENTITY posix.signal.h SYSTEM "posix.signal.h.xml">
     <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
@@ -139,6 +141,7 @@ TODO
 &string_ref.h;
 &tchar.h;
 &to_text.h;
+&posix.cond_variable.h;
 &posix.dir_entries.h;
 &posix.dir_files.h;
 &posix.error.h;
@@ -146,6 +149,7 @@ TODO
 &posix.file_stat.h;
 &posix.fs.h;
 &posix.iov.h;
+&posix.mutex.h;
 &posix.process.h;
 &posix.signal.h;
 &posix.thread.h;

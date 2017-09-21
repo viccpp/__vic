@@ -1,0 +1,76 @@
+<chapter>
+<title><tt>__vic/posix/cond_variable.h</tt></title>
+
+<chapter>
+<title><tt>posix::cond_variable</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::cond_variable : private non_copyable
+{
+public:
+    constexpr cond_variable() noexcept;
+    ~cond_variable();
+
+    void wait(::pthread_mutex_t &m);
+    void wait(posix::mutex &m);
+
+    bool wait_until(::pthread_mutex_t &m, const ::timespec &abstime);
+    bool wait_until(posix::mutex &m, const ::timespec &abstime);
+
+    void signal();
+    void broadcast();
+
+    // C++11-compatible synonyms
+    void notify_one() { signal(); }
+    void notify_all() { broadcast(); }
+};
+]]></code-block>
+
+<p>POSIX condition variable.</p>
+
+<note>In С++11 mode <tt>std::condition_variable</tt> can be a better
+alternative.</note>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>cond_variable()</prototype>
+<p>Creates the object.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~cond_variable()</prototype>
+<p>Destroys the object.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void wait(::pthread_mutex_t &amp;m)</prototype>
+<prototype>void wait(posix::mutex &amp;m)</prototype>
+<p>Block the calling thread and waits for notification.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool wait_until(::pthread_mutex_t &amp;m, const ::timespec &amp;abstime)</prototype>
+<prototype>bool wait_until(posix::mutex &amp;m, const ::timespec &amp;abstime)</prototype>
+<p>As <tt>wait()</tt> but waiting time is restricted by the timeout. Returns
+<tt>true</tt> if notifcation was received and <tt>false</tt> if timeout was
+expired.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void signal()</prototype>
+<prototype>void notify_one()</prototype>
+<p>Notifies one of the waiting threads.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void broadcast()</prototype>
+<prototype>void notify_all()</prototype>
+<p>Notifies all waiting threads.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

@@ -1,0 +1,161 @@
+<chapter>
+<title><tt>__vic/posix/mutex.h</tt></title>
+
+
+<chapter>
+<title><tt>posix::mutex</tt></title>
+
+<code-block lang="C++">
+class posix::mutex : private non_copyable
+{
+public:
+    constexpr mutex() noexcept;
+    ~mutex();
+
+    void lock();
+    bool try_lock();
+    bool unlock() noexcept;
+
+    // System-specific handle
+    ::pthread_mutex_t *handle();
+    const ::pthread_mutex_t *handle() const;
+};
+</code-block>
+
+<p>Wrapper for plain non-recursive <tt>pthread_mutex_t</tt>.</p>
+
+<section><title>Usage notes</title>
+<p>In most cases explicit usage of <tt>lock()</tt> and <tt>unlock()</tt> should
+be avoided. Use class <tt>mutex_lock</tt> to manage locks instead. It provides
+exception safety and is handy for usage.</p>
+<p>In С++11 mode <tt>std::mutex</tt> can be a better alternative.</p>
+</section>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>constexpr mutex() noexcept</prototype>
+<p>Creates unlocked mutex.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~mutex()</prototype>
+<p>Destroys the mutex.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void lock()</prototype>
+<p>Acquires a lock on the mutex. Waits until released if acquired by other
+thread at the moment.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool try_lock()</prototype>
+<p>Tries to lock the mutex. Immediately returns <tt>false</tt> if acquired by
+other thread, without waiting.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool unlock() noexcept</prototype>
+<p>Releases the mutex acquired before. In some cases can return <tt>false</tt>
+in case of error, but in general error detection is not guaranteed.</p>
+</synopsis>
+
+<synopsis>
+<prototype>::pthread_mutex_t *handle()</prototype>
+<prototype>const ::pthread_mutex_t *handle() const</prototype>
+<p>Returns the native handle of the mutex.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<p>See posix::mutex_lock.</p>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>posix::mutex_lock</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::mutex_lock : private non_copyable, private non_heap_allocatable
+{
+public:
+    enum adopt_t { adopt };
+
+    explicit mutex_lock(posix::mutex &mtx);
+    mutex_lock(posix::mutex &mtx, adopt_t);
+
+    explicit mutex_lock(::pthread_mutex_t &mtx);
+    mutex_lock(::pthread_mutex_t &mtx, adopt_t);
+
+    ~mutex_lock() noexcept(false);
+};
+]]></code-block>
+
+<p>Class manages the lock on a mutex. The lock exists while the object is
+alive. Can handle <tt>posix::mutex</tt> class objects as well as system
+<tt>pthread_mutex_t</tt>.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>adopt</prototype>
+<p>Constructor tag, suppresses the lock acquisition.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit mutex_lock(posix::mutex &amp;mtx)</prototype>
+<prototype>explicit mutex_lock(::pthread_mutex_t &amp;mtx)</prototype>
+<p>Locks <tt>mtx</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~mutex_lock() noexcept(false)</prototype>
+<p>Unlocks <tt>mtx</tt>. Can throw exception in case of error and when there
+is no other active exception!</p>
+</synopsis>
+
+<synopsis>
+<prototype>mutex_lock(posix::mutex &amp;mtx, adopt_t)</prototype>
+<prototype>mutex_lock(::pthread_mutex_t &amp;mtx, adopt_t)</prototype>
+<p>Adopts already locked <tt>mtx</tt>. See the example.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++">
+// Typical usage
+void reentrant_function()
+{
+    static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
+    __vic::posix::mutex_lock lock(mtx);
+    // Critical section code until the end of the block
+    ...
+}
+
+// Usage of non-locking constructor
+__vic::posix::mutex mtx;
+if(mtx.try_lock()) // Try to lock the mutex
+{
+    // The mutex is successfully locked
+    using __vic::posix::mutex_lock;
+    mutex_lock lock(mtx, mutex_lock::adopt);
+    // Critical section code until the end of the block
+    ...
+}
+else
+{
+    // The mutex is locked by another thread
+    ...
+}
+</code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

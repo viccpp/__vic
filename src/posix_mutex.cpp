@@ -2,7 +2,7 @@
 // $Id$
 //
 
-#include<__vic/posix/thread.h>
+#include<__vic/posix/mutex.h>
 #include<__vic/throw_errno.h>
 #include<cerrno>
 
