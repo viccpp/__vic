@@ -8,25 +8,25 @@
 namespace __vic {
 
 //----------------------------------------------------------------------------
-// yy != 0 , mm - 1..12, dd - 1..{28..31}
-void validate_date(int yy, int mm, int dd)
+// y != 0 , m - 1..12, d - 1..{28..31}
+void validate_date(int y, int m, int d)
 {
-    if(yy == 0) throw invalid_date("Invalid year 0");
-    if(mm < 1 || mm > 12) throw invalid_date(__vic::msg(32) <<
-        "Invalid month " << mm);
-    if(dd < 1 || dd > days_in_month(mm, yy)) throw invalid_date(__vic::msg(32) <<
-        "Invalid day of month " << dd);
+    if(y == 0) throw invalid_date("Invalid year 0");
+    if(m < 1 || m > 12) throw invalid_date(__vic::msg(32) <<
+        "Invalid month " << m);
+    if(d < 1 || d > days_in_month(m, y)) throw invalid_date(__vic::msg(32) <<
+        "Invalid day of month " << d);
 }
 //----------------------------------------------------------------------------
-// hh - 0..23, mi - 0..59, ss - 0..59
-void validate_time(int hh, int mi, int ss)
+// h - 0..23, m - 0..59, s - 0..59
+void validate_time(int h, int m, int s)
 {
-    if(hh < 0 || hh > 23) throw invalid_date(__vic::msg(32) <<
-        "Invalid hour " << hh);
-    if(mi < 0 || mi > 59) throw invalid_date(__vic::msg(32) <<
-        "Invalid minute " << mi);
-    if(ss < 0 || ss > 59) throw invalid_date(__vic::msg(32) <<
-        "Invalid second " << ss);
+    if(h < 0 || h > 23) throw invalid_date(__vic::msg(32) <<
+        "Invalid hours " << h);
+    if(m < 0 || m > 59) throw invalid_date(__vic::msg(32) <<
+        "Invalid minutes " << m);
+    if(s < 0 || s > 59) throw invalid_date(__vic::msg(32) <<
+        "Invalid seconds " << s);
 }
 //----------------------------------------------------------------------------
 

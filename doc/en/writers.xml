@@ -1,5 +1,5 @@
 <chapter>
-<title><tt>__vic/writers.h</tt></title>
+<title><tt>__vic/writers/</tt></title>
 
 
 <chapter>
@@ -45,6 +45,8 @@ concept.</p>
 <title><tt>push_back_writer</tt></title>
 
 <code-block lang="C++"><![CDATA[
+#include<__vic/writers/push_back.h>
+
 template<class Cont, class T = typename Cont::value_type>
 class push_back_writer
 {
@@ -56,6 +58,50 @@ public:
 
 <p>An adapter. Uses <tt>push_back()</tt> member function to write elements.</p>
 
+</chapter>
+
+
+<chapter>
+<title><tt>string_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/writers/string.h>
+
+template<
+    class charT,
+    class Tr = std::char_traits<charT>,
+    class Al = std::allocator<charT>
+>
+class basic_string_writer
+{
+public:
+    explicit basic_string_writer(std::basic_string<charT,Tr,Al> &s);
+    void write(charT ch);
+};
+
+using string_writer = basic_string_writer<char>;
+]]></code-block>
+
+<p>An adapter for <tt>std::basic_string</tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>cstream_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/writers/cstream.h>
+
+class cstream_writer
+{
+public:
+    explicit cstream_writer(std::FILE *fp);
+    void write(char ch) { __vic::write(fp, ch); }
+};
+]]></code-block>
+
+<p>Models <tt>Writer&lt;char></tt> for <tt>std::FILE</tt>.</p>
 </chapter>
 
 

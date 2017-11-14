@@ -1,14 +1,12 @@
-// Generic utilities for elementwise output
+// Generic utility for elementwise output
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2011
 
-#ifndef __VIC_WRITERS_H
-#define __VIC_WRITERS_H
-
-#include<__vic/defs.h>
+#ifndef __VIC_WRITERS_CONCEPT_H
+#define __VIC_WRITERS_CONCEPT_H
 
 namespace __vic {
 
@@ -21,17 +19,6 @@ namespace __vic {
 //     Writer(Writer && ); or Writer(const Writer & );
 //     void write(ElementT ); // throws on errors
 // };
-//////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////////
-template<class Cont, class T = typename Cont::value_type>
-class push_back_writer
-{
-    Cont *cont;
-public:
-    explicit push_back_writer(Cont &c) : cont(&c) {}
-    void write(T v) { cont->push_back(v); }
-};
 //////////////////////////////////////////////////////////////////////////////
 
 } // namespace

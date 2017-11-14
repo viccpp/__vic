@@ -9,7 +9,7 @@
 #define __VIC_WINDOWS_ERROR_H
 
 #include<__vic/defs.h>
-#include<__vic/static_string.h>
+#include<__vic/readonly_cstring.h>
 #include<exception>
 #ifdef __MINGW32__
 #include<windef.h>
@@ -28,7 +28,7 @@ class error : public std::exception
 {
     DWORD code_;
     mutable bool formatted;
-    mutable static_string msg;
+    mutable readonly_cstring msg;
 public:
     explicit error(DWORD = ::GetLastError());
     explicit error(const char * , DWORD = ::GetLastError());

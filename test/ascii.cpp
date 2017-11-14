@@ -39,6 +39,20 @@ void run()
     assert( ascii::equal_icase('a', 'A'));
     assert(!ascii::equal_icase('a', 'b'));
     assert(!ascii::equal_icase('.', ','));
+
+    assert(ascii::todigit(1) == '1');
+
+    assert(ascii::toxdigit_upper(1) == '1');
+    assert(ascii::toxdigit_lower(1) == '1');
+    assert(ascii::toxdigit_upper(10) == 'A');
+    assert(ascii::toxdigit_lower(10) == 'a');
+
+    assert(ascii::digit_to_number('5') == 5);
+    assert(ascii::digit_to_number('A') == -1);
+
+    for(int i = 0; i < 256; i++)
+        std::cout << ascii::xdigit_to_number(i) << ' ';
+    std::cout << '\n';
 }
 
 } // namespace

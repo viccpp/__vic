@@ -29,21 +29,6 @@ struct base16::bad_format : public std::exception
 
 
 <chapter>
-<title><tt>base16::encode_lower()</tt></title>
-
-<code-block lang="C++"><![CDATA[
-// Bytes -> Text
-template<class ByteReader, class CharWriter>
-void base16::encode_lower(ByteReader reader, CharWriter writer);
-]]></code-block>
-
-<p>Encodes bytes from <tt>reader</tt> and writes the resulting characters to
-<tt>writer</tt>. Lower case is used for hexadecimal digits.</p>
-
-</chapter>
-
-
-<chapter>
 <title><tt>base16::encode_upper()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -56,19 +41,20 @@ void base16::encode_upper(ByteReader reader, CharWriter writer);
 <tt>writer</tt>. Upper case is used for hexadecimal digits.</p>
 
 <p><tt>ByteReader</tt> has to model <tt>Reader&lt;unsigned char></tt> concept.
-See <tt>__vic/readers.h</tt>.</p>
+See <tt>__vic/readers</tt>.</p>
 
 <p><tt>CharWriter</tt> has to model <tt>Writer&lt;char></tt> concept.
-See <tt>__vic/writers.h</tt>.</p>
+See <tt>__vic/writers</tt>.</p>
 
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
-#include<__vic/readers.h>
-#include<__vic/string_ops.h>
+#include<__vic/readers/string.h>
+#include<__vic/writers/string.h>
 
 using bytes = std::string;
-using bytes_reader = __vic::container_reader<bytes, unsigned char>;
+using bytes_reader = __vic::string_reader;
+
 std::string encode_base16(const bytes &s)
 {
     std::string res;
@@ -78,6 +64,21 @@ std::string encode_base16(const bytes &s)
 }
 ]]></code-block>
 </section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>base16::encode_lower()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Bytes -> Text
+template<class ByteReader, class CharWriter>
+void base16::encode_lower(ByteReader reader, CharWriter writer);
+]]></code-block>
+
+<p>Same as <tt>base16::encode_upper()</tt> but lower case is used for
+hexadecimal digits.</p>
 
 </chapter>
 
@@ -96,18 +97,19 @@ void base16::decode(CharReader reader, ByteWriter writer);
 has invalid Base16 format.</p>
 
 <p><tt>CharReader</tt> has to model <tt>Reader&lt;char></tt> concept.
-See <tt>__vic/readers.h</tt>.</p>
+See <tt>__vic/readers</tt>.</p>
 
 <p><tt>ByteWriter</tt> has to model <tt>Writer&lt;unsigned char></tt> concept.
-See <tt>__vic/writers.h</tt>.</p>
+See <tt>__vic/writers</tt>.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
-#include<__vic/writers.h>
-#include<__vic/string_ops.h>
+#include<__vic/readers/string.h>
+#include<__vic/writers/string.h>
 
 using bytes = std::string;
-using bytes_writer = __vic::push_back_writer<bytes, unsigned char>;
+using bytes_writer = __vic::string_writer;
+
 bytes decode_base16(const std::string &s)
 {
     bytes res;

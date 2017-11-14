@@ -52,7 +52,7 @@ const char *error::what() const noexcept
             else
             {
                 size_t n = ::lstrlenA(msg) + ::lstrlenA(err_msg) + 3; // 3 is ": " + '\0'
-                static_string tmp;
+                readonly_cstring tmp;
                 ::wsprintfA(tmp.reserve(n), "%s: %s",
                                 static_cast<const char *>(msg), err_msg);
                 msg.swap(tmp);

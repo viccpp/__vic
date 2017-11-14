@@ -60,35 +60,6 @@ constexpr int ord(char ch);
 
 
 <chapter>
-<title><tt>to_hex_digit_upper()</tt>, <tt>to_hex_digit_lower()</tt></title>
-
-<code-block lang="C++">
-constexpr char to_hex_digit_upper(int tetrad);
-constexpr char to_hex_digit_lower(int tetrad);
-</code-block>
-
-<p>Converts the value from 0 to 15 to the hexadecimal digit. The first one
-uses upper case for <tt>A</tt>-<tt>F</tt>, the latter - lower. The result
-is undefined if the input value goes beyond the range.</p>
-<precondition><![CDATA[0 <= tetrad && tetrad <= 15]]></precondition>
-
-</chapter>
-
-
-<chapter>
-<title><tt>hex_to_number()</tt></title>
-
-<code-block lang="C++">
-constexpr int hex_to_number(char ch);
-</code-block>
-
-<p>Converts the hexadecimal digit to the number. If the characted is not a
-hexadecimal digit, <tt>-1</tt> is returned.</p>
-
-</chapter>
-
-
-<chapter>
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 
 <code-block lang="C++">

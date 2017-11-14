@@ -53,7 +53,7 @@ argument and number of elements in the set.</p>
 <synopsis>
 <prototype>set_of_chars(const char *c_str)</prototype>
 <p>Creates a set filled with characters from the specified C-string excluding
-NUL-terminator.</p>
+NULL-terminator.</p>
 </synopsis>
 
 <synopsis>
@@ -82,7 +82,7 @@ NUL-terminator.</p>
 <synopsis>
 <prototype>void add(const char *c_str)</prototype>
 <p>Calls <tt>add(ch)</tt> for each character in the C-string excluding
-NUL-terminator.</p>
+NULL-terminator.</p>
 </synopsis>
 
 <synopsis>

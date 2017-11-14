@@ -1,5 +1,5 @@
 <chapter>
-<title><tt>__vic/readers.h</tt></title>
+<title><tt>__vic/readers/</tt></title>
 
 
 <chapter>
@@ -18,7 +18,7 @@ public:
 <p>A concept used by the library algorihms to read logical sequence of elements
 of type <tt>ElementT</tt> element by element. It is a generalization and rework
 of the <tt>InputIterator</tt> concept. In particular it better handles streams,
-NUL-terminated strings and other sequences where <tt>end</tt>-iterator is
+NULL-terminated strings and other sequences where <tt>end</tt>-iterator is
 meaningless or expensive to obtain. At the same time, traditional
 [<tt>begin</tt>,<tt>end</tt>) pair of iterators is just a particular case and
 fully and well handled by <tt>__vic::range_reader</tt> adapter.</p>
@@ -47,6 +47,8 @@ available (EOF). Throws an exception in other cases.</p>
 <title><tt>range_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
+#include<__vic/readers/range.h>
+
 template<class InputIterator,
          class T = typename std::iterator_traits<InputIterator>::value_type>
 class range_reader
@@ -67,6 +69,8 @@ public:
 <title><tt>range_reader_n</tt></title>
 
 <code-block lang="C++"><![CDATA[
+#include<__vic/readers/range.h>
+
 template<class InputIterator,
          class T = typename std::iterator_traits<InputIterator>::value_type>
 class range_reader_n
@@ -86,6 +90,8 @@ public:
 <title><tt>container_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
+#include<__vic/readers/container.h>
+
 template<class Cont, class T = typename Cont::value_type>
 class container_reader
 {
@@ -105,18 +111,91 @@ public:
 <title><tt>cstring_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
+#include<__vic/readers/cstring.h>
+
 template<class charT>
 class basic_cstring_reader
 {
 public:
-    explicit basic_cstring_reader(const charT *st);
-    bool read(charT &v);
+    explicit basic_cstring_reader(const charT *s);
+    bool read(charT &ch);
 };
+
+template<>
+class basic_cstring_reader<char>
+{
+public:
+    explicit basic_cstring_reader(const char *s);
+    bool read(char &ch);
+    bool read(unsigned char &ch);
+};
+
 using cstring_reader = basic_cstring_reader<char>;
 ]]></code-block>
 
-<p>An adapter for NUL-terminated C-style strings.</p>
+<p>An adapter for NULL-terminated C-style strings.</p>
 
+<p><tt>char</tt> specialization models <tt>Reader&lt;unsigned char></tt> as
+well as <tt>Reader&lt;char></tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>string_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/string.h>
+
+template<
+    class charT,
+    class Tr = std::char_traits<charT>,
+    class Al = std::allocator<charT>
+>
+class basic_string_reader
+{
+public:
+    explicit basic_string_reader(const std::basic_string<charT,Tr,Al> &s);
+    bool read(charT &ch);
+};
+
+template<class Tr, class Al>
+class basic_string_reader<char,Tr,Al>
+{
+public:
+    explicit basic_string_reader(const std::basic_string<char,Tr,Al> &s);
+    bool read(char &ch);
+    bool read(unsigned char &ch);
+};
+
+using string_reader = basic_string_reader<char>;
+]]></code-block>
+
+<p>An adapter for <tt>std::basic_string</tt>.</p>
+
+<p><tt>char</tt> specialization models <tt>Reader&lt;unsigned char></tt> as
+well as <tt>Reader&lt;char></tt>.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>cstream_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/cstream.h>
+
+class cstream_reader
+{
+public:
+    explicit cstream_reader(std::FILE *fp);
+    bool read(char &ch) { return __vic::read(fp, ch); }
+    bool read(unsigned char &ch) { return __vic::read(fp, ch); }
+};
+]]></code-block>
+
+<p>Models <tt>Reader&lt;char></tt> and <tt>Reader&lt;unsigned char></tt> for
+<tt>std::FILE</tt>.</p>
 </chapter>
 
 

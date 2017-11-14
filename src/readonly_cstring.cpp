@@ -2,18 +2,18 @@
 // $Id$
 //
 
-#include<__vic/static_string.h>
+#include<__vic/readonly_cstring.h>
 #include<cstring>
 
 namespace __vic {
 
 //----------------------------------------------------------------------------
-static_string::~static_string() noexcept
+readonly_cstring::~readonly_cstring() noexcept
 {
     delete [] st;
 }
 //----------------------------------------------------------------------------
-char *static_string::reserve(size_t n)
+char *readonly_cstring::reserve(size_t n)
 {
     char *p = new char[n];
     *p = '\x0'; // empty string
@@ -22,7 +22,7 @@ char *static_string::reserve(size_t n)
     return p;
 }
 //----------------------------------------------------------------------------
-static_string &static_string::operator=(const char *s)
+readonly_cstring &readonly_cstring::operator=(const char *s)
 {
     const char *p = dup(s);
     delete [] st;
@@ -30,7 +30,7 @@ static_string &static_string::operator=(const char *s)
     return *this;
 }
 //----------------------------------------------------------------------------
-static_string &static_string::operator=(const static_string &s)
+readonly_cstring &readonly_cstring::operator=(const readonly_cstring &s)
 {
     const char *p = dup(s.st);
     delete [] st;
@@ -38,7 +38,7 @@ static_string &static_string::operator=(const static_string &s)
     return *this;
 }
 //----------------------------------------------------------------------------
-static_string &static_string::assign(const char *begin, const char *end)
+readonly_cstring &readonly_cstring::assign(const char *begin, const char *end)
 {
     const char *p = dup(begin, end - begin);
     delete [] st;
@@ -46,7 +46,7 @@ static_string &static_string::assign(const char *begin, const char *end)
     return *this;
 }
 //----------------------------------------------------------------------------
-static_string &static_string::assign(const char *s, size_t n)
+readonly_cstring &readonly_cstring::assign(const char *s, size_t n)
 {
     const char *p = dup(s, n);
     delete [] st;
@@ -54,7 +54,7 @@ static_string &static_string::assign(const char *s, size_t n)
     return *this;
 }
 //----------------------------------------------------------------------------
-const char *static_string::dup(const char *s, size_t n)
+const char *readonly_cstring::dup(const char *s, size_t n)
 {
     if(!s || n==0) return nullptr;
     if(n == size_t(-1)) n = std::strlen(s);
