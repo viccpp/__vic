@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2017-11-14  __vic
+    * to_text_append():
+        - Small buffer for 8-byte long types
+        - printf() "ll" length modifier is not always available
+        * Using snprint() in C++11 mode
+
 2017-09-21  __vic
     * ascii.h:
         * Moved from bits.h:
