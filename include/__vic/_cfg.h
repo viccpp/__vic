@@ -183,8 +183,10 @@
 
 #if defined(_MSC_VER) && _MSC_VER < 0x1400 // VC 8.0 (VS 2005)
 #define __VIC_LONGLONG __int64
+#define __VIC_PRINTF_ll "I64"
 #else
 #define __VIC_LONGLONG long long
+#define __VIC_PRINTF_ll "ll"
 #endif
 
 #if __cplusplus >= 201103L // C++11

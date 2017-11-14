@@ -1,16 +1,16 @@
-#include<__vic/static_string.h>
+#include<__vic/readonly_cstring.h>
 #include<iostream>
 #include<exception>
 #include<cassert>
 
 void run_tests()
 {
-    static const char cstr[] = "static_string";
-    __vic::static_string st(cstr);
+    static const char cstr[] = "cstring";
+    __vic::readonly_cstring st(cstr);
     assert(!st.empty());
     assert(st == cstr);
 
-    assert(__vic::static_string().empty());
+    assert(__vic::readonly_cstring().empty());
 }
 
 int main()

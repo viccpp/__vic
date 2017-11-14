@@ -4,20 +4,69 @@ Legend:
     * Changes
     ! Important
 
+2017-11-14  __vic
+    * to_text_append():
+        - Small buffer for 8-byte long types
+        - printf() "ll" length modifier is not always available
+        * Using snprint() in C++11 mode
+
 2017-09-21  __vic
     + posix/mutex.h:
         * posix::mutex, posix::mutex_lock moved from posix/thread.h
     + posix/cond_variable.h
         * posix::cond_variable moved from posix/thread.h
 
-2016-02-21  __vic
+2017-09-21  __vic
+    * ascii.h:
+        * Moved from bits.h:
+            * to_hex_digit_upper() -> ascii::toxdigit_upper()
+            * to_hex_digit_lower() -> ascii::toxdigit_lower()
+            * hex_to_number() -> ascii::xdigit_to_number()
+        + ascii::todigit()
+        + ascii::digit_to_number()
+
+2017-09-18  __vic
+    * Renamed io.h -> stdio_file.h
+
+2017-09-14  __vic
+    * readers.h removed. All content moved to:
+        + readers/range.h (range_reader, range_reader_n)
+        + readers/container.h (container_reader)
+        + readers/cstring.h (basic_cstring_reader, cstring_reader)
+    * writers.h removed. All content moved to:
+        + writers/push_back.h (push_back_writer)
+    * string_utils.h:
+        * string_reader moved to:
+            + readers/string.h
+        * string_writer moved to:
+            + writers/string.h
+    * io.h:
+        * cstream_reader moved to:
+            + readers/cstream.h
+        * cstream_writer moved to:
+            + writers/cstream.h
+        + read(std::FILE *, unsigned char &)
+    + readers/cstream.h: cstream_reader: read(unsigned char &)
+    * readers/cstring.h:
+        + basic_cstring_reader<char>: read(unsigned char &)
+    * readers/string.h:
+        + basic_string_reader
+        + basic_string_reader<char>: read(unsigned char &)
+    * writers/string.h:
+        + basic_string_writer
+
+2017-06-30  __vic
+    * Renamed string_ops.h -> string_utils.h
+    * Renamed static_string -> readonly_cstring
+
+2017-02-21  __vic
     * fs.h: file_size(): uintmax_t is used as a return type
 
-2016-01-31  __vic
+2017-01-31  __vic
     * str2num.h: std::strchr(s,0) returns non-const pointer on MinGW so
       tchar::end(s) is used instead
 
-2016-01-30  __vic
+2017-01-30  __vic
     + readers.h:
         + range_reader
         + range_reader_n
@@ -36,13 +85,13 @@ Legend:
         + cstream_reader
         + cstream_writer
 
-2016-01-23  __vic
+2017-01-23  __vic
     - str2num.h: C++98 mode
     + iterator.h:
         + begin(T[]), end(T[]), cbegin(T[]), cend(T[])
         + advance(), next(), prev()
 
-2016-01-20  __vic
+2017-01-20  __vic
     + bin_file.h
         + bin_file
     + str2num.h: decimal_parser
@@ -52,7 +101,7 @@ Legend:
         + base64::encode(), base64::decode()
         + base64::encoded_length(), base64::max_decoded_length()
 
-2016-01-18  __vic
+2017-01-18  __vic
     + fs.h:
         + path_exists(), file_exists(), dir_exists()
         + mkdir(), mkdir_if_absent()
@@ -73,16 +122,16 @@ Legend:
         + posix::append_dirname(), posix::append_basename()
         + posix::add_trailing_slash(), posix::with_trailing_slash()
 
-2016-01-16  __vic
+2017-01-16  __vic
     * throw_errno() moved: error.h -> throw_errno.h
     * stdio_file: errno value is thrown in case of error
 
-2016-01-13  __vic
+2017-01-13  __vic
     + str2num.h
         + decimal_to_number()
         + decimal_to_number_range()
 
-2016-01-12  __vic
+2017-01-12  __vic
     + meta.h:
         + integral_constant, true_type, false_type
         + is_same, is_const
@@ -105,7 +154,7 @@ Legend:
         + posix::mutex, posix::mutex_lock
         + posix::cond_variable
 
-2016-01-09  __vic
+2017-01-09  __vic
     * Renamed trim.h -> string_ops.h
     * string_ops.h:
         + pad_left(), pad_right()

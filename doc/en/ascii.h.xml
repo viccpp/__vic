@@ -30,6 +30,66 @@ constexpr bool isascii(char c);
 
 
 <chapter>
+<title><tt>ascii::todigit()</tt></title>
+
+<code-block lang="C++">
+constexpr char ascii::todigit(int d);
+</code-block>
+
+<p>Converts the value from 0 to 9 to the decimal digit. The result is undefined
+if the input value goes beyond the range.</p>
+<precondition><tt><![CDATA[0 <= d && d <= 9]]></tt></precondition>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ascii::toxdigit_upper()</tt>, <tt>ascii::toxdigit_lower()</tt></title>
+
+<code-block lang="C++">
+namespace ascii {
+
+constexpr char toxdigit_upper(int d);
+constexpr char toxdigit_lower(int d);
+
+}
+</code-block>
+
+<p>Converts the value from 0 to 15 to the hexadecimal digit. The first one
+uses upper case for <tt>A</tt>-<tt>F</tt>, the latter - lower. The result
+is undefined if the input value goes beyond the range.</p>
+<precondition><tt><![CDATA[0 <= d && d <= 15]]></tt></precondition>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ascii::digit_to_number()</tt></title>
+
+<code-block lang="C++">
+constexpr int ascii::digit_to_number(char d);
+</code-block>
+
+<p>Converts the given decimal digit to the number if <tt>ascii::isdigit(d)</tt>.
+<tt>-1</tt> is returned otherwise.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ascii::xdigit_to_number()</tt></title>
+
+<code-block lang="C++">
+constexpr int ascii::xdigit_to_number(char d);
+</code-block>
+
+<p>Converts the given hexadecimal digit to the number if
+<tt>ascii::isxdigit(d)</tt>. <tt>-1</tt> is returned otherwise.</p>
+
+</chapter>
+
+
+<chapter>
 <title><tt>ascii::tolower(char)</tt>, <tt>ascii::toupper(char)</tt></title>
 
 <code-block lang="C++">

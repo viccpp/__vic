@@ -1,7 +1,6 @@
 #include<__vic/base64.h>
-#include<__vic/readers.h>
-#include<__vic/writers.h>
-#include<__vic/string_ops.h>
+#include<__vic/readers/string.h>
+#include<__vic/writers/string.h>
 #include<iostream>
 #include<exception>
 #include<cassert>
@@ -10,8 +9,8 @@
 namespace tests {
 
 typedef std::string bytes;
-typedef __vic::container_reader<bytes, unsigned char> bytes_reader;
-typedef __vic::push_back_writer<bytes, unsigned char> bytes_writer;
+typedef __vic::string_reader bytes_reader;
+typedef __vic::string_writer bytes_writer;
 
 std::string encode(const bytes &s)
 {

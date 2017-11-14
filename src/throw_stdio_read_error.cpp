@@ -2,7 +2,7 @@
 // $Id$
 //
 
-#include<__vic/io.h>
+#include<__vic/stdio_file.h>
 #include<__vic/throw_errno.h>
 
 namespace __vic {
