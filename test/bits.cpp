@@ -31,19 +31,6 @@ void ord_test()
     std::cout << std::dec << __vic::ord(ch) << '\n';
     assert(__vic::ord(ch) == 236);
 }
-void to_hex_digit_tests()
-{
-    assert(__vic::to_hex_digit_upper(1) == '1');
-    assert(__vic::to_hex_digit_lower(1) == '1');
-    assert(__vic::to_hex_digit_upper(10) == 'A');
-    assert(__vic::to_hex_digit_lower(10) == 'a');
-}
-void hex_to_number_test()
-{
-    for(int i = 0; i < 256; i++)
-        std::cout << __vic::hex_to_number(i) << ' ';
-    std::cout << '\n';
-}
 void swap_nibbles_test()
 {
     assert(__vic::swapped_nibbles(0x12) == 0x21);
@@ -59,8 +46,6 @@ void run()
     ones_test();
     get_lsbs_test();
     ord_test();
-    to_hex_digit_tests();
-    hex_to_number_test();
     swap_nibbles_test();
     rot_tests();
 }

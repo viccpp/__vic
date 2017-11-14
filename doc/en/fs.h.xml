@@ -3,6 +3,8 @@
 
 <p>Filesystem utilities.</p>
 
+<note>All paths are expected to be UTF-8 encoded!</note>
+
 
 <chapter>
 <title><tt>path_exists()</tt>, <tt>file_exists()</tt>, <tt>dir_exists()</tt>

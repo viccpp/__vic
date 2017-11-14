@@ -15,6 +15,9 @@ generic
     Nonterminal branch containing common parts (usually interfaces and doc) of
     platform-specific branches.
 
+exp/*
+    Topic branches for experimental features.
+
 Typical workflow of merging the branches looks like this:
 
                   / posix

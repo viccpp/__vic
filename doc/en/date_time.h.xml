@@ -74,10 +74,14 @@ void validate_date_time(int yy, int mm, int dd, int hh, int mi, int ss);
     <item><tt>dd</tt> (day of the month) - <tt>1..{28..31}</tt>, depending
         on the month,</item>
     <item><tt>hh</tt> (hour) - <tt>0..23</tt>,</item>
-    <item><tt>mi</tt> (minute), ss (second) - <tt>0..59</tt>.</item>
+    <item><tt>mi</tt> (minute) - <tt>0..59</tt>,</item>
+    <item><tt>ss</tt> (second) - <tt>0..59</tt>.</item>
 </list>
 
 <p><tt>invalid_date</tt> is thrown in case of the constraint violation.</p>
+
+<note>Specific time values as <tt>24:00:00</tt> (midnight at the end of a
+day) or <tt>59:60</tt> (leap second) are considered as invalid!</note>
 
 </chapter>
 

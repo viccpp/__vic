@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="xsl/html.xsl"?>
-<!DOCTYPE document SYSTEM "document.dtd" [
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<!DOCTYPE document SYSTEM "../document.dtd" [
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
-    <!ENTITY readers.h SYSTEM "readers.h.xml">
-    <!ENTITY writers.h SYSTEM "writers.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
     <!ENTITY base16.h SYSTEM "base16.h.xml">
@@ -15,20 +13,22 @@
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY fs.h SYSTEM "fs.h.xml">
-    <!ENTITY io.h SYSTEM "io.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
+    <!ENTITY readers SYSTEM "readers.xml">
+    <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
     <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
-    <!ENTITY static_string.h SYSTEM "static_string.h.xml">
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
+    <!ENTITY stdio_file.h SYSTEM "stdio_file.h.xml">
     <!ENTITY str2num.h SYSTEM "str2num.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
-    <!ENTITY string_ops.h SYSTEM "string_ops.h.xml">
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
+    <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY writers SYSTEM "writers.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
 <title>__vic's C++ library</title>
@@ -103,8 +103,6 @@ TODO
 <chapter>
 <title>Library components reference</title>
 &defs.h;
-&readers.h;
-&writers.h;
 &ascii.h;
 &ascii_string.h;
 &base16.h;
@@ -114,20 +112,22 @@ TODO
 &date_time.h;
 &error.h;
 &fs.h;
-&io.h;
 &iterator.h;
 &logger.h;
 &meta.h;
 &object_pool.h;
+&readers;
+&readonly_cstring.h;
 &set_of_chars.h;
-&static_string.h;
 &stdint.h;
+&stdio_file.h;
 &str2num.h;
 &string_buffer.h;
-&string_ops.h;
 &string_ref.h;
+&string_utils.h;
 &tchar.h;
 &to_text.h;
+&writers;
 </chapter>
 
 </document>

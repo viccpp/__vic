@@ -1,12 +1,12 @@
-// I/O utilities
+// std::FILE * wrapper
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2007
 
-#ifndef __VIC_IO_H
-#define __VIC_IO_H
+#ifndef __VIC_STDIO_FILE_H
+#define __VIC_STDIO_FILE_H
 
 #include<__vic/defs.h>
 #include __VIC_SWAP_HEADER
@@ -15,8 +15,6 @@
 
 namespace __vic {
 
-//////////////////////////////////////////////////////////////////////////////
-// FILE * wrapper
 //////////////////////////////////////////////////////////////////////////////
 class stdio_file : private non_copyable
 {
@@ -60,6 +58,11 @@ inline bool read(std::FILE *fp, char &ch)
     return true;
 }
 //----------------------------------------------------------------------------
+inline bool read(std::FILE *fp, unsigned char &ch)
+{
+    return read(fp, reinterpret_cast<char &>(ch));
+}
+//----------------------------------------------------------------------------
 inline void write(std::FILE *fp, char ch)
 {
     using namespace std; // cannot write "std::putc" if putc is a macro
@@ -69,26 +72,6 @@ inline void write(std::FILE *fp, char ch)
 
 // Read std::string from C-stream
 bool getline(std::FILE * , std::string & , char = '\n');
-
-//////////////////////////////////////////////////////////////////////////////
-// Reader<char>
-class cstream_reader
-{
-    std::FILE *fp;
-public:
-    explicit cstream_reader(std::FILE *fp) : fp(fp) {}
-    bool read(char &ch) { return __vic::read(fp, ch); }
-};
-//////////////////////////////////////////////////////////////////////////////
-// Writer<char>
-class cstream_writer
-{
-    std::FILE *fp;
-public:
-    explicit cstream_writer(std::FILE *fp) : fp(fp) {}
-    void write(char ch) { __vic::write(fp, ch); }
-};
-//////////////////////////////////////////////////////////////////////////////
 
 } // namespace
 

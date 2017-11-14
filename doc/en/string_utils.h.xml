@@ -1,5 +1,5 @@
 <chapter>
-<title><tt>__vic/string_ops.h</tt></title>
+<title><tt>__vic/string_utils.h</tt></title>
 
 <p>Miscellaneous strings-related utilities.</p>
 
@@ -154,42 +154,6 @@ number of <tt>pad_ch</tt> chars to the right (end). Nothing happens if
 <tt>str</tt> length is equal or greather than <tt>size</tt> or the pointer is
 null. Returns
 <tt>str</tt>.</p>
-
-</chapter>
-
-
-<chapter>
-<title><tt>string_reader</tt></title>
-
-<code-block lang="C++"><![CDATA[
-class string_reader
-{
-public:
-    explicit string_reader(const std::string &s);
-    bool read(char &ch);
-};
-]]></code-block>
-
-<p>Models <tt>Reader&lt;char></tt> for <tt>std::string</tt>. See
-<tt>__vic/readers.h</tt>.</p>
-
-</chapter>
-
-
-<chapter>
-<title><tt>string_writer</tt></title>
-
-<code-block lang="C++"><![CDATA[
-class string_writer
-{
-public:
-    explicit string_writer(std::string &s);
-    void write(char ch);
-};
-]]></code-block>
-
-<p>Models <tt>Writer&lt;char></tt> for <tt>std::string</tt>. See
-<tt>__vic/writers.h</tt>.</p>
 
 </chapter>
 

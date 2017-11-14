@@ -58,6 +58,45 @@ __VIC_CONSTEXPR_FUNC bool isascii(char c)
     return static_cast<unsigned char>(c) < 0x7FU;
 }
 //----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC char todigit(int n)
+{
+    // assert(0 <= n && n <= 9);
+    return n + '0';
+}
+//----------------------------------------------------------------------------
+// Convert digit to integer number
+// Returns -1 if !isdigit(ch)
+__VIC_CONSTEXPR_FUNC int digit_to_number(char ch)
+{
+    return '0' <= ch && ch <= '9' ? ch - '0' : -1;
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC char toxdigit_upper(int n)
+{
+    // assert(0 <= n && n <= 15);
+    return n < 10 ? n + '0' : n - 10 + 'A';
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC char toxdigit_lower(int n)
+{
+    // assert(0 <= n && n <= 15);
+    return n < 10 ? n + '0' : n - 10 + 'a';
+}
+//----------------------------------------------------------------------------
+// Convert HEX-digit to integer number
+// Returns -1 if !isxdigit(ch)
+__VIC_CONSTEXPR_FUNC int xdigit_to_number(char ch)
+{
+    return '0' <= ch && ch <= '9' ? ch - '0' :
+           'A' <= ch && ch <= 'F' ? ch - 'A' + 10 :
+           'a' <= ch && ch <= 'f' ? ch - 'a' + 10 :
+           -1; // Not a hex digit
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
 // Precondition: isupper(upper)
 __VIC_CONSTEXPR_FUNC char upper_to_lower(char upper)
 {

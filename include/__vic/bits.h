@@ -56,28 +56,6 @@ __VIC_CONSTEXPR_FUNC int ord(char ch)
     return static_cast<unsigned char>(ch);
 }
 //----------------------------------------------------------------------------
-__VIC_CONSTEXPR_FUNC char to_hex_digit_upper(int tetrad)
-{
-    // assert(0 <= tetrad && tetrad <= 15);
-    return tetrad < 10 ? tetrad + '0' : tetrad - 10 + 'A';
-}
-//----------------------------------------------------------------------------
-__VIC_CONSTEXPR_FUNC char to_hex_digit_lower(int tetrad)
-{
-    // assert(0 <= tetrad && tetrad <= 15);
-    return tetrad < 10 ? tetrad + '0' : tetrad - 10 + 'a';
-}
-//----------------------------------------------------------------------------
-// Convert HEX-digit to integer number
-// Returns -1 on error
-__VIC_CONSTEXPR_FUNC int hex_to_number(char ch)
-{
-    return '0' <= ch && ch <= '9' ? ch - '0' :
-           'A' <= ch && ch <= 'F' ? ch - 'A' + 10 :
-           'a' <= ch && ch <= 'f' ? ch - 'a' + 10 :
-           -1; // Not a hex digit
-}
-//----------------------------------------------------------------------------
 // Swap high-order nibble with low-order one
 __VIC_CONSTEXPR_FUNC uint8_t swapped_nibbles(uint8_t b)
 {

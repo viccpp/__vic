@@ -9,7 +9,7 @@
 #define __VIC_BIN_FILE_H
 
 #include<__vic/defs.h>
-#include<__vic/io.h>
+#include<__vic/stdio_file.h>
 
 namespace __vic {
 
