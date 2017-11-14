@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="xsl/html.xsl"?>
-<!DOCTYPE document SYSTEM "document.dtd" [
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<!DOCTYPE document SYSTEM "../document.dtd" [
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">

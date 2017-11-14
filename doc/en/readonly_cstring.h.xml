@@ -172,7 +172,7 @@ it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p
 <prototype>bool operator==(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
 <prototype>...</prototype>
 <prototype>bool operator>=(const char *s1, const readonly_cstring &amp;s2)</prototype>
-<p>Full set of comparators for <tt>readonly_cstring</tt> и <tt>const char *</tt>
+<p>Full set of comparators for <tt>readonly_cstring</tt> and <tt>const char *</tt>
 in all combinations.</p>
 </synopsis>
 
