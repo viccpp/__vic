@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-11-28  __vic
+    + string_utils.h: starts_with(), ends_with()
+
 2017-11-14  __vic
     * to_text_append():
         - Small buffer for 8-byte long types
