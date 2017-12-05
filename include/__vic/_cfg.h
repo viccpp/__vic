@@ -9,13 +9,13 @@
 // __VIC_POWERPC__  - PowerPC
 //
 // Software platforms (OS):
-// __VIC_LINUX__    - Linux
-// __VIC_FREEBSD__  - FreeBSD
-// __VIC_QNX__      - QNX Neutrino
-// __VIC_SUNOS__    - Solaris
-// __VIC_HPUX__     - HP-UX
-// __VIC_AIX__      - AIX
-// __VIC_WINDOWS__  - Windows
+// __linux__    - Linux
+// __FreeBSD__  - FreeBSD
+// __QNX__      - QNX Neutrino
+// __sun        - Solaris
+// __hpux       - HP-UX
+// _AIX         - AIX
+// _WIN32       - Windows
 //
 // Other defines:
 // __VIC_STRICT_RAM_ALIGNMENT__ - unaligned data cannot be fetched from RAM
@@ -141,28 +141,6 @@
 #undef __VIC_CPU_DEFINED
 //////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////
-// Detect OS
-//////////////////////////////////////////////////////////////////////////////
-#if defined(__linux__)
-#define __VIC_LINUX__ 1
-#elif defined(__FreeBSD__)
-#define __VIC_FREEBSD__ 1
-#elif defined(_WIN32) // MinGW
-#define __VIC_WINDOWS__ 1
-#elif defined(_AIX)
-#define __VIC_AIX__ 1
-#elif defined(__sun)
-#define __VIC_SUNOS__
-#elif defined(__QNX__)
-#define __VIC_QNX__
-#elif defined(__hpux)
-#define __VIC_HPUX__ 1
-#else
-#error Unsupported OS
-#endif
-//////////////////////////////////////////////////////////////////////////////
-
 #if !(defined(__VIC_X86__) || defined(__VIC_X64__))
 // Memory access to unaligned data will cause bus error
 #define __VIC_STRICT_RAM_ALIGNMENT__ 1
@@ -198,16 +176,10 @@
 #   endif
 #   define __VIC_THROWS noexcept(false)
 #   define __VIC_DEFAULT_CTR =default;
-#   if defined(__GNUC__) && __GNUC__ < 5
-#       define __VIC_CXX11_CONST_ITERATOR iterator
-#   else
-#       define __VIC_CXX11_CONST_ITERATOR const_iterator
-#   endif
 #   define __VIC_SWAP_HEADER <algorithm>
 #else // C++98
 #   define __VIC_THROWS
 #   define __VIC_DEFAULT_CTR {}
-#   define __VIC_CXX11_CONST_ITERATOR iterator
 #   define __VIC_SWAP_HEADER <utility>
 #endif
 
