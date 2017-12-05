@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-11-29  __vic
+    * windows/throw_last_error.h doesn't include windows.h
+
 2017-11-14  __vic
     * to_text_append():
         - Small buffer for 8-byte long types

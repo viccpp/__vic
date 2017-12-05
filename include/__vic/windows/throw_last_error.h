@@ -9,16 +9,13 @@
 #define __VIC_WINDOWS_THROW_LAST_ERROR_H
 
 #include<__vic/defs.h>
-#ifdef __MINGW32__
-#include<windef.h>
-#else
-#include<windows.h>
-#endif
 
 namespace __vic { namespace windows {
 
+// The second parameter is actually DWORD
+// but including big header only for one typedef is an overkill
 __VIC_NORETURN void throw_last_error(const char * );
-__VIC_NORETURN void throw_last_error(const char * , DWORD );
+__VIC_NORETURN void throw_last_error(const char * , unsigned );
 
 }} // namespace
 
