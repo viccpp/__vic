@@ -26,7 +26,7 @@ struct time_spec : ::timespec
     // Unit tags
     enum sec_units { sec };
     enum msec_units { msec };
-    enum mksec_units { mksec };
+    enum usec_units { usec };
     enum nsec_units { nsec };
 
     time_spec() __VIC_DEFAULT_CTR
@@ -42,10 +42,10 @@ struct time_spec : ::timespec
         tv_sec = msecs / 1000;
         tv_nsec = msecs % 1000 * 1000000L;
     }
-    time_spec(time_t mksecs, mksec_units)
+    time_spec(time_t usecs, usec_units)
     {
-        tv_sec = mksecs / 1000000UL;
-        tv_nsec = mksecs % 1000000UL * 1000000L;
+        tv_sec = usecs / 1000000UL;
+        tv_nsec = usecs % 1000000UL * 1000000L;
     }
     time_spec(time_t nsecs, nsec_units)
     {

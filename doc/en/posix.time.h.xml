@@ -13,7 +13,7 @@ struct posix::time_spec : ::timespec
     // Unit tags
     enum sec_units { sec };
     enum msec_units { msec };
-    enum mksec_units { mksec };
+    enum usec_units { usec };
     enum nsec_units { nsec };
 
     time_spec() = default;
@@ -21,7 +21,7 @@ struct posix::time_spec : ::timespec
 
     time_spec(time_t secs, sec_units);
     time_spec(time_t msecs, msec_units);
-    time_spec(time_t mksecs, mksec_units);
+    time_spec(time_t usecs, usec_units);
     time_spec(time_t nsecs, nsec_units);
 
     // BEGIN C++11 only
@@ -60,7 +60,7 @@ using C++ operators.</p>
 <synopsis>
 <prototype>enum sec_units { sec }</prototype>
 <prototype>enum msec_units { msec }</prototype>
-<prototype>enum mksec_units { mksec }</prototype>
+<prototype>enum usec_units { usec }</prototype>
 <prototype>enum nsec_units { nsec }</prototype>
 <p>Constructor tags to specify units.</p>
 </synopsis>
@@ -78,7 +78,7 @@ using C++ operators.</p>
 <synopsis>
 <prototype>time_spec(time_t secs, sec_units)</prototype>
 <prototype>time_spec(time_t msecs, msec_units)</prototype>
-<prototype>time_spec(time_t mksecs, mksec_units)</prototype>
+<prototype>time_spec(time_t usecs, usec_units)</prototype>
 <prototype>time_spec(time_t nsecs, nsec_units)</prototype>
 <p>Specifies time in seconds, milliseconds, microseconds and nanoseconds,
 respectively.</p>
