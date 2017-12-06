@@ -16,13 +16,21 @@ namespace __vic { namespace posix {
 
 //////////////////////////////////////////////////////////////////////////////
 // Plain non-recursive mutex
-class mutex : private non_copyable
+class mutex
 {
     ::pthread_mutex_t mtx
 #if __cplusplus >= 201103L
          = PTHREAD_MUTEX_INITIALIZER
 #endif
     ;
+#if __cplusplus < 201103L
+    mutex(const mutex & ); // not implemeted
+    mutex &operator=(const mutex & ); // not implemeted
+#else
+public:
+    mutex(const mutex & ) = delete;
+    mutex &operator=(const mutex & ) = delete;
+#endif
 public:
 #if __cplusplus >= 201103L
     constexpr mutex() noexcept = default;

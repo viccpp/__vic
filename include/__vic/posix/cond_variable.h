@@ -17,13 +17,21 @@ namespace __vic { namespace posix {
 
 //////////////////////////////////////////////////////////////////////////////
 // Condition variable
-class cond_variable : private non_copyable
+class cond_variable
 {
     ::pthread_cond_t cond
 #if __cplusplus >= 201103L
          = PTHREAD_COND_INITIALIZER
 #endif
      ;
+#if __cplusplus < 201103L
+    cond_variable(const cond_variable & ); // not implemeted
+    cond_variable &operator=(const cond_variable & ); // not implemeted
+#else
+public:
+    cond_variable(const cond_variable & ) = delete;
+    cond_variable &operator=(const cond_variable & ) = delete;
+#endif
 public:
 #if __cplusplus >= 201103L
     constexpr cond_variable() noexcept = default;

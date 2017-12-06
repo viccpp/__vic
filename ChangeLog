@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-12-06  __vic
+    * Classes with constexpr constructor don't inherit non_copyable
+
 2017-12-05  __vic
     * posix/time.h: posix::time_spec: renamed mksec -> usec
 

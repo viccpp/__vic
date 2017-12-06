@@ -5,12 +5,15 @@
 <chapter>
 <title><tt>posix::mutex</tt></title>
 
-<code-block lang="C++">
-class posix::mutex : private non_copyable
+<code-block lang="C++"><![CDATA[
+class posix::mutex
 {
 public:
     constexpr mutex() noexcept;
     ~mutex();
+
+    mutex(const mutex & ) = delete;
+    mutex &operator=(const mutex & ) = delete;
 
     void lock();
     bool try_lock();
@@ -20,7 +23,7 @@ public:
     ::pthread_mutex_t *handle();
     const ::pthread_mutex_t *handle() const;
 };
-</code-block>
+]]></code-block>
 
 <p>Wrapper for plain non-recursive <tt>pthread_mutex_t</tt>.</p>
 

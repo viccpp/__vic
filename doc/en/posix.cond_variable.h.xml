@@ -5,11 +5,14 @@
 <title><tt>posix::cond_variable</tt></title>
 
 <code-block lang="C++"><![CDATA[
-class posix::cond_variable : private non_copyable
+class posix::cond_variable
 {
 public:
     constexpr cond_variable() noexcept;
     ~cond_variable();
+
+    cond_variable(const cond_variable & ) = delete;
+    cond_variable &operator=(const cond_variable & ) = delete;
 
     void wait(::pthread_mutex_t &m);
     void wait(posix::mutex &m);
