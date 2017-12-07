@@ -23,6 +23,14 @@ namespace __vic {
 class string_buffer : public std::string
 {
     typedef std::string base;
+    typedef
+#if __cplusplus < 201103L || \
+    defined(__GLIBCXX__) && _GLIBCXX_USE_CXX11_ABI != 1
+        iterator
+#else
+        const_iterator
+#endif
+            const_iterator11;
 public:
     string_buffer() __VIC_DEFAULT_CTR
     explicit string_buffer(size_type n) { base::reserve(n); }
@@ -120,12 +128,12 @@ public:
     string_buffer &replace(size_type pos, size_type n, const std::string &st) { base::replace(pos,n,st); return *this; }
     string_buffer &replace(size_type pos1, size_type n1, const std::string &st, size_type pos2, size_type n2) { base::replace(pos1,n1,st,pos2,n2); return *this; }
     string_buffer &replace(size_type pos, size_type n, size_type count, char ch) { base::replace(pos,n,count,ch); return *this; }
-    string_buffer &replace(__VIC_CXX11_CONST_ITERATOR b, __VIC_CXX11_CONST_ITERATOR e, const char *st) { if(st) base::replace(b,e,st); return *this; }
-    string_buffer &replace(__VIC_CXX11_CONST_ITERATOR b, __VIC_CXX11_CONST_ITERATOR e, const std::string &st) { base::replace(b,e,st); return *this; }
-    string_buffer &replace(__VIC_CXX11_CONST_ITERATOR b, __VIC_CXX11_CONST_ITERATOR e, const char *st, size_type n) { if(st) base::replace(b,e,st,n); return *this; }
-    string_buffer &replace(__VIC_CXX11_CONST_ITERATOR b, __VIC_CXX11_CONST_ITERATOR e, size_type n, char ch) { base::replace(b,e,n,ch); return *this; }
+    string_buffer &replace(const_iterator11 b, const_iterator11 e, const char *st) { if(st) base::replace(b,e,st); return *this; }
+    string_buffer &replace(const_iterator11 b, const_iterator11 e, const std::string &st) { base::replace(b,e,st); return *this; }
+    string_buffer &replace(const_iterator11 b, const_iterator11 e, const char *st, size_type n) { if(st) base::replace(b,e,st,n); return *this; }
+    string_buffer &replace(const_iterator11 b, const_iterator11 e, size_type n, char ch) { base::replace(b,e,n,ch); return *this; }
     template<class InputIterator>
-    string_buffer &replace(__VIC_CXX11_CONST_ITERATOR f, __VIC_CXX11_CONST_ITERATOR l, InputIterator b, InputIterator e) { base::replace(f,l,b,e); return *this; }
+    string_buffer &replace(const_iterator11 f, const_iterator11 l, InputIterator b, InputIterator e) { base::replace(f,l,b,e); return *this; }
 
     string_buffer &reserve(size_type n) { base::reserve(n); return *this; }
     string_buffer &clear() { base::clear(); return *this; }
