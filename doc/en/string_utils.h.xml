@@ -158,4 +158,52 @@ null. Returns
 </chapter>
 
 
+<chapter>
+<title><tt>starts_with()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+bool starts_with(const char *s, char pref);
+bool starts_with(const char *s, const char *pref);
+bool starts_with(const char *s, const char *pref, size_t pref_len);
+
+bool starts_with(const std::string &s, char pref);
+bool starts_with(const std::string &s, const char *pref);
+bool starts_with(const std::string &s, const std::string &pref);
+bool starts_with(const std::string &s, const char *pref, size_t pref_len);
+
+bool starts_with(const char *s, size_t s_len, char pref);
+bool starts_with(const char *s, size_t s_len, const char *pref);
+bool starts_with(const char *s, size_t s_len, const char *pref, size_t pref_len);
+]]></code-block>
+
+<p>Returns <tt>true</tt> if string <tt>s</tt> starts with the specified
+prefix.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>ends_with()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+bool ends_with(const char *s, char suff);
+bool ends_with(const char *s, const char *suff);
+bool ends_with(const char *s, const char *suff, size_t suff_len);
+
+bool ends_with(const std::string &s, char suff);
+bool ends_with(const std::string &s, const char *suff);
+bool ends_with(const std::string &s, const std::string &suff);
+bool ends_with(const std::string &s, const char *suff, size_t suff_len);
+
+bool ends_with(const char *s, size_t s_len, char suff);
+bool ends_with(const char *s, size_t s_len, const char *suff);
+bool ends_with(const char *s, size_t s_len, const char *suff, size_t suff_len);
+]]></code-block>
+
+<p>Returns <tt>true</tt> if string <tt>s</tt> ends with the specified
+suffix.</p>
+
+</chapter>
+
+
 </chapter>

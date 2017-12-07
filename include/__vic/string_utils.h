@@ -10,6 +10,7 @@
 
 #include<__vic/defs.h>
 #include<algorithm>
+#include<cstring>
 #include<string>
 
 namespace __vic {
@@ -97,6 +98,81 @@ std::string &pad_left(std::string & , size_t , char = ' ');
 std::string &pad_right(std::string & , size_t , char = ' ');
 char *pad_left(char * , size_t , char = ' ');
 char *pad_right(char * , size_t , char = ' ');
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+inline bool starts_with(const char *s, size_t s_len, char pref)
+{
+    return s_len && *s == pref;
+}
+bool starts_with(const char * , size_t , const char * );
+bool starts_with(const char * , size_t , const char * , size_t );
+//----------------------------------------------------------------------------
+inline bool starts_with(const char *s, char pref)
+{
+    return *s == pref;
+}
+bool starts_with(const char * , const char * );
+bool starts_with(const char * , const char * , size_t );
+//----------------------------------------------------------------------------
+inline bool starts_with(const std::string &s, char pref)
+{
+    return !s.empty() && *s.begin() == pref;
+}
+inline bool starts_with(const std::string &s, const char *pref)
+{
+    return starts_with(s.data(), s.length(), pref);
+}
+inline bool starts_with(const std::string &s, const char *pref, size_t pref_len)
+{
+    return starts_with(s.data(), s.length(), pref, pref_len);
+}
+inline bool starts_with(const std::string &s, const std::string &pref)
+{
+    return starts_with(s, pref.data(), pref.length());
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+inline bool ends_with(const char *s, size_t s_len, char suff)
+{
+    return s_len && s[s_len - 1] == suff;
+}
+bool ends_with(const char * , size_t , const char * , size_t );
+inline bool ends_with(const char *s, size_t s_len, const char *suff)
+{
+    return ends_with(s, s_len, suff, std::strlen(suff));
+}
+//----------------------------------------------------------------------------
+inline bool ends_with(const char *s, char suff)
+{
+    return ends_with(s, std::strlen(s), suff);
+}
+inline bool ends_with(const char *s, const char *suff, size_t suff_len)
+{
+    return ends_with(s, std::strlen(s), suff, suff_len);
+}
+inline bool ends_with(const char *s, const char *suff)
+{
+    return ends_with(s, suff, std::strlen(suff));
+}
+//----------------------------------------------------------------------------
+inline bool ends_with(const std::string &s, char suff)
+{
+    return !s.empty() && *s.rbegin() == suff;
+}
+inline bool ends_with(const std::string &s, const char *suff)
+{
+    return ends_with(s.data(), s.length(), suff);
+}
+inline bool ends_with(const std::string &s, const char *suff, size_t suff_len)
+{
+    return ends_with(s.data(), s.length(), suff, suff_len);
+}
+inline bool ends_with(const std::string &s, const std::string &suff)
+{
+    return ends_with(s, suff.data(), suff.length());
+}
 //----------------------------------------------------------------------------
 
 } // namespace

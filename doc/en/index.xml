@@ -3,6 +3,7 @@
 <!DOCTYPE document SYSTEM "../document.dtd" [
     <!ENTITY why SYSTEM "why.xml">
     <!ENTITY general SYSTEM "general.xml">
+    <!ENTITY build SYSTEM "build.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
@@ -128,6 +129,11 @@ TODO
 &tchar.h;
 &to_text.h;
 &writers;
+</chapter>
+
+<chapter>
+<title>Build and install</title>
+&build;
 </chapter>
 
 </document>
