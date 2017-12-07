@@ -1,1 +1,30 @@
-<TODO/>
+<p>To build the library you need one of supported C++ compilers and
+<link href="https://www.gnu.org/software/make">GNU Make</link> utility version
+3.82 or higher available in your command line environment (shell).</p>
+
+<p>Currently supported compilers are:</p>
+<list style="bulleted">
+    <item>GNU C++ v 5.1+ [<tt>gcc</tt>]</item>
+    <item>Clang v 3.4+ [<tt>clang</tt>]</item>
+    <item>Visual C++ v 7.1+ (Visual Studio 2003) [<tt>msvc</tt>]</item>
+</list>
+
+<p>Go to <tt>src</tt> subdirectory and write:</p>
+<tty>
+$ gmake
+</tty>
+<p>The library file will be built for you.</p>
+
+<p>To build the library in C++98 mode write:</p>
+<tty>
+$ gmake std98=1
+</tty>
+
+<p>Also you can choose the used compiler manually:</p>
+<tty>
+$ gmake compiler=gcc
+</tty>
+
+<p>Finally, to use the library you just need to copy the library file and
+contents of <tt>include</tt> subdirectory to some place where compiler/linker
+can find it, e.g to <tt>/usr/local/include</tt> and <tt>/usr/local/lib</tt>.</p>

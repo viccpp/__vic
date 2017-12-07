@@ -4,8 +4,19 @@ Legend:
     * Changes
     ! Important
 
+2017-12-07  __vic
+    + GNU Make makefiles
+
+2017-12-05  __vic
+    * string_buffer can be compiled even when old compatible ABI is used by
+      GNU libstdc++
+    + Intel C++ 17.0+ compiler support
+
 2017-11-29  __vic
     * windows/throw_last_error.h doesn't include windows.h
+
+2017-11-28  __vic
+    + string_utils.h: starts_with(), ends_with()
 
 2017-11-14  __vic
     * to_text_append():
