@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-12-07  __vic
+    + GNU Make makefiles
+
 2017-12-05  __vic
     * string_buffer can be compiled even when old compatible ABI is used by
       GNU libstdc++

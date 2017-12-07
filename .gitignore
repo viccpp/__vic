@@ -1,5 +1,7 @@
 /src/Makefile
 /test/Makefile
+/test/*.test
+/test/*.exe
 *.o
 *.a
 *.d
