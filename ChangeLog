@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2017-12-08  __vic
+    * meta.h:
+        + remove_reference, remove_cvref
+        + Template aliases for type transformers
+
 2017-12-07  __vic
     + GNU Make makefiles
 

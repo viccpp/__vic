@@ -6,6 +6,7 @@
 usually, derived from <tt>integral_constant</tt>.</p>
 <p>All the type transformer metafunctions have type member <tt>type</tt>
 containing the conversion result.</p>
+<p>All of the template aliases are available only in C++11 mode.</p>
 
 
 <chapter>
@@ -107,6 +108,7 @@ types" (see the Standard).</p>
 
 <code-block lang="C++"><![CDATA[
 template<class T> struct remove_const;
+template<class T> using remove_const_t = typename remove_const<T>::type;
 ]]></code-block>
 
 <p>A type transformer. Removes the top-level <tt>const</tt> qualifier or just
@@ -120,6 +122,7 @@ returns <tt>T</tt> if it doesn't have such qualifier.</p>
 
 <code-block lang="C++"><![CDATA[
 template<class T> struct remove_volatile;
+template<class T> using remove_volatile_t = typename remove_volatile<T>::type;
 ]]></code-block>
 
 <p>A type transformer. Removes the top-level <tt>volatile</tt> qualifier or just
@@ -133,6 +136,7 @@ returns <tt>T</tt> if it doesn't have such qualifier.</p>
 
 <code-block lang="C++"><![CDATA[
 template<class T> struct remove_cv;
+template<class T> using remove_cv_t = typename remove_cv<T>::type;
 ]]></code-block>
 
 <p>A type transformer. Removes any top-level cv-qualifier or just returns
@@ -142,14 +146,42 @@ template<class T> struct remove_cv;
 
 
 <chapter>
+<title><tt>remove_reference</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_reference;
+template<class T> using remove_reference_t = typename remove_reference<T>::type;
+]]></code-block>
+
+<p>A type transformer. Returns the type referred by <tt>T</tt> or just
+<tt>T</tt> if it isn't a reference type.</p>
+
+</chapter>
+
+
+<chapter>
+<title><tt>remove_cvref</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_cvref;
+template<class T> using remove_cvref_t = typename remove_cvref<T>::type;
+]]></code-block>
+
+<p>Applies <tt>remove_reference</tt> then <tt>remove_cv</tt> to <tt>T</tt>.</p>
+
+</chapter>
+
+
+<chapter>
 <title><tt>remove_pointer</tt></title>
 
 <code-block lang="C++"><![CDATA[
 template<class T> struct remove_pointer;
+template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
 ]]></code-block>
 
 <p>A type transformer. Returns the type of the object to that the pointer type
-points. If <tt>T</tt> is not a pointer just <tt>T</tt> itself is returned.</p>
+points or just <tt>T</tt> if it isn't a pointer type.</p>
 
 </chapter>
 
