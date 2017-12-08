@@ -8,6 +8,8 @@ Legend:
     * meta.h:
         + remove_reference, remove_cvref
         + Template aliases for type transformers
+    + waitable_event.h:
+        + waitable_event for C++11 mode only
 
 2017-12-07  __vic
     + GNU Make makefiles

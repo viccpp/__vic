@@ -28,6 +28,7 @@
     <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
     <!ENTITY writers SYSTEM "writers.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
@@ -126,6 +127,7 @@ TODO
 &string_utils.h;
 &tchar.h;
 &to_text.h;
+&waitable_event.h;
 &writers;
 </chapter>
 
