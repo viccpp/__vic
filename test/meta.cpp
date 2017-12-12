@@ -48,6 +48,10 @@ void run()
     assert((__vic::is_same<
         __vic::remove_pointer<int>::type,
         int>::value));
+
+    assert((__vic::is_same<
+        __vic::remove_cvref<const int &>::type,
+        int>::value));
 }
 
 } // namespace

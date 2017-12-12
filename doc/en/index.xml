@@ -17,6 +17,7 @@
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY meta.h SYSTEM "meta.h.xml">
+    <!ENTITY mutex.h SYSTEM "mutex.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
@@ -28,7 +29,9 @@
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
     <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
+    <!ENTITY thread.h SYSTEM "thread.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
     <!ENTITY writers SYSTEM "writers.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
@@ -116,6 +119,7 @@ TODO
 &iterator.h;
 &logger.h;
 &meta.h;
+&mutex.h;
 &object_pool.h;
 &readers;
 &readonly_cstring.h;
@@ -127,7 +131,9 @@ TODO
 &string_ref.h;
 &string_utils.h;
 &tchar.h;
+&thread.h;
 &to_text.h;
+&waitable_event.h;
 &writers;
 </chapter>
 

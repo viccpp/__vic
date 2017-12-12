@@ -30,6 +30,7 @@ using std::is_const;
 using std::remove_const;
 using std::remove_volatile;
 using std::remove_cv;
+using std::remove_reference;
 using std::remove_pointer;
 using std::enable_if;
 
@@ -75,9 +76,17 @@ template<class T> struct remove_volatile<volatile T> { typedef T type; };
 
 template<class T> struct remove_cv
 {
-    typedef typename
-    remove_const<typename remove_volatile<T>::type>::type type;
+    typedef typename remove_const<
+        typename remove_volatile<T>::type>::type type;
 };
+
+//----------------------------------------------------------------------------
+
+template<class T> struct remove_reference      { typedef T type; };
+template<class T> struct remove_reference<T &> { typedef T type; };
+#if __cpp_rvalue_references
+template<class T> struct remove_reference<T &&> { typedef T type; };
+#endif
 
 //----------------------------------------------------------------------------
 
@@ -120,6 +129,24 @@ template<bool Test, class T = void>
 struct disable_if : enable_if<!Test, T> {};
 
 //----------------------------------------------------------------------------
+
+template<class T> struct remove_cvref
+{
+    typedef typename remove_cv<
+        typename remove_reference<T>::type>::type type;
+};
+
+//----------------------------------------------------------------------------
+
+#if __cpp_alias_templates
+template<class T> using remove_const_t = typename remove_const<T>::type;
+template<class T> using remove_volatile_t = typename remove_volatile<T>::type;
+template<class T> using remove_cv_t = typename remove_cv<T>::type;
+template<class T> using remove_reference_t = typename remove_reference<T>::type;
+template<class T> using remove_cvref_t = typename remove_cvref<T>::type;
+template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
+// No alias for enable_if because in C++11 SFINAE is not guaranteed
+#endif
 
 } // namespace
 
