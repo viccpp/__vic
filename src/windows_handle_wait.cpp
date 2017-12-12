@@ -11,7 +11,7 @@
 namespace __vic { namespace windows {
 
 //----------------------------------------------------------------------------
-bool Handle::Wait(DWORD timeout)
+bool Handle::Wait(DWORD timeout) const
 {
     switch(DWORD res = ::WaitForSingleObject(h, timeout))
     {

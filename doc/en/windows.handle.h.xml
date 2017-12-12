@@ -12,8 +12,11 @@ public:
     Handle() = default; // uninitialized
     constexpr Handle(HANDLE h);
 
+    void Close();
     bool CloseNT() noexcept;
-    bool Wait(DWORD timeout = INFINITE);
+    static void Close(HANDLE h);
+
+    bool Wait(DWORD timeout = INFINITE) const;
 
     bool IsInvalid() const;
     void SetInvalid();
@@ -56,6 +59,13 @@ public:
 </synopsis>
 
 <synopsis>
+<prototype>void Close()</prototype>
+<prototype>static void Close(HANDLE h)</prototype>
+<p>Calls <tt>::CloseHandle()</tt>. Throws on error.</p>
+<precondition>The same as for <tt>::CloseHandle()</tt>.</precondition>
+</synopsis>
+
+<synopsis>
 <prototype>bool CloseNT() noexcept</prototype>
 <p>Calls <tt>::CloseHandle()</tt> and returns <tt>true</tt> on success.
 On failure <tt>::GetLastError()</tt> can be used to get the error
@@ -64,7 +74,7 @@ description.</p>
 </synopsis>
 
 <synopsis>
-<prototype>bool Wait(DWORD timeout = INFINITE)</prototype>
+<prototype>bool Wait(DWORD timeout = INFINITE) const</prototype>
 <p>Calls <tt>::WaitForSingleObject()</tt> with the specified timeout. Rerturns
 <tt>false</tt> in case of <tt>WAIT_TIMEOUT</tt>. Throws on error.
 <tt>__vic::windows::WaitAbandoned</tt> is thrown in case of

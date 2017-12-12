@@ -10,6 +10,7 @@
 
 #include<__vic/defs.h>
 #include __VIC_SWAP_HEADER
+#include<__vic/windows/throw_last_error.h>
 #include<exception>
 #include<windows.h>
 
@@ -23,8 +24,12 @@ public:
     Handle() __VIC_DEFAULT_CTR // uninitialized
     __VIC_CONSTEXPR_FUNC Handle(HANDLE h) : h(h) {}
 
+    static void Close(HANDLE h)
+        { if(!::CloseHandle(h)) throw_last_error("CloseHandle"); }
+
+    void Close() { Close(h); }
     bool CloseNT() noexcept { return ::CloseHandle(h); }
-    bool Wait(DWORD = INFINITE);
+    bool Wait(DWORD = INFINITE) const;
 
     bool IsInvalid() const { return h == INVALID_HANDLE_VALUE; }
     void SetInvalid() { h = INVALID_HANDLE_VALUE; }

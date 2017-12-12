@@ -1,0 +1,201 @@
+<chapter>
+<title><tt>__vic/thread.h</tt></title>
+
+<p>Threads support.</p>
+
+
+<chapter>
+<title><tt>thread</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class thread : private non_copyable
+{
+public:
+    class id;
+    using native_handle_type = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
+
+    thread();
+    virtual ~thread();
+
+    // BEGIN C++11 only
+    thread(thread &&o) noexcept;
+    thread &operator=(thread &&o) noexcept;
+    // END C++11 only
+
+    void start();
+    void cancel();
+    void join();
+
+    bool alive() const;
+    bool joinable() const;
+
+    id get_id() const;
+    native_handle_type handle() const;
+protected:
+    virtual void worker() = 0;
+};
+]]></code-block>
+
+<p>Abstract base class for thread objects. Implements "Active object" pattern.
+Inherit it and define <tt>worker()</tt> function which content will be executed
+in the new thread after <tt>start()</tt> call. Then at some point in your
+program you must call <tt>join()</tt> to free OS resources associated with the
+spawned thread.</p>
+
+<note>The object must always outlive the associated OS thread. Your program
+will be terminated by <tt>std::terminate()</tt> call if this usage contract
+is violated.</note>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>thread()</prototype>
+<postcondition><tt>joinable() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~thread()</prototype>
+<p>Calls <tt>std::terminate()</tt> if precondition is not satisfied.</p>
+<precondition><tt>joinable() == false || alive() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>thread(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Move constructor for C++11 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Move assignment for C++11 mode. Calls <tt>std::terminate()</tt> if
+precondition is not satisfied.</p>
+<precondition><tt>joinable() == false || alive() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>void start()</prototype>
+<p>Spawns new thread and calls <tt>worker()</tt> there.</p>
+<precondition><tt>joinable() == false</tt></precondition>
+<postcondition><tt>joinable() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void cancel()</prototype>
+<p>Cancels the thread execution.</p>
+<precondition><tt>joinable() == true</tt></precondition>
+<postcondition><tt>joinable() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void join()</prototype>
+<p>Waits for the thread termination if running and makes
+<tt>joinable() == false</tt>.</p>
+<precondition><tt>joinable() == true</tt></precondition>
+<postcondition><tt>joinable() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool alive() const</prototype>
+<p>Returns <tt>true</tt> if the thread haven't been terminated yet
+(<tt>worker()</tt> function haven't returned).</p>
+<precondition><tt>joinable() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool joinable() const</prototype>
+<p>Returns <tt>true</tt> if the object has a corresponding OS object
+(thread) created by the <tt>start()</tt> call and not yet destroyed by
+<tt>join()</tt> call.</p>
+</synopsis>
+
+<synopsis>
+<prototype>id get_id() const</prototype>
+<p>Returns ID of the thread.</p>
+</synopsis>
+
+<synopsis>
+<prototype>native_handle_type handle() const</prototype>
+<p>Returns a native OS-specific handle of the thread.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>thread::id</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class thread::id
+{
+public:
+    id();
+    explicit operator bool() const;
+    native_handle_type handle() const;
+};
+bool operator==(thread::id a, thread::id b);
+bool operator!=(thread::id a, thread::id b);
+]]></code-block>
+
+<p>Unique thread ID. It can hold a value associated with some thread or the
+special distinct value not associated with any thread.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>id()</prototype>
+<p>Creates the special value not associated with any thread.</p>
+<postcondition><tt>bool(*this) == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit operator bool() const</prototype>
+<p>Returns <tt>true</tt> if the object holds ID of some thread.</p>
+</synopsis>
+
+<synopsis>
+<prototype>native_handle_type handle() const</prototype>
+<p>Returns a native OS-specific handle of the thread.</p>
+<precondition><tt>bool(*this) == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool operator==(thread::id a, thread::id b)</prototype>
+<prototype>bool operator!=(thread::id a, thread::id b)</prototype>
+<p>Check if <tt>a</tt> and <tt>b</tt> represent the same thread.</p>
+<invariant><tt>id() == id()</tt></invariant>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>this_thread</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace this_thread
+{
+    thread::id get_id();
+    void sleep_ms(unsigned msec);
+}
+]]></code-block>
+
+<p>Set of the functions to control the current (calling) thread.</p>
+
+<synopsis>
+<prototype>thread::id get_id()</prototype>
+<p>Returns ID of the calling thread.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void sleep_ms(unsigned msec)</prototype>
+<p>Suspends the execution of the calling thread until the time-out interval
+specified in milliseconds elapses.</p>
+</synopsis>
+
+</chapter>
+
+
+</chapter>

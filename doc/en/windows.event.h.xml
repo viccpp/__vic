@@ -1,0 +1,67 @@
+<chapter>
+<title><tt>__vic/windows/event.h</tt></title>
+
+<chapter>
+<title><tt>windows::event</tt></title>
+
+<code-block lang="C++">
+class windows::Event : private non_copyable
+{
+public:
+    explicit Event(bool bManualReset,
+         bool bInitialSignaled = false, LPCSTR lpName = nullptr);
+    ~Event();
+
+    void Set();
+    void Reset();
+    bool Wait(DWORD timeout = INFINITE) const;
+    bool wait_for(std::chrono::milliseconds ms) const; // C++11
+
+    HANDLE handle() const;
+};
+</code-block>
+
+<p>Wrapper for Win32 API event synchronization object.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit Event(bool bManualReset, bool bInitialSignaled = false, LPCSTR lpName = nullptr)</prototype>
+<p>Creates the object using <tt>::CreateEvent()</tt>. Throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~Event()</prototype>
+<p>Destroys the object.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Set()</prototype>
+<p>Calls <tt>::SetEvent()</tt>. Throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Reset()</prototype>
+<p>Calls <tt>::ResetEvent()</tt>. Throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool Wait(DWORD timeout = INFINITE) const</prototype>
+<p>Calls <tt>::WaitForSingleObject()</tt>. Throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool wait_for(std::chrono::milliseconds ms) const <sign>C++11</sign></prototype>
+<p>chrono-friendly wrapper for <tt>Wait()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HANDLE handle() const</prototype>
+<p>Returns Win32 API handle.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

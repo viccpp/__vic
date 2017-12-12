@@ -4,6 +4,26 @@ Legend:
     * Changes
     ! Important
 
+2017-12-12  __vic
+    + waitable_event for C++98 mode too
+    + thread.h:
+        + thread
+        + this_thread
+            + get_id()
+            + sleep_ms()
+    + mutex.h:
+        + mutex
+        + mutex_lock
+    + windows/event.h:
+        + windows::Event
+
+2017-12-08  __vic
+    * meta.h:
+        + remove_reference, remove_cvref
+        + Template aliases for type transformers
+    + waitable_event.h:
+        + waitable_event for C++11 mode only
+
 2017-12-07  __vic
     + GNU Make makefiles
 

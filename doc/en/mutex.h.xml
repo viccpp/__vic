@@ -1,0 +1,140 @@
+<chapter>
+<title><tt>__vic/mutex.h</tt></title>
+
+
+<chapter>
+<title><tt>mutex</tt></title>
+
+<code-block lang="C++">
+class mutex : private non_copyable
+{
+public:
+    mutex();
+    ~mutex();
+
+    void lock();
+    bool try_lock();
+    bool unlock() noexcept;
+};
+</code-block>
+
+<p>Plain non-recursive mutex.</p>
+
+<section><title>Usage notes</title>
+<p>In most cases explicit usage of <tt>lock()</tt> and <tt>unlock()</tt> should
+be avoided. Use class <tt>mutex_lock</tt> to manage locks instead. It provides
+exception safety and it's handy for usage.</p>
+<p>In C++11 mode <tt>std::mutex</tt> can be a better alternative.</p>
+</section>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>mutex()</prototype>
+<p>Creates unlocked mutex.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~mutex()</prototype>
+<p>Destroys the mutex.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void lock()</prototype>
+<p>Acquires a lock on the mutex. Waits until released if acquired by other
+thread at the moment.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool try_lock()</prototype>
+<p>Tries to lock the mutex. Immediately returns <tt>false</tt> if acquired by
+other thread, without waiting.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool unlock() noexcept</prototype>
+<p>Releases the mutex acquired before. In some cases can return <tt>false</tt>
+in case of error, but in general error detection is not guaranteed.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<p>See <tt>mutex_lock</tt>.</p>
+</section>
+
+</chapter>
+
+
+<chapter>
+<title><tt>mutex_lock</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class mutex_lock : private non_copyable
+{
+public:
+    enum adopt_t { adopt };
+
+    explicit mutex_lock(mutex &mtx);
+    mutex_lock(mutex &mtx, adopt_t);
+    ~mutex_lock();
+};
+]]></code-block>
+
+<p>Manages the lock on a mutex. The lock exists while the object is alive.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>adopt</prototype>
+<p>Constructor tag, suppresses the lock acquisition.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit mutex_lock(posix::mutex &amp;mtx)</prototype>
+<p>Locks <tt>mtx</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~mutex_lock()</prototype>
+<p>Unlocks <tt>mtx</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>mutex_lock(posix::mutex &amp;mtx, adopt_t)</prototype>
+<p>Adopts already locked <tt>mtx</tt>. See the example.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++">
+// Typical usage
+__vic::mutex mtx;
+void reentrant_function()
+{
+    __vic::mutex_lock lock(mtx);
+    // Critical section code until the end of the block
+    ...
+}
+
+// Usage of non-locking constructor
+if(mtx.try_lock()) // Try to lock the mutex
+{
+    // The mutex is successfully locked
+    __vic::mutex_lock lock(mtx, __vic::mutex_lock::adopt);
+    // Critical section code until the end of the block
+    ...
+}
+else
+{
+    // The mutex is locked by another thread
+    ...
+}
+</code-block>
+</section>
+
+</chapter>
+
+
+</chapter>
