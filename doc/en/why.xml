@@ -1,6 +1,12 @@
 <chapter>
 <title>Why this library was created?</title>
+
 <p>This library contains the features I'm missing in the Standard C++
 library. It's a kind of my personal
 <link href="http://www.boost.org/">Boost</link>.</p>
+
+<p>Additionally, it's an abstraction layer that hides implementation details,
+quirks and idiosyncrasies of OS'es, compilers and the standard library
+implemetations.</p>
+
 </chapter>
