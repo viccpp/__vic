@@ -24,8 +24,8 @@ class mutex
 #endif
     ;
 #if __cplusplus < 201103L
-    mutex(const mutex & ); // not implemeted
-    mutex &operator=(const mutex & ); // not implemeted
+    mutex(const mutex & ); // not implemented
+    mutex &operator=(const mutex & ); // not implemented
 #else
 public:
     mutex(const mutex & ) = delete;

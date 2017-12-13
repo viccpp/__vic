@@ -25,8 +25,8 @@ class cond_variable
 #endif
      ;
 #if __cplusplus < 201103L
-    cond_variable(const cond_variable & ); // not implemeted
-    cond_variable &operator=(const cond_variable & ); // not implemeted
+    cond_variable(const cond_variable & ); // not implemented
+    cond_variable &operator=(const cond_variable & ); // not implemented
 #else
 public:
     cond_variable(const cond_variable & ) = delete;

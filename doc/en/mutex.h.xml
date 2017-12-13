@@ -1,37 +1,36 @@
 <chapter>
-<title><tt>__vic/posix/mutex.h</tt></title>
+<title><tt>__vic/mutex.h</tt></title>
 
 
 <chapter>
-<title><tt>posix::mutex</tt></title>
+<title><tt>mutex</tt></title>
 
-<code-block lang="C++"><![CDATA[
-class posix::mutex
+<code-block lang="C++">
+class mutex : private non_copyable
 {
 public:
-    constexpr mutex() noexcept;
+    mutex();
     ~mutex();
-
-    mutex(const mutex & ) = delete;
-    mutex &operator=(const mutex & ) = delete;
 
     void lock();
     bool try_lock();
     bool unlock() noexcept;
-
-    // System-specific handle
-    ::pthread_mutex_t *handle();
-    const ::pthread_mutex_t *handle() const;
 };
-]]></code-block>
+</code-block>
 
-<p>Wrapper for plain non-recursive <tt>pthread_mutex_t</tt>. See
-<tt>__vic::mutex</tt> for usage notes.</p>
+<p>Plain non-recursive mutex.</p>
+
+<section><title>Usage notes</title>
+<p>In most cases explicit usage of <tt>lock()</tt> and <tt>unlock()</tt> should
+be avoided. Use class <tt>mutex_lock</tt> to manage locks instead. It provides
+exception safety and it's handy for usage.</p>
+<p>In C++11 mode <tt>std::mutex</tt> can be a better alternative.</p>
+</section>
 
 <section><title>Class members</title>
 
 <synopsis>
-<prototype>constexpr mutex() noexcept</prototype>
+<prototype>mutex()</prototype>
 <p>Creates unlocked mutex.</p>
 </synopsis>
 
@@ -58,43 +57,31 @@ other thread, without waiting.</p>
 in case of error, but in general error detection is not guaranteed.</p>
 </synopsis>
 
-<synopsis>
-<prototype>::pthread_mutex_t *handle()</prototype>
-<prototype>const ::pthread_mutex_t *handle() const</prototype>
-<p>Returns the native handle of the mutex.</p>
-</synopsis>
-
 </section>
 
 <section><title>Example</title>
-<p>See posix::mutex_lock.</p>
+<p>See <tt>mutex_lock</tt>.</p>
 </section>
 
 </chapter>
 
 
 <chapter>
-<title><tt>posix::mutex_lock</tt></title>
+<title><tt>mutex_lock</tt></title>
 
 <code-block lang="C++"><![CDATA[
-class posix::mutex_lock : private non_copyable, private non_heap_allocatable
+class mutex_lock : private non_copyable
 {
 public:
     enum adopt_t { adopt };
 
-    explicit mutex_lock(posix::mutex &mtx);
-    mutex_lock(posix::mutex &mtx, adopt_t);
-
-    explicit mutex_lock(::pthread_mutex_t &mtx);
-    mutex_lock(::pthread_mutex_t &mtx, adopt_t);
-
-    ~mutex_lock() noexcept(false);
+    explicit mutex_lock(mutex &mtx);
+    mutex_lock(mutex &mtx, adopt_t);
+    ~mutex_lock();
 };
 ]]></code-block>
 
-<p>Class manages the lock on a mutex. The lock exists while the object is
-alive. Can handle <tt>posix::mutex</tt> class objects as well as system
-<tt>pthread_mutex_t</tt>.</p>
+<p>Manages the lock on a mutex. The lock exists while the object is alive.</p>
 
 <section><title>Class members</title>
 
@@ -105,19 +92,16 @@ alive. Can handle <tt>posix::mutex</tt> class objects as well as system
 
 <synopsis>
 <prototype>explicit mutex_lock(posix::mutex &amp;mtx)</prototype>
-<prototype>explicit mutex_lock(::pthread_mutex_t &amp;mtx)</prototype>
 <p>Locks <tt>mtx</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>~mutex_lock() noexcept(false)</prototype>
-<p>Unlocks <tt>mtx</tt>. Can throw exception in case of error and when there
-is no other active exception!</p>
+<prototype>~mutex_lock()</prototype>
+<p>Unlocks <tt>mtx</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>mutex_lock(posix::mutex &amp;mtx, adopt_t)</prototype>
-<prototype>mutex_lock(::pthread_mutex_t &amp;mtx, adopt_t)</prototype>
 <p>Adopts already locked <tt>mtx</tt>. See the example.</p>
 </synopsis>
 
@@ -126,21 +110,19 @@ is no other active exception!</p>
 <section><title>Example</title>
 <code-block lang="C++">
 // Typical usage
+__vic::mutex mtx;
 void reentrant_function()
 {
-    static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
-    __vic::posix::mutex_lock lock(mtx);
+    __vic::mutex_lock lock(mtx);
     // Critical section code until the end of the block
     ...
 }
 
 // Usage of non-locking constructor
-__vic::posix::mutex mtx;
 if(mtx.try_lock()) // Try to lock the mutex
 {
     // The mutex is successfully locked
-    using __vic::posix::mutex_lock;
-    mutex_lock lock(mtx, mutex_lock::adopt);
+    __vic::mutex_lock lock(mtx, __vic::mutex_lock::adopt);
     // Critical section code until the end of the block
     ...
 }

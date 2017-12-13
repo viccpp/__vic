@@ -1,0 +1,86 @@
+<chapter>
+<title><tt>__vic/waitable_event.h</tt></title>
+
+<chapter>
+<title><tt>waitable_event</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class waitable_event : private non_copyable
+{
+public:
+    explicit waitable_event(bool signaled = false);
+    ~waitable_event();
+
+    void set();
+    void reset();
+    bool signaled() const;
+
+    void wait();
+    bool wait_ms(unsigned msec);
+
+    // BEGIN C++11 only
+    template<class Rep, class Period>
+    bool wait_for(const std::chrono::duration<Rep,Period> &d);
+    template<class Clock, class Duration>
+    bool wait_until(const std::chrono::time_point<Clock,Duration> &t);
+    // END C++11 only
+};
+]]>
+</code-block>
+
+<p>A synchronization object like Event Object in Windows. Can be in ether of
+two states: signaled or nonsignaled. A thread can effectively wait for the
+signaled state using one of the available wait-functions (with minimal system
+resources consumption).</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit waitable_event(bool signaled = false)</prototype>
+<postcondition><tt>signaled() == signaled</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool signaled() const</prototype>
+<p>Returns <tt>true</tt> if the object is in signaled state.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void set()</prototype>
+<p>Sets the signaled state.</p>
+<postcondition><tt>signaled() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void reset()</prototype>
+<p>Sets the nonsignaled state.</p>
+<postcondition><tt>signaled() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void wait()</prototype>
+<p>Waits for the signaled state with no timeout.</p>
+<postcondition><tt>signaled() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool wait_ms(unsigned msec)</prototype>
+<p>Waits for the signaled state no longer than the specified amount of
+milliseconds. Returns <tt>signaled()</tt>.</p>
+<note><tt>wait_for()</tt> should be used in C++11 mode instead.</note>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class Rep, class Period>
+bool wait_for(const std::chrono::duration<Rep,Period> &d)]]> <sign>C++11</sign></prototype>
+<prototype><![CDATA[template<class Clock, class Duration>
+bool wait_until(const std::chrono::time_point<Clock,Duration> &t)]]> <sign>C++11</sign></prototype>
+<p>Waits for the signaled state no longer than the specified timeout. Returns
+<tt>signaled()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>
