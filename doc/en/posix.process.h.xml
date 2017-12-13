@@ -16,4 +16,16 @@ throws on errors.</p>
 
 </chapter>
 
+<chapter>
+<title><tt>posix::process_alive()</tt></title>
+
+<code-block lang="C++">
+bool posix::process_alive(pid_t pid);
+</code-block>
+
+<p>Returns <tt>true</tt> if process associated with the PID exists and not a
+zombie.</p>
+
+</chapter>
+
 </chapter>

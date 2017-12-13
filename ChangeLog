@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-12-13  __vic
+    + posix/process.h: posix::process_alive()
+
 2017-12-12  __vic
     + waitable_event for C++98 mode too
     + thread.h:
