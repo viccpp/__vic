@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2017-12-13  __vic
+    * doc/html.xsl: more tolerant to retarded XSLT processors (oracle) TOC
+      generation code
+
 2017-12-08  __vic
     * meta.h:
         + remove_reference, remove_cvref
@@ -206,4 +210,4 @@ Legend:
         + throw_errno()
 
 2016-06-23  __vic
-    * Total revision an rework started in order to publish the code
+    * Total revision and rework started in order to publish the code

@@ -9,8 +9,8 @@ all: $(LANGS) ;
 
 en: en.html ;
 
-en.html: en/*.xml
-	cd en && xsl ../html.xsl index.xml >"../$@"
+en.html: html.xsl en/*.xml
+	(cd en && xsl ../html.xsl index.xml) > $@
 
 check:
 	cd en && xml index.xml
