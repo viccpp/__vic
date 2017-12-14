@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2017-12-14  __vic
+    + posix/sigset.h:
+        * posix::sigset moved from posix/signal.h
+    * posix/process.h: posix::ignore_signals() moved from posix/signal.h
+    * posix/signal.h removed
+
 2017-12-13  __vic
     + posix/process.h: posix::process_alive()
 

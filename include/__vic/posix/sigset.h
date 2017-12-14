@@ -1,12 +1,12 @@
-// Signal-related stuff
+// C++ wrapper for sigset_t
 //
 // Platform: ISO C++ 98/11 - POSIX
 // $Id$
 //
 // (c) __vic 2011
 
-#ifndef __VIC_POSIX_SIGNAL_H
-#define __VIC_POSIX_SIGNAL_H
+#ifndef __VIC_POSIX_SIGSET_H
+#define __VIC_POSIX_SIGSET_H
 
 #include<__vic/defs.h>
 #include<signal.h>
@@ -54,22 +54,6 @@ public:
     const ::sigset_t *operator&() const { return &set; }
 };
 //////////////////////////////////////////////////////////////////////////////
-
-void ignore_signals(const int [], size_t );
-//----------------------------------------------------------------------------
-template<size_t Size>
-inline void ignore_signals(const int (&sigs)[Size])
-{
-    ignore_signals(sigs, Size);
-}
-//----------------------------------------------------------------------------
-#if __cpp_initializer_lists
-inline void ignore_signals(std::initializer_list<int> sigs)
-{
-    ignore_signals(sigs.begin(), sigs.size());
-}
-#endif
-//----------------------------------------------------------------------------
 
 }} // namespace
 

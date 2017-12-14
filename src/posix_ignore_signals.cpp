@@ -2,7 +2,7 @@
 // $Id$
 //
 
-#include<__vic/posix/signal.h>
+#include<__vic/posix/process.h>
 #include<__vic/string_buffer.h>
 #include<__vic/throw_errno.h>
 #include<signal.h>

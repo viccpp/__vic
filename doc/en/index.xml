@@ -43,7 +43,7 @@
     <!ENTITY posix.iov.h SYSTEM "posix.iov.h.xml">
     <!ENTITY posix.mutex.h SYSTEM "posix.mutex.h.xml">
     <!ENTITY posix.process.h SYSTEM "posix.process.h.xml">
-    <!ENTITY posix.signal.h SYSTEM "posix.signal.h.xml">
+    <!ENTITY posix.sigset.h SYSTEM "posix.sigset.h.xml">
     <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
     <!ENTITY posix.time.h SYSTEM "posix.time.h.xml">
 ]>
@@ -158,7 +158,7 @@ TODO
 &posix.iov.h;
 &posix.mutex.h;
 &posix.process.h;
-&posix.signal.h;
+&posix.sigset.h;
 &posix.thread.h;
 &posix.time.h;
 </chapter>

@@ -1,8 +1,5 @@
 <chapter>
-<title><tt>__vic/posix/signal.h</tt></title>
-
-<p>UNIX signals-related tools.</p>
-
+<title><tt>__vic/posix/sigset.h</tt></title>
 
 <chapter>
 <title><tt>posix::sigset</tt></title>
@@ -133,36 +130,5 @@ this_thread::sigwait( sigset{ SIGINT } );
 </section>
 
 </chapter>
-
-
-<chapter>
-<title><tt>posix::ignore_signals()</tt></title>
-
-<code-block lang="C++"><![CDATA[
-namespace posix {
-
-void ignore_signals(const int sigs[], size_t sigs_len);
-template<size_t Size> void ignore_signals(const int (&sigs)[Size]);
-// BEGIN C++11 only
-void ignore_signals(std::initializer_list<int> sigs);
-// END C++11 only
-
-}
-]]></code-block>
-
-<p>Ignore the specified signals (<tt>sigaction()</tt> call is used).</p>
-
-<section><title>Example</title>
-<code-block lang="C++"><![CDATA[
-int sigs[] = { SIGINT, SIGQUIT, SIGTERM };
-__vic::posix::ignore_signals(sigs);
-
-// or in C++11 just
-__vic::posix::ignore_signals({SIGINT, SIGQUIT, SIGTERM});
-]]></code-block>
-</section>
-
-</chapter>
-
 
 </chapter>
