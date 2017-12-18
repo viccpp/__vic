@@ -1,6 +1,6 @@
 // Threads support
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11 - Windows
 // $Id$
 //
 // (c) __vic 2011
@@ -13,7 +13,8 @@
 
 namespace __vic {
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#define __VIC_USE_BEGINTHREADEX 1
 #define __VIC_THREAD_RETURNTYPE unsigned __stdcall
 #else
 #define __VIC_THREAD_RETURNTYPE DWORD WINAPI

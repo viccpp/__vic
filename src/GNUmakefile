@@ -19,7 +19,7 @@ CFLAGS  = -pedantic-errors -DNDEBUG -O3
 WARNS   = $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
 bunutils = 1
 else ifeq ($(compiler),msvc)
-CC      = cl /nologo $(if $(std98),$(error C++98 mode is not supported by MSVC++ compiler),/std:c++latest)
+CC      = cl /nologo $(if $(std98),$(error C++98 mode is not supported by MSVC++ compiler))
 CFLAGS  = -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1
 WARNS   =
 endif

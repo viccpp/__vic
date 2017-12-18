@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-12-18  __vic
+    * Using _beginthreadex() with MinGW too
+
 2017-12-12  __vic
     + waitable_event for C++98 mode too
     + thread.h:

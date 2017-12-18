@@ -1,6 +1,6 @@
 // Windows-like event sync object
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11 - Windows
 // $Id$
 //
 // (c) __vic 2011

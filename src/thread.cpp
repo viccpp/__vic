@@ -5,7 +5,7 @@
 #include<__vic/thread.h>
 #include<__vic/windows/throw_last_error.h>
 #include<exception>
-#ifdef _MSC_VER
+#if __VIC_USE_BEGINTHREADEX
 #include<__vic/throw_errno.h>
 #include<process.h> // _beginthreadex
 #endif
@@ -39,7 +39,7 @@ thread &thread::operator=(thread &&o) noexcept
 //----------------------------------------------------------------------------
 void thread::start()
 {
-#ifdef _MSC_VER
+#if __VIC_USE_BEGINTHREADEX
     h = reinterpret_cast<HANDLE>(
         ::_beginthreadex(0, 0, __vic_thread_impl_func, this, 0, 0));
     if(!h) throw_errno("_beginthreadex");

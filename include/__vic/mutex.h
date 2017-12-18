@@ -1,6 +1,6 @@
 // Plain non-recursive mutex
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11 - Windows
 // $Id$
 //
 // (c) __vic 2007
