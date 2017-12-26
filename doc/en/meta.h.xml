@@ -207,4 +207,26 @@ struct disable_if : enable_if<!Test, T> {};
 </chapter>
 
 
+<chapter>
+<title><tt>index_sequence</tt>, <tt>make_index_sequence</tt> <sign>C++11</sign></title>
+
+<code-block lang="C++"><![CDATA[
+template<size_t... I>
+struct index_sequence
+{
+    static constexpr size_t size() { return sizeof...(I); }
+};
+
+template<size_t Size>
+using make_index_sequence = index_sequence<0, 1, ..., Size-1>;
+]]></code-block>
+
+<p>Implementation of C++14 <tt>std::index_sequence</tt> for C++11.</p>
+
+<note>Unlike <tt>std::index_sequence</tt> it isn't a special case of some sort
+of <tt>std::integer_sequence</tt>.</note>
+
+</chapter>
+
+
 </chapter>

@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2017-12-26  __vic
+    + meta.h: index_sequence, make_index_sequence
+
 2017-12-13  __vic
     * doc/html.xsl: more tolerant to retarded XSLT processors (oracle) TOC
       generation code

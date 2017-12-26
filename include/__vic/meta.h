@@ -148,6 +148,34 @@ template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
 // No alias for enable_if because in C++11 SFINAE is not guaranteed
 #endif
 
+//----------------------------------------------------------------------------
+
+#if __cplusplus >= 201402L // C++14
+using std::index_sequence;
+using std::make_index_sequence;
+#elif __cpp_variadic_templates && __cpp_alias_templates
+//////////////////////////////////////////////////////////////////////////////
+template<size_t... I>
+struct index_sequence
+{
+    static constexpr size_t size() { return sizeof...(I); }
+    template<size_t V> using append = index_sequence<I..., V>;
+};
+//////////////////////////////////////////////////////////////////////////////
+template<size_t Size>
+struct make_index_sequence_
+{
+    using type = typename make_index_sequence_<Size-1>::type
+        ::template append<Size-1>;
+};
+template<> struct make_index_sequence_<0> { using type = index_sequence<>; };
+//////////////////////////////////////////////////////////////////////////////
+template<size_t Size>
+using make_index_sequence = typename make_index_sequence_<Size>::type;
+#endif
+
+//----------------------------------------------------------------------------
+
 } // namespace
 
 #endif // header guard
