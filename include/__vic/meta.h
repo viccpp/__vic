@@ -159,16 +159,26 @@ template<size_t... I>
 struct index_sequence
 {
     static constexpr size_t size() { return sizeof...(I); }
-    template<size_t V> using append = index_sequence<I..., V>;
+};
+//////////////////////////////////////////////////////////////////////////////
+// O(log N) implementation from here:
+// http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence
+template<typename Seq1, typename Seq2>
+struct concat_sequence_;
+
+template<size_t... I1, size_t... I2>
+struct concat_sequence_<index_sequence<I1...>, index_sequence<I2...>>
+{
+    using type = index_sequence<I1..., (sizeof...(I1) + I2)...>;
 };
 //////////////////////////////////////////////////////////////////////////////
 template<size_t Size>
-struct make_index_sequence_
-{
-    using type = typename make_index_sequence_<Size-1>::type
-        ::template append<Size-1>;
-};
+struct make_index_sequence_ : concat_sequence_<
+    typename make_index_sequence_<Size/2>::type,
+    typename make_index_sequence_<Size - Size/2>::type
+>{};
 template<> struct make_index_sequence_<0> { using type = index_sequence<>; };
+template<> struct make_index_sequence_<1> { using type = index_sequence<0>; };
 //////////////////////////////////////////////////////////////////////////////
 template<size_t Size>
 using make_index_sequence = typename make_index_sequence_<Size>::type;

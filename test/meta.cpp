@@ -62,6 +62,7 @@ void run()
         __vic::make_index_sequence<0>,
         __vic::index_sequence<>
     >::value));
+    //using huge_sequence = __vic::make_index_sequence<4096>;
 #endif
 }
 
