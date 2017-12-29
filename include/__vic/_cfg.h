@@ -39,9 +39,9 @@
 #elif defined(__INTEL_COMPILER) && __INTEL_COMPILER >= 1700
 
 //////////////////////////////////////////////////////////////////////////////
-// GNU C++ 5 or higher
+// GNU C++ 4.7 or higher
 //////////////////////////////////////////////////////////////////////////////
-#elif defined(__GNUC__) && __GNUC__ >= 5
+#elif defined(__GNUC__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE 1 // use all
@@ -51,8 +51,74 @@
 #define __VIC_NO_NULLPTR_DEF 1
 #endif
 
+// Define SD-6 feature test macros for old versions
+#if __GNUC__ < 5 && __cplusplus >= 201103L
+// __cplusplus has been correctly defined only since 4.7
+#ifndef __cpp_rvalue_references
+#define __cpp_rvalue_references 200610
+#endif
+#ifndef __cpp_variadic_templates
+#define __cpp_variadic_templates 200704
+#endif
+#ifndef __cpp_initializer_lists
+#define __cpp_initializer_lists 200806
+#endif
+#ifndef __cpp_static_assert
+#define __cpp_static_assert 200410
+#endif
+#ifndef __cpp_lambdas
+#define __cpp_lambdas 200907
+#endif
+#ifndef __cpp_decltype
+#define __cpp_decltype 200707
+#endif
+#ifndef __cpp_constexpr
+#define __cpp_constexpr 200704
+#endif
+#ifndef __cpp_unicode_characters
+#define __cpp_unicode_characters 200704
+#endif
+#ifndef __cpp_unicode_literals
+#define __cpp_unicode_literals 200710
+#endif
+#ifndef __cpp_raw_strings
+#define __cpp_raw_strings 200710
+#endif
+#ifndef __cpp_range_based_for
+#define __cpp_range_based_for 200907
+#endif
+#ifndef __cpp_threadsafe_static_init
+#define __cpp_threadsafe_static_init 200806
+#endif
+#ifndef __cpp_nsdmi
+#define __cpp_nsdmi 200809
+#endif
+#ifndef __cpp_alias_templates
+#define __cpp_alias_templates 200704
+#endif
+#ifndef __cpp_delegating_constructors
+#define __cpp_delegating_constructors 200604
+#endif
+#ifndef __cpp_user_defined_literals
+#define __cpp_user_defined_literals 200809
+#endif
+#if __GNUC_MINOR__ >= 8 // 4.8
+#ifndef __cpp_attributes
+#define __cpp_attributes 200809
+#endif
+#ifndef __cpp_inheriting_constructors
+#define __cpp_inheriting_constructors 200802
+#endif
+#if __GNUC_PATCHLEVEL__ >= 1 // 4.8.1
+#ifndef __cpp_ref_qualifiers
+#define __cpp_ref_qualifiers 200710
+#endif
+#endif // 4.8.1
+#endif // 4.8
+#endif // SD-6
+
 // GCC bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71214
-#if !__cpp_rvalue_references && __cpp_rvalue_reference
+#if !defined(__cpp_rvalue_references) && defined(__cpp_rvalue_reference)
 #define __cpp_rvalue_references __cpp_rvalue_reference
 #endif
 
@@ -65,35 +131,38 @@
 #if _MSC_VER >= 1600 // VC 10.0 (VS 2010)
 
 #define __VIC_NO_NULLPTR_DEF 1
-#if !__cpp_rvalue_references
-#   define __cpp_rvalue_references 1
+#ifndef __cpp_rvalue_references
+#define __cpp_rvalue_references 1
 #endif
-#if !__cpp_lambdas
-#   define __cpp_lambdas 1
+#ifndef __cpp_lambdas
+#define __cpp_lambdas 1
 #endif
-#if !__cpp_static_assert
-#   define __cpp_static_assert 1
+#ifndef __cpp_static_assert
+#define __cpp_static_assert 1
 #endif
 
 #if _MSC_VER >= 1800 // VC 12.0 (VS 2013)
 
-#if !__cpp_initializer_lists
-#   define __cpp_initializer_lists 1
+#ifndef __cpp_initializer_lists
+#define __cpp_initializer_lists 1
 #endif
-#if !__cpp_alias_templates
-#   define __cpp_alias_templates 1
+#ifndef __cpp_alias_templates
+#define __cpp_alias_templates 1
 #endif
-#if !__cpp_variadic_templates
-#   define __cpp_variadic_templates 1
+#ifndef __cpp_variadic_templates
+#define __cpp_variadic_templates 1
 #endif
 
 #if _MSC_VER >= 1900 // VS 14.0 (2015)
 #define __VIC_NO_NOEXCEPT_DEF 1
-#if !__cpp_constexpr
-#   define __cpp_constexpr 1
+#ifndef __cpp_constexpr
+#define __cpp_constexpr 1
 #endif
-#if !__cpp_attributes
-#   define __cpp_attributes 1
+#ifndef __cpp_attributes
+#define __cpp_attributes 1
+#endif
+#ifndef __cpp_unicode_characters
+#define __cpp_unicode_characters 1
 #endif
 #endif // VS 2015
 
@@ -173,33 +242,27 @@
 #endif
 
 #if __cplusplus >= 201103L // C++11
-#   if !__cpp_constexpr
-#       define __cpp_constexpr 1
-#   endif
-#   if !__cpp_attributes
-#       define __cpp_attributes 1
-#   endif
 #   define __VIC_THROWS noexcept(false)
-#   define __VIC_DEFAULT_CTR =default;
 #   define __VIC_SWAP_HEADER <algorithm>
 #else // C++98
 #   define __VIC_THROWS
-#   define __VIC_DEFAULT_CTR {}
 #   define __VIC_SWAP_HEADER <utility>
 #endif
 
 #if __cpp_constexpr
 #   define __VIC_CONSTEXPR_FUNC constexpr
 #   define __VIC_CONSTEXPR_VAR constexpr
+#   define __VIC_DEFAULT_CTR =default;
 #else
 #   define __VIC_CONSTEXPR_FUNC inline
 #   define __VIC_CONSTEXPR_VAR const
+#   define __VIC_DEFAULT_CTR {}
 #endif
 
 #if __cpp_attributes
 #   define __VIC_NORETURN [[noreturn]]
 #else
-#   if defined(__GNUC__) || defined(__clang__)
+#   if defined(__GNUC__)
 #       define __VIC_NORETURN __attribute__((noreturn))
 #   elif defined(_MSC_VER)
 #       define __VIC_NORETURN __declspec(noreturn)

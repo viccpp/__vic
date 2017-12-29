@@ -4,8 +4,15 @@ Legend:
     * Changes
     ! Important
 
+2017-12-26  __vic
+    + meta.h: index_sequence, make_index_sequence
+
 2017-12-21  __vic
     + packon.h, packoff.h
+
+2017-12-13  __vic
+    * doc/html.xsl: more tolerant to retarded XSLT processors (oracle) TOC
+      generation code
 
 2017-12-12  __vic
     + waitable_event for C++98 mode too
@@ -238,4 +245,4 @@ Legend:
         + throw_errno()
 
 2016-06-23  __vic
-    * Total revision an rework started in order to publish the code
+    * Total revision and rework started in order to publish the code

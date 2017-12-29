@@ -52,6 +52,18 @@ void run()
     assert((__vic::is_same<
         __vic::remove_cvref<const int &>::type,
         int>::value));
+
+#if __cpp_variadic_templates && __cpp_alias_templates
+    assert((__vic::is_same<
+        __vic::make_index_sequence<4>,
+        __vic::index_sequence<0, 1, 2, 3>
+    >::value));
+    assert((__vic::is_same<
+        __vic::make_index_sequence<0>,
+        __vic::index_sequence<>
+    >::value));
+    //using huge_sequence = __vic::make_index_sequence<4096>;
+#endif
 }
 
 } // namespace
