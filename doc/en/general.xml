@@ -19,7 +19,7 @@ other namespaces.</p>
 Example:</p>
 
 <tty>
-$ g++ -std=с++11 prog.cpp -l__vic
+$ g++ -std=c++11 prog.cpp -l__vic
 </tty>
 
 <p>The library has 2 modes: C++11 mode and C++98 mode. Features available
@@ -28,7 +28,7 @@ only in C++98 mode are marked with <sign>C++98</sign> sign, respectively. Also
 in C++98 mode the library file has slightly different name:</p>
 
 <tty>
-$ g++ -std=с++98 prog.cpp -l__vic98
+$ g++ -std=c++98 prog.cpp -l__vic98
 </tty>
 
 <note>C++11 mode is used for C++14 as well.</note>

@@ -1,5 +1,23 @@
+__vic's C++ library
+(c) Victor Dyachenko aka __vic <__vic@ngs.ru> since 2007
+
+
+OVERVIEW
+
+__vic library is a collection of useful lightweight C++ utilities that I use
+in my day-to-day activity. Most parts of the library have been written using
+standard C++. Various extensions are used for optimization but for all of them
+implementation with standard facilities is supplied.
+
 The essential information about the library can be found in doc/ subdirectory
-that contains XML-sources of the documentation that can be converted to HTML.
+that contains XML-sources of the documentation that can be converted to HTML
+(via XSLT).
+
+
+LICENSING
+
+Public domain. Check the LICENSE file.
+
 
 BRANCHES
 
