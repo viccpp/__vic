@@ -17,14 +17,14 @@
 body {
 	font-family: verdana, sans-serif;
 	font-size: 10pt;
-    background-color: #777777;
-    margin: 0;
+	background-color: #777777;
+	margin: 0;
 }
 div.page-wrap {
-    background-color: white;
-    width: 210mm; /* A4 */
-    margin: 0 auto;
-    padding: 2mm 5mm;
+	background-color: white;
+	width: 210mm; /* A4 */
+	margin: 0 auto;
+	padding: 2mm 5mm;
 }
 p, div {
 	margin-top: 6pt;
@@ -103,13 +103,13 @@ blockquote * {
 </style>
 </head>
 <body>
-    <div class="page-wrap">
-        <xsl:apply-templates select="title" mode="document"/>
-        <xsl:call-template name="toc"/>
-        <xsl:apply-templates>
-            <xsl:with-param name="chapter_level" select="1"/>
-        </xsl:apply-templates>
-    </div>
+	<div class="page-wrap">
+		<xsl:apply-templates select="title" mode="document"/>
+		<xsl:call-template name="toc"/>
+		<xsl:apply-templates>
+			<xsl:with-param name="chapter_level" select="1"/>
+		</xsl:apply-templates>
+	</div>
 </body>
 </html>
 </xsl:template>
@@ -150,21 +150,22 @@ blockquote * {
 	<xsl:param name="level" select="1"/>
 
 	<xsl:for-each select="chapter">
+		<xsl:variable name="chap" select="concat($prefix, position())"/>
 		<tr>
 			<td style="padding-right:1ex">
-				<xsl:value-of select="concat($prefix, position())"/>
+				<xsl:value-of select="$chap"/>
 			</td>
 			<td>
 				<xsl:if test="$level > 2">
 					<xsl:attribute name="style">padding-left:4ex</xsl:attribute>
 				</xsl:if>
-				<a class="toc" href="#chapter-{translate(concat($prefix, position()),'.','_')}">
+				<a class="toc" href="#chapter-{translate($chap,'.','_')}">
 					<xsl:apply-templates select="title" mode="toc"/>
 				</a>
 			</td>
 		</tr>
 		<xsl:call-template name="toc-entry">
-			<xsl:with-param name="prefix" select="concat($prefix, position(), '.')"/>
+			<xsl:with-param name="prefix" select="concat($chap, '.')"/>
 			<xsl:with-param name="level" select="$level + 1"/>
 		</xsl:call-template>
 		<xsl:if test="$level = 1">

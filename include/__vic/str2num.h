@@ -114,7 +114,7 @@ __VIC_NORETURN void throw_integer_too_long();
 } // namespace
 
 //////////////////////////////////////////////////////////////////////////////
-template<class > class decimal_parser; // not defined
+template<class > struct decimal_parser; // not defined
 
 template<> struct decimal_parser<signed char> : impl::signed_decimal_parser<signed char> {};
 template<> struct decimal_parser<short> : impl::signed_decimal_parser<short> {};

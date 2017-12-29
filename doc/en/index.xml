@@ -19,6 +19,7 @@
     <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY mutex.h SYSTEM "mutex.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
+    <!ENTITY packon.h SYSTEM "packon.h.xml">
     <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
     <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
@@ -134,6 +135,7 @@ TODO
 &meta.h;
 &mutex.h;
 &object_pool.h;
+&packon.h;
 &readers;
 &readonly_cstring.h;
 &set_of_chars.h;

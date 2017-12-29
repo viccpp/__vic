@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2017-12-26  __vic
+    + meta.h: index_sequence, make_index_sequence
+
+2017-12-21  __vic
+    + packon.h, packoff.h
+
 2017-12-14  __vic
     + posix/sigset.h:
         * posix::sigset moved from posix/signal.h
@@ -11,6 +17,8 @@ Legend:
     * posix/signal.h removed
 
 2017-12-13  __vic
+    * doc/html.xsl: more tolerant to retarded XSLT processors (oracle) TOC
+      generation code
     + posix/process.h: posix::process_alive()
 
 2017-12-12  __vic
@@ -301,4 +309,4 @@ Legend:
         + throw_errno()
 
 2016-06-23  __vic
-    * Total revision an rework started in order to publish the code
+    * Total revision and rework started in order to publish the code
