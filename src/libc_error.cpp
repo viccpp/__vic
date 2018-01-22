@@ -3,10 +3,10 @@
 //
 
 #include<__vic/error.h>
-#include<cstdio>
 #include<cstring>
 #if defined __linux__ || defined __FreeBSD__ || defined __sun || defined _AIX
 #include<string.h> // for strerror_r
+#include<cstdio>
 #define __VIC_USE_STRERROR_R 1
 #endif
 
@@ -63,12 +63,17 @@ const char *libc_error::what() const noexcept
 #endif
 
             if(msg.empty()) msg = err_msg;
-            else
+            else // prompt: err_msg
             {
-                size_t n = std::strlen(msg) + std::strlen(err_msg) + 3; // 3 is ": " + '\0'
+                size_t msg_len = std::strlen(msg);
+                size_t err_msg_len = std::strlen(err_msg);
                 readonly_cstring tmp;
-                std::sprintf(tmp.reserve(n), "%s: %s",
-                                static_cast<const char *>(msg), err_msg);
+                char *p = tmp.reserve(msg_len + err_msg_len + 3); // 3 is ": " + '\0'
+                std::memcpy(p, msg, msg_len);
+                p += msg_len;
+                *p++ = ':';
+                *p++ = ' ';
+                std::memcpy(p, err_msg, err_msg_len + 1); // with '\0'
                 msg.swap(tmp);
             }
             formatted = true;

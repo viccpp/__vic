@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-01-22  __vic
+    * libc_error doesn't use sprintf() for message formatting
+
 2017-12-26  __vic
     + meta.h: index_sequence, make_index_sequence
 
