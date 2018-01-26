@@ -4,6 +4,22 @@ Legend:
     * Changes
     ! Important
 
+2018-09-27  __vic
+    + unicode.h:
+        + unicode_t
+        + unicode_max, unicode_bom, unicode_replacement_char
+    + utf8/defs.h:
+        + utf8::is_continuation_byte()
+    + utf8/status.h:
+        + utf8::status
+        + utf8::is_error(), utf8::throw_if_error()
+    + utf8/exceptions.h:
+        + utf8::bad_encoding and derivatives
+    + utf8/reader.h:
+        + utf8::reader
+    + utf8/writer.h:
+        + utf8::writer
+
 2018-09-26  __vic
     * Readers:
         * Renamed range_reader[_n] -> iterator_reader[_n]

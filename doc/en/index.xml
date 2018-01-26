@@ -28,6 +28,11 @@
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
     <!ENTITY type_traits.h SYSTEM "type_traits.h.xml">
+    <!ENTITY unicode.h SYSTEM "unicode.h.xml">
+    <!ENTITY utf8.exceptions.h SYSTEM "utf8.exceptions.h.xml">
+    <!ENTITY utf8.reader.h SYSTEM "utf8.reader.h.xml">
+    <!ENTITY utf8.status.h SYSTEM "utf8.status.h.xml">
+    <!ENTITY utf8.writer.h SYSTEM "utf8.writer.h.xml">
     <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
     <!ENTITY writers SYSTEM "writers.xml">
 ]>
@@ -130,6 +135,11 @@ TODO
 &tchar.h;
 &to_text.h;
 &type_traits.h;
+&unicode.h;
+&utf8.status.h;
+&utf8.exceptions.h;
+&utf8.reader.h;
+&utf8.writer.h;
 &waitable_event.h;
 &writers;
 </chapter>

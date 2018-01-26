@@ -1,0 +1,101 @@
+<chapter xml:id="utf8.reader.h">
+<title><tt>__vic/utf8/reader.h</tt></title>
+
+<chapter xml:id="utf8--reader">
+<title><tt>utf8::reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ByteReader>
+class utf8::reader
+{
+public:
+    using byte_reader_type = ByteReader;
+    ByteReader &get_byte_reader();
+    const ByteReader &get_byte_reader() const;
+
+    template<class... Args>
+    explicit reader(Args&&... args); // since C++11
+
+    reader(); // C++98 only
+    explicit reader(const ByteReader &r); // C++98 only
+
+    status_t parse(unicode_t &cp);
+    bool read(unicode_t &cp);
+};
+]]></code-block>
+
+<p>UTF-8 code points from byte sequence reader. The sequence is accessed using
+<tt>ByteReader</tt> which models <tt>Reader&lt;unsigned char></tt> (see
+<xref to="readers"/>).</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>ByteReader &amp;get_byte_reader()</prototype>
+<prototype>const ByteReader &amp;get_byte_reader() const</prototype>
+<p>Returns reference to the used byte reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args>
+explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Forwards all parameters to the used byte reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>reader() <sign>C++98 only</sign></prototype>
+<prototype>explicit reader(const ByteReader &amp;r) <sign>C++98 only</sign></prototype>
+<p>Constructors for C++98 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>status_t parse(unicode_t &amp;cp)</prototype>
+<p>Tries to extract the next code point from byte sequence using
+<tt>ByteReader</tt>. On success <tt>utf8::status::ok</tt> is returned and the
+code point is stored in <tt>cp</tt>. <tt>utf8::status::eof</tt> is returned
+when no more bytes available. Other values are returned on errors, see
+<xref to="utf8--status"/> for more details. <tt>ByteReader::read()</tt> is
+used to access individual bytes.</p>
+<note>The function itself doesn't throw exceptions but exception can be
+thrown by <tt>ByteReader::read()</tt>.</note>
+</synopsis>
+
+<synopsis>
+<prototype>bool read(unicode_t &amp;cp)</prototype>
+<p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
+on EOF or throws an exception from <xref to="utf8.exceptions.h"/> otherwise.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/utf8/reader.h>
+#include<__vic/readers/string.h>
+#include<string>
+#include<cstdint>
+#include<iostream>
+
+// C++11
+using utf8_string_reader = __vic::utf8::reader<__vic::string_reader>;
+
+// C++98
+struct utf8_string_reader : __vic::utf8::reader<__vic::string_reader>
+{
+    explicit utf8_string_reader(const std::string &s)
+        : __vic::utf8::reader<__vic::string_reader>(__vic::string_reader(s)) {}
+};
+
+void print_utf8_code_points(const string &s)
+{
+    utf8_string_reader r(s);
+    __vic::unicode_t cp;
+    while(r.read(cp))
+        std::cout << uint_least32_t(cp) << '\n';
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>
