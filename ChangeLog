@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2018-01-26  __vic
+    + Tests for readers
+    + Tests for writers
+    - readers/cstring.h: invalid code
+
 2017-12-26  __vic
     + meta.h: index_sequence, make_index_sequence
 
