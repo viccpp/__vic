@@ -1,0 +1,77 @@
+<chapter xml:id="utf16.writer.h">
+<title><tt>__vic/utf16/writer.h</tt></title>
+
+<chapter xml:id="utf16--writer">
+<title><tt>utf16::writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class CodeUnitWriter>
+class utf16::writer
+{
+public:
+    using code_unit_writer_type = CodeUnitWriter;
+    CodeUnitWriter &get_code_unit_writer();
+    const CodeUnitWriter &get_code_unit_writer() const;
+
+    template<class... Args>
+    explicit writer(Args&&... args); // since C++11
+
+    writer(); // C++98 only
+    explicit writer(const CodeUnitWriter &w); // C++98 only
+
+    void write(unicode_t cp);
+};
+]]></code-block>
+
+<p>UTF-16 code points to 2-byte <xref to="utf16--code_unit_t"/> sequence writer.
+<tt>CodeUnitWriter</tt> which models <tt>Writer&lt;utf16::code_unit_t></tt>
+(see <xref to="writers"/>) is used as a code units output.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>CodeUnitWriter &amp;get_code_unit_writer()</prototype>
+<prototype>const CodeUnitWriter &amp;get_code_unit_writer() const</prototype>
+<p>Returns reference to the used code unit writer.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args>
+explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Forwards all parameters to the used code unit writer.</p>
+</synopsis>
+
+<synopsis>
+<prototype>writer() <sign>C++98 only</sign></prototype>
+<prototype>explicit writer(const ByteWriter &amp;r) <sign>C++98 only</sign></prototype>
+<p>Constructors for C++98 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void write(unicode_t cp)</prototype>
+<p>Writes the specified code point according to UTF-16 encoding rules.
+<tt>CodeUnitWriter::write()</tt> is used to write individual code points.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/utf16/writer.h>
+#include<__vic/writers/string.h>
+#include<string>
+#include<vector>
+
+std::u16string encode_utf16(const std::vector<__vic::unicode> &code_points)
+{
+    std::u16string utf16_res;
+    __vic::utf16::writer<__vic::basic_string_writer<char16_t>> w(utf16_res);
+    for(auto cp : code_points) w.write(cp);
+    return utf16_res;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

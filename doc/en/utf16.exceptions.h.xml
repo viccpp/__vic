@@ -1,0 +1,20 @@
+<chapter xml:id="utf16.exceptions.h">
+<title><tt>__vic/utf16/exceptions.h</tt></title>
+
+<code-block lang="C++">
+namespace utf16 {
+
+class bad_encoding; // public std::exception
+    class truncated_code_unit;
+    class truncated_code_point;
+    class invalid_sequence;
+
+} // namespace
+</code-block>
+
+<p>Exception classes thrown by <xref to="utf16--reader"/> <tt>read()</tt>
+function. All exceptions are derived from abstract base class
+<tt>utf16::bad_encoding</tt>. See <xref to="utf16--status"/> for equivalent
+status codes.</p>
+
+</chapter>

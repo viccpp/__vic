@@ -1,0 +1,120 @@
+<chapter xml:id="utf16.reader.h">
+<title><tt>__vic/utf16/reader.h</tt></title>
+
+<chapter xml:id="utf16--reader">
+<title><tt>utf16::reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class CodeUnitReader>
+class utf16::reader
+{
+public:
+    using code_unit_reader_type = CodeUnitReader;
+    CodeUnitReader &get_code_unit_reader();
+    const CodeUnitReader &get_code_unit_reader() const;
+
+    template<class... Args>
+    explicit reader(Args&&... args);  // since C++11
+
+    reader(); // C++98 only
+    explicit reader(const CodeUnitReader &r); // C++98 only
+
+    status_t parse(unicode_t &cp);
+    bool read(unicode_t &cp);
+};
+]]></code-block>
+
+<p>UTF-16 code points from 2-byte <xref to="utf16--code_unit_t"/> sequence
+reader. The sequence is accessed using the special reader of the following
+structure:</p>
+
+<code-block lang="C++"><![CDATA[
+class ]]><nt>CodeUnitReader</nt><![CDATA[
+{
+public:
+    utf16::status_t read_unit(utf16::code_unit_t &u);
+};
+]]></code-block>
+
+<synopsis>
+<prototype>utf16::status_t read_unit(utf16::code_unit_t &amp;u)</prototype>
+<p>Tries to read the next code unit. Returns <tt>utf16::status::ok</tt> on
+success, <tt>utf16::status::eof</tt> if no more code units available or
+<tt>utf16::status::truncated_code_unit</tt> if only partial code unit
+is available.</p>
+</synopsis>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>CodeUnitReader &amp;get_code_unit_reader()</prototype>
+<prototype>const CodeUnitReader &amp;get_code_unit_reader() const</prototype>
+<p>Returns reference to the used code unit reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args>
+explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Forwards all parameters to the used code unit reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>reader() <sign>C++98 only</sign></prototype>
+<prototype>explicit reader(const CodeUnitReader &amp;r) <sign>C++98 only</sign></prototype>
+<p>Constructors for C++98 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>status_t parse(unicode_t &amp;cp)</prototype>
+<p>Tries to extract the next code point from code unit sequence using
+<tt>CodeUnitReader</tt>. On success <tt>utf16::status::ok</tt> is returned and
+the code point is stored in <tt>cp</tt>. <tt>utf16::status::eof</tt> is
+returned when no more bytes available. Other values are returned on errors,
+see <xref to="utf16--status"/> for more details.
+<tt>CodeUnitReader::read_unit()</tt> is used to access code units.</p>
+<note>The function itself doesn't throw exceptions but exception can be
+thrown by <tt>CodeUnitReader::read_unit()</tt>.</note>
+</synopsis>
+
+<synopsis>
+<prototype>bool read(unicode_t &amp;cp)</prototype>
+<p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
+on EOF or throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/utf16/reader.h>
+#include<__vic/readers/string.h>
+#include<string>
+#include<cstdint>
+#include<iostream>
+
+class u16string_code_unit_reader
+{
+    __vic::basic_string_reader<char16_t> r;
+public:
+    explicit u16string_code_unit_reader(const std::u16string &s) : r(s) {}
+
+    __vic::utf16::status_t read_unit(__vic::utf16::code_unit_t &u)
+    {
+        if(r.read(u)) return __vic::utf16::status::ok;
+        return __vic::utf16::status::eof;
+    }
+};
+
+void print_utf16_code_points(const std::u16string &s)
+{
+    __vic::utf16::reader<u16string_code_unit_reader> r(s);
+    __vic::unicode_t cp;
+    while(r.read(cp))
+        std::cout << uint_least32_t(cp) << '\n';
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

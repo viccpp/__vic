@@ -29,6 +29,11 @@
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
     <!ENTITY type_traits.h SYSTEM "type_traits.h.xml">
     <!ENTITY unicode.h SYSTEM "unicode.h.xml">
+    <!ENTITY utf16.defs.h SYSTEM "utf16.defs.h.xml">
+    <!ENTITY utf16.exceptions.h SYSTEM "utf16.exceptions.h.xml">
+    <!ENTITY utf16.reader.h SYSTEM "utf16.reader.h.xml">
+    <!ENTITY utf16.status.h SYSTEM "utf16.status.h.xml">
+    <!ENTITY utf16.writer.h SYSTEM "utf16.writer.h.xml">
     <!ENTITY utf8.exceptions.h SYSTEM "utf8.exceptions.h.xml">
     <!ENTITY utf8.reader.h SYSTEM "utf8.reader.h.xml">
     <!ENTITY utf8.status.h SYSTEM "utf8.status.h.xml">
@@ -140,6 +145,11 @@ TODO
 &utf8.exceptions.h;
 &utf8.reader.h;
 &utf8.writer.h;
+&utf16.defs.h;
+&utf16.status.h;
+&utf16.exceptions.h;
+&utf16.reader.h;
+&utf16.writer.h;
 &waitable_event.h;
 &writers;
 </chapter>
