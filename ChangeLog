@@ -16,6 +16,7 @@ Legend:
         + utf16::reader
     + utf16/writer.h:
         + utf16::writer
+    * fs.h: all paths are UTF-8 now
 
 2018-09-27  __vic
     + unicode.h:

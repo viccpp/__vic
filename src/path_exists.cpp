@@ -4,6 +4,7 @@
 
 #include<__vic/fs.h>
 #include<__vic/string_buffer.h>
+#include<__vic/windows/wchar.h>
 #include<__vic/windows/throw_last_error.h>
 #include<windows.h>
 
@@ -15,7 +16,7 @@ bool get_file_attr(const char *path, DWORD &attr, const char *what)
 {
     // TODO: the call doesn't follow symbolic links as opposed to POSIX stat()
     // FILE_ATTRIBUTE_REPARSE_POINT is set for symlink
-    attr = ::GetFileAttributesA(path);
+    attr = ::GetFileAttributesW(windows::utf8to16(path));
     if(attr != INVALID_FILE_ATTRIBUTES) return true;
     DWORD err = ::GetLastError();
     switch(err)
@@ -32,7 +33,7 @@ bool get_file_attr(const char *path, DWORD &attr, const char *what)
 bool path_exists(const char *path)
 {
 #if 0
-    return ::PathFileExistsA(path); // depends on Shlwapi.dll
+    return ::PathFileExistsW(windows::utf8to16(path)); // depends on Shlwapi.dll
 #else
     DWORD attr;
     return get_file_attr(path,attr,"path");
