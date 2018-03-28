@@ -8,8 +8,8 @@
 <title><tt>lo_nibble()</tt>, <tt>hi_nibble()</tt></title>
 
 <code-block lang="C++">
-constexpr int lo_nibble(uint8_t byte);
-constexpr int hi_nibble(uint8_t byte);
+constexpr uint8_t lo_nibble(uint8_t byte);
+constexpr uint8_t hi_nibble(uint8_t byte);
 </code-block>
 
 <p>Return the value of the low-order/high-order half-byte (tetrad),

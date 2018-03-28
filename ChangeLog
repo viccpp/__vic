@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-03-28  __vic
+    * bits.h: lo/hi_nibble() return uint8_t instead of int
+
 2018-01-26  __vic
     + Tests for readers
     + Tests for writers

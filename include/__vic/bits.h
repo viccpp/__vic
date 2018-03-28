@@ -16,13 +16,13 @@ namespace __vic {
 
 //----------------------------------------------------------------------------
 // Returns low-order nibble (or tetrad, or half-byte) of the byte
-__VIC_CONSTEXPR_FUNC int lo_nibble(uint8_t b)
+__VIC_CONSTEXPR_FUNC uint8_t lo_nibble(uint8_t b)
 {
     return b & 0x0F;
 }
 //----------------------------------------------------------------------------
 // Returns high-order nibble (or tetrad, or half-byte) of the byte
-__VIC_CONSTEXPR_FUNC int hi_nibble(uint8_t b)
+__VIC_CONSTEXPR_FUNC uint8_t hi_nibble(uint8_t b)
 {
     return b >> 4;
 }
