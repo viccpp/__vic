@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-05-07  __vic
+    * Don't catch exceptions by value even in tests
+
 2018-03-28  __vic
     * bits.h: lo/hi_nibble() return uint8_t instead of int
 

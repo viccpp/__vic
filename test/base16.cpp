@@ -44,13 +44,13 @@ void run()
         decode("12ZX"); // non-HEX digit
         assert(false);
     }
-    catch(__vic::base16::bad_format) {} // OK
+    catch(const __vic::base16::bad_format & ) {} // OK
     try
     {
         decode("12A"); // odd length
         assert(false);
     }
-    catch(__vic::base16::bad_format) {} // OK
+    catch(const __vic::base16::bad_format & ) {} // OK
 }
 
 } // namespace
