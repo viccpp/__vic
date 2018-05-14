@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-05-14  __vic
+    + object_pool: full()
+
 2018-05-07  __vic
     * Don't catch exceptions by value even in tests
 

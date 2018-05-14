@@ -27,6 +27,7 @@ public:
     // size in objects
     size_t size() const;
     size_t capacity() const;
+    bool full();
     bool empty();
 
     void recreate(size_t new_max_size, bool size_exact = false);
@@ -140,6 +141,11 @@ store and placing only pointers to the container, even if we have
 <synopsis>
 <prototype>bool empty()</prototype>
 <p>Returns <tt>size() == 0</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool full()</prototype>
+<p>Returns <tt>size() == capacity()</tt>.</p>
 </synopsis>
 
 <synopsis>
