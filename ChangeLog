@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-05-15  __vic
+    * doc/document.dtd is deterministic now
+
 2018-05-14  __vic
     + object_pool: full()
 

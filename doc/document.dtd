@@ -7,7 +7,7 @@
 <!ENTITY % section-content "p | list | code-block | tty | note | precondition | postcondition | invariant | synopsis | TODO">
 <!ENTITY % text-with-markup "#PCDATA | tt | u | b | nt | link | sign">
 
-<!ELEMENT chapter (title, (section | %section-content;)*, (chapter | TODO)*)>
+<!ELEMENT chapter (title, (chapter | section | %section-content;)*)>
 
 <!ELEMENT section (title, (%section-content;)*)>
 
