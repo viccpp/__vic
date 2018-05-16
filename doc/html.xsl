@@ -70,8 +70,21 @@ td.toc-chapter-no {
 	padding-right: 1ex;
 	vertical-align: top;
 }
-a { text-decoration: none; }
+a { color: #0000EE; text-decoration: none; }
 a:hover { text-decoration: underline; }
+a.self-link {
+	font-weight: normal;
+	margin-left: -1.5ex;
+	width: 2em;
+	text-align: center;
+	visibility: hidden;
+}
+a.self-link::before {
+	content: "\00A7";
+}
+h1:hover>a.self-link, h2:hover>a.self-link, h3:hover>a.self-link, h4:hover>a.self-link {
+	visibility: visible;
+}
 pre.code {
 	background-color: #EEE;
 	border: 1px solid #CCCCCC;
@@ -220,10 +233,12 @@ blockquote * {
 	<xsl:param name="level"/>
 	<xsl:param name="no"/>
 
+	<xsl:variable name="chapter_id" select="string(../@xml:id)"/>
 	<xsl:element name="h{$level}">
 		<xsl:attribute name="id">
-			<xsl:value-of select="../@xml:id"/>
+			<xsl:value-of select="$chapter_id"/>
 		</xsl:attribute>
+		<a class="self-link" href="#{$chapter_id}"/>
 		<span class="h{$level}_num">
 			<xsl:value-of select="$no"/>
 		</span>
