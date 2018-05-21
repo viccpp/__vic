@@ -1,4 +1,4 @@
-<chapter>
+<chapter xml:id="ascii.h">
 <title><tt>__vic/ascii.h</tt></title>
 
 <p>Fast, compact and locale-independent tools for ASCII-characters
@@ -6,7 +6,7 @@ processing. All the tools are located within <tt>__vic::ascii</tt>
 namespace.</p>
 
 
-<chapter>
+<chapter xml:id="ascii--is-functions">
 <title><tt>ascii::is</tt>-functions</title>
 
 <code-block lang="C++">
@@ -29,7 +29,7 @@ constexpr bool isascii(char c);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--todigit">
 <title><tt>ascii::todigit()</tt></title>
 
 <code-block lang="C++">
@@ -43,7 +43,7 @@ if the input value goes beyond the range.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--toxdigit">
 <title><tt>ascii::toxdigit_upper()</tt>, <tt>ascii::toxdigit_lower()</tt></title>
 
 <code-block lang="C++">
@@ -63,7 +63,7 @@ is undefined if the input value goes beyond the range.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--digit_to_number">
 <title><tt>ascii::digit_to_number()</tt></title>
 
 <code-block lang="C++">
@@ -76,7 +76,7 @@ constexpr int ascii::digit_to_number(char d);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--xdigit_to_number">
 <title><tt>ascii::xdigit_to_number()</tt></title>
 
 <code-block lang="C++">
@@ -89,7 +89,7 @@ constexpr int ascii::xdigit_to_number(char d);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--tolower-char">
 <title><tt>ascii::tolower(char)</tt>, <tt>ascii::toupper(char)</tt></title>
 
 <code-block lang="C++">
@@ -126,7 +126,7 @@ if the argument is not an ASCII small letter.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--equal_icase-char">
 <title><tt>ascii::equal_icase(char,char)</tt></title>
 
 <code-block lang="C++">

@@ -19,7 +19,7 @@ class basic_cstring_reader_
 {
     const charT *st;
 public:
-    explicit basic_cstring_reader(const charT *s) : st(st) {}
+    explicit basic_cstring_reader_(const charT *s) : st(s) {}
     bool read(charT &ch)
     {
         if(!*st) return false;

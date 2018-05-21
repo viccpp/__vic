@@ -5,8 +5,8 @@
 //
 // (c) __vic 2011
 
-#ifndef __VIC_META_H
-#define __VIC_META_H
+#ifndef __VIC_TYPE_TRAITS_H
+#define __VIC_TYPE_TRAITS_H
 
 #include<__vic/defs.h>
 #if __cplusplus >= 201103L && !defined(__VIC_HAVE_TYPE_TRAITS)

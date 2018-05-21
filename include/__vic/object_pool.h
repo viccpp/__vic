@@ -59,6 +59,7 @@ public:
     // size in objects
     size_t size() const { return next - pool; }
     size_t capacity() const { return limit - pool; }
+    bool full() const { return next == limit; }
     bool empty() const { return next == pool; }
 
     void recreate(size_t , bool = false);
@@ -81,7 +82,7 @@ public:
     // returns pointer to memory for object allocation
     void *alloc()
     {
-        if(next == limit) throw overflow();
+        if(full()) throw overflow();
         return next;
     }
     // adds last allocated object to the pool
@@ -136,7 +137,7 @@ template<class T>
 template<class... Args>
 T &object_pool<T>::emplace(Args &&... args)
 {
-    if(next == limit) throw overflow();
+    if(full()) throw overflow();
     T *obj = ::new(static_cast<void*>(next))
         object_type(std::forward<Args>(args)...);
     next++;

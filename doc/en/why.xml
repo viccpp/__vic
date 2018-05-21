@@ -1,4 +1,4 @@
-<chapter>
+<chapter xml:id="why">
 <title>Why this library was created?</title>
 
 <p>This library contains the features I'm missing in the Standard C++

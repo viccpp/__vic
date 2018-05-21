@@ -1,7 +1,7 @@
-<chapter>
+<chapter xml:id="readonly_cstring.h">
 <title><tt>__vic/readonly_cstring.h</tt></title>
 
-<chapter>
+<chapter xml:id="readonly_cstring">
 <title><tt>readonly_cstring</tt></title>
 
 <code-block lang="C++"><![CDATA[

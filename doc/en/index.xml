@@ -16,7 +16,6 @@
     <!ENTITY fs.h SYSTEM "fs.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
-    <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY mutex.h SYSTEM "mutex.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY packon.h SYSTEM "packon.h.xml">
@@ -32,6 +31,7 @@
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY thread.h SYSTEM "thread.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY type_traits.h SYSTEM "type_traits.h.xml">
     <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
     <!ENTITY writers SYSTEM "writers.xml">
 ]>
@@ -48,7 +48,7 @@ document
         * status - "Release" or "Draft".
 chapter
     A chapter. An entry of the table of contents (TOC). Can be nested to each
-    other.
+    other. "xml:id" attribute specifies the unique chapter ID.
 section
     A section of text. Included in a chapter. Not a part of TOC.
 title
@@ -81,6 +81,9 @@ nt
     replaced by something before usage.
 link
     A hyperlink. Either URL or text + URL in the "href" attribute.
+xref
+    Cross-reference to the document chapter. "to" attribute specifies the
+    chapter ID.
 synopsis
     Reference to component (function, type, etc). Function prototype or type
     definition is enclosed in <prototype>. Formatting is preserved.
@@ -99,13 +102,13 @@ TODO
     TODO-marker for the editor of this document.
 ]]></documentation></annotation>
 
-<chapter>
+<chapter xml:id="intro">
 <title>Introduction</title>
 &why;
 &general;
 </chapter>
 
-<chapter>
+<chapter xml:id="components-reference">
 <title>Library components reference</title>
 &defs.h;
 &ascii.h;
@@ -119,7 +122,6 @@ TODO
 &fs.h;
 &iterator.h;
 &logger.h;
-&meta.h;
 &mutex.h;
 &object_pool.h;
 &packon.h;
@@ -135,11 +137,12 @@ TODO
 &tchar.h;
 &thread.h;
 &to_text.h;
+&type_traits.h;
 &waitable_event.h;
 &writers;
 </chapter>
 
-<chapter>
+<chapter xml:id="build">
 <title>Build and install</title>
 &build;
 </chapter>

@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="ascii_string.h">
 <title><tt>__vic/ascii_string.h</tt></title>
 
 <p>ASCII-strings processing tools.</p>
 
 
-<chapter>
+<chapter xml:id="ascii--tolower-str">
 <title><tt>ascii::tolower()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -22,7 +22,7 @@ Returns <tt>str</tt>. C-string must not be <tt>nullptr</tt>!</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--toupper-str">
 <title><tt>ascii::toupper()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -40,7 +40,7 @@ Returns <tt>str</tt>. C-string must not be <tt>nullptr</tt>!</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ascii--equal_icase-str">
 <title><tt>ascii::equal_icase()</tt></title>
 
 <code-block lang="C++"><![CDATA[

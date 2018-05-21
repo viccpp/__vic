@@ -1,4 +1,4 @@
-<chapter>
+<chapter xml:id="general-structure">
 <title>General structure and usage</title>
 
 <p>The topmost structural units of the library are headers and the library file
@@ -10,7 +10,7 @@ this:</p>
 #include &lt;__vic/<nt>header.h</nt>>
 </code-block>
 
-<p>Where <tt><nt>header.h</nt></tt> is the name of the desired header.</p>
+<p>Where <tt><nt>header.h</nt></tt> is a name of the desired header.</p>
 
 <p>Almost all the code is placed within <tt>__vic</tt> namespace, including
 other namespaces.</p>
@@ -31,7 +31,7 @@ in C++98 mode the library file has slightly different name:</p>
 $ g++ -std=c++98 prog.cpp -l__vic98
 </tty>
 
-<note>C++11 mode is used for C++14 as well.</note>
+<note>C++11 mode is used for C++14/17 as well.</note>
 
 <p>Detailed description of the library components provided in subsequent
 chapters. Descriptions are grouped by headers. Mainly C++11 language syntax
