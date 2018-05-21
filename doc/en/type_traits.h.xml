@@ -1,5 +1,5 @@
-<chapter xml:id="meta.h">
-<title><tt>__vic/meta.h</tt></title>
+<chapter xml:id="type_traits.h">
+<title><tt>__vic/type_traits.h</tt></title>
 
 <p>Template metaprogramming support.</p>
 <p>All the predicate metafunctions have boolean member <tt>value</tt> and,

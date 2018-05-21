@@ -6,6 +6,7 @@ Legend:
 
 2018-05-21  __vic
     + doc: stable links for chapters
+    * Renamed meta.h -> type_traits.h
 
 2018-05-15  __vic
     * doc/document.dtd is deterministic now

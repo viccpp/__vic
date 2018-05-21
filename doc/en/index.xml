@@ -15,7 +15,6 @@
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
-    <!ENTITY meta.h SYSTEM "meta.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
@@ -28,6 +27,7 @@
     <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY type_traits.h SYSTEM "type_traits.h.xml">
     <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
     <!ENTITY writers SYSTEM "writers.xml">
 ]>
@@ -117,7 +117,6 @@ TODO
 &error.h;
 &iterator.h;
 &logger.h;
-&meta.h;
 &object_pool.h;
 &readers;
 &readonly_cstring.h;
@@ -130,6 +129,7 @@ TODO
 &string_utils.h;
 &tchar.h;
 &to_text.h;
+&type_traits.h;
 &waitable_event.h;
 &writers;
 </chapter>
