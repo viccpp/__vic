@@ -2,6 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html"/>
 
+<xsl:key name="chapters" match="chapter" use="@xml:id"/>
+
 <xsl:template match="/">
 	<xsl:apply-templates select="document"/>
 </xsl:template>
@@ -53,8 +55,8 @@ h1.main-title {
 	font-size: 2em;
 	font-weight: bold;
 }
-a.toc { text-decoration: none; }
-a.toc:hover { text-decoration: underline; }
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
 pre.code {
 	background-color: #EEE;
 	border: 1px solid #CCCCCC;
@@ -159,7 +161,10 @@ blockquote * {
 				<xsl:if test="$level > 2">
 					<xsl:attribute name="style">padding-left:4ex</xsl:attribute>
 				</xsl:if>
-				<a class="toc" href="#chapter-{translate($chap,'.','_')}">
+				<a class="toc" href="#{@xml:id}">
+					<xsl:if test="not(string(@xml:id))">
+						<xsl:attribute name="style">color:red;</xsl:attribute>
+					</xsl:if>
 					<xsl:apply-templates select="title" mode="toc"/>
 				</a>
 			</td>
@@ -196,8 +201,12 @@ blockquote * {
 	<xsl:param name="no"/>
 
 	<xsl:element name="h{$level}">
-		<span class="h{$level}_num"><xsl:value-of select="$no"/></span>
-		<a id="chapter-{translate($no,'.','_')}"/>
+		<xsl:attribute name="id">
+			<xsl:value-of select="../@xml:id"/>
+		</xsl:attribute>
+		<span class="h{$level}_num">
+			<xsl:value-of select="$no"/>
+		</span>
 		<xsl:apply-templates/>
 	</xsl:element>
 </xsl:template>
@@ -265,6 +274,12 @@ blockquote * {
 
 <xsl:template match="link[@href]">
 	<a href="{@href}"><xsl:apply-templates/></a>
+</xsl:template>
+
+<xsl:template match="xref">
+	<a href="#{@to}">
+		<xsl:apply-templates select="key('chapters', @to)/title/node()"/>
+	</a>
 </xsl:template>
 
 <xsl:template match="code-block | tty">

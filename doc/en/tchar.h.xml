@@ -1,4 +1,4 @@
-<chapter>
+<chapter xml:id="tchar.h">
 <title><tt>__vic/tchar.h</tt></title>
 
 <p>Generic functions to manipulate C-strings regardless of the underlying
@@ -27,7 +27,7 @@ charT *generic_dup(const charT *st)
 </section>
 
 
-<chapter>
+<chapter xml:id="tchar--length">
 <title><tt>tchar::length()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -40,7 +40,7 @@ size_t tchar::length(const charT *str);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--end">
 <title><tt>tchar::end()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -65,7 +65,7 @@ this function can be used as a workaround in the similar use case.</note>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--compare">
 <title><tt>tchar::compare()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -78,7 +78,7 @@ int tchar::compare(const charT *str1, const charT *str2);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--copy">
 <title><tt>tchar::copy()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -91,7 +91,7 @@ charT *tchar::copy(charT *dest, const charT *src);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--move">
 <title><tt>tchar::move()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -104,7 +104,7 @@ charT *tchar::move(charT *dest, const charT *src);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--concat">
 <title><tt>tchar::concat()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -117,7 +117,7 @@ charT *tchar::concat(charT *dest, const charT *src);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--find">
 <title><tt>tchar::find()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -144,7 +144,7 @@ charT *find(charT *str, const charT *sub);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--rfind">
 <title><tt>tchar::rfind()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -165,7 +165,7 @@ charT *rfind(charT *str, charT ch);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--find_if">
 <title><tt>tchar::find_if()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -186,7 +186,7 @@ predicate.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--find_if_not">
 <title><tt>tchar::find_if_not()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -207,7 +207,7 @@ specified predicate.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--rfind_if">
 <title><tt>tchar::rfind_if()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -228,7 +228,7 @@ predicate.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--rfind_if_not">
 <title><tt>tchar::rfind_if_not()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -249,7 +249,7 @@ predicate.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--find_first_of">
 <title><tt>tchar::find_first_of()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -270,7 +270,7 @@ charT *find_first_of(charT *str, const charT *set);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--find_first_not_of">
 <title><tt>tchar::find_first_not_of()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -291,7 +291,7 @@ Generic <tt>strspn</tt> / <tt>wcsspn</tt>.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--find_last_of">
 <title><tt>tchar::find_last_of()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -311,7 +311,7 @@ charT *find_last_of(charT *str, const charT *set);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--find_last_not_of">
 <title><tt>tchar::find_last_not_of()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -331,7 +331,7 @@ charT *find_last_not_of(charT *str, const charT *set);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="tchar--skip">
 <title><tt>tchar::skip()</tt></title>
 
 <code-block lang="C++"><![CDATA[

@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="string_utils.h">
 <title><tt>__vic/string_utils.h</tt></title>
 
 <p>Miscellaneous strings-related utilities.</p>
 
 
-<chapter>
+<chapter xml:id="trim">
 <title><tt>trim</tt> functions</title>
 
 <code-block lang="C++"><![CDATA[
@@ -87,7 +87,7 @@ __vic::trim_right(st1, "123456789"); // result: "...value"
 </chapter>
 
 
-<chapter>
+<chapter xml:id="sift">
 <title><tt>sift()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -109,7 +109,7 @@ assert(std::strcmp(st, "abcde") == 0);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="sift_if">
 <title><tt>sift_if()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -125,7 +125,7 @@ std::string &sift(std::string &str, Pred pred);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="pad_left">
 <title><tt>pad_left()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -141,7 +141,7 @@ null. Returns <tt>str</tt>.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="pad_right">
 <title><tt>pad_right()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -158,7 +158,7 @@ null. Returns
 </chapter>
 
 
-<chapter>
+<chapter xml:id="starts_with">
 <title><tt>starts_with()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -182,7 +182,7 @@ prefix.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ends_with">
 <title><tt>ends_with()</tt></title>
 
 <code-block lang="C++"><![CDATA[

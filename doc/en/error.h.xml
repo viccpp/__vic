@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="error.h">
 <title><tt>__vic/error.h</tt></title>
 
 <p>Error handling tools.</p>
 
 
-<chapter>
+<chapter xml:id="exception">
 <title><tt>exception</tt></title>
 
 <code-block lang="C++">
@@ -64,7 +64,7 @@ throw custom_exception("Error condition description");
 </chapter>
 
 
-<chapter>
+<chapter xml:id="libc_error">
 <title><tt>libc_error</tt></title>
 
 <code-block lang="C++">

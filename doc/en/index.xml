@@ -44,7 +44,7 @@ document
         * status - "Release" or "Draft".
 chapter
     A chapter. An entry of the table of contents (TOC). Can be nested to each
-    other.
+    other. "xml:id" attribute specifies the unique chapter ID.
 section
     A section of text. Included in a chapter. Not a part of TOC.
 title
@@ -77,6 +77,9 @@ nt
     replaced by something before usage.
 link
     A hyperlink. Either URL or text + URL in the "href" attribute.
+xref
+    Cross-reference to the document chapter. "to" attribute specifies the
+    chapter ID.
 synopsis
     Reference to component (function, type, etc). Function prototype or type
     definition is enclosed in <prototype>. Formatting is preserved.
@@ -95,13 +98,13 @@ TODO
     TODO-marker for the editor of this document.
 ]]></documentation></annotation>
 
-<chapter>
+<chapter xml:id="intro">
 <title>Introduction</title>
 &why;
 &general;
 </chapter>
 
-<chapter>
+<chapter xml:id="components-reference">
 <title>Library components reference</title>
 &defs.h;
 &ascii.h;
@@ -131,7 +134,7 @@ TODO
 &writers;
 </chapter>
 
-<chapter>
+<chapter xml:id="build">
 <title>Build and install</title>
 &build;
 </chapter>

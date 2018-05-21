@@ -1,9 +1,9 @@
-<chapter>
+<chapter xml:id="defs.h">
 <title><tt>__vic/defs.h</tt></title>
 <p>Misc. fundamental definitions.</p>
 
 
-<chapter>
+<chapter xml:id="nullptr">
 <title><tt>nullptr</tt> <sign>C++98</sign></title>
 
 <p>Null pointer literal. Can be used instead of <tt>NULL</tt> or <tt>0</tt>.
@@ -29,7 +29,7 @@ pthread_create(&tid, nullptr, thread_func, nullptr);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="noexcept">
 <title><tt>noexcept</tt> <sign>C++98</sign></title>
 
 <p>A macro in C++98 mode, synonym for <tt>throw()</tt>. In C++11 mode
@@ -38,7 +38,7 @@ the definition is absent.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="array_size">
 <title><tt>array_size()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -62,7 +62,7 @@ int *dup = new int[n];
 </chapter>
 
 
-<chapter>
+<chapter xml:id="non_copyable">
 <title><tt>non_copyable</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -92,7 +92,7 @@ C c2 = c1; // Error! Non-copyable object
 </chapter>
 
 
-<chapter>
+<chapter xml:id="non_heap_allocatable">
 <title><tt>non_heap_allocatable</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -124,7 +124,7 @@ C *p = new C; // Error! Attempt to allocate on heap
 </chapter>
 
 
-<chapter>
+<chapter xml:id="uninizialized">
 <title><tt>uninizialized</tt></title>
 
 <code-block lang="C++">
@@ -157,7 +157,7 @@ Complex c2(__vic::noinit); // c2 contains unknown garbage value
 </chapter>
 
 
-<chapter>
+<chapter xml:id="std--move">
 <title><tt>std::move()</tt>, <tt>std::forward()</tt>, <tt>std::swap()</tt>
 <sign>C++11</sign></title>
 
@@ -166,7 +166,7 @@ Complex c2(__vic::noinit); // c2 contains unknown garbage value
 </chapter>
 
 
-<chapter>
+<chapter xml:id="__VIC_SWAP_HEADER">
 <title><tt>__VIC_SWAP_HEADER</tt></title>
 
 <p>A macro for <tt>#include</tt>. Expands to the header name that contains
@@ -181,7 +181,7 @@ Complex c2(__vic::noinit); // c2 contains unknown garbage value
 </chapter>
 
 
-<chapter>
+<chapter xml:id="platform-dependent-macros">
 <title>Platform-dependent macros</title>
 
 <p>The library provides set of compiler-independent macros that help to

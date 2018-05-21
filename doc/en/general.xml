@@ -1,4 +1,4 @@
-<chapter>
+<chapter xml:id="general-structure">
 <title>General structure and usage</title>
 
 <p>The topmost structural units of the library are headers and the library file

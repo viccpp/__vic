@@ -1,7 +1,7 @@
-<chapter>
+<chapter xml:id="set_of_chars.h">
 <title><tt>__vic/set_of_chars.h</tt></title>
 
-<chapter>
+<chapter xml:id="set_of_chars">
 <title><tt>set_of_chars</tt></title>
 
 <code-block lang="C++"><![CDATA[
