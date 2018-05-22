@@ -1,8 +1,8 @@
-<chapter>
+<chapter xml:id="windows.handle.h">
 <title><tt>__vic/windows/handle.h</tt></title>
 
 
-<chapter>
+<chapter xml:id="windows--Handle">
 <title><tt>windows::Handle</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -91,7 +91,7 @@ description.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="windows--WaitAbandoned">
 <title><tt>windows::WaitAbandoned</tt></title>
 
 <code-block lang="C++"><![CDATA[

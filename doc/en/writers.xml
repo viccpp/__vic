@@ -1,8 +1,8 @@
-<chapter>
+<chapter xml:id="writers">
 <title><tt>__vic/writers/</tt></title>
 
 
-<chapter>
+<chapter xml:id="writer-concept">
 <title><tt>Writer</tt> concept</title>
 
 <code-block lang="C++"><![CDATA[
@@ -41,7 +41,7 @@ concept.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="push_back_writer">
 <title><tt>push_back_writer</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -61,7 +61,7 @@ public:
 </chapter>
 
 
-<chapter>
+<chapter xml:id="string_writer">
 <title><tt>string_writer</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -87,7 +87,7 @@ using string_writer = basic_string_writer<char>;
 </chapter>
 
 
-<chapter>
+<chapter xml:id="cstream_writer">
 <title><tt>cstream_writer</tt></title>
 
 <code-block lang="C++"><![CDATA[

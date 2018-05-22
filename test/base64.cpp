@@ -39,13 +39,13 @@ void run()
         decode("!SGVsbG8="); // non-BASE64 digit
         assert(false);
     }
-    catch(__vic::base64::bad_format) {} // OK
+    catch(const __vic::base64::bad_format & ) {} // OK
     try
     {
         decode("SGVsbG8"); // bad length
         assert(false);
     }
-    catch(__vic::base64::bad_format) {} // OK
+    catch(const __vic::base64::bad_format & ) {} // OK
 }
 
 } // namespace

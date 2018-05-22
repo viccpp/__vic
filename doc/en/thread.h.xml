@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="thread.h">
 <title><tt>__vic/thread.h</tt></title>
 
 <p>Threads support.</p>
 
 
-<chapter>
+<chapter xml:id="thread">
 <title><tt>thread</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -122,7 +122,7 @@ precondition is not satisfied.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="thread--id">
 <title><tt>thread::id</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -171,7 +171,7 @@ special distinct value not associated with any thread.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="this_thread">
 <title><tt>this_thread</tt></title>
 
 <code-block lang="C++"><![CDATA[

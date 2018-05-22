@@ -1,16 +1,30 @@
 ################################################################
-# GNU Make Makefile. Building the doc using Oracle XML-utils
+# GNU Make Makefile. Building the doc using XML-tools
 
 LANGS = en
+CHECKS := $(addprefix check-,$(LANGS))
 
-.PHONY: all en check
+# Oracle tools
+XSLTPROC = xsl
+XMLVALIDATOR = xml
+# libxml2/libxslt
+#XSLTPROC = xsltproc
+#XMLVALIDATOR = xmllint --valid -noout
+
+.PHONY: all check $(LANGS) $(CHECKS) clean
 
 all: $(LANGS) ;
+check: $(CHECKS) ;
 
-en: en.html ;
+define lang_template =
+$(1): $(1).html ;
+$(1).html: html.xsl $(1)/*.xml
+	(cd $(1) && $(XSLTPROC) ../html.xsl index.xml) > $$@
+check-$(1):
+	cd $(1) && $(XMLVALIDATOR) index.xml
+endef
 
-en.html: html.xsl en/*.xml
-	(cd en && xsl ../html.xsl index.xml) > $@
+$(foreach lang,$(LANGS),$(eval $(call lang_template,$(lang))))
 
-check:
-	cd en && xml index.xml
+clean:
+	del /Q /F *.html 2>nul

@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="base64.h">
 <title><tt>__vic/base64.h</tt></title>
 
 <p>Base64 encoder and decoder.</p>
 
 
-<chapter>
+<chapter xml:id="base64">
 <title><tt>base64</tt></title>
 
 <p>A class used as a namespace. Contains only types and static functions. No
@@ -13,7 +13,7 @@ objects of this class are supposed to be created.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base64--bad_format">
 <title><tt>base64::bad_format</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -28,7 +28,7 @@ struct base64::bad_format : public std::exception
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base64--encode">
 <title><tt>base64::encode()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -41,10 +41,10 @@ void base64::encode(ByteReader reader, CharWriter writer);
 <tt>writer</tt>.</p>
 
 <p><tt>ByteReader</tt> has to model <tt>Reader&lt;unsigned char></tt> concept.
-See <tt>__vic/readers</tt>.</p>
+See <xref to="readers"/>.</p>
 
 <p><tt>CharWriter</tt> has to model <tt>Writer&lt;char></tt> concept.
-See <tt>__vic/writers</tt>.</p>
+See <xref to="writers"/>.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
@@ -67,7 +67,7 @@ std::string encode_base64(const bytes &s)
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base64--decode">
 <title><tt>base64::decode()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -81,10 +81,10 @@ void base64::decode(CharReader reader, ByteWriter writer);
 has invalid Base64 format. ASCII whitespaces are ignored.</p>
 
 <p><tt>CharReader</tt> has to model <tt>Reader&lt;char></tt> concept.
-See <tt>__vic/readers</tt>.</p>
+See <xref to="readers"/>.</p>
 
 <p><tt>ByteWriter</tt> has to model <tt>Writer&lt;unsigned char></tt> concept.
-See <tt>__vic/writers</tt>.</p>
+See <xref to="writers"/>.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
@@ -107,7 +107,7 @@ bytes decode_base64(const std::string &s)
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base64--encoded_length">
 <title><tt>base64::encoded_length()</tt></title>
 
 <code-block lang="C++">
@@ -120,7 +120,7 @@ length of the bytes sequence.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base64--max_decoded_length">
 <title><tt>base64::max_decoded_length()</tt></title>
 
 <code-block lang="C++">

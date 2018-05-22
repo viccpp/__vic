@@ -1,8 +1,8 @@
-<chapter>
+<chapter xml:id="windows.critical_section.h">
 <title><tt>__vic/windows/critical_section.h</tt></title>
 
 
-<chapter>
+<chapter xml:id="windows--CriticalSection">
 <title><tt>windows::CriticalSection</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -58,7 +58,7 @@ public:
 </chapter>
 
 
-<chapter>
+<chapter xml:id="windows--CSGuard">
 <title><tt>windows::CSGuard</tt></title>
 
 <code-block lang="C++"><![CDATA[

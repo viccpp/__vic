@@ -1,8 +1,8 @@
-<chapter>
+<chapter xml:id="mutex.h">
 <title><tt>__vic/mutex.h</tt></title>
 
 
-<chapter>
+<chapter xml:id="mutex">
 <title><tt>mutex</tt></title>
 
 <code-block lang="C++">
@@ -60,13 +60,13 @@ in case of error, but in general error detection is not guaranteed.</p>
 </section>
 
 <section><title>Example</title>
-<p>See <tt>mutex_lock</tt>.</p>
+<p>See <xref to="mutex_lock"/>.</p>
 </section>
 
 </chapter>
 
 
-<chapter>
+<chapter xml:id="mutex_lock">
 <title><tt>mutex_lock</tt></title>
 
 <code-block lang="C++"><![CDATA[

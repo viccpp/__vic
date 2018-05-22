@@ -1,15 +1,15 @@
-<chapter>
+<chapter xml:id="bits.h">
 <title><tt>__vic/bits.h</tt></title>
 
 <p>Bits and bytes manipulation tools.</p>
 
 
-<chapter>
+<chapter xml:id="lo_nibble">
 <title><tt>lo_nibble()</tt>, <tt>hi_nibble()</tt></title>
 
 <code-block lang="C++">
-constexpr int lo_nibble(uint8_t byte);
-constexpr int hi_nibble(uint8_t byte);
+constexpr uint8_t lo_nibble(uint8_t byte);
+constexpr uint8_t hi_nibble(uint8_t byte);
 </code-block>
 
 <p>Return the value of the low-order/high-order half-byte (tetrad),
@@ -18,7 +18,7 @@ respectively.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="msb_ones">
 <title><tt>msb_ones()</tt>, <tt>lsb_ones()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -33,7 +33,7 @@ are set to <tt>0</tt>.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="get_lsbs">
 <title><tt>get_lsbs()</tt></title>
 
 <code-block lang="C++">
@@ -46,7 +46,7 @@ words, zeroes all but <tt>bits_num</tt> least significant bits.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="ord">
 <title><tt>ord()</tt></title>
 
 <code-block lang="C++">
@@ -59,7 +59,7 @@ constexpr int ord(char ch);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="rotl">
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 
 <code-block lang="C++">

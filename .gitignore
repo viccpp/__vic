@@ -2,6 +2,7 @@
 /test/Makefile
 /test/*.test
 /test/*.exe
+/doc/*.html
 *.o
 *.a
 *.d

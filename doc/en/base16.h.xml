@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="base16.h">
 <title><tt>__vic/base16.h</tt></title>
 
 <p>Base16 encoder and decoder.</p>
 
 
-<chapter>
+<chapter xml:id="base16">
 <title><tt>base16</tt></title>
 
 <p>A class used as a namespace. Contains only types and static functions. No
@@ -13,7 +13,7 @@ objects of this class are supposed to be created.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base16--bad_format">
 <title><tt>base16::bad_format</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -28,7 +28,7 @@ struct base16::bad_format : public std::exception
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base16--encode_upper">
 <title><tt>base16::encode_upper()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -41,10 +41,10 @@ void base16::encode_upper(ByteReader reader, CharWriter writer);
 <tt>writer</tt>. Upper case is used for hexadecimal digits.</p>
 
 <p><tt>ByteReader</tt> has to model <tt>Reader&lt;unsigned char></tt> concept.
-See <tt>__vic/readers</tt>.</p>
+See <xref to="readers"/>.</p>
 
 <p><tt>CharWriter</tt> has to model <tt>Writer&lt;char></tt> concept.
-See <tt>__vic/writers</tt>.</p>
+See <xref to="writers"/>.</p>
 
 
 <section><title>Example</title>
@@ -68,7 +68,7 @@ std::string encode_base16(const bytes &s)
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base16--encode_lower">
 <title><tt>base16::encode_lower()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -83,7 +83,7 @@ hexadecimal digits.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="base16--decode">
 <title><tt>base16::decode()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -97,10 +97,10 @@ void base16::decode(CharReader reader, ByteWriter writer);
 has invalid Base16 format.</p>
 
 <p><tt>CharReader</tt> has to model <tt>Reader&lt;char></tt> concept.
-See <tt>__vic/readers</tt>.</p>
+See <xref to="readers"/>.</p>
 
 <p><tt>ByteWriter</tt> has to model <tt>Writer&lt;unsigned char></tt> concept.
-See <tt>__vic/writers</tt>.</p>
+See <xref to="writers"/>.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
