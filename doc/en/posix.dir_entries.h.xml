@@ -1,7 +1,7 @@
-<chapter>
+<chapter xml:id="posix.dir_entries.h">
 <title><tt>__vic/posix/dir_entries.h</tt></title>
 
-<chapter>
+<chapter xml:id="posix--dir_entries">
 <title><tt>posix::dir_entries</tt></title>
 
 <code-block lang="C++"><![CDATA[

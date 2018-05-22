@@ -1,7 +1,7 @@
-<chapter>
+<chapter xml:id="posix.file.h">
 <title><tt>__vic/posix/file.h</tt></title>
 
-<chapter>
+<chapter xml:id="posix--file">
 <title><tt>posix::file</tt></title>
 
 <code-block lang="C++"><![CDATA[

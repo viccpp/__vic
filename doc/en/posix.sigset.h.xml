@@ -1,7 +1,7 @@
-<chapter>
+<chapter xml:id="posix.sigset.h">
 <title><tt>__vic/posix/sigset.h</tt></title>
 
-<chapter>
+<chapter xml:id="posix--sigset">
 <title><tt>posix::sigset</tt></title>
 
 <code-block lang="C++"><![CDATA[

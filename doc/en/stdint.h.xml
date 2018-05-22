@@ -1,4 +1,4 @@
-<chapter>
+<chapter xml:id="stdint.h">
 <title><tt>__vic/stdint.h</tt></title>
 
 <p>ISO C99 <tt>&lt;stdint.h></tt> for C++98. In C++11 mode - just redirector
@@ -7,7 +7,7 @@ to <tt>&lt;cstdint></tt>.</p>
 </p>
 
 
-<chapter>
+<chapter xml:id="intN_t">
 <title>Exact-width integer types</title>
 
 <p>Following types are guaranteed to be available in the <b>global
@@ -26,7 +26,7 @@ namespace</b>:</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="int_leastN_t">
 <title>Minimum-width integer types</title>
 
 <p>Following types are guaranteed to be available in the <b>global
@@ -45,7 +45,7 @@ namespace</b>:</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="int_fastN_t">
 <title>Fastest minimum-width integer types</title>
 
 <p>Following types are guaranteed to be available in the <b>global
@@ -64,7 +64,7 @@ namespace</b>:</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="intmax_t">
 <title>Greatest-width integer types</title>
 
 <p>Following types are guaranteed to be available in the <b>global
@@ -77,7 +77,7 @@ namespace</b>:</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="intptr_t">
 <title>Integer types capable of holding object pointers</title>
 
 <p>Following types are guaranteed to be available in the <b>global
@@ -90,7 +90,7 @@ namespace</b>:</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="int_exactly_bytes">
 <title><tt>int_exactly_bytes&lt;></tt>, <tt>uint_exactly_bytes&lt;></tt></title>
 
 <code-block lang="C++"><![CDATA[

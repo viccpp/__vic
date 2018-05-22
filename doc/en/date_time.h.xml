@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="date_time.h">
 <title><tt>__vic/date_time.h</tt></title>
 
 <p>Date and time utilies.</p>
 
 
-<chapter>
+<chapter xml:id="is_leap_year">
 <title><tt>is_leap_year()</tt></title>
 
 <code-block lang="C++">
@@ -16,7 +16,7 @@ constexpr bool is_leap_year(int year);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="days_in_month">
 <title><tt>days_in_month()</tt></title>
 
 <code-block lang="C++">
@@ -30,7 +30,7 @@ is just ignored.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="days_between_years">
 <title><tt>days_between_years()</tt></title>
 
 <code-block lang="C++">
@@ -43,7 +43,7 @@ the beginning of the 1st year.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="invalid_date">
 <title><tt>invalid_date</tt></title>
 
 <code-block lang="C++">
@@ -56,7 +56,7 @@ invalid.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="validate_date_time">
 <title><tt>validate_date()</tt>, <tt>validate_time()</tt>,
 <tt>validate_date_time()</tt></title>
 

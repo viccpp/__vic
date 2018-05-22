@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="posix.process.h">
 <title><tt>__vic/posix/process.h</tt></title>
 
 <p>OS processes-related tools.</p>
 
 
-<chapter>
+<chapter xml:id="posix--daemon">
 <title><tt>posix::daemon()</tt></title>
 
 <code-block lang="C++">
@@ -18,7 +18,7 @@ throws on errors.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="posix--ignore_signals">
 <title><tt>posix::ignore_signals()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -48,7 +48,7 @@ __vic::posix::ignore_signals({SIGINT, SIGQUIT, SIGTERM});
 </chapter>
 
 
-<chapter>
+<chapter xml:id="posix--process_alive">
 <title><tt>posix::process_alive()</tt></title>
 
 <code-block lang="C++">

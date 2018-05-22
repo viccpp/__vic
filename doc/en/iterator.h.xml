@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="iterator.h">
 <title><tt>__vic/iterator.h</tt></title>
 
 <p>Iterators-related utilities.</p>
 
 
-<chapter>
+<chapter xml:id="begin-array">
 <title><tt>begin(T[])</tt>, <tt>end(T[])</tt>, <tt>cbegin(T[])</tt>,
 <tt>cend(T[])</tt></title>
 
@@ -29,7 +29,7 @@ assert(lst.size() == 3);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="advance">
 <title><tt>advance()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -48,7 +48,7 @@ behaviour:</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="next">
 <title><tt>next()</tt>, <tt>prev()</tt></title>
 
 <code-block lang="C++"><![CDATA[

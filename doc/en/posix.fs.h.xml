@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="posix.fs.h">
 <title><tt>__vic/posix/fs.h</tt></title>
 
 <p>Tools to handle files and paths within POSIX-compliant filesystem.</p>
 
 
-<chapter>
+<chapter xml:id="posix--basename">
 <title><tt>posix::basename()</tt>, <tt>posix::dirname()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -47,8 +47,9 @@ std::cout << __vic::posix::basename("") << '\n';          // ""
 </chapter>
 
 
-<chapter>
-<title><tt>add_trailing_slash()</tt>, <tt>with_trailing_slash()</tt></title>
+<chapter xml:id="posix--add_trailing_slash">
+<title><tt>posix::add_trailing_slash()</tt>,
+    <tt>posix::with_trailing_slash()</tt></title>
 
 <code-block lang="C++"><![CDATA[
 namespace posix {

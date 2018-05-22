@@ -1,5 +1,5 @@
-<chapter>
-<title><tt>__vic/meta.h</tt></title>
+<chapter xml:id="type_traits.h">
+<title><tt>__vic/type_traits.h</tt></title>
 
 <p>Template metaprogramming support.</p>
 <p>All the predicate metafunctions have boolean member <tt>value</tt> and,
@@ -9,7 +9,7 @@ containing the conversion result.</p>
 <p>All of the template aliases are available only in C++11 mode.</p>
 
 
-<chapter>
+<chapter xml:id="integral_constant">
 <title><tt>integral_constant</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -28,7 +28,7 @@ struct integral_constant
 </chapter>
 
 
-<chapter>
+<chapter xml:id="true_type">
 <title><tt>true_type</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -40,7 +40,7 @@ using true_type = integral_constant<bool, true>;
 </chapter>
 
 
-<chapter>
+<chapter xml:id="false_type">
 <title><tt>false_type</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -52,7 +52,7 @@ using false_type = integral_constant<bool, false>;
 </chapter>
 
 
-<chapter>
+<chapter xml:id="is_same">
 <title><tt>is_same</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -65,7 +65,7 @@ type.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="is_const">
 <title><tt>is_const</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -77,7 +77,7 @@ template<class T> struct is_const;
 </chapter>
 
 
-<chapter>
+<chapter xml:id="is_signed_integer">
 <title><tt>is_signed_integer</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -90,7 +90,7 @@ types" (see the Standard).</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="is_unsigned_integer">
 <title><tt>is_unsigned_integer</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -103,7 +103,7 @@ types" (see the Standard).</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="remove_const">
 <title><tt>remove_const</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -117,7 +117,7 @@ returns <tt>T</tt> if it doesn't have such qualifier.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="remove_volatile">
 <title><tt>remove_volatile</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -131,7 +131,7 @@ returns <tt>T</tt> if it doesn't have such qualifier.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="remove_cv">
 <title><tt>remove_cv</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -145,7 +145,7 @@ template<class T> using remove_cv_t = typename remove_cv<T>::type;
 </chapter>
 
 
-<chapter>
+<chapter xml:id="remove_reference">
 <title><tt>remove_reference</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -159,7 +159,7 @@ template<class T> using remove_reference_t = typename remove_reference<T>::type;
 </chapter>
 
 
-<chapter>
+<chapter xml:id="remove_cvref">
 <title><tt>remove_cvref</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -172,7 +172,7 @@ template<class T> using remove_cvref_t = typename remove_cvref<T>::type;
 </chapter>
 
 
-<chapter>
+<chapter xml:id="remove_pointer">
 <title><tt>remove_pointer</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -186,7 +186,7 @@ points or just <tt>T</tt> if it isn't a pointer type.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="enable_if">
 <title><tt>enable_if</tt>, <tt>disable_if</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -207,7 +207,7 @@ struct disable_if : enable_if<!Test, T> {};
 </chapter>
 
 
-<chapter>
+<chapter xml:id="index_sequence">
 <title><tt>index_sequence</tt>, <tt>make_index_sequence</tt> <sign>C++11</sign></title>
 
 <code-block lang="C++"><![CDATA[

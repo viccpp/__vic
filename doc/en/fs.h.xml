@@ -1,4 +1,4 @@
-<chapter>
+<chapter xml:id="fs.h">
 <title><tt>__vic/fs.h</tt></title>
 
 <p>Filesystem utilities.</p>
@@ -6,7 +6,7 @@
 <note>All paths are expected to be UTF-8 encoded!</note>
 
 
-<chapter>
+<chapter xml:id="path_exists">
 <title><tt>path_exists()</tt>, <tt>file_exists()</tt>, <tt>dir_exists()</tt>
 </title>
 
@@ -28,7 +28,7 @@ references to a regular file or to a directory, respectively.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="mkdir">
 <title><tt>mkdir()</tt>, <tt>mkdir_if_absent()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -46,7 +46,7 @@ the directory already exists.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="rmdir">
 <title><tt>rmdir()</tt>, <tt>rmdir_if_exists()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -64,7 +64,7 @@ the directory doesn't exist.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="get_current_dir">
 <title><tt>get_current_dir()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -76,7 +76,7 @@ std::string get_current_dir();
 </chapter>
 
 
-<chapter>
+<chapter xml:id="remove_file">
 <title><tt>remove_file()</tt>, <tt>remove_file_if_exists()</tt>,
 <tt>remove_file_nt()</tt></title>
 
@@ -102,7 +102,7 @@ if the file doesn't exist.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="copy_file">
 <title><tt>copy_file()</tt>, <tt>copy_file_if_exists()</tt>,
 <tt>copy_file_replace()</tt>, <tt>copy_file_replace_if_exists()</tt></title>
 
@@ -146,7 +146,7 @@ if <tt>src_path</tt> doesn't exist.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="move_file">
 <title><tt>move_file()</tt>, <tt>move_file_if_exists()</tt>,
 <tt>move_file_replace()</tt>, <tt>move_file_replace_if_exists()</tt></title>
 
@@ -180,7 +180,7 @@ if <tt>src_path</tt> doesn't exist.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="rename_file">
 <title><tt>rename_file()</tt>, <tt>rename_file_if_exists()</tt>,
     <tt>rename_file_replace()</tt>, <tt>rename_file_replace_if_exists()</tt></title>
 
@@ -214,7 +214,7 @@ if <tt>src_path</tt> doesn't exist.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="file_size">
 <title><tt>file_size()</tt></title>
 
 <code-block lang="C++"><![CDATA[

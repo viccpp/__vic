@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="stdio_file.h">
 <title><tt>__vic/stdio_file.h</tt></title>
 
 <p><tt>std::FILE</tt>-related C++ wrappers.</p>
 
 
-<chapter>
+<chapter xml:id="stdio_file">
 <title><tt>stdio_file</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -132,7 +132,7 @@ file.close();
 </chapter>
 
 
-<chapter>
+<chapter xml:id="read-FILE-char">
 <title><tt>read(std::FILE, char&amp;)</tt>,
     <tt>read(std::FILE, unsigned char&amp;)</tt></title>
 
@@ -146,7 +146,7 @@ bool read(std::FILE *fp, unsigned char &ch);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="write-FILE-char">
 <title><tt>write(std::FILE, char)</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -157,7 +157,7 @@ void write(std::FILE *fp, char ch);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="getline-FILE">
 <title><tt>getline(std::FILE)</tt></title>
 
 <code-block lang="C++"><![CDATA[

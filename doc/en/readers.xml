@@ -1,8 +1,8 @@
-<chapter>
+<chapter xml:id="readers">
 <title><tt>__vic/readers/</tt></title>
 
 
-<chapter>
+<chapter xml:id="reader-concept">
 <title><tt>Reader</tt> concept</title>
 
 <code-block lang="C++"><![CDATA[
@@ -43,7 +43,7 @@ available (EOF). Throws an exception in other cases.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="range_reader">
 <title><tt>range_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -65,7 +65,7 @@ public:
 </chapter>
 
 
-<chapter>
+<chapter xml:id="range_reader_n">
 <title><tt>range_reader_n</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -86,7 +86,7 @@ public:
 </chapter>
 
 
-<chapter>
+<chapter xml:id="container_reader">
 <title><tt>container_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -107,7 +107,7 @@ public:
 </chapter>
 
 
-<chapter>
+<chapter xml:id="cstring_reader">
 <title><tt>cstring_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -141,7 +141,7 @@ well as <tt>Reader&lt;char></tt>.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="string_reader">
 <title><tt>string_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -179,7 +179,7 @@ well as <tt>Reader&lt;char></tt>.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="cstream_reader">
 <title><tt>cstream_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[

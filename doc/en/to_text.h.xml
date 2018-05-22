@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="to_text.h">
 <title><tt>__vic/to_text.h</tt></title>
 
 <p>Converters of types to text representation.</p>
 
 
-<chapter>
+<chapter xml:id="to_text_append">
 <title><tt>to_text_append()</tt></title>
 
 <code-block lang="C++"><![CDATA[

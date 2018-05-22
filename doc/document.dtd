@@ -5,9 +5,11 @@
     status  (Release | Draft) #IMPLIED>
 
 <!ENTITY % section-content "p | list | code-block | tty | note | precondition | postcondition | invariant | synopsis | TODO">
-<!ENTITY % text-with-markup "#PCDATA | tt | u | b | nt | link | sign">
+<!ENTITY % text-with-markup "#PCDATA | tt | u | b | nt | link | xref | sign">
 
-<!ELEMENT chapter (title, (section | %section-content;)*, (chapter | TODO)*)>
+<!ELEMENT chapter (title, (chapter | section | %section-content;)*)>
+<!ATTLIST chapter
+    xml:id ID #REQUIRED>
 
 <!ELEMENT section (title, (%section-content;)*)>
 
@@ -35,6 +37,10 @@
 <!ELEMENT link (#PCDATA)>
 <!ATTLIST link
     href CDATA #IMPLIED>
+
+<!ELEMENT xref EMPTY>
+<!ATTLIST xref
+    to IDREF #REQUIRED>
 
 <!ELEMENT list (item+)>
 <!ATTLIST list

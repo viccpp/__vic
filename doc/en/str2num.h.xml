@@ -1,8 +1,8 @@
-<chapter>
+<chapter xml:id="str2num.h">
 <title><tt>__vic/str2num.h</tt></title>
 
 
-<chapter>
+<chapter xml:id="decimal_to_number">
 <title><tt>decimal_to_number()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -65,7 +65,7 @@ by <tt>std::strtoul()</tt> by unknown reason.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="decimal_to_number_range">
 <title><tt>decimal_to_number_range()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -82,7 +82,7 @@ they work with generic ranges of characters instead of strings.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="decimal_parser">
 <title><tt>decimal_parser</tt></title>
 
 <code-block lang="C++"><![CDATA[

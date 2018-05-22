@@ -1,7 +1,7 @@
-<chapter>
+<chapter xml:id="object_pool.h">
 <title><tt>__vic/object_pool.h</tt></title>
 
-<chapter>
+<chapter xml:id="object_pool">
 <title><tt>object_pool</tt></title>
 <code-block lang="C++"><![CDATA[
 template<class T>
@@ -21,12 +21,13 @@ public:
     // BEGIN C++11 only
     object_pool(object_pool &&o) noexcept;
     object_pool &operator=(object_pool &&o) noexcept;
-    template<class... Args> void emplace(Args &&... args)
+    template<class... Args> T &emplace(Args &&... args)
     // END C++11 only
 
     // size in objects
     size_t size() const;
     size_t capacity() const;
+    bool full();
     bool empty();
 
     void recreate(size_t new_max_size, bool size_exact = false);
@@ -143,6 +144,11 @@ store and placing only pointers to the container, even if we have
 </synopsis>
 
 <synopsis>
+<prototype>bool full()</prototype>
+<p>Returns <tt>size() == capacity()</tt>.</p>
+</synopsis>
+
+<synopsis>
 <prototype>void recreate(size_t new_max_size, bool size_exact = false)</prototype>
 <p>Recreates the container. At first calls <tt>clear()</tt>, then reallocates
 memory buffer if <tt>new_max_size > capacity()</tt> or <tt>size_exact</tt> is
@@ -166,9 +172,10 @@ pool.</p>
 </synopsis>
 
 <synopsis>
-<prototype>template&lt;class... Args> void emplace(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
+<prototype>template&lt;class... Args> T &amp;emplace(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
 <p>Constructs new object and adds it to the container (<tt>alloc()</tt> +
-<tt>new</tt> + <tt>push()</tt> with a single call).</p>
+<tt>new</tt> + <tt>push()</tt> with a single call). A reference to the new
+object is returned.</p>
 </synopsis>
 
 <synopsis>

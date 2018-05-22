@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="posix.thread.h">
 <title><tt>__vic/posix/thread.h</tt></title>
 
 <p>C++ wrappers for Pthreads.</p>
 
 
-<chapter>
+<chapter xml:id="posix--this_thread">
 <title><tt>posix::this_thread</tt></title>
 
 <code-block lang="C++"><![CDATA[

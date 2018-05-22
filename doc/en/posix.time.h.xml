@@ -1,10 +1,10 @@
-<chapter>
+<chapter xml:id="posix.time.h">
 <title><tt>__vic/posix/time.h</tt></title>
 
 <p>POSIX time-related utilities.</p>
 
 
-<chapter>
+<chapter xml:id="posix--time_spec">
 <title><tt>posix::time_spec</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -134,7 +134,7 @@ __vic::posix::time_spec t(5, __vic::posix::time_spec::sec);
 </chapter>
 
 
-<chapter>
+<chapter xml:id="posix--nanoseconds_since_epoch">
 <title><tt>posix::nanoseconds_since_epoch()</tt></title>
 
 <code-block lang="C++"><![CDATA[
@@ -148,7 +148,7 @@ result when available. The actual precision depends on the used platform.</p>
 </chapter>
 
 
-<chapter>
+<chapter xml:id="posix--realtime_clock">
 <title><tt>posix::realtime_clock</tt>, <tt>posix::monotonic_clock</tt></title>
 
 <code-block lang="C++"><![CDATA[
