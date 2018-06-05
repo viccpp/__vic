@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-06-05  __vic
+    * string_ref.h: basic_string_ref: operator== uses memcmp()
+
 2018-05-21  __vic
     + doc: stable links for chapters
     * Renamed meta.h -> type_traits.h
