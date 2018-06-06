@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2018-06-06  __vic
+    + __VIC_SCOPED_ENUM_BEGIN/END
+    * logger: renamed message_severity -> severity_t
+
 2018-06-05  __vic
     * string_ref.h: basic_string_ref: operator== uses memcmp()
 

@@ -18,11 +18,7 @@ namespace __vic {
 class logger : private non_copyable
 {
 public:
-#if __cplusplus >= 201103L // C++11
-    enum class severity
-#else // C++98
-    struct severity { enum type_
-#endif
+    __VIC_SCOPED_ENUM_BEGIN(severity)
     {
         trace,
         debug,
@@ -31,25 +27,20 @@ public:
         error,      // Severe error. Application can continue running
         fatal       // Critical unrecoverable error. Application can't
                     // continue running
-    };
-#if __cplusplus >= 201103L
-    using message_severity = severity;
-#else
-    };
-    typedef severity::type_ message_severity;
-#endif
+    }
+    __VIC_SCOPED_ENUM_END(severity)
     class record;
 
-    explicit logger(message_severity level = severity::info)
+    explicit logger(severity_t level = severity::info)
         : log_level(level), cur_msg(lo_water_mark), rec_objs_count(0) {}
     virtual ~logger() __VIC_DEFAULT_CTR
 
-    message_severity level() const { return log_level; }
-    void level(message_severity new_level) { log_level = new_level; }
+    severity_t level() const { return log_level; }
+    void level(severity_t new_level) { log_level = new_level; }
 
-    void message(message_severity , const char * , size_t );
-    void message(message_severity , const char * );
-    void message(message_severity s, const std::string &msg)
+    void message(severity_t , const char * , size_t );
+    void message(severity_t , const char * );
+    void message(severity_t s, const std::string &msg)
         { message(s, msg.data(), msg.length()); }
 
     void trace(const char *msg) { message(severity::trace, msg); }
@@ -80,17 +71,17 @@ public:
     bool accepts_error() const { return level() <= severity::error; }
     bool accepts_fatal() const { return level() <= severity::fatal; }
 
-    static const char *to_string(message_severity s) { return sev_strs[int(s)]; }
+    static const char *to_string(severity_t s) { return sev_strs[int(s)]; }
 protected:
-    virtual void publish_record(message_severity , const char * , size_t ) = 0;
+    virtual void publish_record(severity_t , const char * , size_t ) = 0;
 private:
     static const char * const sev_strs[];
-    message_severity log_level;
+    severity_t log_level;
 
     // current record buffer
     static __VIC_CONSTEXPR_VAR size_t lo_water_mark = 256, hi_water_mark = 4096;
     string_buffer cur_msg;
-    message_severity cur_severity;
+    severity_t cur_severity;
     size_t rec_objs_count;
     template<class T> void _put(const T &v) { cur_msg << v; }
     void _append(const char *s, size_t len) { cur_msg.append(s, len); }
@@ -103,7 +94,7 @@ class logger::record
 {
     logger &log;
 public:
-    record(logger &log, message_severity severity) : log(log)
+    record(logger &log, severity_t severity) : log(log)
     {
         log.cur_severity = severity;
         log._inc_count();
