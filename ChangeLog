@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-06-21  __vic
+    * LLVM libc++ defines nullptr macro in C++98 mode
+
 2018-06-06  __vic
     + __VIC_SCOPED_ENUM_BEGIN/END
     * logger: renamed message_severity -> severity_t
