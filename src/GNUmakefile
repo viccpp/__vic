@@ -4,7 +4,7 @@
 # Usage:
 #   $ gmake [compiler={gcc|clang|intel}] [std98=1] [pic=1]
 
-include ../defs.mk
+include ../src/defs.mk
 OBJSUFF = o
 ARSUFF = a
 
@@ -18,19 +18,19 @@ endif
 endif
 
 ifeq ($(compiler),gcc)
-CC      = g++ -std=c++$(if $(std98),98,11) -pthread
-CFLAGS  = -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
-WARNS   = $(if $(std98),-Wno-long-long)
+CC     := g++ -std=c++$(if $(std98),98,11) -pthread
+CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
+WARNS  := $(if $(std98),-Wno-long-long)
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 else ifeq ($(compiler),clang)
-CC      = clang++ -std=c++$(if $(std98),98,11) -pthread
-CFLAGS  = -pedantic-errors -DNDEBUG -O3
-WARNS   = $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
+CC     := clang++ -std=c++$(if $(std98),98,11) -pthread
+CFLAGS := -pedantic-errors -DNDEBUG -O3
+WARNS  := $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 else ifeq ($(compiler),intel)
-CC      = icpc $(if $(std98),$(error C++98 mode is not supported by Intel compiler),-std=c++11) -pthread
-CFLAGS  = -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
-WARNS   =
+CC     := icpc $(if $(std98),$(error C++98 mode is not supported by Intel compiler),-std=c++11) -pthread
+CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
+WARNS  :=
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 endif
 
@@ -47,4 +47,4 @@ endif
 OBJS := $(patsubst %.cpp,%.$(OBJSUFF),$(SOURCES))
 
 .PHONY: clean
-include ../rules.mk
+include ../src/rules.mk
