@@ -4,28 +4,29 @@
 # Usage:
 #   $ gmake [compiler={gcc|clang|msvc}] [std98=1]
 
-include ../defs.mk
-
-compiler ?= gcc
+include ../src/defs.mk
+compiler = gcc
 
 ifeq ($(compiler),gcc)
-CC      = g++ -std=c++$(if $(std98),98,11) -mthreads
-CFLAGS  = -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
-WARNS   = $(if $(std98),-Wno-long-long)
-bunutils = 1
+CC     := g++ -std=c++$(if $(std98),98,11) -mthreads
+CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
+WARNS  := $(if $(std98),-Wno-long-long)
+binutils = 1
 else ifeq ($(compiler),clang)
-CC      = clang++ -std=c++$(if $(std98),98,11)
-CFLAGS  = -pedantic-errors -DNDEBUG -O3
-WARNS   = $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
-bunutils = 1
+CC     := clang++
+TARGET := -target $(patsubst %-msvc,%-gnu,$(lastword $(shell $(CC) --version|find "Target:")))
+CC     += -std=c++$(if $(std98),98,11) $(TARGET) -pthread
+CFLAGS := -pedantic-errors -DNDEBUG -O3
+WARNS  := $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
+binutils = 1
 else ifeq ($(compiler),msvc)
-CC      = cl /nologo $(if $(std98),$(error C++98 mode is not supported by MSVC++ compiler))
-CFLAGS  = -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1
-WARNS   =
+CC     := cl /nologo $(if $(std98),$(error C++98 mode is not supported by MSVC++ compiler))
+CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1
+WARNS  :=
 endif
 
 LIBSUFFIX = $(if $(std98),98)
-ifdef bunutils
+ifdef binutils
 OBJSUFF = o
 ARSUFF = a
 LIBFILE := lib$(LIBNAME)$(LIBSUFFIX).$(ARSUFF)
@@ -48,4 +49,4 @@ endif
 OBJS := $(patsubst %.cpp,%.$(OBJSUFF),$(SOURCES))
 
 .PHONY: clean
-include ../rules.mk
+include ../src/rules.mk

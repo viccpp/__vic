@@ -4,8 +4,8 @@
 
 <p>Currently supported compilers are:</p>
 <list style="bulleted">
-    <item>GNU C++ v 4.7+ [<tt>gcc</tt>]</item>
-    <item>Clang v 3.4+ [<tt>clang</tt>]</item>
+    <item>GNU C++ v 4.7+ (MinGW) [<tt>gcc</tt>]</item>
+    <item>Clang v 5+ with MinGW [<tt>clang</tt>]</item>
     <item>Visual C++ v 7.1+ (Visual Studio 2003) [<tt>msvc</tt>]</item>
 </list>
 

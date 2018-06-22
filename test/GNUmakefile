@@ -4,13 +4,14 @@
 # Usage:
 #   $ gmake [check]
 
-include ../defs.mk
+include ../src/defs.mk
+Makefile = GNUmakefile
 SOURCES := $(wildcard *.cpp)
 TESTS := $(patsubst %.cpp,%.$(TESTSUFF),$(SOURCES))
 
 .PHONY: tests check
-include ../testpref.mk
-include ../src/GNUmakefile
+include pref.mk
+include ../src/$(Makefile)
 
 # Override included values
 ifeq ($(compiler),msvc)
@@ -35,4 +36,4 @@ endif
 GARBAGE += *.$(TESTSUFF)
 
 -include *.d
-include ../testsuff.mk
+include suff.mk

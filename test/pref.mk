@@ -7,5 +7,5 @@ tests: $(TESTS)
 	@
 
 check: $(TESTS)
-	@for %%t IN ($(TESTS)) do echo Running %%t... && %%t || exit 1
+	@for %%t IN ($(TESTS)) do @echo Running %%t... && %%t || exit 1
 	@echo OK
