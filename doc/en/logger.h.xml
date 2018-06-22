@@ -17,18 +17,18 @@ public:
         error,
         fatal
     };
-    using message_severity = severity; // use this alias as a type name
+    using severity_t = severity; // use this alias as a type name
     class record;
 
-    explicit logger(message_severity level = severity::info);
+    explicit logger(severity_t level = severity::info);
     virtual ~logger();
 
-    message_severity level() const;
-    void level(message_severity new_level);
+    severity_t level() const;
+    void level(severity_t new_level);
 
-    void message(message_severity severity, const char *msg, size_t msg_len);
-    void message(message_severity severity, const char *msg);
-    void message(message_severity severity, const std::string &msg);
+    void message(severity_t severity, const char *msg, size_t msg_len);
+    void message(severity_t severity, const char *msg);
+    void message(severity_t severity, const std::string &msg);
 
     void trace(const char *msg);
     void debug(const char *msg);
@@ -58,15 +58,14 @@ public:
     bool accepts_error() const;
     bool accepts_fatal() const;
 
-    static const char *to_string(message_severity s);
+    static const char *to_string(severity_t s);
 protected:
-    virtual void publish_record(message_severity ,
-                                    const char * , size_t ) = 0;
+    virtual void publish_record(severity_t , const char * , size_t ) = 0;
 };
 class logger::record
 {
 public:
-    record(logger &log, message_severity severity);
+    record(logger &log, severity_t sev);
     ~record();
 
     record append(const char *str, size_t str_len);
@@ -173,32 +172,32 @@ output the passed record somewhere, e.g. to file, terminal or DB.</p>
 </synopsis>
 
 <synopsis>
-<prototype>typename message_severity</prototype>
-<p>Use this identifier as a type name. It works in C++98 mode as well, where
-scoped enums are not available and emulated.</p>
+<prototype>typename severity_t</prototype>
+<p>Use this identifier as a type name if your code has to be C++98-compatible.
+In C++11 mode it is just a synonym for <tt>severity</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>explicit logger(message_severity level = severity::info)</prototype>
+<prototype>explicit logger(severity_t level = severity::info)</prototype>
 <p>Creates the logger with the specified logging level.</p>
 <postcondition><tt>this->level() == level</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>message_severity level() const</prototype>
+<prototype>severity_t level() const</prototype>
 <p>Returns the current logging level.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void level(message_severity new_level)</prototype>
+<prototype>void level(severity_t new_level)</prototype>
 <p>Sets the logging level.</p>
 <postcondition><tt>level() == new_level</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>void message(message_severity severity, const char *msg, size_t msg_len)</prototype>
-<prototype>void message(message_severity severity, const char *msg)</prototype>
-<prototype>void message(message_severity severity, const std::string &amp;msg)</prototype>
+<prototype>void message(severity_t severity, const char *msg, size_t msg_len)</prototype>
+<prototype>void message(severity_t severity, const char *msg)</prototype>
+<prototype>void message(severity_t severity, const std::string &amp;msg)</prototype>
 <p>Writes the message with the specified severity.</p>
 </synopsis>
 
@@ -242,7 +241,7 @@ messages which eventually will not be published.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void publish_record(message_severity sev, const char *buf, size_t buf_len)</prototype>
+<prototype>void publish_record(severity_t sev, const char *buf, size_t buf_len)</prototype>
 <p>The implementaion of this pure virtual function has to output the content of
 <tt>buf</tt> to the log as a one record. <tt>buf_len</tt> is the length of
 <tt>buf</tt>. The function is always called with <tt>sev >= level()</tt>.
@@ -250,17 +249,16 @@ The implementation can rely on it.</p>
 </synopsis>
 
 <synopsis>
-<prototype>static const char *to_string(message_severity s)</prototype>
+<prototype>static const char *to_string(severity_t s)</prototype>
 <p>Returns text label for the specified severity that can be printed to the
 log. For example, <tt>"DEBUG"</tt> will be returned for
 <tt>severity::debug</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>record::record(logger &amp;log, message_severity severity)</prototype>
+<prototype>record::record(logger &amp;log, severity_t sev)</prototype>
 <p>Creates the log record with the specified severity. Usually the <tt>logger</tt>'s
-functions like <tt>info()</tt> without parameters should be used instead of
-this.</p>
+functions like <tt>info()</tt> without parameters should be used instead.</p>
 </synopsis>
 
 <synopsis>
@@ -289,10 +287,9 @@ this.</p>
 class clogger : public __vic::logger
 {
 public:
-    explicit clogger(message_severity level = severity::info)
-        : logger(level) {}
+    explicit clogger(severity_t level = severity::info) : logger(level) {}
 protected:
-    void publish_record(message_severity s, const char *rec, size_t rec_n)
+    void publish_record(severity_t s, const char *rec, size_t rec_n)
     {
         std::clog << to_string(s) << ": ";
         std::clog.write(rec, rec_n) << std::endl;

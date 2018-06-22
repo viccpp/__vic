@@ -6,51 +6,36 @@
 #include<limits>
 #include<cassert>
 
+template<class TInt>
+inline void parse_and_check(
+    const char *str, __vic::number_parse_status_t expected_status)
+{
+    __vic::decimal_parser<TInt> p;
+    assert(p.parse(str) == expected_status);
+}
 void integer_tests()
 {
     using __vic::decimal_to_number;
+    using __vic::number_parse_status;
 
     assert(decimal_to_number<int>("4587") == 4587);
     assert(decimal_to_number<long>("-125") == -125L);
 
-    try
-    {
-        // Integer overflow
-        decimal_to_number<int8_t>("1000");
-        assert(false);
-    }
-    catch(const std::range_error & ) {}
+    // Integer overflow
+    parse_and_check<int8_t>("1000", number_parse_status::unrepresentable);
 
-    try
-    {
-        // No spaces allowed
-        decimal_to_number<int>(" 100");
-        assert(false);
-    }
-    catch(const std::invalid_argument & ) {}
+    // No spaces allowed
+    parse_and_check<int>(" 100", number_parse_status::invalid_number);
 
-    try
-    {
-        // No non-digit chars allowed
-        decimal_to_number<int>("100a");
-        assert(false);
-    }
-    catch(const std::invalid_argument & ) {}
+    // No non-digit chars allowed
+    parse_and_check<int>("100a", number_parse_status::invalid_number);
 
-    try
-    {
-        // No empty strings allowed
-        decimal_to_number<int>("");
-        assert(false);
-    }
-    catch(const std::invalid_argument & ) {}
+    // No empty strings allowed
+    parse_and_check<int>("", number_parse_status::invalid_number);
 
-    try
-    {
-        std::cout << decimal_to_number<unsigned>("-1") << std::endl;
-        assert(false);
-    }
-    catch(const std::invalid_argument & ) {}
+    parse_and_check<unsigned>("-1", number_parse_status::invalid_number);
+
+    parse_and_check<int>("-", number_parse_status::invalid_number);
 
     __VIC_LONGLONG n;
     decimal_to_number(std::string("10000"), n);
