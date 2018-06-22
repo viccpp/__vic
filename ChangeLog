@@ -4,6 +4,17 @@ Legend:
     * Changes
     ! Important
 
+2018-06-21  __vic
+    * LLVM libc++ defines nullptr macro in C++98 mode
+
+2018-06-06  __vic
+    + __VIC_SCOPED_ENUM_BEGIN/END
+    * logger: renamed message_severity -> severity_t
+    + str2num.h: number_parse_status
+
+2018-06-05  __vic
+    * string_ref.h: basic_string_ref: operator== uses memcmp()
+
 2018-05-21  __vic
     + doc: stable links for chapters
     * Renamed meta.h -> type_traits.h

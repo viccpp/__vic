@@ -91,7 +91,11 @@ int basic_string_ref<charT>::compare(basic_string_ref<charT> s) const
 //----------------------------------------------------------------------------
 template<class charT>
 inline bool operator==(basic_string_ref<charT> s1, basic_string_ref<charT> s2)
-    { return s1.length() == s2.length() && s1.compare(s2) == 0; }
+{
+    size_t len = s1.length();
+    return len == s2.length() &&
+        std::memcmp(s1.data(), s2.data(), len * sizeof(charT)) == 0;
+}
 //----------------------------------------------------------------------------
 template<class charT>
 inline bool operator!=(basic_string_ref<charT> s1, basic_string_ref<charT> s2)

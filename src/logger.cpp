@@ -10,12 +10,12 @@ namespace __vic {
 const char * const logger::sev_strs[] =
     { "TRACE", "DEBUG", "INFO", "WARNING", "ERROR", "FATAL" };
 //----------------------------------------------------------------------------
-void logger::message(message_severity s, const char *msg, size_t msg_len)
+void logger::message(severity_t s, const char *msg, size_t msg_len)
 {
     if(s >= level()) publish_record(s, msg, msg_len);
 }
 //----------------------------------------------------------------------------
-void logger::message(message_severity s, const char *msg)
+void logger::message(severity_t s, const char *msg)
 {
     if(s >= level()) publish_record(s, msg, std::strlen(msg));
 }

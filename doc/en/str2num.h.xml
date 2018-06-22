@@ -89,38 +89,46 @@ they work with generic ranges of characters instead of strings.</p>
 template<class T>
 class decimal_parser
 {
+    using status = number_parse_status; // for brevity only
 public:
     template<class InputIterator>
-    int parse(InputIterator begin, InputIterator end);
-    int parse(const std::string &str);
-    int parse(const char *str);
+    status parse(InputIterator begin, InputIterator end);
+    status parse(const std::string &str);
+    status parse(const char *str);
     T result() const;
 };
 ]]></code-block>
 
-<p>A counterpart of <tt>decimal_to_number()</tt> functions but never throws
-exceptions, <tt>errno</tt> codes are returned instead by <tt>parse()</tt>.</p>
+<p>A counterpart of <tt>decimal_to_number()</tt> functions but doesn't throw
+exceptions, <xref to="number_parse_status"/> codes are returned instead by
+<tt>parse()</tt>.</p>
 
-<p>Full list of returned error codes:</p>
-<list style="bulleted">
-    <item><tt>0</tt> - success, the result can be obtained using
-        <tt>result()</tt> function;</item>
-    <item><tt>EDOM</tt> - the string is not a correct decimal integer;</item>
-    <item><tt>ERANGE</tt> - the string is probably correct but the result
-        cannot be represented by the used type (integer overflow).</item>
-</list>
+<section><title>Status codes</title>
+<synopsis>
+<prototype>number_parse_status::ok</prototype>
+<p>Success, the result can be obtained using <tt>result()</tt> function.</p>
+</synopsis>
+<synopsis>
+<prototype>number_parse_status::invalid_number</prototype>
+<p>The string is not a correct decimal integer.</p>
+</synopsis>
+<synopsis>
+<prototype>number_parse_status::unrepresentable</prototype>
+<p>The string is probably correct but the result cannot be represented by the
+used type (integer overflow).</p>
+</synopsis>
+</section>
 
 <section><title>Class members</title>
 
 <synopsis>
 <prototype>template&lt;class InputIterator>
-int parse(InputIterator begin, InputIterator end)</prototype>
-<prototype>int parse(const std::string &amp;str)</prototype>
-<prototype>int parse(const char *str)</prototype>
-<p>Converts a range of characters or a string to a number. Returns <tt>0</tt>
-on success or an error code.</p>
-<postcondition><tt>result()</tt> will return the result of conversion if
-<tt>0</tt> was returned.
+status parse(InputIterator begin, InputIterator end)</prototype>
+<prototype>status parse(const std::string &amp;str)</prototype>
+<prototype>status parse(const char *str)</prototype>
+<p>Converts a range of characters or a string to a number.</p>
+<postcondition>The result of conversion can be obtained by <tt>result()</tt>
+call if <tt>number_parse_status::ok</tt> is returned.
 </postcondition>
 </synopsis>
 
@@ -128,7 +136,8 @@ on success or an error code.</p>
 <prototype>T result() const</prototype>
 <p>Returns the result of conversion produced by the the last <tt>parse()</tt>
 call.</p>
-<precondition>The last <tt>parse()</tt> call returned <tt>0</tt>.</precondition>
+<precondition>The last <tt>parse()</tt> call returned
+<tt>number_parse_status::ok</tt>.</precondition>
 </synopsis>
 
 </section>
@@ -139,11 +148,45 @@ template<class T>
 bool to_number(const std::string &s, T &result) noexcept
 {
     __vic::decimal_parser<T> p;
-    if(p.parse(s) != 0) return false;
+    if(p.parse(s) != __vic::number_parse_status::ok) return false;
     result = p.result();
     returt true; // 'result' contains the result of conversion
 }
 ]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="number_parse_status">
+<title><tt>number_parse_status</tt></title>
+
+<code-block lang="C++"><![CDATA[
+enum class number_parse_status
+{
+    ok = 0,
+    invalid_number = EDOM,
+    unrepresentable = ERANGE
+};
+using number_parse_status_t = number_parse_status; // for C++98
+
+constexpr int to_errno(number_parse_status s);
+]]></code-block>
+
+<p>Number parsing outcome status codes convertible to <tt>errno</tt>.</p>
+
+<section><title>Types/functions</title>
+
+<synopsis>
+<prototype>typename number_parse_status_t</prototype>
+<p>Use this as a name of type if your code has to be C++98-compatible.</p>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr int to_errno(number_parse_status s)</prototype>
+<p>Converts status to <tt>errno</tt>-compatible code.</p>
+</synopsis>
+
 </section>
 
 </chapter>

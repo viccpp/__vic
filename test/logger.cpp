@@ -6,10 +6,9 @@
 class clogger : public __vic::logger
 {
 public:
-    explicit clogger(message_severity level = severity::info)
-        : logger(level) {}
+    explicit clogger(severity_t level = severity::info) : logger(level) {}
 protected:
-    void publish_record(message_severity s, const char *rec, size_t rec_len)
+    void publish_record(severity_t s, const char *rec, size_t rec_len)
     {
         (std::clog << to_string(s) << ": ").write(rec, rec_len) << std::endl;
     }

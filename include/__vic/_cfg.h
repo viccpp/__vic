@@ -244,9 +244,13 @@
 #if __cplusplus >= 201103L // C++11
 #   define __VIC_THROWS noexcept(false)
 #   define __VIC_SWAP_HEADER <algorithm>
+#   define __VIC_SCOPED_ENUM_BEGIN(name) enum class name
+#   define __VIC_SCOPED_ENUM_END(name) ; using name##_t = name;
 #else // C++98
 #   define __VIC_THROWS
 #   define __VIC_SWAP_HEADER <utility>
+#   define __VIC_SCOPED_ENUM_BEGIN(name) struct name { enum type_
+#   define __VIC_SCOPED_ENUM_END(name) ; }; typedef name::type_ name##_t;
 #endif
 
 #if __cpp_constexpr
