@@ -4,20 +4,19 @@
 # Usage:
 #   $ gmake [compiler={gcc|clang}] [std98=1]
 
-include ../defs.mk
+include ../src/defs.mk
 OBJSUFF = o
 ARSUFF = a
-
-compiler ?= gcc
+compiler = gcc
 
 ifeq ($(compiler),gcc)
-CC      = g++ -std=c++$(if $(std98),98,11)
-CFLAGS  = -pedantic-errors -DNDEBUG -O3
-WARNS   = $(if $(std98),-Wno-long-long)
+CC     := g++ -std=c++$(if $(std98),98,11)
+CFLAGS := -pedantic-errors -DNDEBUG -O3
+WARNS  := $(if $(std98),-Wno-long-long)
 else ifeq ($(compiler),clang)
-CC      = clang++ -std=c++$(if $(std98),98,11)
-CFLAGS  = -pedantic-errors -DNDEBUG -O3
-WARNS   = $(if $(std98),-Wno-long-long) -Wno-non-literal-null-conversion
+CC     := clang++ -std=c++$(if $(std98),98,11)
+CFLAGS := -pedantic-errors -DNDEBUG -O3
+WARNS  := $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
 endif
 
 LIBSUFFIX = $(if $(std98),98)
@@ -33,4 +32,4 @@ endif
 OBJS := $(patsubst %.cpp,%.$(OBJSUFF),$(SOURCES))
 
 .PHONY: clean
-include ../rules.mk
+include ../src/rules.mk
