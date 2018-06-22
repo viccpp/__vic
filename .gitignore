@@ -1,5 +1,7 @@
 /src/Makefile
 /test/Makefile
+/src/sources.mk
+/test/sources.mk
 /test/*.test
 /test/*.exe
 /doc/*.html

@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-07-11  __vic
+    + NMAKE makefile for Visual C++
+
 2018-06-21  __vic
     * LLVM libc++ defines nullptr macro in C++98 mode
 

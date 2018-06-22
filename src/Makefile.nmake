@@ -1,0 +1,34 @@
+################################################################
+# NMAKE Makefile for Visual C++
+#
+# Usage:
+#   $ nmake -f Makefile.nmake
+
+!include ../src/defs.mk
+compiler = msvc
+
+!ifdef std98
+!error C++98 mode is not supported by MSVC++ compiler
+!endif
+CC     = cl /nologo
+CFLAGS = -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1
+WARNS  =
+
+LIBSUFFIX =
+OBJSUFF = obj
+ARSUFF = lib
+LIBFILE = $(LIBNAME)$(LIBSUFFIX).$(ARSUFF)
+AR = lib
+ARFLAGS =
+ARFLAGS_ALL = -nologo $(ARFLAGS) /OUT:$@
+CFLAGS_ALL = -I../include -DUNICODE=1 $(CFLAGS) $(WARNS)
+
+!ifndef SOURCES
+!if !EXISTS(sources.mk)
+!error Run configure.cmd first
+!endif
+!include sources.mk
+!endif
+OBJS = $(SOURCES:.cpp=.obj)
+
+!include ../src/rules.mk

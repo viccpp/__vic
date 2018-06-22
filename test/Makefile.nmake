@@ -1,0 +1,22 @@
+################################################################
+# NMAKE Makefile for Visual C++
+#
+# Usage:
+#   $ nmake -f Makefile.nmake [check]
+
+!include ../src/defs.mk
+Makefile = Makefile.nmake
+!include sources.mk
+TESTS = $(SOURCES:.cpp=.exe)
+GARBAGE = $(GARBAGE) *.$(TESTSUFF)
+
+!include pref.mk
+!include ../src/$(Makefile)
+
+# Override included values
+CFLAGS = -D_CRT_SECURE_NO_DEPRECATE
+CFLAGS_TEST = -MT
+WARNS = -W3 -wd4290 -wd4800 -D_CRT_SECURE_NO_WARNINGS
+LIBS = $(LIBS) user32.lib notelemetry.obj
+
+!include suff.mk
