@@ -15,7 +15,7 @@
 #include<utility> // for std::move(), std::forward(), std::swap()
 #endif
 
-#if __cplusplus < 201103L && !defined(__VIC_NO_NULLPTR_DEF)
+#if __cplusplus < 201103L && !defined(__VIC_NO_NULLPTR_DEF) && !defined(nullptr)
 #ifdef __SUNPRO_CC
 #define nullptr 0
 #else
