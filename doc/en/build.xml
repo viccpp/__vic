@@ -31,6 +31,12 @@ $ gmake pic=1
 $ gmake compiler=gcc
 </tty>
 
+<p>Alternatively <link href="https://www.freebsd.org/cgi/man.cgi?query=make&amp;sektion=1">
+bmake</link> utility can be used on FreeBSD 10+ instead of gmake:</p>
+<tty>
+$ make -f Makefile.freebsd
+</tty>
+
 <p>Finally, to use the library you just need to copy the library file and
 contents of <tt>include</tt> subdirectory to some place where compiler/linker
 can find it, e.g to <tt>/usr/local/include</tt> and <tt>/usr/local/lib</tt>.</p>

@@ -1,0 +1,31 @@
+################################################################
+# FreeBSD 10+ bmake Makefile
+#
+# Usage:
+#   $ make -f Makefile.freebsd [check]
+
+.include "../src/defs.mk"
+Makefile = Makefile.freebsd
+SOURCES != ls *.cpp
+TESTS := $(SOURCES:.cpp=.$(TESTSUFF))
+
+.PHONY: tests check
+.include "pref.mk"
+.include "../src/$(Makefile)"
+
+# Override included values
+CFLAGS = -pedantic-errors
+CFLAGS_TEST = -MMD -o $@
+WARNS = -Wall
+.ifdef std98
+WARNS += -Wno-long-long
+.if $(compiler) == gcc
+WARNS += -Wno-c++0x-compat
+.elif $(compiler) == clang
+WARNS += -Wno-non-literal-null-conversion
+.endif
+.endif
+GARBAGE += *.d *.$(TESTSUFF)
+
+.-include "*.d"
+.include "suff.mk"

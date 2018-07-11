@@ -1,0 +1,37 @@
+################################################################
+# FreeBSD 10+ bmake Makefile
+#
+# Usage:
+#   $ make -f Makefile.freebsd [compiler={clang|gcc}] [std98=1] [pic=1]
+
+.include "../src/defs.mk"
+OBJSUFF = o
+ARSUFF = a
+compiler = clang
+
+.if $(compiler) == gcc
+CC     := g++ -std=c++$(std98:?98:11) -pthread
+CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
+WARNS  := $(std98:?-Wno-long-long:)
+CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
+.elif $(compiler) == clang
+CC     := clang++ -std=c++$(std98:?98:11) -pthread
+CFLAGS := -pedantic-errors -DNDEBUG -O3
+WARNS  := $(std98:?-Wno-long-long :)-Wno-non-literal-null-conversion
+CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
+.endif
+
+LIBSUFFIX = $(std98:?98:)$(pic:?_pic:)
+LIBFILE := lib$(LIBNAME)$(LIBSUFFIX).$(ARSUFF)
+CFLAGS_ALL = -I../include $(pic:?$(CFLAGS_PIC) :)$(CFLAGS) $(WARNS)
+AR = ar
+ARFLAGS = s
+ARFLAGS_ALL = r$(ARFLAGS) $@
+
+.ifndef SOURCES
+SOURCES != ls *.cpp
+.endif
+OBJS := $(SOURCES:.cpp=.$(OBJSUFF))
+
+.PHONY: clean
+.include "../src/rules.mk"
