@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-08-09  __vic
+    * str2num.h: to_errno(number_parse_status) removed
+
 2018-06-21  __vic
     * LLVM libc++ defines nullptr macro in C++98 mode
 
