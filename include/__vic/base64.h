@@ -23,7 +23,7 @@ struct base64
         const char *what() const noexcept;
     };
 
-    static const char abc[]; // BASE64 alphabet
+    static const char abc[65]; // BASE64 alphabet + null terminator
 
     // Bytes -> Text
     template<class ByteReader, class CharWriter>
