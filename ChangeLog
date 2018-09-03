@@ -6,6 +6,7 @@ Legend:
 
 2018-09-03  __vic
     * doc: make https://validator.w3.org/ happy
+    * base16, base64: try_decode() added
 
 2018-08-09  __vic
     * str2num.h: to_errno(number_parse_status) removed

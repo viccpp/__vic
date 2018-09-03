@@ -253,6 +253,12 @@
 #   define __VIC_SCOPED_ENUM_END(name) ; }; typedef name::type_ name##_t;
 #endif
 
+#if __cpp_rvalue_references
+#   define __VIC_STD_MOVE(v) std::move(v)
+#else
+#   define __VIC_STD_MOVE(v) v
+#endif
+
 #if __cpp_constexpr
 #   define __VIC_CONSTEXPR_FUNC constexpr
 #   define __VIC_CONSTEXPR_VAR constexpr

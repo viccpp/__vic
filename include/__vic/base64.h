@@ -18,7 +18,22 @@ namespace __vic {
 //////////////////////////////////////////////////////////////////////////////
 struct base64
 {
+    __VIC_SCOPED_ENUM_BEGIN(status)
+    {
+        ok,
+        invalid_length,
+        invalid_digit
+    }
+    __VIC_SCOPED_ENUM_END(status)
+
     struct bad_format : public std::exception
+    {
+    };
+    struct bad_length : public bad_format
+    {
+        const char *what() const noexcept;
+    };
+    struct bad_digit : public bad_format
     {
         const char *what() const noexcept;
     };
@@ -32,6 +47,8 @@ struct base64
     // Text -> Bytes
     template<class CharReader, class ByteWriter>
     static void decode(CharReader , ByteWriter );
+    template<class CharReader, class ByteWriter>
+    static status_t try_decode(CharReader , ByteWriter );
 
     static __VIC_CONSTEXPR_FUNC size_t encoded_length(size_t orig_len)
     {
@@ -80,7 +97,7 @@ void base64::encode(ByteReader r, CharWriter w)
 }
 //----------------------------------------------------------------------------
 template<class CharReader, class ByteWriter>
-void base64::decode(CharReader r, ByteWriter w)
+base64::status_t base64::try_decode(CharReader r, ByteWriter w)
 {
     char quad[4];
     unsigned char code[4];
@@ -97,8 +114,8 @@ void base64::decode(CharReader r, ByteWriter w)
                 if(quad[i] != '=')
                 {
                     const char *p = std::strchr(abc, quad[i]);
-                    if(!p) throw bad_format(); // not BASE64 char
-                    code[i] = p - abc;
+                    if(!p) return status::invalid_digit;
+                    code[i] = static_cast<unsigned char>(p - abc);
                 }
                 else code[i] = 255;
             }
@@ -113,7 +130,20 @@ void base64::decode(CharReader r, ByteWriter w)
         }
         else pos++;
     }
-    if(pos) throw bad_format();
+    if(pos) return status::invalid_length;
+    return status::ok;
+}
+//----------------------------------------------------------------------------
+template<class CharReader, class ByteWriter>
+void base64::decode(CharReader r, ByteWriter w)
+{
+    switch(base64::try_decode(__VIC_STD_MOVE(r), __VIC_STD_MOVE(w)))
+    {
+        case status::ok: return;
+        case status::invalid_length: throw bad_length();
+        case status::invalid_digit: throw bad_digit();
+    }
+    // UNREACHABLE
 }
 //----------------------------------------------------------------------------
 
