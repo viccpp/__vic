@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-09-03  __vic
+    * doc: make https://validator.w3.org/ happy
+
 2018-08-09  __vic
     * str2num.h: to_errno(number_parse_status) removed
 

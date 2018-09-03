@@ -166,7 +166,7 @@ Complex c2(__vic::noinit); // c2 contains unknown garbage value
 </chapter>
 
 
-<chapter xml:id="__VIC_SWAP_HEADER">
+<chapter xml:id="VIC_SWAP_HEADER">
 <title><tt>__VIC_SWAP_HEADER</tt></title>
 
 <p>A macro for <tt>#include</tt>. Expands to the header name that contains
