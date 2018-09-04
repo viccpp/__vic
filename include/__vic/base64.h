@@ -38,7 +38,7 @@ struct base64
         const char *what() const noexcept;
     };
 
-    static const char abc[65]; // BASE64 alphabet + null terminator
+    static const char abc[64]; // BASE64 alphabet
 
     // Bytes -> Text
     template<class ByteReader, class CharWriter>
@@ -113,7 +113,8 @@ base64::status_t base64::try_decode(CharReader r, ByteWriter w)
             {
                 if(quad[i] != '=')
                 {
-                    const char *p = std::strchr(abc, quad[i]);
+                    const char *p = static_cast<const char *>(
+                        std::memchr(abc, quad[i], sizeof abc));
                     if(!p) return status::invalid_digit;
                     code[i] = static_cast<unsigned char>(p - abc);
                 }
