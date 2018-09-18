@@ -2,8 +2,9 @@
 <title>General structure and usage</title>
 
 <p>The topmost structural units of the library are headers and the library file
-(or archive) - <tt>lib__vic.a</tt> or <tt>__vic.lib</tt>. All the headers are
-located in the <tt>__vic/</tt> subdirectory. One should include them like
+(or archive) - <tt>lib__vic.a</tt> or <tt>__vic.lib</tt>. Usually the library
+file has some suffix like <tt>lib__vic14.a</tt>. All the headers
+are located in the <tt>__vic/</tt> subdirectory. One should include them like
 this:</p>
 
 <code-block lang="C++">
@@ -19,22 +20,23 @@ other namespaces.</p>
 Example:</p>
 
 <tty>
-$ g++ -std=c++11 prog.cpp -l__vic
+$ g++ -std=c++14 prog.cpp -l__vic14
 </tty>
 
-<p>The library has 2 modes: C++11 mode and C++98 mode. Features available
-only in C++11 mode are marked with <sign>C++11</sign> sign. Features available
-only in C++98 mode are marked with <sign>C++98</sign> sign, respectively. Also
-in C++98 mode the library file has slightly different name:</p>
+<p>The library can be built using one of the ISO C++ standards: C++98, C++11,
+C++14 or C++17. The standard suffix is used as a suffix for the library file
+(archive).</p>
 
-<tty>
-$ g++ -std=c++98 prog.cpp -l__vic98
-</tty>
+<p>Some features are available only if minimal required standard version is
+used, e.g. many features require at least C++11. Such features are marked with
+<sign>C++11</sign> sign that means "C++11 or later".</p>
 
-<note>C++11 mode is used for C++14/17 as well.</note>
+<p>Some features are available only in particular standard mode and not
+available otherwise. Such features are marked with <sign>C++98 only</sign>
+sign.</p>
 
 <p>Detailed description of the library components provided in subsequent
-chapters. Descriptions are grouped by headers. Mainly C++11 language syntax
+chapters. Descriptions are grouped by headers. Mainly C++14 language syntax
 is used as more complete and expressive.</p>
 
 </chapter>

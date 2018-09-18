@@ -174,7 +174,7 @@ output the passed record somewhere, e.g. to file, terminal or DB.</p>
 <synopsis>
 <prototype>typename severity_t</prototype>
 <p>Use this identifier as a type name if your code has to be C++98-compatible.
-In C++11 mode it is just a synonym for <tt>severity</tt>.</p>
+Since C++11 it is just a synonym for <tt>severity</tt>.</p>
 </synopsis>
 
 <synopsis>

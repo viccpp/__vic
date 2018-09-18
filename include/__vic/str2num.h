@@ -13,21 +13,18 @@
 #include<__vic/tchar.h>
 #include<string>
 #include<limits>
-#include<cerrno>
 
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
 __VIC_SCOPED_ENUM_BEGIN(number_parse_status)
 {
-    ok = 0,
-    invalid_number = EDOM,
-    unrepresentable = ERANGE
+    ok,
+    invalid_number,
+    unrepresentable
 }
 __VIC_SCOPED_ENUM_END(number_parse_status)
 //////////////////////////////////////////////////////////////////////////////
-__VIC_CONSTEXPR_FUNC
-int to_errno(number_parse_status_t s) { return static_cast<int>(s); }
 
 namespace impl {
 //////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-################################################################
+##############################################################################
 # GNU Make 3.82+ Makefile
 #
 # Usage:
@@ -23,7 +23,7 @@ else
 CFLAGS = -pedantic-errors
 CFLAGS_TEST = -MMD -o $@
 WARNS = -Wall
-ifdef std98
+ifeq ($(std),98)
 WARNS += -Wno-long-long
 ifeq ($(compiler),gcc)
 WARNS += -Wno-c++0x-compat

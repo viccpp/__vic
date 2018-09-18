@@ -1,31 +1,40 @@
-################################################################
+##############################################################################
 # GNU Make 3.82+ Makefile
 #
 # Usage:
-#   $ gmake [compiler={gcc|clang|msvc}] [std98=1]
+#   $ gmake [compiler={gcc|clang|msvc}] [std={98|11|14|17}]
 
 include ../src/defs.mk
+std = 14
 compiler = gcc
 
+##############################################################################
 ifeq ($(compiler),gcc)
-CC     := g++ -std=c++$(if $(std98),98,11) -mthreads
+CC     := g++ -std=c++$(std) -mthreads
 CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
-WARNS  := $(if $(std98),-Wno-long-long)
+WARNS  := $(if $(filter 98,$(std)),-Wno-long-long)
 binutils = 1
+##############################################################################
 else ifeq ($(compiler),clang)
 CC     := clang++
 TARGET := -target $(patsubst %-msvc,%-gnu,$(lastword $(shell $(CC) --version|find "Target:")))
-CC     += -std=c++$(if $(std98),98,11) $(TARGET) -pthread
+CC     += -std=c++$(std) $(TARGET) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3
-WARNS  := $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
+WARNS  := $(if $(filter 98,$(std)),-Wno-long-long )-Wno-non-literal-null-conversion
 binutils = 1
+##############################################################################
 else ifeq ($(compiler),msvc)
-CC     := cl /nologo $(if $(std98),$(error C++98 mode is not supported by MSVC++ compiler))
+ifneq ($(origin std),file)
+$(error std option is not supported by MSVC++ compiler)
+endif
+std    :=
+CC     := cl /nologo /Zc:__cplusplus /permissive-
 CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1
 WARNS  :=
 endif
+##############################################################################
 
-LIBSUFFIX = $(if $(std98),98)
+LIBSUFFIX = $(std)
 ifdef binutils
 OBJSUFF = o
 ARSUFF = a

@@ -7,8 +7,8 @@
 <chapter xml:id="base64">
 <title><tt>base64</tt></title>
 
-<p>A class used as a namespace. Contains only types and static functions. No
-objects of this class are supposed to be created.</p>
+<p>A class used as a namespace. Contains only types, constants and static
+functions. No objects of this class are supposed to be created.</p>
 
 </chapter>
 
@@ -16,14 +16,62 @@ objects of this class are supposed to be created.</p>
 <chapter xml:id="base64--bad_format">
 <title><tt>base64::bad_format</tt></title>
 
-<code-block lang="C++"><![CDATA[
-struct base64::bad_format : public std::exception
+<code-block lang="C++">
+struct base64::bad_format : public std::exception {};
+</code-block>
+
+<p>Abstract base exception class.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--bad_digit">
+<title><tt>base64::bad_digit</tt></title>
+
+<code-block lang="C++">
+struct base64::bad_digit : public base64::bad_format
 {
     const char *what() const noexcept;
 };
-]]></code-block>
+</code-block>
 
-<p>An exception class.</p>
+<p>Exception class thrown by <xref to="base64--decode"/> when the input sequence
+contains character that is not a valid Base64 digit.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--bad_length">
+<title><tt>base64::bad_length</tt></title>
+
+<code-block lang="C++">
+struct base64::bad_length : public base64::bad_format
+{
+    const char *what() const noexcept;
+};
+</code-block>
+
+<p>Exception class thrown by <xref to="base64--decode"/> when the input sequence
+length is not a multiple of 4.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--status">
+<title><tt>base64::status</tt></title>
+
+<code-block lang="C++">
+enum class base64::status
+{
+    ok,
+    invalid_length,
+    invalid_digit
+};
+using base64::status_t = base64::status; // for C++98
+</code-block>
+
+<p>Input sequence parsing outcome status codes returned by
+<xref to="base64--try_decode"/>.</p>
 
 </chapter>
 
@@ -77,8 +125,9 @@ void base64::decode(CharReader reader, ByteWriter writer);
 ]]></code-block>
 
 <p>Decodes characters form <tt>reader</tt> and writes the resulting bytes to
-<tt>writer</tt>. <tt>base64::bad_format</tt> is thrown if the input sequence
-has invalid Base64 format. ASCII whitespaces are ignored.</p>
+<tt>writer</tt>. Exception derived from <xref to="base64--bad_format"/> is
+thrown if the input sequence has invalid Base64 format. ASCII whitespaces are
+ignored.</p>
 
 <p><tt>CharReader</tt> has to model <tt>Reader&lt;char></tt> concept.
 See <xref to="readers"/>.</p>
@@ -103,6 +152,22 @@ bytes decode_base64(const std::string &s)
 }
 ]]></code-block>
 </section>
+
+</chapter>
+
+
+<chapter xml:id="base64--try_decode">
+<title><tt>base64::try_decode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Text -> Bytes
+template<class CharReader, class ByteWriter>
+base64::status_t base64::try_decode(CharReader reader, ByteWriter writer);
+]]></code-block>
+
+<p>Same as <xref to="base64--decode"/> but returns <xref to="base64--status"/>
+different from <tt>base64::status::ok</tt> in case of invalid input sequence
+instead of throwing exception.</p>
 
 </chapter>
 

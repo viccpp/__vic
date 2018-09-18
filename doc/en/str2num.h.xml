@@ -164,27 +164,20 @@ bool to_number(const std::string &s, T &result) noexcept
 <code-block lang="C++"><![CDATA[
 enum class number_parse_status
 {
-    ok = 0,
-    invalid_number = EDOM,
-    unrepresentable = ERANGE
+    ok,
+    invalid_number,
+    unrepresentable
 };
 using number_parse_status_t = number_parse_status; // for C++98
-
-constexpr int to_errno(number_parse_status s);
 ]]></code-block>
 
-<p>Number parsing outcome status codes convertible to <tt>errno</tt>.</p>
+<p>Number parsing outcome status codes.</p>
 
-<section><title>Types/functions</title>
+<section><title>Types</title>
 
 <synopsis>
 <prototype>typename number_parse_status_t</prototype>
 <p>Use this as a name of type if your code has to be C++98-compatible.</p>
-</synopsis>
-
-<synopsis>
-<prototype>constexpr int to_errno(number_parse_status s)</prototype>
-<p>Converts status to <tt>errno</tt>-compatible code.</p>
 </synopsis>
 
 </section>

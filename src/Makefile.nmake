@@ -7,8 +7,8 @@
 !include ../src/defs.mk
 compiler = msvc
 
-!ifdef std98
-!error C++98 mode is not supported by MSVC++ compiler
+!if "$(std)" != ""
+!error std option is not supported by MSVC++ compiler
 !endif
 CC     = cl /nologo
 CFLAGS = -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1
