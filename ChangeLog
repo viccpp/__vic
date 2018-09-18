@@ -6,6 +6,7 @@ Legend:
 
 2018-09-18  __vic
     + C++14 and C++17 modes support
+    + set_of_chars: C++14 constexpr
 
 2018-09-03  __vic
     * doc: make https://validator.w3.org/ happy

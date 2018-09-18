@@ -35,6 +35,12 @@ void run_tests()
     assert(!set.contains('0'));
     assert(!set.contains('4'));
 #endif
+
+#if __cpp_constexpr >= 201304 && __cpp_static_assert
+    constexpr __vic::set_of_chars cset{'a', 'b', 'c'};
+    static_assert(cset.contains('c'), "");
+    static_assert(!cset.contains('d'), "");
+#endif
 }
 
 int main()

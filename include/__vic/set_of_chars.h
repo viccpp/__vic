@@ -2,7 +2,7 @@
 // Complexity of the contains() operation: constant
 // Required space: 32 bytes
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11/14
 // $Id$
 //
 // (c) __vic 2011
@@ -30,9 +30,9 @@ public:
 #if __cpp_initializer_lists
     __VIC_CONSTEXPR_FUNC set_of_chars() __VIC_DEFAULT_CTR
     template<class Iter>
-    set_of_chars(Iter begin, Iter end) { add(begin, end); }
-    set_of_chars(const char *c_str) { add(c_str); }
-    set_of_chars(std::initializer_list<char> set) { add(set); }
+    __VIC_CONSTEXPR14 set_of_chars(Iter begin, Iter end) { add(begin, end); }
+    __VIC_CONSTEXPR14 set_of_chars(const char *c_str) { add(c_str); }
+    __VIC_CONSTEXPR14 set_of_chars(std::initializer_list<char> set) { add(set); }
 #else
     set_of_chars() { clear(); }
     template<class Iter>
@@ -40,28 +40,28 @@ public:
     set_of_chars(const char *c_str) { assign(c_str); }
 #endif
 
-    bool contains(char ch) const
+    __VIC_CONSTEXPR_FUNC bool contains(char ch) const
     {
         return set[static_cast<unsigned char>(ch) >> 3] & (1 << (ch & 7));
     }
 
-    void add(char ch)
+    __VIC_CONSTEXPR14 void add(char ch)
     {
         // Set the corresponding bit
         set[static_cast<unsigned char>(ch) >> 3] |= 1 << (ch & 7);
     }
-    void remove(char ch)
+    __VIC_CONSTEXPR14 void remove(char ch)
     {
         // Reset the corresponding bit
         set[static_cast<unsigned char>(ch) >> 3] &= ~(1 << (ch & 7));
     }
 
     template<class Iter>
-    void add(Iter begin, Iter end)
+    __VIC_CONSTEXPR14 void add(Iter begin, Iter end)
     {
         while(begin != end) add(*begin++);
     }
-    void add(const char *c_str)
+    __VIC_CONSTEXPR14 void add(const char *c_str)
     {
         while(*c_str) add(*c_str++);
     }
@@ -79,7 +79,7 @@ public:
     }
 
 #if __cpp_initializer_lists
-    void add(std::initializer_list<char> set)
+    __VIC_CONSTEXPR14 void add(std::initializer_list<char> set)
     {
         add(set.begin(), set.end());
     }

@@ -269,6 +269,12 @@
 #   define __VIC_DEFAULT_CTR {}
 #endif
 
+#if __cpp_constexpr >= 201304
+#   define __VIC_CONSTEXPR14 constexpr
+#else
+#   define __VIC_CONSTEXPR14 inline
+#endif
+
 #if __cpp_attributes
 #   define __VIC_NORETURN [[noreturn]]
 #else
