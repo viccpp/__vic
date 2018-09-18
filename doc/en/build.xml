@@ -15,20 +15,24 @@ $ gmake
 </tty>
 <p>The library file will be built for you.</p>
 
-<p>To build the library in C++98 mode write:</p>
+<p>C++14 is used by default but you can choose another language standard
+version using <tt>std</tt> option. E.g. to build the library in C++98 mode
+write:</p>
 <tty>
-$ gmake std98=1
+$ gmake std=98
+</tty>
+
+<p>Available values include: 98, 11, 14 and 17.</p>
+
+<p>Also you can choose the used compiler manually:</p>
+<tty>
+$ gmake compiler=gcc
 </tty>
 
 <p>To generate position-independent code (PIC) suitable for use in a shared
 library write:</p>
 <tty>
 $ gmake pic=1
-</tty>
-
-<p>Also you can choose the used compiler manually:</p>
-<tty>
-$ gmake compiler=gcc
 </tty>
 
 <p>Alternatively <link href="https://www.freebsd.org/cgi/man.cgi?query=make&amp;sektion=1">

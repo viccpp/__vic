@@ -7,8 +7,8 @@
 <chapter xml:id="base16">
 <title><tt>base16</tt></title>
 
-<p>A class used as a namespace. Contains only types and static functions. No
-objects of this class are supposed to be created.</p>
+<p>A class used as a namespace. Contains only types, constants and static
+functions. No objects of this class are supposed to be created.</p>
 
 </chapter>
 
@@ -16,14 +16,62 @@ objects of this class are supposed to be created.</p>
 <chapter xml:id="base16--bad_format">
 <title><tt>base16::bad_format</tt></title>
 
-<code-block lang="C++"><![CDATA[
-struct base16::bad_format : public std::exception
+<code-block lang="C++">
+struct base16::bad_format : public std::exception {};
+</code-block>
+
+<p>Abstract base exception class.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--bad_digit">
+<title><tt>base16::bad_digit</tt></title>
+
+<code-block lang="C++">
+struct base16::bad_digit : public base16::bad_format
 {
     const char *what() const noexcept;
 };
-]]></code-block>
+</code-block>
 
-<p>An exception class.</p>
+<p>Exception class thrown by <xref to="base16--decode"/> when the input sequence
+contains character that is not a valid HEX digit.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--bad_length">
+<title><tt>base16::bad_length</tt></title>
+
+<code-block lang="C++">
+struct base16::bad_length : public base16::bad_format
+{
+    const char *what() const noexcept;
+};
+</code-block>
+
+<p>Exception class thrown by <xref to="base16--decode"/> when the input sequence
+length is odd.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--status">
+<title><tt>base16::status</tt></title>
+
+<code-block lang="C++">
+enum class base16::status
+{
+    ok,
+    invalid_length,
+    invalid_digit
+};
+using base16::status_t = base16::status; // for C++98
+</code-block>
+
+<p>Input sequence parsing outcome status codes returned by
+<xref to="base16--try_decode"/>.</p>
 
 </chapter>
 
@@ -77,7 +125,7 @@ template<class ByteReader, class CharWriter>
 void base16::encode_lower(ByteReader reader, CharWriter writer);
 ]]></code-block>
 
-<p>Same as <tt>base16::encode_upper()</tt> but lower case is used for
+<p>Same as <xref to="base16--encode_upper"/> but lower case is used for
 hexadecimal digits.</p>
 
 </chapter>
@@ -93,8 +141,8 @@ void base16::decode(CharReader reader, ByteWriter writer);
 ]]></code-block>
 
 <p>Decodes characters from <tt>reader</tt> and writes the resulting bytes to
-<tt>writer</tt>. <tt>base16::bad_format</tt> is thrown if the input sequence
-has invalid Base16 format.</p>
+<tt>writer</tt>. Exception derived from <xref to="base16--bad_format"/> is
+thrown if the input sequence has invalid Base16 format.</p>
 
 <p><tt>CharReader</tt> has to model <tt>Reader&lt;char></tt> concept.
 See <xref to="readers"/>.</p>
@@ -119,6 +167,22 @@ bytes decode_base16(const std::string &s)
 }
 ]]></code-block>
 </section>
+
+</chapter>
+
+
+<chapter xml:id="base16--try_decode">
+<title><tt>base16::try_decode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Text -> Bytes
+template<class CharReader, class ByteWriter>
+base16::status_t base16::try_decode(CharReader reader, ByteWriter writer);
+]]></code-block>
+
+<p>Same as <xref to="base16--decode"/> but returns <xref to="base16--status"/>
+different from <tt>base16::status::ok</tt> in case of invalid input sequence
+instead of throwing exception.</p>
 
 </chapter>
 

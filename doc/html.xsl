@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="html"/>
+<xsl:output method="html" encoding="UTF-8"
+	doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
+	doctype-system="http://www.w3.org/TR/html4/loose.dtd"/>
 
 <xsl:key name="chapters" match="chapter" use="@xml:id"/>
 
@@ -54,6 +56,14 @@ span.h3_num, span.h4_num {
 h1.main-title {
 	font-size: 2em;
 	font-weight: bold;
+}
+caption.toc {
+	text-align: left;
+	font-weight: bold;
+	font-size: 13pt;
+	margin-top: 9pt;
+	margin-bottom: 12pt;
+	margin-left: 0;
 }
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -142,7 +152,7 @@ blockquote * {
 
 <xsl:template name="toc">
 	<table style="font-size:10pt;" cellspacing="0" cellpadding="0">
-		<caption style="text-align:left"><h2>Contents</h2></caption>
+		<caption class="toc">Contents</caption>
 		<xsl:call-template name="toc-entry"/>
 	</table>
 </xsl:template>

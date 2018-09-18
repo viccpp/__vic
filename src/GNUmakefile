@@ -1,12 +1,13 @@
-################################################################
+##############################################################################
 # GNU Make 3.82+ Makefile
 #
 # Usage:
-#   $ gmake [compiler={gcc|clang|intel}] [std98=1] [pic=1]
+#   $ gmake [compiler={gcc|clang|intel}] [std={98|11|14|17}] [pic=1]
 
 include ../src/defs.mk
 OBJSUFF = o
 ARSUFF = a
+std = 14
 
 ifndef compiler
 OS := $(shell uname)
@@ -17,24 +18,31 @@ compiler = clang
 endif
 endif
 
+##############################################################################
 ifeq ($(compiler),gcc)
-CC     := g++ -std=c++$(if $(std98),98,11) -pthread
+CC     := g++ -std=c++$(std) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
-WARNS  := $(if $(std98),-Wno-long-long)
+WARNS  := $(if $(filter 98,$(std)),-Wno-long-long)
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
+##############################################################################
 else ifeq ($(compiler),clang)
-CC     := clang++ -std=c++$(if $(std98),98,11) -pthread
+CC     := clang++ -std=c++$(std) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3
-WARNS  := $(if $(std98),-Wno-long-long )-Wno-non-literal-null-conversion
+WARNS  := $(if $(filter 98,$(std)),-Wno-long-long )-Wno-non-literal-null-conversion
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
+##############################################################################
 else ifeq ($(compiler),intel)
-CC     := icpc $(if $(std98),$(error C++98 mode is not supported by Intel compiler),-std=c++11) -pthread
+ifeq ($(std),98)
+$(error C++98 mode is not supported by Intel compiler)
+endif
+CC     := icpc -std=c++$(std) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
 WARNS  :=
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 endif
+##############################################################################
 
-LIBSUFFIX = $(if $(std98),98)$(if $(pic),_pic)
+LIBSUFFIX = $(std)$(if $(pic),_pic)
 LIBFILE := lib$(LIBNAME)$(LIBSUFFIX).$(ARSUFF)
 CFLAGS_ALL = -I../include $(if $(pic),$(CFLAGS_PIC) )$(CFLAGS) $(WARNS)
 AR = ar
