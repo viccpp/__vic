@@ -29,7 +29,22 @@ class base16
         char operator()(int d) const { return ascii::toxdigit_upper(d); }
     };
 public:
+    __VIC_SCOPED_ENUM_BEGIN(status)
+    {
+        ok,
+        invalid_length,
+        invalid_digit
+    }
+    __VIC_SCOPED_ENUM_END(status)
+
     struct bad_format : public std::exception
+    {
+    };
+    struct bad_length : public bad_format
+    {
+        const char *what() const noexcept;
+    };
+    struct bad_digit : public bad_format
     {
         const char *what() const noexcept;
     };
@@ -43,6 +58,8 @@ public:
     // Text -> Bytes
     template<class CharReader, class ByteWriter>
     static void decode(CharReader , ByteWriter );
+    template<class CharReader, class ByteWriter>
+    static status_t try_decode(CharReader , ByteWriter );
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
@@ -70,7 +87,7 @@ void base16::encode_upper(ByteReader r, CharWriter w)
 }
 //----------------------------------------------------------------------------
 template<class CharReader, class ByteWriter>
-void base16::decode(CharReader r, ByteWriter w)
+base16::status_t base16::try_decode(CharReader r, ByteWriter w)
 {
     bool first = true;
     int hi_part;
@@ -78,12 +95,25 @@ void base16::decode(CharReader r, ByteWriter w)
     while(r.read(ch))
     {
         int d = ascii::xdigit_to_number(ch);
-        if(d < 0) throw bad_format();
+        if(d < 0) return status::invalid_digit;
         if(first) hi_part = d;
         else w.write(static_cast<unsigned char>((hi_part << 4) | d));
         first = !first;
     }
-    if(!first) throw bad_format(); // the length is odd
+    if(!first) return status::invalid_length; // the length is odd
+    return status::ok;
+}
+//----------------------------------------------------------------------------
+template<class CharReader, class ByteWriter>
+void base16::decode(CharReader r, ByteWriter w)
+{
+    switch(base16::try_decode(__VIC_STD_MOVE(r), __VIC_STD_MOVE(w)))
+    {
+        case status::ok: return;
+        case status::invalid_length: throw bad_length();
+        case status::invalid_digit: throw bad_digit();
+    }
+    // UNREACHABLE
 }
 //----------------------------------------------------------------------------
 
