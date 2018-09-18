@@ -4,7 +4,7 @@
 
 
 <chapter xml:id="nullptr">
-<title><tt>nullptr</tt> <sign>C++98</sign></title>
+<title><tt>nullptr</tt> <sign>C++98 only</sign></title>
 
 <p>Null pointer literal. Can be used instead of <tt>NULL</tt> or <tt>0</tt>.
 In ISO C++ 98 mode defined as</p>
@@ -30,9 +30,9 @@ pthread_create(&tid, nullptr, thread_func, nullptr);
 
 
 <chapter xml:id="noexcept">
-<title><tt>noexcept</tt> <sign>C++98</sign></title>
+<title><tt>noexcept</tt> <sign>C++98 only</sign></title>
 
-<p>A macro in C++98 mode, synonym for <tt>throw()</tt>. In C++11 mode
+<p>A macro in C++98 mode, synonym for <tt>throw()</tt>. In other standard modes
 the definition is absent.</p>
 
 </chapter>

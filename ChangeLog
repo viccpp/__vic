@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-09-18  __vic
+    + C++14 and C++17 modes support
+
 2018-09-03  __vic
     * doc: make https://validator.w3.org/ happy
     * base16, base64: try_decode() added
