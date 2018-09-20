@@ -7,20 +7,20 @@
 .include "../src/defs.mk"
 OBJSUFF = o
 ARSUFF = a
-std = 11
+std = 14
 compiler = clang
 
 ##############################################################################
 .if $(compiler) == gcc
 CC     := g++ -std=c++$(std) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
-WARNS  := $(std98:?-Wno-long-long:)
+WARNS  := $($(std)==98:?-Wno-long-long:)
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 ##############################################################################
 .elif $(compiler) == clang
 CC     := clang++ -std=c++$(std) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3
-WARNS  := $(std98:?-Wno-long-long :)-Wno-non-literal-null-conversion
+WARNS  := $($(std)==98:?-Wno-long-long :)-Wno-non-literal-null-conversion
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 .endif
 ##############################################################################

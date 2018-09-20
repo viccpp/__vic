@@ -17,7 +17,7 @@ TESTS := $(SOURCES:.cpp=.$(TESTSUFF))
 CFLAGS = -pedantic-errors
 CFLAGS_TEST = -MMD -o $@
 WARNS = -Wall
-.ifdef std98
+.if $(std) == 98
 WARNS += -Wno-long-long
 .if $(compiler) == gcc
 WARNS += -Wno-c++0x-compat
