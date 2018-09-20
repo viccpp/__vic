@@ -18,13 +18,29 @@ public:
         fatal
     };
     using severity_t = severity; // use this alias as a type name
+    struct output
+    {
+        virtual void publish_record(severity_t , const char * , size_t ) = 0;
+    protected:
+        ~output() = default;
+    };
+    class settings_t
+    {
+        struct output &output() const;
+        severity_t level() const;
+    };
     class record;
 
-    explicit logger(severity_t level = severity::info);
-    virtual ~logger();
+    explicit logger(output &out, severity_t = severity::info);
+    explicit logger(settings_t s);
+    ~logger();
 
     severity_t level() const;
     void level(severity_t new_level);
+    settings_t settings() const;
+    output &reset_output(output &out);
+    output &get_output();
+    const output &get_output() const;
 
     void message(severity_t severity, const char *msg, size_t msg_len);
     void message(severity_t severity, const char *msg);
@@ -51,16 +67,12 @@ public:
     record error();
     record fatal();
 
-    bool accepts_trace() const;
-    bool accepts_debug() const;
-    bool accepts_info() const;
-    bool accepts_warning() const;
-    bool accepts_error() const;
-    bool accepts_fatal() const;
-
-    static const char *to_string(severity_t s);
-protected:
-    virtual void publish_record(severity_t , const char * , size_t ) = 0;
+    bool trace_visible() const;
+    bool debug_visible() const;
+    bool info_visible() const;
+    bool warning_visible() const;
+    bool error_visible() const;
+    bool fatal_visible() const;
 };
 class logger::record
 {
@@ -72,9 +84,10 @@ public:
 
     template<class T> record operator<<(const T &v);
 };
+const char *to_string(logger::severity_t s);
 ]]></code-block>
 
-<p>Logging front-end. Abstract base class for loggers. Provides building of the
+<p>Logging front-end. Provides building of the
 log records using operator <tt>&lt;&lt;</tt>, like <tt>iostream</tt>. Each log
 record has the associated severity. The logger itself can filter out the
 records by severity. There are 6 predefined levels of the severity (in
@@ -145,19 +158,20 @@ log.info() << "Message";
 Such records will not be published in the log but the program will waste the
 time to format it. Therefore before creating any debug message using operator
 <tt>&lt;&lt;</tt> one should check if debug is enabled using
-<tt>accepts_debug()</tt> or <tt>accepts_trace()</tt> call:</p>
+<tt>debug_visible()</tt> or <tt>trace_visible()</tt> call:</p>
 <code-block lang="C++"><![CDATA[
-if(log.accepts_debug())
+if(log.debug_visible())
     log.debug() << ...; // build the message
 ]]></code-block>
 <p>This advise doesn't cover plain calls <tt>debug(msg)</tt> and
 <tt>trace(msg)</tt>, which have already prepared message and don't perform any
 formatting.</p>
 
-<p>The class <tt>logger</tt>, as it was mentioned in the beginning, is an
-abstract base class. To implement concrete logger, the pure virtual function
-<tt>publish_record()</tt> has to be implemented. The implementation has to
-output the passed record somewhere, e.g. to file, terminal or DB.</p>
+<p>To use <tt>logger</tt> one has to implement abstract base class
+<tt>logger::output</tt> (override <tt>publish_record()</tt>). The implementation
+has to output the passed record somewhere, e.g. to file, terminal or DB. The
+output specified during <tt>logger</tt> construction can be replaced later
+using <tt>reset_output()</tt>.</p>
 
 <section><title>Class members</title>
 
@@ -178,20 +192,62 @@ Since C++11 it is just a synonym for <tt>severity</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>explicit logger(severity_t level = severity::info)</prototype>
-<p>Creates the logger with the specified logging level.</p>
-<postcondition><tt>this->level() == level</tt></postcondition>
+<prototype>class output</prototype>
+<p>Logging back-end interface.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void output::publish_record(severity_t sev, const char *buf, size_t buf_len)</prototype>
+<p>The implementaion of this pure virtual function has to output the content of
+<tt>buf</tt> to the log as a one record. <tt>buf_len</tt> is the length of
+<tt>buf</tt>. The function is always called with <tt>sev >= level()</tt>.
+The implementation can rely on it.</p>
+</synopsis>
+
+<synopsis>
+<prototype>class settings_t</prototype>
+<p>Keeps the logger settings: logging level and reference to output
+(<tt>level()</tt> + <tt>get_output()</tt>).</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit logger(output &amp;out, severity_t level = severity::info)</prototype>
+<p>Creates logger with the specified output and logging level. The output object
+must outlive the logger object!</p>
+<postcondition><tt>this->level() == level &amp;&amp; &amp;this->get_output() == &amp;out</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit logger(settings_t s)</prototype>
+<p>Creates logger using the specified settings.</p>
 </synopsis>
 
 <synopsis>
 <prototype>severity_t level() const</prototype>
-<p>Returns the current logging level.</p>
+<p>Returns current logging level.</p>
 </synopsis>
 
 <synopsis>
 <prototype>void level(severity_t new_level)</prototype>
 <p>Sets the logging level.</p>
 <postcondition><tt>level() == new_level</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>settings_t settings() const</prototype>
+<p>Returns current logging settings.</p>
+</synopsis>
+
+<synopsis>
+<prototype>output &amp;reset_output(output &amp;out)</prototype>
+<p>Sets new output and returns the previous one.</p>
+<postcondition><tt>&amp;get_output() == &amp;out</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>output &amp;get_output()</prototype>
+<prototype>const output &amp;get_output() const</prototype>
+<p>Returns reference to the current logging output.</p>
 </synopsis>
 
 <synopsis>
@@ -229,30 +285,15 @@ added using operators <tt>&lt;&lt;</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>bool accepts_trace() const</prototype>
-<prototype>bool accepts_debug() const</prototype>
-<prototype>bool accepts_info() const</prototype>
-<prototype>bool accepts_warning() const</prototype>
-<prototype>bool accepts_error() const</prototype>
-<prototype>bool accepts_fatal() const</prototype>
+<prototype>bool trace_visible() const</prototype>
+<prototype>bool debug_visible() const</prototype>
+<prototype>bool info_visible() const</prototype>
+<prototype>bool warning_visible() const</prototype>
+<prototype>bool error_visible() const</prototype>
+<prototype>bool fatal_visible() const</prototype>
 <p>Returns <tt>true</tt> if a record with the corresponding severity will be
 published. Usage of this functions enables to avoid the formatting of the
 messages which eventually will not be published.</p>
-</synopsis>
-
-<synopsis>
-<prototype>void publish_record(severity_t sev, const char *buf, size_t buf_len)</prototype>
-<p>The implementaion of this pure virtual function has to output the content of
-<tt>buf</tt> to the log as a one record. <tt>buf_len</tt> is the length of
-<tt>buf</tt>. The function is always called with <tt>sev >= level()</tt>.
-The implementation can rely on it.</p>
-</synopsis>
-
-<synopsis>
-<prototype>static const char *to_string(severity_t s)</prototype>
-<p>Returns text label for the specified severity that can be printed to the
-log. For example, <tt>"DEBUG"</tt> will be returned for
-<tt>severity::debug</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -279,17 +320,27 @@ functions like <tt>info()</tt> without parameters should be used instead.</p>
 
 </section>
 
+<section><title>Free functions</title>
+
+<synopsis>
+<prototype>const char *to_string(logger::severity_t s)</prototype>
+<p>Returns text label for the specified severity that can be printed to the
+log. For example, <tt>"DEBUG"</tt> will be returned for
+<tt>severity::debug</tt>.</p>
+</synopsis>
+
+</section>
+
 <section><title>Example</title>
 
 <code-block lang="C++"><![CDATA[
 /////////////////////////////////////////////////////////////////////////////
 // Output messages to std::clog with the severity label
-class clogger : public __vic::logger
+class coutput : public __vic::logger::output
 {
 public:
-    explicit clogger(severity_t level = severity::info) : logger(level) {}
-protected:
-    void publish_record(severity_t s, const char *rec, size_t rec_n)
+    void publish_record(__vic::logger::severity_t s,
+                            const char *rec, size_t rec_n)
     {
         std::clog << to_string(s) << ": ";
         std::clog.write(rec, rec_n) << std::endl;
@@ -299,7 +350,8 @@ protected:
 
 int main()
 {
-    clogger log(clogger::severity::debug);
+    coutput log_output:
+    __vic::logger log(log_output, __vic::logger::severity::debug);
 
     log.info("Application is started");
 

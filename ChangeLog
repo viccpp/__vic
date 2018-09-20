@@ -4,6 +4,13 @@ Legend:
     * Changes
     ! Important
 
+2018-09-19  __vic
+    * defs.h: unitialized can't be constructed using just {}
+    * logger:
+        * Renamed accepts_*() -> *_visible()
+        + class output
+        + settings_t
+
 2018-09-18  __vic
     + C++14 and C++17 modes support
     + set_of_chars: C++14 constexpr
@@ -257,3 +264,6 @@ Legend:
 
 2016-06-23  __vic
     * Total revision and rework started in order to publish the code
+
+2007-08-15  __vic
+    * The project is started
