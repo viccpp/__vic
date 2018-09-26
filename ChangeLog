@@ -4,6 +4,13 @@ Legend:
     * Changes
     ! Important
 
+2018-09-26  __vic
+    * Readers:
+        * Renamed range_reader[_n] -> iterator_reader[_n]
+        * basic_string_reader is implemented using raw pointer +
+          iterator_reader_n
+        + position() function for memory readers
+
 2018-09-19  __vic
     * defs.h: unitialized can't be constructed using just {}
     * logger:
