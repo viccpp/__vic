@@ -1,0 +1,36 @@
+<chapter xml:id="unicode.h">
+<title><tt>__vic/unicode.h</tt></title>
+
+<p><link href="https://www.unicode.org/">Unicode</link> support utilities.</p>
+
+
+<chapter xml:id="unicode_t">
+<title><tt>unicode_t</tt></title>
+
+<code-block lang="C++">
+using unicode_t = char32_t; // since C++11
+// or
+using unicode_t = uint_least32_t; // C++98
+</code-block>
+
+<p>Type able to store any Unicode
+<link href="https://www.unicode.org/glossary/#code_point">code point</link>.</p>
+
+</chapter>
+
+
+<chapter xml:id="unicode_codepoint_constants">
+<title><tt>Code point constants</tt></title>
+
+<code-block lang="C++">
+constexpr unicode_t unicode_max = 0x10FFFF;
+constexpr unicode_t unicode_bom = 0xFEFF;
+constexpr unicode_t unicode_replacement_char = 0xFFFD;
+</code-block>
+
+<p>Named constants for some useful code points.</p>
+
+</chapter>
+
+
+</chapter>

@@ -30,7 +30,7 @@ using std::size_t;
 #if __cplusplus >= 201103L
 
 // Constructor tag to suppress initialization in constructors
-class uninitialized {};
+struct uninitialized { explicit uninitialized() = default; };
 constexpr uninitialized noinit{};
 
 //////////////////////////////////////////////////////////////////////////////

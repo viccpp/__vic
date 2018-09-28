@@ -8,7 +8,7 @@
 #ifndef __VIC_READERS_STRING_H
 #define __VIC_READERS_STRING_H
 
-#include<__vic/readers/container.h>
+#include<__vic/readers/iterator.h>
 #include<string>
 
 namespace __vic {
@@ -21,23 +21,25 @@ template<
 >
 class basic_string_reader
 {
-    container_reader<std::basic_string<charT,Tr,Al> > r;
+    iterator_reader_n<const charT *> r;
 public:
     explicit basic_string_reader(const std::basic_string<charT,Tr,Al> &s)
-        : r(s) {}
+        : r(s.data(), s.length()) {}
     bool read(charT &ch) { return r.read(ch); }
+    const charT *position() const { return r.position(); }
 };
 //////////////////////////////////////////////////////////////////////////////
 // Reader<char> + Reader<unsigned char>
 template<class Tr, class Al>
 class basic_string_reader<char,Tr,Al>
 {
-    container_reader<std::basic_string<char,Tr,Al> > r;
+    iterator_reader_n<const char *> r;
 public:
     explicit basic_string_reader(const std::basic_string<char,Tr,Al> &s)
-        : r(s) {}
+        : r(s.data(), s.length()) {}
     bool read(char &ch) { return r.read(ch); }
     bool read(unsigned char &ch) { return read(reinterpret_cast<char&>(ch)); }
+    const char *position() const { return r.position(); }
 };
 //////////////////////////////////////////////////////////////////////////////
 typedef basic_string_reader<char> string_reader;

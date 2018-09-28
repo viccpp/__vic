@@ -29,14 +29,37 @@ public:
                     // continue running
     }
     __VIC_SCOPED_ENUM_END(severity)
+    struct output
+    {
+        virtual void publish_record(severity_t , const char * , size_t ) = 0;
+    protected:
+        ~output() __VIC_DEFAULT_CTR
+    };
+    struct settings_t
+    {
+        struct output *out;
+        severity_t lvl;
+        struct output &output() const { return *out; }
+        severity_t level() const { return lvl; }
+    };
     class record;
 
-    explicit logger(severity_t level = severity::info)
-        : log_level(level), cur_msg(lo_water_mark), rec_objs_count(0) {}
-    virtual ~logger() __VIC_DEFAULT_CTR
+    explicit logger(output & , severity_t = severity::info);
+    explicit logger(settings_t );
+    ~logger();
 
     severity_t level() const { return log_level; }
     void level(severity_t new_level) { log_level = new_level; }
+    settings_t settings() const { settings_t s = {out, level()}; return s; }
+
+    output &reset_output(output &out)
+    {
+        output &old = *this->out;
+        this->out = &out;
+        return old;
+    }
+    output &get_output() { return *out; }
+    const output &get_output() const { return *out; }
 
     void message(severity_t , const char * , size_t );
     void message(severity_t , const char * );
@@ -64,19 +87,15 @@ public:
     record error();
     record fatal();
 
-    bool accepts_trace() const { return level() <= severity::trace; }
-    bool accepts_debug() const { return level() <= severity::debug; }
-    bool accepts_info() const { return level() <= severity::info; }
-    bool accepts_warning() const { return level() <= severity::warning; }
-    bool accepts_error() const { return level() <= severity::error; }
-    bool accepts_fatal() const { return level() <= severity::fatal; }
-
-    static const char *to_string(severity_t s) { return sev_strs[int(s)]; }
-protected:
-    virtual void publish_record(severity_t , const char * , size_t ) = 0;
+    bool trace_visible() const { return level() <= severity::trace; }
+    bool debug_visible() const { return level() <= severity::debug; }
+    bool info_visible() const { return level() <= severity::info; }
+    bool warning_visible() const { return level() <= severity::warning; }
+    bool error_visible() const { return level() <= severity::error; }
+    bool fatal_visible() const { return level() <= severity::fatal; }
 private:
-    static const char * const sev_strs[];
     severity_t log_level;
+    output *out;
 
     // current record buffer
     static __VIC_CONSTEXPR_VAR size_t lo_water_mark = 256, hi_water_mark = 4096;
@@ -115,6 +134,12 @@ inline logger::record logger::info() { return record(*this, severity::info); }
 inline logger::record logger::warning() { return record(*this, severity::warning); }
 inline logger::record logger::error() { return record(*this, severity::error); }
 inline logger::record logger::fatal() { return record(*this, severity::fatal); }
+//----------------------------------------------------------------------------
+inline const char *to_string(logger::severity_t s)
+{
+    extern const char * const logger_severity_strs[];
+    return logger_severity_strs[int(s)];
+}
 //----------------------------------------------------------------------------
 
 } // namespace

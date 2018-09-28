@@ -1,0 +1,87 @@
+<chapter xml:id="utf8.writer.h">
+<title><tt>__vic/utf8/writer.h</tt></title>
+
+<chapter xml:id="utf8--writer">
+<title><tt>utf8::writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ByteWriter>
+class utf8::writer
+{
+public:
+    using byte_writer_type = ByteWriter;
+    ByteWriter &get_byte_writer();
+    const ByteWriter &get_byte_writer() const;
+
+    template<class... Args>
+    explicit writer(Args&&... args); // since C++11
+
+    writer(); // C++98 only
+    explicit writer(const ByteWriter &w); // C++98 only
+
+    void write(unicode_t cp);
+};
+]]></code-block>
+
+<p>UTF-8 code points to byte sequence writer. <tt>ByteWriter</tt>
+which models <tt>Writer&lt;unsigned char></tt> (see <xref to="writers"/>)
+is used as a byte output.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>ByteWriter &amp;get_byte_writer()</prototype>
+<prototype>const ByteWriter &amp;get_byte_writer() const</prototype>
+<p>Returns reference to the used byte writer.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args>
+explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Forwards all parameters to the used byte writer.</p>
+</synopsis>
+
+<synopsis>
+<prototype>writer() <sign>C++98 only</sign></prototype>
+<prototype>explicit writer(const ByteWriter &amp;r) <sign>C++98 only</sign></prototype>
+<p>Constructors for C++98 mode.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void write(unicode_t cp)</prototype>
+<p>Writes the specified code point according to UTF-8 encoding rules.
+<tt>ByteWriter::write()</tt> is used to write individual bytes.</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/utf8/writer.h>
+#include<__vic/writers/string.h>
+#include<string>
+#include<vector>
+
+// C++11
+using utf8_string_writer = __vic::utf8::writer<__vic::string_writer>;
+
+// C++98
+struct utf8_string_writer : __vic::utf8::writer<__vic::string_writer>
+{
+    explicit utf8_string_writer(std::string &s)
+        : __vic::utf8::writer<__vic::string_writer>(__vic::string_writer(s)) {}
+};
+
+std::string encode_utf8(const std::vector<__vic::unicode> &code_points)
+{
+    std::string utf8_res;
+    utf8_string_writer w(utf8_res);
+    for(auto cp : code_points) w.write(cp);
+    return utf8_res;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>
