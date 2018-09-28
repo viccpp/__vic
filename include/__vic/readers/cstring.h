@@ -26,6 +26,7 @@ public:
         ch = *st++;
         return true;
     }
+    const charT *position() const { return st; }
 };
 //////////////////////////////////////////////////////////////////////////////
 template<class charT>
@@ -35,6 +36,7 @@ class basic_cstring_reader
 public:
     explicit basic_cstring_reader(const charT *s) : r(s) {}
     bool read(charT &ch) { return r.read(ch); }
+    const charT *position() const { return r.position(); }
 };
 //////////////////////////////////////////////////////////////////////////////
 // Reader<char> + Reader<unsigned char>
@@ -46,6 +48,7 @@ public:
     explicit basic_cstring_reader(const char *s) : r(s) {}
     bool read(char &ch) { return r.read(ch); }
     bool read(unsigned char &ch) { return read(reinterpret_cast<char&>(ch)); }
+    const char *position() const { return r.position(); }
 };
 //////////////////////////////////////////////////////////////////////////////
 typedef basic_cstring_reader<char> cstring_reader;

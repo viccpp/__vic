@@ -22,7 +22,7 @@ public:
 
 <section><title>Usage notes</title>
 <p>In most cases explicit usage of <tt>lock()</tt> and <tt>unlock()</tt> should
-be avoided. Use class <tt>mutex_lock</tt> to manage locks instead. It provides
+be avoided. Use class <xref to="mutex_lock"/> to manage locks instead. It provides
 exception safety and it's handy for usage.</p>
 <p>In C++11 mode <tt>std::mutex</tt> can be a better alternative.</p>
 </section>
@@ -91,7 +91,7 @@ public:
 </synopsis>
 
 <synopsis>
-<prototype>explicit mutex_lock(posix::mutex &amp;mtx)</prototype>
+<prototype>explicit mutex_lock(mutex &amp;mtx)</prototype>
 <p>Locks <tt>mtx</tt>.</p>
 </synopsis>
 
@@ -101,7 +101,7 @@ public:
 </synopsis>
 
 <synopsis>
-<prototype>mutex_lock(posix::mutex &amp;mtx, adopt_t)</prototype>
+<prototype>mutex_lock(mutex &amp;mtx, adopt_t)</prototype>
 <p>Adopts already locked <tt>mtx</tt>. See the example.</p>
 </synopsis>
 

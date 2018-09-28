@@ -4,6 +4,49 @@ Legend:
     * Changes
     ! Important
 
+2018-09-28  __vic
+    + utf16/defs.h:
+        + utf16::code_unit_t
+    + utf16/status.h:
+        + utf16::status
+        + utf16::is_error(), utf16::throw_if_error()
+    + utf16/exceptions.h:
+        + utf16::bad_encoding and derivatives
+    + utf16/reader.h:
+        + utf16::reader
+    + utf16/writer.h:
+        + utf16::writer
+
+2018-09-27  __vic
+    + unicode.h:
+        + unicode_t
+        + unicode_max, unicode_bom, unicode_replacement_char
+    + utf8/defs.h:
+        + utf8::is_continuation_byte()
+    + utf8/status.h:
+        + utf8::status
+        + utf8::is_error(), utf8::throw_if_error()
+    + utf8/exceptions.h:
+        + utf8::bad_encoding and derivatives
+    + utf8/reader.h:
+        + utf8::reader
+    + utf8/writer.h:
+        + utf8::writer
+
+2018-09-26  __vic
+    * Readers:
+        * Renamed range_reader[_n] -> iterator_reader[_n]
+        * basic_string_reader is implemented using raw pointer +
+          iterator_reader_n
+        + position() function for memory readers
+
+2018-09-19  __vic
+    * defs.h: unitialized can't be constructed using just {}
+    * logger:
+        * Renamed accepts_*() -> *_visible()
+        + class output
+        + settings_t
+
 2018-09-18  __vic
     + C++14 and C++17 modes support
     + set_of_chars: C++14 constexpr
@@ -317,3 +360,6 @@ Legend:
 
 2016-06-23  __vic
     * Total revision and rework started in order to publish the code
+
+2007-08-15  __vic
+    * The project is started

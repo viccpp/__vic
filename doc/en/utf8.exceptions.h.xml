@@ -1,0 +1,21 @@
+<chapter xml:id="utf8.exceptions.h">
+<title><tt>__vic/utf8/exceptions.h</tt></title>
+
+<code-block lang="C++">
+namespace utf8 {
+
+class bad_encoding; // public std::exception
+    class no_leading_byte;
+    class truncated_code_point;
+    class overlong_encoding;
+    class code_point_too_big;
+
+} // namespace
+</code-block>
+
+<p>Exception classes thrown by <xref to="utf8--reader"/> <tt>read()</tt>
+function. All exceptions are derived from abstract base class
+<tt>utf8::bad_encoding</tt>. See <xref to="utf8--status"/> for equivalent
+status codes.</p>
+
+</chapter>
