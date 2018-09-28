@@ -43,45 +43,53 @@ available (EOF). Throws an exception in other cases.</p>
 </chapter>
 
 
-<chapter xml:id="range_reader">
-<title><tt>range_reader</tt></title>
+<chapter xml:id="iterator_reader">
+<title><tt>iterator_reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/readers/range.h>
+#include<__vic/readers/iterator.h>
 
 template<class InputIterator,
          class T = typename std::iterator_traits<InputIterator>::value_type>
-class range_reader
+class iterator_reader
 {
 public:
-    range_reader(InputIterator begin, InputIterator end);
+    iterator_reader(InputIterator begin, InputIterator end);
     bool read(T &v);
+    InputIterator position() const;
 };
 ]]></code-block>
 
 <p>An adapter for traditional [<tt>begin</tt>,<tt>end</tt>) pair of iterators.
 </p>
 
+<p>Additional <tt>position()</tt> function returns the current iterator
+position.</p>
+
 </chapter>
 
 
-<chapter xml:id="range_reader_n">
-<title><tt>range_reader_n</tt></title>
+<chapter xml:id="iterator_reader_n">
+<title><tt>iterator_reader_n</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/readers/range.h>
+#include<__vic/readers/iterator.h>
 
 template<class InputIterator,
          class T = typename std::iterator_traits<InputIterator>::value_type>
-class range_reader_n
+class iterator_reader_n
 {
 public:
-    range_reader_n(InputIterator begin, size_t n);
+    iterator_reader_n(InputIterator begin, size_t n);
     bool read(T &v);
+    InputIterator position() const;
 };
 ]]></code-block>
 
 <p>An adapter for iterator + elements counter.</p>
+
+<p>Additional <tt>position()</tt> function returns the current iterator
+position.</p>
 
 </chapter>
 
@@ -98,11 +106,15 @@ class container_reader
 public:
     explicit container_reader(const Cont &c);
     bool read(T &v);
+    typename Cont::const_iterator position() const;
 };
 ]]></code-block>
 
-<p>An adapter for STL-style container classes wint <tt>begin()</tt> and
+<p>An adapter for STL-style container classes with <tt>begin()</tt> and
 <tt>end()</tt> members.</p>
+
+<p>Additional <tt>position()</tt> function returns the current iterator
+position.</p>
 
 </chapter>
 
@@ -119,6 +131,7 @@ class basic_cstring_reader
 public:
     explicit basic_cstring_reader(const charT *s);
     bool read(charT &ch);
+    const charT *position() const;
 };
 
 template<>
@@ -128,12 +141,16 @@ public:
     explicit basic_cstring_reader(const char *s);
     bool read(char &ch);
     bool read(unsigned char &ch);
+    const char *position() const;
 };
 
 using cstring_reader = basic_cstring_reader<char>;
 ]]></code-block>
 
 <p>An adapter for NULL-terminated C-style strings.</p>
+
+<p>Additional <tt>position()</tt> function returns the current pointer
+position.</p>
 
 <p><tt>char</tt> specialization models <tt>Reader&lt;unsigned char></tt> as
 well as <tt>Reader&lt;char></tt>.</p>
@@ -157,6 +174,7 @@ class basic_string_reader
 public:
     explicit basic_string_reader(const std::basic_string<charT,Tr,Al> &s);
     bool read(charT &ch);
+    const charT *position() const;
 };
 
 template<class Tr, class Al>
@@ -166,12 +184,16 @@ public:
     explicit basic_string_reader(const std::basic_string<char,Tr,Al> &s);
     bool read(char &ch);
     bool read(unsigned char &ch);
+    const char *position() const;
 };
 
 using string_reader = basic_string_reader<char>;
 ]]></code-block>
 
 <p>An adapter for <tt>std::basic_string</tt>.</p>
+
+<p>Additional <tt>position()</tt> function returns the current pointer
+position.</p>
 
 <p><tt>char</tt> specialization models <tt>Reader&lt;unsigned char></tt> as
 well as <tt>Reader&lt;char></tt>.</p>

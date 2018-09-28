@@ -1,0 +1,62 @@
+<chapter xml:id="utf8.status.h">
+<title><tt>__vic/utf8/status.h</tt></title>
+
+
+<chapter xml:id="utf8--status">
+<title><tt>utf8::status</tt></title>
+
+<code-block lang="C++">
+enum class utf8::status
+{
+    ok = 0,
+    eof,
+    // Errors
+    no_leading_byte,
+    truncated_code_point,
+    overlong_encoding,
+    code_point_too_big
+};
+using utf8::status_t = utf8::status; // for C++98
+</code-block>
+
+<p>Values returned by <xref to="utf8--reader"/> <tt>parse()</tt> function.</p>
+
+<list style="bulleted">
+    <item><tt>ok</tt> - code point successfully read</item>
+    <item><tt>eof</tt> - no more code points to read</item>
+    <item><tt>no_leading_byte</tt> - continuation byte w/o leading</item>
+    <item><tt>truncated_code_point</tt> - incomplete multibyte sequence</item>
+    <item><tt>overlong_encoding</tt> - overlong encoded code point</item>
+    <item><tt>code_point_too_big</tt> - code point value is too big</item>
+</list>
+
+</chapter>
+
+
+<chapter xml:id="utf8--is_error">
+<title><tt>utf8::is_error()</tt></title>
+
+<code-block lang="C++">
+constexpr bool utf8::is_error(utf8::status s);
+</code-block>
+
+<p>Returns <tt>false</tt> for <tt>utf8::status::ok</tt> and
+<tt>utf8::status::eof</tt> values. <tt>true</tt> is returned otherwise.</p>
+
+</chapter>
+
+
+<chapter xml:id="utf8--throw_if_error">
+<title><tt>utf8::throw_if_error()</tt></title>
+
+<code-block lang="C++">
+bool utf8::throw_if_error(utf8::status s);
+</code-block>
+
+<p>Throws exception from <xref to="utf8.exceptions.h"/> if
+<tt>is_error(s)</tt>.</p>
+
+</chapter>
+
+
+</chapter>

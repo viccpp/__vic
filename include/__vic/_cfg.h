@@ -128,7 +128,8 @@
 #elif defined(_MSC_VER) && _MSC_VER >= 1310
 
 // VC++ features: https://msdn.microsoft.com/en-us/library/hh567368.aspx
-#if _MSC_VER >= 1600 // VC 10.0 (VS 2010)
+// VC 15.8 (VS 2017) is the first version that implements feature-test macros
+#if _MSC_VER < 1915 && _MSC_VER >= 1600 // VC 10.0 (VS 2010)
 
 #define __VIC_NO_NULLPTR_DEF 1
 #ifndef __cpp_rvalue_references
@@ -153,7 +154,7 @@
 #define __cpp_variadic_templates 1
 #endif
 
-#if _MSC_VER >= 1900 // VS 14.0 (2015)
+#if _MSC_VER >= 1900 // VC 14.0 (2015)
 #define __VIC_NO_NOEXCEPT_DEF 1
 #ifndef __cpp_constexpr
 #define __cpp_constexpr 1
@@ -168,7 +169,7 @@
 
 #endif // VS 2013
 
-#endif // VS 2010
+#endif // VS 2010-2017
 
 //////////////////////////////////////////////////////////////////////////////
 // Compiler is not recognized

@@ -3,12 +3,11 @@
 #include<exception>
 
 //////////////////////////////////////////////////////////////////////////////
-class clogger : public __vic::logger
+class coutput : public __vic::logger::output
 {
 public:
-    explicit clogger(severity_t level = severity::info) : logger(level) {}
-protected:
-    void publish_record(severity_t s, const char *rec, size_t rec_len)
+    void publish_record(__vic::logger::severity_t s,
+                            const char *rec, size_t rec_len)
     {
         (std::clog << to_string(s) << ": ").write(rec, rec_len) << std::endl;
     }
@@ -17,7 +16,8 @@ protected:
 
 void run_tests()
 {
-    clogger log(clogger::severity::debug);
+    coutput log_output;
+    __vic::logger log(log_output, __vic::logger::severity::debug);
 
     log.info() << "Application is started";
 
@@ -26,7 +26,7 @@ void run_tests()
 
     // Explicit log record construction
     {
-        clogger::record rec = log.warning();
+        __vic::logger::record rec = log.warning();
         rec << "a ";
         rec << "b ";
         rec << "c";
