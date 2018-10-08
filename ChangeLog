@@ -8,6 +8,8 @@ Legend:
     + readers, writers: make_...()
     + utf{8|16}: make_reader(), make_writer()
     + unicode.h: utf_transcode()
+    + writers/iterator.h:
+        + iterator_writer
 
 2018-09-28  __vic
     + utf16/defs.h:

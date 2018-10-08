@@ -68,6 +68,34 @@ Can be created using constructor or one of <tt>make_...</tt> functions.</p>
 </chapter>
 
 
+<chapter xml:id="iterator_writer">
+<title><tt>iterator_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/writers/iterator.h>
+
+template<class OutputIterator,
+         class T = typename std::iterator_traits<OutputIterator>::value_type>
+class iterator_writer
+{
+public:
+    explicit iterator_writer(OutputIterator it);
+    void write(T v);
+};
+
+template<class OutputIterator>
+iterator_writer<OutputIterator> make_iterator_writer(OutputIterator it);
+
+template<class T, class OutputIterator>
+iterator_writer<OutputIterator,T> make_iterator_writer_for(OutputIterator it);
+]]></code-block>
+
+<p>Output iterator writer. Can be created using constructor or one of
+<tt>make_...</tt> functions.</p>
+
+</chapter>
+
+
 <chapter xml:id="string_writer">
 <title><tt>string_writer</tt></title>
 

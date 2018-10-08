@@ -47,7 +47,7 @@ explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
 
 <synopsis>
 <prototype>reader() <sign>C++98 only</sign></prototype>
-<prototype>explicit reader(const ByteReader &amp;r) <sign>C++98 only</sign></prototype>
+<prototype>explicit reader(ByteReader r) <sign>C++98 only</sign></prototype>
 <p>Constructors for C++98 mode.</p>
 </synopsis>
 

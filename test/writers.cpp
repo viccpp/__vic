@@ -1,4 +1,5 @@
 #include<__vic/writers/push_back.h>
+#include<__vic/writers/iterator.h>
 #include<__vic/writers/string.h>
 #include<__vic/writers/cstream.h>
 #include<__vic/stdio_file.h>
@@ -28,6 +29,8 @@ void push_back()
         assert(v[i] == i);
     check_write(__vic::make_push_back_writer(v), 0);
     check_write(__vic::make_push_back_writer_for<unsigned>(v), 0U);
+    check_write(__vic::make_iterator_writer(v.data()), 0);
+    check_write(__vic::make_iterator_writer_for<unsigned>(v.data()), 0U);
 }
 void string()
 {
