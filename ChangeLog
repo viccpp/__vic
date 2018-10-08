@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-10-08  __vic
+    + readers, writers: make_...()
+
 2018-09-28  __vic
     + utf16/defs.h:
         + utf16::code_unit_t

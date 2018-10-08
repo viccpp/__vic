@@ -44,6 +44,15 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 typedef basic_string_reader<char> string_reader;
 
+//----------------------------------------------------------------------------
+template<class charT, class Tr, class Al>
+inline basic_string_reader<charT,Tr,Al>
+    make_string_reader(const std::basic_string<charT,Tr,Al> &s)
+{
+    return basic_string_reader<charT,Tr,Al>(s);
+}
+//----------------------------------------------------------------------------
+
 } // namespace
 
 #endif // header guard

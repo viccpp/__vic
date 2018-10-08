@@ -54,9 +54,16 @@ public:
     explicit push_back_writer(Cont &c);
     void write(T v) { c->push_back(v); }
 };
+
+template<class Cont>
+push_back_writer<Cont> make_push_back_writer(Cont &c);
+
+template<class T, class Cont>
+push_back_writer<Cont,T> make_push_back_writer_for(Cont &c);
 ]]></code-block>
 
-<p>An adapter. Uses <tt>push_back()</tt> member function to write elements.</p>
+<p>An adapter. Uses <tt>push_back()</tt> member function to write elements.
+Can be created using constructor or one of <tt>make_...</tt> functions.</p>
 
 </chapter>
 
@@ -80,9 +87,14 @@ public:
 };
 
 using string_writer = basic_string_writer<char>;
+
+template<class charT, class Tr, class Al>
+basic_string_writer<charT,Tr,Al>
+    make_string_writer(std::basic_string<charT,Tr,Al> &s);
 ]]></code-block>
 
-<p>An adapter for <tt>std::basic_string</tt>.</p>
+<p>An adapter for <tt>std::basic_string</tt>. Can be created using constructor
+or <tt>make_...</tt> function.</p>
 
 </chapter>
 
@@ -99,9 +111,13 @@ public:
     explicit cstream_writer(std::FILE *fp);
     void write(char ch) { __vic::write(fp, ch); }
 };
+
+cstream_writer make_cstream_writer(std::FILE *fp);
 ]]></code-block>
 
-<p>Models <tt>Writer&lt;char></tt> for <tt>std::FILE</tt>.</p>
+<p>Models <tt>Writer&lt;char></tt> for <tt>std::FILE</tt>. Can be created using
+constructor or <tt>make_...</tt> function.</p>
+
 </chapter>
 
 

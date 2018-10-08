@@ -46,6 +46,31 @@ public:
     Iter position() const { return p; }
 };
 //////////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------
+template<class Iter>
+inline iterator_reader<Iter> make_iterator_reader(Iter begin, Iter end)
+{
+    return iterator_reader<Iter>(begin, end);
+}
+//----------------------------------------------------------------------------
+template<class T, class Iter>
+inline iterator_reader<Iter,T> make_iterator_reader_for(Iter begin, Iter end)
+{
+    return iterator_reader<Iter,T>(begin, end);
+}
+//----------------------------------------------------------------------------
+template<class Iter>
+inline iterator_reader_n<Iter> make_iterator_reader_n(Iter begin, size_t n)
+{
+    return iterator_reader_n<Iter>(begin, n);
+}
+//----------------------------------------------------------------------------
+template<class T, class Iter>
+inline iterator_reader_n<Iter,T> make_iterator_reader_n_for(Iter begin, size_t n)
+{
+    return iterator_reader_n<Iter,T>(begin, n);
+}
+//----------------------------------------------------------------------------
 
 } // namespace
 
