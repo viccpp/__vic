@@ -22,6 +22,19 @@ struct container_reader :
             c.begin(), c.end()) {}
 };
 //////////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------
+template<class Cont>
+inline container_reader<Cont> make_container_reader(const Cont &c)
+{
+    return container_reader<Cont>(c);
+}
+//----------------------------------------------------------------------------
+template<class T, class Cont>
+inline container_reader<Cont,T> make_container_reader_for(const Cont &c)
+{
+    return container_reader<Cont,T>(c);
+}
+//----------------------------------------------------------------------------
 
 } // namespace
 

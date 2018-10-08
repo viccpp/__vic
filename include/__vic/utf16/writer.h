@@ -30,7 +30,7 @@ public:
     explicit writer(Args&&... args) : w(std::forward<Args>(args)...) {}
 #else
     writer() {}
-    explicit writer(const CodeUnitWriter &w) : w(w) {}
+    explicit writer(CodeUnitWriter w) : w(w) {}
 #endif
 
     void write(unicode_t );
@@ -48,6 +48,12 @@ void writer<CodeUnitWriter>::write(unicode_t cp)
         write_unit(hi_surrogate_min | (cp >> 10));   // hi 10 bits: 110110xx xxxxxxxx
         write_unit(lo_surrogate_min | (cp & 0x3FF)); // lo 10 bits: 110111xx xxxxxxxx
     }
+}
+//----------------------------------------------------------------------------
+template<class CodeUnitWriter>
+inline writer<CodeUnitWriter> make_writer(CodeUnitWriter w)
+{
+    return writer<CodeUnitWriter>(w);
 }
 //----------------------------------------------------------------------------
 

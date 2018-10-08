@@ -39,7 +39,7 @@ public:
     explicit reader(Args&&... args) : r(std::forward<Args>(args)...) {}
 #else
     reader() {}
-    explicit reader(const CodeUnitReader &r) : r(r) {}
+    explicit reader(CodeUnitReader r) : r(r) {}
 #endif
 
     status_t parse(unicode_t & );
@@ -75,6 +75,12 @@ status_t reader<CodeUnitReader>::parse(unicode_t &cp)
         }
     }
     return status::invalid_sequence;
+}
+//----------------------------------------------------------------------------
+template<class CodeUnitReader>
+inline reader<CodeUnitReader> make_reader(CodeUnitReader r)
+{
+    return reader<CodeUnitReader>(r);
 }
 //----------------------------------------------------------------------------
 

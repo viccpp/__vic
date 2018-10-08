@@ -31,15 +31,10 @@ public:
 std::string utf16to8(const wchar_t *s, size_t len_in_code_points)
 {
     std::string res; res.reserve(len_in_code_points);
-
-    wchar_reader wchar_rd(s, len_in_code_points);
-    utf16::reader<wchar_reader> r(wchar_rd);
-
-    string_writer char_wr(res);
-    utf8::writer<string_writer> w(char_wr);
-
-    unicode_t cp;
-    while(r.read(cp)) w.write(cp);
+    utf_transcode(
+        __vic::utf16::make_reader(wchar_reader(s, len_in_code_points)),
+        __vic::utf8::make_writer(__vic::make_string_writer(res))
+    );
     return res;
 }
 //----------------------------------------------------------------------------

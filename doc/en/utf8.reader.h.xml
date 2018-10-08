@@ -17,11 +17,14 @@ public:
     explicit reader(Args&&... args); // since C++11
 
     reader(); // C++98 only
-    explicit reader(const ByteReader &r); // C++98 only
+    explicit reader(ByteReader r); // C++98 only
 
     status_t parse(unicode_t &cp);
     bool read(unicode_t &cp);
 };
+
+template<class ByteReader>
+utf8::reader<ByteReader> utf8::make_reader(ByteReader r);
 ]]></code-block>
 
 <p>UTF-8 code points from byte sequence reader. The sequence is accessed using
@@ -64,6 +67,16 @@ thrown by <tt>ByteReader::read()</tt>.</note>
 <prototype>bool read(unicode_t &amp;cp)</prototype>
 <p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
 on EOF or throws an exception from <xref to="utf8.exceptions.h"/> otherwise.</p>
+</synopsis>
+
+</section>
+
+<section><title>Free functions</title>
+
+<synopsis>
+<prototype>template&lt;class ByteReader>
+utf8::reader&lt;ByteReader> utf8::make_reader(ByteReader r)</prototype>
+<p>Creates UTF-8 reader using specified <tt>ByteReader</tt>.</p>
 </synopsis>
 
 </section>

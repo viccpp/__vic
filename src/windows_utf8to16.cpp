@@ -15,17 +15,11 @@ namespace __vic { namespace windows {
 wstring utf8to16(const char *s, size_t len)
 {
     wstring res(len * 2);
-
-    typedef iterator_reader_n<const unsigned char *> char_reader;
-    char_reader char_rd(reinterpret_cast<const unsigned char *>(s), len);
-    utf8::reader<char_reader> r(char_rd);
-
-    typedef basic_string_writer<wchar_t> wchar_writer;
-    wchar_writer wchar_wr(res);
-    utf16::writer<wchar_writer> w(wchar_wr);
-
-    unicode_t cp;
-    while(r.read(cp)) w.write(cp);
+    utf_transcode(
+        __vic::utf8::make_reader(
+            __vic::make_iterator_reader_n_for<unsigned char>(s, len)),
+        __vic::utf16::make_writer(__vic::make_string_writer(res))
+    );
     return res;
 }
 //----------------------------------------------------------------------------

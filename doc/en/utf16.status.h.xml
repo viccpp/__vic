@@ -53,7 +53,8 @@ bool utf16::throw_if_error(utf16::status s);
 </code-block>
 
 <p>Throws exception from <xref to="utf16.exceptions.h"/> if
-<tt>is_error(s)</tt>.</p>
+<tt>is_error(s)</tt>. Returns <tt>true</tt> for <tt>utf16::status::ok</tt>
+or <tt>false</tt> for <tt>utf16::status::eof</tt>.</p>
 
 </chapter>
 
