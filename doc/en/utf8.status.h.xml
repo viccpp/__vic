@@ -54,7 +54,8 @@ bool utf8::throw_if_error(utf8::status s);
 </code-block>
 
 <p>Throws exception from <xref to="utf8.exceptions.h"/> if
-<tt>is_error(s)</tt>.</p>
+<tt>is_error(s)</tt>. Returns <tt>true</tt> for <tt>utf8::status::ok</tt>
+or <tt>false</tt> for <tt>utf8::status::eof</tt>.</p>
 
 </chapter>
 

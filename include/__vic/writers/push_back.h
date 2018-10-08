@@ -22,6 +22,19 @@ public:
     void write(T v) { cont->push_back(v); }
 };
 //////////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------
+template<class Cont>
+inline push_back_writer<Cont> make_push_back_writer(Cont &c)
+{
+    return push_back_writer<Cont>(c);
+}
+//----------------------------------------------------------------------------
+template<class T, class Cont>
+inline push_back_writer<Cont,T> make_push_back_writer_for(Cont &c)
+{
+    return push_back_writer<Cont,T>(c);
+}
+//----------------------------------------------------------------------------
 
 } // namespace
 

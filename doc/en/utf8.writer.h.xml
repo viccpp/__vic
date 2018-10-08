@@ -17,10 +17,13 @@ public:
     explicit writer(Args&&... args); // since C++11
 
     writer(); // C++98 only
-    explicit writer(const ByteWriter &w); // C++98 only
+    explicit writer(ByteWriter w); // C++98 only
 
     void write(unicode_t cp);
 };
+
+template<class ByteWriter>
+utf8::writer<ByteWriter> utf8::make_writer(ByteWriter w);
 ]]></code-block>
 
 <p>UTF-8 code points to byte sequence writer. <tt>ByteWriter</tt>
@@ -51,6 +54,16 @@ explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
 <prototype>void write(unicode_t cp)</prototype>
 <p>Writes the specified code point according to UTF-8 encoding rules.
 <tt>ByteWriter::write()</tt> is used to write individual bytes.</p>
+</synopsis>
+
+</section>
+
+<section><title>Free functions</title>
+
+<synopsis>
+<prototype>template&lt;class ByteWriter>
+utf8::writer&lt;ByteWriter> utf8::make_writer(ByteWriter w)</prototype>
+<p>Creates UTF-8 writer using specified <tt>ByteWriter</tt>.</p>
 </synopsis>
 
 </section>

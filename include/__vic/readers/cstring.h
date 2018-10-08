@@ -53,6 +53,14 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 typedef basic_cstring_reader<char> cstring_reader;
 
+//----------------------------------------------------------------------------
+template<class charT>
+inline basic_cstring_reader<charT> make_cstring_reader(const charT *s)
+{
+    return basic_cstring_reader<charT>(s);
+}
+//----------------------------------------------------------------------------
+
 } // namespace
 
 #endif // header guard

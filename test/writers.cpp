@@ -11,6 +11,11 @@
 
 namespace tests {
 
+template<class T, class Writer>
+void check_write(Writer w, T v)
+{
+    w.write(v);
+}
 void push_back()
 {
     std::vector<int> v;
@@ -21,6 +26,8 @@ void push_back()
     assert(v.size() == num);
     for(int i = 0; i < num; i++)
         assert(v[i] == i);
+    check_write(__vic::make_push_back_writer(v), 0);
+    check_write(__vic::make_push_back_writer_for<unsigned>(v), 0U);
 }
 void string()
 {
@@ -30,6 +37,7 @@ void string()
     for(const char *p = data; *p; p++)
         w.write(*p);
     assert(str == data);
+    check_write(__vic::make_string_writer(str), 'x');
 }
 void cstream()
 {
@@ -40,6 +48,7 @@ void cstream()
     w.write('b');
     w.write('c');
     std::remove(filename);
+    check_write(__vic::make_cstream_writer(file), 'x');
 }
 void run()
 {
