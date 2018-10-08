@@ -28,6 +28,15 @@ struct basic_string_writer :
 //////////////////////////////////////////////////////////////////////////////
 typedef basic_string_writer<char> string_writer;
 
+//----------------------------------------------------------------------------
+template<class charT, class Tr, class Al>
+inline basic_string_writer<charT,Tr,Al>
+    make_string_writer(std::basic_string<charT,Tr,Al> &s)
+{
+    return basic_string_writer<charT,Tr,Al>(s);
+}
+//----------------------------------------------------------------------------
+
 } // namespace
 
 #endif // header guard

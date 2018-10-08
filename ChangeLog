@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2018-10-08  __vic
+    + readers, writers: make_...()
+    + utf{8|16}: make_reader(), make_writer()
+    + unicode.h: utf_transcode()
+
 2018-09-28  __vic
     + utf16/defs.h:
         + utf16::code_unit_t

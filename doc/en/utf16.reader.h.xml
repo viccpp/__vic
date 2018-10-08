@@ -17,11 +17,14 @@ public:
     explicit reader(Args&&... args);  // since C++11
 
     reader(); // C++98 only
-    explicit reader(const CodeUnitReader &r); // C++98 only
+    explicit reader(CodeUnitReader r); // C++98 only
 
     status_t parse(unicode_t &cp);
     bool read(unicode_t &cp);
 };
+
+template<class CodeUnitReader>
+utf16::reader<CodeUnitReader> utf16::make_reader(CodeUnitReader r);
 ]]></code-block>
 
 <p>UTF-16 code points from 2-byte <xref to="utf16--code_unit_t"/> sequence
@@ -80,6 +83,16 @@ thrown by <tt>CodeUnitReader::read_unit()</tt>.</note>
 <prototype>bool read(unicode_t &amp;cp)</prototype>
 <p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
 on EOF or throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p>
+</synopsis>
+
+</section>
+
+<section><title>Free functions</title>
+
+<synopsis>
+<prototype>template&lt;class CodeUnitReader>
+utf16::reader&lt;CodeUnitReader> utf16::make_reader(CodeUnitReader r)</prototype>
+<p>Creates UTF-16 reader using specified <tt>CodeUnitReader</tt>.</p>
 </synopsis>
 
 </section>

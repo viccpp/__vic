@@ -1,4 +1,5 @@
 #include<__vic/readers/container.h>
+#include<__vic/readers/iterator.h>
 #include<__vic/readers/string.h>
 #include<__vic/readers/cstring.h>
 #include<__vic/readers/cstream.h>
@@ -11,6 +12,13 @@
 
 namespace tests {
 
+template<class T, class Reader>
+void check_read(Reader r)
+{
+    T val;
+    r.read(val);
+    (void) val;
+}
 void container()
 {
     std::vector<int> v;
@@ -26,6 +34,13 @@ void container()
         assert(n == i);
     }
     assert(!r.read(n));
+
+    check_read<int>(__vic::make_container_reader(v));
+    check_read<unsigned>(__vic::make_container_reader_for<unsigned>(v));
+    check_read<int>(__vic::make_iterator_reader(v.begin(), v.end()));
+    check_read<unsigned>(__vic::make_iterator_reader_for<unsigned>(v.begin(), v.end()));
+    check_read<int>(__vic::make_iterator_reader_n(v.begin(), v.size()));
+    check_read<unsigned>(__vic::make_iterator_reader_n_for<unsigned>(v.begin(), v.size()));
 }
 void string()
 {
@@ -40,6 +55,7 @@ void string()
         assert(ch == data[i]);
     }
     assert(!r.read(ch));
+    check_read<char>(__vic::make_string_reader(str));
 }
 void cstring()
 {
@@ -52,6 +68,7 @@ void cstring()
         assert(ch == *p);
     }
     assert(!r.read(ch));
+    check_read<char>(__vic::make_cstring_reader(str));
 }
 void cstream()
 {

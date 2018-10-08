@@ -65,6 +65,10 @@ caption.toc {
 	margin-bottom: 12pt;
 	margin-left: 0;
 }
+td.toc-chapter-no {
+	padding-right: 1ex;
+	vertical-align: top;
+}
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
 pre.code {
@@ -164,14 +168,14 @@ blockquote * {
 	<xsl:for-each select="chapter">
 		<xsl:variable name="chap" select="concat($prefix, position())"/>
 		<tr>
-			<td style="padding-right:1ex">
+			<td class="toc-chapter-no">
 				<xsl:value-of select="$chap"/>
 			</td>
 			<td>
 				<xsl:if test="$level > 2">
 					<xsl:attribute name="style">padding-left:4ex</xsl:attribute>
 				</xsl:if>
-				<a class="toc" href="#{@xml:id}">
+				<a href="#{@xml:id}">
 					<xsl:if test="not(string(@xml:id))">
 						<xsl:attribute name="style">color:red;</xsl:attribute>
 					</xsl:if>
