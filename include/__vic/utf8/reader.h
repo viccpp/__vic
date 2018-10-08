@@ -32,7 +32,7 @@ public:
     explicit reader(Args&&... args) : r(std::forward<Args>(args)...) {}
 #else
     reader() {}
-    explicit reader(const ByteReader &r) : r(r) {}
+    explicit reader(ByteReader r) : r(r) {}
 #endif
 
     status_t parse(unicode_t & );
@@ -78,6 +78,12 @@ status_t reader<ByteReader>::parse(unicode_t &cp)
     }
     else return status::no_leading_byte; // not a start byte
     return status::ok;
+}
+//----------------------------------------------------------------------------
+template<class ByteReader>
+inline reader<ByteReader> make_reader(ByteReader r)
+{
+    return reader<ByteReader>(r);
 }
 //----------------------------------------------------------------------------
 

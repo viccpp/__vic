@@ -33,7 +33,7 @@ public:
     explicit writer(Args&&... args) : w(std::forward<Args>(args)...) {}
 #else
     writer() {}
-    explicit writer(const ByteWriter &w) : w(w) {}
+    explicit writer(ByteWriter w) : w(w) {}
 #endif
 
     void write(unicode_t );
@@ -67,6 +67,12 @@ void writer<ByteWriter>::write(unicode_t cp)
         utf8_cp[0] = __vic::msb_ones<unicode_t>(len) | cp; // ... | __vic::get_lsbs(cp, 7 - len)
         write_bytes(utf8_cp, len);
     }
+}
+//----------------------------------------------------------------------------
+template<class ByteWriter>
+inline writer<ByteWriter> make_writer(ByteWriter w)
+{
+    return writer<ByteWriter>(w);
 }
 //----------------------------------------------------------------------------
 

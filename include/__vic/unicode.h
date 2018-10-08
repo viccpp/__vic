@@ -26,6 +26,15 @@ __VIC_CONSTEXPR_VAR unicode_t unicode_max = 0x10FFFF;
 __VIC_CONSTEXPR_VAR unicode_t unicode_bom = 0xFEFF;
 __VIC_CONSTEXPR_VAR unicode_t unicode_replacement_char = 0xFFFD;
 
+//----------------------------------------------------------------------------
+template<class UTFReader, class UTFWriter>
+inline void utf_transcode(UTFReader r, UTFWriter w)
+{
+    unicode_t cp;
+    while(r.read(cp)) w.write(cp);
+}
+//----------------------------------------------------------------------------
+
 } // namespace
 
 #endif // header guard
