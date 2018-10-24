@@ -18,7 +18,7 @@ namespace __vic {
 class logger : private non_copyable
 {
 public:
-    __VIC_SCOPED_ENUM_BEGIN(severity)
+    __VIC_SCOPED_ENUM_UT_BEGIN(severity, unsigned char)
     {
         trace,
         debug,

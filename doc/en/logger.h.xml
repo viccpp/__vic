@@ -8,7 +8,7 @@
 class logger : private non_copyable
 {
 public:
-    enum class severity
+    enum class severity : unsigned char
     {
         trace,
         debug,
