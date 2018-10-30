@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-10-30  __vic
+    + Handmade integers to text converters (to_text_append())
+
 2018-10-24  __vic
     * Underlying type is specified for logger::severity
 
