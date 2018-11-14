@@ -18,12 +18,13 @@ public:
     // END C++11 only
 
     bool open(const char *name, int flags, ::mode_t mode = 0666);
+    bool is_open() const;
     void close();
     bool close_nt() noexcept;
-    bool is_open() const;
-    int detach() noexcept;
-    void attach(int fd) noexcept;
+
     void swap(file &o) noexcept;
+    int detach_handle() noexcept;
+    int attach_handle(int fd) noexcept;
     int handle() const;
     int descriptor() const { return handle(); }
 
@@ -81,6 +82,11 @@ and <tt>::write()</tt> system calls.</p>
 </synopsis>
 
 <synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Returns <tt>true</tt> if the file is open.</p>
+</synopsis>
+
+<synopsis>
 <prototype>void close()</prototype>
 <p>Unconditionally calls <tt>::close()</tt>. No preliminary checks whether the
 file is open are performed! Correctly handles interruptions by signals. Throws
@@ -108,20 +114,14 @@ in case of error, and <tt>errno</tt> contains error code.</p>
 </synopsis>
 
 <synopsis>
-<prototype>bool is_open() const</prototype>
-<p>Returns <tt>true</tt> if the file is open.</p>
-</synopsis>
-
-<synopsis>
-<prototype>int detach() noexcept</prototype>
+<prototype>int detach_handle() noexcept</prototype>
 <p>Releases the descriptor out of the object's control and returns it.</p>
 <postcondition><tt>is_open() == false</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>void attach(int fd) noexcept</prototype>
-<p>Takes <tt>fd</tt> under control. Previous descriptor IS NOT closed if was
-open! No preliminary checks are performed.</p>
+<prototype>int attach_handle(int fd) noexcept</prototype>
+<p>Takes <tt>fd</tt> under control and returns the previous handle value.</p>
 <precondition><tt>fd</tt> is ether an open descriptor or <tt>-1</tt>.</precondition>
 <postcondition><tt>handle() == fd</tt></postcondition>
 </synopsis>

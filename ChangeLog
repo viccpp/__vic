@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2018-11-14  __vic
+    * posix::file:
+        * Renamed attach() -> attach_handle(), detach() -> detach_handle()
+        + attach_handle() returns old value
+
 2018-10-08  __vic
     + readers, writers: make_...()
     + utf{8|16}: make_reader(), make_writer()

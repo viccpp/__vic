@@ -34,12 +34,13 @@ public:
 
     bool open(const char *name, int flags, ::mode_t mode = 0666)
         { fd = ::open(name, flags, mode); return is_open(); }
+    bool is_open() const { return fd >= 0; }
     void close() { close_reset(fd); }
     bool close_nt() noexcept { bool st = close_nt(fd); fd = -1; return st; }
-    bool is_open() const { return fd != -1; }
-    int detach() { int f = fd; fd = -1; return f; }
-    void attach(int f) { fd = f; }
+
     void swap(file &o) noexcept { std::swap(fd, o.fd); }
+    int attach_handle(int f) { int old = fd; fd = f; return old; }
+    int detach_handle() { return attach_handle(-1); }
     int handle() const { return fd; }
     int descriptor() const { return handle(); }
 
