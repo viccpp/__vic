@@ -15,11 +15,11 @@ public:
 };
 ]]></code-block>
 
-<p>A concept used by the library algorihms to write logical sequence of elements
+<p>A concept used by the library algorithms to write logical sequence of elements
 of type <tt>ElementT</tt> element by element. It is a generalization and rework
-of the <tt>OutputIterator</tt> concept. In particular it better handles streams
+of the <tt>OutputIterator</tt> concept. In particular it handles streams
 and other output sequences where <tt>end</tt>-iterator is meaningless or
-expensive to obtain. At the same time, traditional output iterators as
+expensive to obtain better. At the same time, a traditional output iterators as
 <tt>std::back_insert_iterator</tt> are just a particular case and fully and well
 handled by <tt>__vic::push_back_writer</tt> adapter.</p>
 

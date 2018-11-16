@@ -7,6 +7,6 @@ library. It's a kind of my personal
 
 <p>Additionally, it's an abstraction layer that hides implementation details,
 quirks and idiosyncrasies of OS'es, compilers and the standard library
-implemetations.</p>
+implementations.</p>
 
 </chapter>
