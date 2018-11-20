@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-11-20  __vic
+    * base64::decode(): no whitespaces skip
+
 2018-11-14  __vic
     * stdio_file:
         * Renamed attach() -> attach_handle(), detach() -> detach_handle()
