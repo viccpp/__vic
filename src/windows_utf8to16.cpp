@@ -16,9 +16,8 @@ wstring utf8to16(const char *s, size_t len)
 {
     wstring res(len * 2);
     utf_transcode(
-        __vic::utf8::make_reader(
-            __vic::make_iterator_reader_n_for<unsigned char>(s, len)),
-        __vic::utf16::make_writer(__vic::make_string_writer(res))
+        utf8::make_reader(make_iterator_reader_n_for<unsigned char>(s, len)),
+        utf16::make_writer(make_string_writer(res))
     );
     return res;
 }

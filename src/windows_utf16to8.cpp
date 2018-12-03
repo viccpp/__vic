@@ -32,8 +32,8 @@ std::string utf16to8(const wchar_t *s, size_t len_in_code_points)
 {
     std::string res; res.reserve(len_in_code_points);
     utf_transcode(
-        __vic::utf16::make_reader(wchar_reader(s, len_in_code_points)),
-        __vic::utf8::make_writer(__vic::make_string_writer(res))
+        utf16::make_reader(wchar_reader(s, len_in_code_points)),
+        utf8::make_writer(make_string_writer(res))
     );
     return res;
 }
