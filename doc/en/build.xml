@@ -6,7 +6,10 @@
 <list style="bulleted">
     <item>GNU C++ v 4.7+ (MinGW) [<tt>gcc</tt>]</item>
     <item>Clang v 5+ with MinGW [<tt>clang</tt>]</item>
-    <item>Visual C++ v 7.1+ (Visual Studio 2003) [<tt>msvc</tt>]</item>
+    <item>Visual C++ v 15.8+ (Visual Studio 2017) [<tt>msvc</tt>]</item>
+    <item>Visual C++ v 7.1+ (Visual Studio 2003) [<tt>msvc</tt>] is supported
+          but you may need to edit makefiles because of unsupported compiler
+          options</item>
 </list>
 
 <p>Go to <tt>src</tt> subdirectory and write:</p>

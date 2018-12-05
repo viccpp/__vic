@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2018-12-05  __vic
+    * makefiles: /std option support since MS VC++ 15.8
+
 2018-10-08  __vic
     + readers, writers: make_...()
     + utf{8|16}: make_reader(), make_writer()

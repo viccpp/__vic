@@ -24,12 +24,8 @@ WARNS  := $(if $(filter 98,$(std)),-Wno-long-long )-Wno-non-literal-null-convers
 binutils = 1
 ##############################################################################
 else ifeq ($(compiler),msvc)
-ifneq ($(origin std),file)
-$(error std option is not supported by MSVC++ compiler)
-endif
-std    :=
-CC     := cl /nologo /Zc:__cplusplus /permissive-
-CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1
+CC     := cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive-
+CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 /GF
 WARNS  :=
 endif
 ##############################################################################
