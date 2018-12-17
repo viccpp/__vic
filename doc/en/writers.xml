@@ -41,6 +41,27 @@ concept.</p>
 </chapter>
 
 
+<chapter xml:id="null_writer">
+<title><tt>null_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/writers/null.h>
+
+class null_writer
+{
+public:
+    template<class T> void write(T v) {}
+};
+
+null_writer make_null_writer();
+]]></code-block>
+
+<p>Fake writer that accepts any value and does nothing with it (like UNIX
+<tt>/dev/null</tt>).</p>
+
+</chapter>
+
+
 <chapter xml:id="push_back_writer">
 <title><tt>push_back_writer</tt></title>
 

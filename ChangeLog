@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2018-12-17  __vic
+    + writers/null.h:
+        + null_writer
+
 2018-11-20  __vic
     * base64::decode(): no whitespaces skip
 

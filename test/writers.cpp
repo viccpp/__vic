@@ -2,6 +2,7 @@
 #include<__vic/writers/iterator.h>
 #include<__vic/writers/string.h>
 #include<__vic/writers/cstream.h>
+#include<__vic/writers/null.h>
 #include<__vic/stdio_file.h>
 #include<vector>
 #include<string>
@@ -55,6 +56,7 @@ void cstream()
 }
 void run()
 {
+    check_write(__vic::make_null_writer(), 0);
     push_back();
     string();
     //cstream();
