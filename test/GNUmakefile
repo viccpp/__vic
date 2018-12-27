@@ -14,7 +14,7 @@ include pref.mk
 include ../src/$(Makefile)
 
 # Override included values
-ifeq ($(compiler),msvc)
+ifneq ($(filter $(compiler),msvc clang-cl),) # msvc or clang-cl
 CFLAGS = -D_CRT_SECURE_NO_DEPRECATE
 CFLAGS_TEST = -MT
 WARNS = -W3 -wd4290 -wd4800 -D_CRT_SECURE_NO_WARNINGS

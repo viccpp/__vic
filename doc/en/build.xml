@@ -6,6 +6,7 @@
 <list style="bulleted">
     <item>GNU C++ v 4.7+ (MinGW) [<tt>gcc</tt>]</item>
     <item>Clang v 5+ with MinGW [<tt>clang</tt>]</item>
+    <item>Clang v 5+ with Visual C++ [<tt>clang-cl</tt>]</item>
     <item>Visual C++ v 15.8+ (Visual Studio 2017) [<tt>msvc</tt>]</item>
     <item>Visual C++ v 7.1+ (Visual Studio 2003) [<tt>msvc</tt>] is supported
           but you may need to edit makefiles because of unsupported compiler
@@ -32,9 +33,10 @@ C:\> gmake std=98
 C:\> gmake compiler=gcc
 </tty>
 
-<p>Alternatively NMAKE utility can be used with Visual C++ instead of gmake:</p>
+<p>Alternatively NMAKE utility can be used with Visual C++ and clang-cl instead
+of gmake:</p>
 <tty>
-C:\> nmake -f Makefile.nmake
+C:\> nmake -f Makefile.nmake compiler=msvc
 </tty>
 
 <p>Finally, to use the library you just need to copy the library file and

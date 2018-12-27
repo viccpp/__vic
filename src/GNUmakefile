@@ -2,7 +2,7 @@
 # GNU Make 3.82+ Makefile
 #
 # Usage:
-#   $ gmake [compiler={gcc|clang|msvc}] [std={98|11|14|17}]
+#   $ gmake [compiler={gcc|clang[-cl]|msvc}] [std={98|11|14|17}]
 
 include ../src/defs.mk
 std = 14
@@ -23,9 +23,14 @@ CFLAGS := -pedantic-errors -DNDEBUG -O3
 WARNS  := $(if $(filter 98,$(std)),-Wno-long-long )-Wno-non-literal-null-conversion
 binutils = 1
 ##############################################################################
+else ifeq ($(compiler),clang-cl)
+CC     := clang-cl /std:c++$(std)
+CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 -GF
+WARNS  :=
+##############################################################################
 else ifeq ($(compiler),msvc)
 CC     := cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive-
-CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 /GF
+CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 -GF
 WARNS  :=
 endif
 ##############################################################################

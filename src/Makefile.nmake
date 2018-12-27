@@ -1,15 +1,21 @@
 ################################################################
-# NMAKE Makefile for Visual C++
+# NMAKE Makefile for Visual C++ & LLVM clang-cl
 #
 # Usage:
-#   $ nmake -f Makefile.nmake
+#   $ nmake -f Makefile.nmake [compiler={msvc|clang-cl}] [std={14|17|latest}]
 
 !include ../src/defs.mk
 std = 14
 compiler = msvc
 
-CC     = cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive-
-CFLAGS = -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 /GF
+!if "$(compiler)" == "msvc"
+CC = cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive-
+!elseif "$(compiler)" == "clang-cl"
+CC = clang-cl /std:c++$(std)
+!else
+!error Only 'msvc' and 'clang-cl' values of 'compiler' are supported
+!endif
+CFLAGS = -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 -GF
 WARNS  =
 
 LIBSUFFIX = $(std)

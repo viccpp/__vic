@@ -1,5 +1,5 @@
 ################################################################
-# NMAKE Makefile for Visual C++
+# NMAKE Makefile for Visual C++ & LLVM clang-cl
 #
 # Usage:
 #   $ nmake -f Makefile.nmake [check]
