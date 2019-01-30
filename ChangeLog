@@ -326,5 +326,17 @@ Legend:
 2016-06-23  __vic
     * Total revision and rework started in order to publish the code
 
+
+VERSION 0.6
+
+2011-05-17  __vic
+    * The last internal release before rework (no distribution)
+
+
+VERSION 0.5.1
+
+2010-09-08
+    * The last released version before rework
+
 2007-08-15  __vic
     * The project is started
