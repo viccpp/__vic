@@ -22,14 +22,14 @@ void run()
 
     new(pool.alloc()) C("C1");
     assert(pool.size() == 0);
-    pool.push();
+    pool.push_allocated();
     assert(pool.size() == 1);
 
 #if __cpp_rvalue_references && __cpp_variadic_templates
     pool.emplace("C2");
 #else
     new(pool.alloc()) C("C2");
-    pool.push();
+    pool.push_allocated();
 #endif
 
     assert(pool.size() == 2);

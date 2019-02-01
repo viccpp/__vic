@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2019-01-31
+    * object_pool: renamed push() -> push_allocated()
+
 2018-12-17  __vic
     + writers/null.h:
         + null_writer
