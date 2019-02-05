@@ -1,0 +1,204 @@
+<chapter xml:id="readonly_cstring.h">
+<title><tt>__vic/readonly_cstring.h</tt></title>
+
+<chapter xml:id="readonly_cstring">
+<title><tt>readonly_cstring</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class readonly_cstring
+{
+public:
+    readonly_cstring();
+    readonly_cstring(const char *str);
+    readonly_cstring(const char *begin, const char *end);
+    readonly_cstring(const char *chars, size_t n);
+    readonly_cstring(const readonly_cstring &str);
+    ~readonly_cstring() noexcept;
+
+    // BEGIN C++11 only
+    readonly_cstring(readonly_cstring &&str) noexcept;
+    readonly_cstring &operator=(readonly_cstring &&str) noexcept;
+    // END C++11 only
+
+    readonly_cstring &operator=(const char *str);
+    readonly_cstring &operator=(const readonly_cstring &str);
+    readonly_cstring &assign(const char *begin, const char *end);
+    readonly_cstring &assign(const char *chars, size_t n);
+
+    char *reserve(size_t n);
+
+    int compare(const char *str) const;
+    bool empty() const;
+    const char *c_str() const;
+    operator const char*() const;
+
+    void swap(readonly_cstring &str) noexcept;
+};
+
+int compare(const readonly_cstring &s1, const readonly_cstring &s2);
+int compare(const readonly_cstring &s1, const char *s2);
+int compare(const char *s1, const readonly_cstring &s2);
+
+bool operator==(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator!=(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator<(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator>(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator<=(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator>=(const readonly_cstring &s1, const readonly_cstring &s2);
+
+bool operator==(const readonly_cstring &s1, const char *s2);
+bool operator!=(const readonly_cstring &s1, const char *s2);
+bool operator<(const readonly_cstring &s1, const char *s2);
+bool operator>(const readonly_cstring &s1, const char *s2);
+bool operator<=(const readonly_cstring &s1, const char *s2);
+bool operator>=(const readonly_cstring &s1, const char *s2);
+
+bool operator==(const char *s1, const readonly_cstring &s2);
+bool operator!=(const char *s1, const readonly_cstring &s2);
+bool operator<(const char *s1, const readonly_cstring &s2);
+bool operator>(const char *s1, const readonly_cstring &s2);
+bool operator<=(const char *s1, const readonly_cstring &s2);
+bool operator>=(const char *s1, const readonly_cstring &s2);
+
+void swap(readonly_cstring &s1, readonly_cstring &s2) noexcept;
+]]></code-block>
+
+<p>Простой класс неизменяемой строки с нулевым терминатором, автоматически
+управляющий памятью. Имеет простейшую предсказуемую структуру, что может быть
+полезно для обеспечения двоичной совместимости или в случаях, когда
+использование <tt>std::string</tt> нежелательно по каким-либо причинам.
+Функциональность класса также минимальна. Она обеспечивает копирование и
+хранение строки, а также доступ к ней на чтение. Модифицировать строку нельзя –
+только заменять полностью на другую.</p>
+
+<p>Если Вам нужно хранить в классе строковое значение, то использование данного
+типа для строкового поля – это хороший вариант. Это более удобно, универсально
+и безопасно, чем массив символов (<tt>char[]</tt>) и часто более эффективно,
+чем <tt>std::string</tt>, хотя, конечно, менее универсально. Если строку
+предстоит часто редактировать (не считая полной замены), то лучше рассмотреть
+альтернативные варианты представления, например <tt>__vic::string_buffer</tt>.
+Класс <tt>readonly_cstring</tt> разработан не для этих целей.</p>
+
+<section><title>Гарантии, предоставляемые дизайном класса</title>
+<list style="bulleted">
+    <item>Пустой указатель корректно воспринимается как пустая строка.</item>
+    <item>Преобразователь в C-строку (<tt>const char *</tt>) всегда возвращает
+        корректный указатель, никогда не возвращается <tt>nullptr</tt>.</item>
+    <item>Хранимая строка занимает в памяти ровно столько места, сколько ей
+        требуется. Никогда не резервируется дополнительная память.</item>
+    <item>Набор полей-данных состоит только из одного поля – указателя на
+        хранимую строку. Поэтому, если компилятор не применяет выравнивание,
+        размер объекта будет равен размеру указателя.</item>
+</list>
+</section>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>readonly_cstring()</prototype>
+<p>Создаёт пустую строку.</p>
+<postcondition><tt>empty() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>readonly_cstring(const char *str)</prototype>
+<prototype>readonly_cstring(const readonly_cstring &amp;str)</prototype>
+<p>Создаёт копию <tt>str</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>readonly_cstring(const char *begin, const char *end)</prototype>
+<prototype>readonly_cstring(const char *chars, size_t n)</prototype>
+<p>Создаёт строку из диапазона символов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>readonly_cstring &amp;operator=(const char *str)</prototype>
+<prototype>readonly_cstring &amp;operator=(const readonly_cstring &amp;str)</prototype>
+<p>Присваивает <tt>str</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>readonly_cstring(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
+<prototype>readonly_cstring &amp;operator=(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
+<p>Операции перемещения для режима C++11.</p>
+</synopsis>
+
+<synopsis>
+<prototype>readonly_cstring &amp;assign(const char *begin, const char *end)</prototype>
+<prototype>readonly_cstring &amp;assign(const char *chars, size_t n)</prototype>
+<p>Присваивает строку из диапазона символов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>char *reserve(size_t n)</prototype>
+<p>Резервирует внутренний буфер в <tt>n</tt> символов и возвращает указатель на
+него. Бывает полезно для использования с функциями вроде <tt>std::sprintf()</tt>.
+</p>
+<note>Используйте как можно реже данную опасную функцию!</note>
+</synopsis>
+
+<synopsis>
+<prototype>int compare(const char *str) const</prototype>
+<p>Сравнивает строку с <tt>str</tt>. Возвращаемые значения аналогичны
+<tt>std::strcmp</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool empty() const</prototype>
+<p>Возвращает <tt>true</tt>, если строка пустая.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *c_str() const</prototype>
+<prototype>operator const char*() const</prototype>
+<p>Возвращает указатель на хранимую строку. Возвращаемый указатель никогда не
+бывает пустым.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(readonly_cstring &amp;str) noexcept</prototype>
+<p>Меняется содержимым с <tt>str</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Свободные функции</title>
+
+<synopsis>
+<prototype>int compare(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
+<prototype>int compare(const readonly_cstring &amp;s1, const char *s2)</prototype>
+<prototype>int compare(const char *s1, const readonly_cstring &amp;s2)</prototype>
+<p>Сравнивает две строки аналогично <tt>std::strcmp</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool operator==(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
+<prototype>...</prototype>
+<prototype>bool operator>=(const char *s1, const readonly_cstring &amp;s2)</prototype>
+<p>Полный набор операторов сравнения <tt>readonly_cstring</tt> и
+<tt>const char *</tt> в различных сочетаниях.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(readonly_cstring &amp;s1, readonly_cstring &amp;s2) noexcept</prototype>
+<p>Специализация стандартного алгоритма.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+class C
+{
+    __vic::readonly_cstring st;
+public:
+    explicit C(const char *str) : st(str) {}
+    const char *get_str() const { return st; }
+};
+</code-block>
+</section>
+
+</chapter>
+
+</chapter>

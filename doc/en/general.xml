@@ -27,16 +27,16 @@ $ g++ -std=c++14 prog.cpp -l__vic14
 C++14 or C++17. The standard suffix is used as a suffix for the library file
 (archive).</p>
 
-<p>Some features are available only if minimal required standard version is
-used, e.g. many features require at least C++11. Such features are marked with
+<p>Some features require a specific minimal standard version to be available,
+e.g. many of them require at least C++11. These features are marked with
 <sign>C++11</sign> sign that means "C++11 or later".</p>
 
 <p>Some features are available only in particular standard mode and not
 available otherwise. Such features are marked with <sign>C++98 only</sign>
 sign.</p>
 
-<p>Detailed description of the library components provided in subsequent
-chapters. Descriptions are grouped by headers. Mainly C++14 language syntax
-is used as more complete and expressive.</p>
+<p>Detailed description of the library components is provided in the subsequent
+chapters. Descriptions are grouped by headers. C++14 language syntax is mainly
+used as a more complete and expressive one.</p>
 
 </chapter>

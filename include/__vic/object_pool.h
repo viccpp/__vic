@@ -86,7 +86,7 @@ public:
         return next;
     }
     // adds last allocated object to the pool
-    void push() { next++; }
+    void push_allocated() { next++; }
     // END: Deprecated functions
 
     // element access

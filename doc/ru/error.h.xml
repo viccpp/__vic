@@ -1,0 +1,173 @@
+<chapter xml:id="error.h">
+<title><tt>__vic/error.h</tt></title>
+
+<p>Инструменты обработки ошибок.</p>
+
+
+<chapter xml:id="exception">
+<title><tt>exception</tt></title>
+
+<code-block lang="C++">
+class exception : public std::exception
+{
+public:
+    exception();
+    explicit exception(const char *message);
+    const char *what() const noexcept;
+protected:
+    void set_message(const char *message);
+};
+</code-block>
+
+<p>Небольшое расширение <tt>std::exception</tt> - объект хранит сообщение об
+ошибке, переданное в конструкторе, которое потом возвращает <tt>what()</tt>.
+Может быть использован как базовый или конкретный класс исключения. Не
+использует и не зависит от <tt>std::string</tt>, в отличие от
+<tt>std::logic_error</tt> и <tt>std::runtime_error</tt>. Также Вам нет нужды
+решать, какое из последних следует использовать в каждом конкретном случае.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>exception()</prototype>
+<p>Создаёт объект с пустым сообщением об ошибке.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit exception(const char *message)</prototype>
+<p>Создаёт объект с указанным сообщением об ошибке.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *what() const noexcept</prototype>
+<p>Возвращает установленное ранее сообщение.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void set_message(const char *message)</prototype>
+<p>Устанавливает новое сообщение.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+struct custom_exception : public __vic::exception
+{
+    explicit custom_exception(const char *msg) : __vic::exception(msg) {}
+};
+
+throw custom_exception("Error condition description");
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="libc_error">
+<title><tt>libc_error</tt></title>
+
+<code-block lang="C++">
+class libc_error : public std::exception
+{
+public:
+    explicit libc_error(int err_no = errno);
+    explicit libc_error(const char *prompt, int err_no = errno);
+
+    const char *what() const noexcept;
+    int code() const;
+    int get_errno() const;
+};
+</code-block>
+
+<p>Класс предназначен для замены стандартного механизма обработки ошибок
+в мире C - <tt>errno</tt> - на механизм исключений. Также класс пригоден для
+использования в многопоточных приложениях вместо не всегда реентерабельного
+вызова <tt>std::strerror()</tt>.</p>
+<p>Ниже приведён фрагмент кода, типичный для языка C:</p>
+
+<code-block lang="C">
+// C:
+
+int fd;
+if((fd = open("qqqq", O_RDONLY)) == -1)
+{
+    perror("open");
+    if(errno == ENOENT) exit(1);
+}
+</code-block>
+
+<p>Если файл не найден, программа напечатает</p>
+<tty>
+open: No such file or directory
+</tty>
+<p>в <tt>stderr</tt> и выйдет, вернув в ОС значение <tt>1</tt>.</p>
+
+<p>Какие проблемы присущи этому коду? Во-первых, не у каждой программы есть
+<tt>stderr</tt>, поэтому библиотечная функция не может сама выводить туда
+сообщения об ошибках. Во-вторых, значение глобальной переменной <tt>errno</tt>
+может быть затёрто любым следующим вызовом, если его не сохранить. В-третьих,
+решение о завершении процесса должна принимать конечная программа. Обычная
+библиотечная функция не может брать на себя такие полномочия. В-четвёртых,
+в общем случае программа на С++ не может вызывать <tt>std::exit()</tt>, так
+как не будут вызваны деструкторы активных объектов, что может разрушить логику
+работы программы.</p>
+
+<p>Ниже приведён адаптированный пример для C++ с использованием описываемого
+класса:</p>
+
+<code-block lang="C++"><![CDATA[
+// C++:
+
+try
+{
+    int fd = open("qqqq", O_RDONLY);
+    if(fd == -1) throw __vic::libc_error("open");
+    // or just
+    // if(fd == -1) throw __vic::libc_error();
+}
+catch(const __vic::libc_error &ex)
+{
+    std::cerr << ex.what() << '\n';
+    if(ex.code() == ENOENT) return 1;
+}
+]]></code-block>
+
+<p>Как видно, функция просто корректно отслеживает ошибочную ситуацию и
+сообщает о ней вызывающей среде. Далее вызывающая сторона уже сама может
+принять решение об обработке ошибки. В простейшем случае она поступает также
+как предыдущая C-программа: печатает сообщение в стандартный поток вывода
+ошибок и завершает выполнение. Кроме того, код ошибки надёжно сохранён в
+исключении и ни кем не перетрётся.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit libc_error(int err_no = errno)</prototype>
+<p><tt>err_no</tt> - код ошибки.</p>
+<postcondition><tt>code() == err_no</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit libc_error(const char *prompt, int err_no = errno)</prototype>
+<p><tt>prompt</tt> - заголовок выводимого сообщения. Параметр имеет такой же
+смысл, как и параметр <tt>std::perror()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *what() const noexcept</prototype>
+<p>Возвращает описание ошибки в формате <tt>std::perror()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int code() const</prototype>
+<prototype>int get_errno() const</prototype>
+<p>Возвращает хранимый код ошибки.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+</chapter>

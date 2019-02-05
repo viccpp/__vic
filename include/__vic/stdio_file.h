@@ -31,13 +31,16 @@ public:
 
     bool open(const char *name, const char *mode)
         { return (fp = std::fopen(name, mode)); }
-    void close();
     bool is_open() const { return fp; }
+    void close();
     bool close_nt() noexcept
         { int st = std::fclose(fp); fp = nullptr; return st == 0; }
-    std::FILE *detach() { std::FILE *f = fp; fp = nullptr; return f; }
-    void attach(std::FILE *f) { fp = f; }
+
     void swap(stdio_file &o) noexcept { std::swap(fp, o.fp); }
+    std::FILE *attach_handle(std::FILE *f)
+        { std::FILE *old = fp; fp = f; return old; }
+    std::FILE *detach_handle() { return attach_handle(nullptr); }
+    std::FILE *handle() const { return fp; }
     operator std::FILE*() const { return fp; }
 };
 //////////////////////////////////////////////////////////////////////////////

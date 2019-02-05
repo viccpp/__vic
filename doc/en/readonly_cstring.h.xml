@@ -149,7 +149,7 @@ it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p
 <synopsis>
 <prototype>const char *c_str() const</prototype>
 <prototype>operator const char*() const</prototype>
-<p>Returns a pointer to the stored string. The pointer is newer null.</p>
+<p>Returns a pointer to the stored string. The pointer is never null.</p>
 </synopsis>
 
 <synopsis>
@@ -165,7 +165,7 @@ it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p
 <prototype>int compare(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
 <prototype>int compare(const readonly_cstring &amp;s1, const char *s2)</prototype>
 <prototype>int compare(const char *s1, const readonly_cstring &amp;s2)</prototype>
-<p>Compares two strings as <tt>std::strcpy</tt> does.</p>
+<p>Compares two strings as <tt>std::strcmp</tt> does.</p>
 </synopsis>
 
 <synopsis>

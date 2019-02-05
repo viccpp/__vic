@@ -1,0 +1,135 @@
+<chapter xml:id="utf16.reader.h">
+<title><tt>__vic/utf16/reader.h</tt></title>
+
+<chapter xml:id="utf16--reader">
+<title><tt>utf16::reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class CodeUnitReader>
+class utf16::reader
+{
+public:
+    using code_unit_reader_type = CodeUnitReader;
+    CodeUnitReader &get_code_unit_reader();
+    const CodeUnitReader &get_code_unit_reader() const;
+
+    template<class... Args>
+    explicit reader(Args&&... args);  // since C++11
+
+    reader(); // C++98 only
+    explicit reader(CodeUnitReader r); // C++98 only
+
+    status_t parse(unicode_t &cp);
+    bool read(unicode_t &cp);
+};
+
+template<class CodeUnitReader>
+utf16::reader<CodeUnitReader> utf16::make_reader(CodeUnitReader r);
+]]></code-block>
+
+<p>Вычитывает UTF-16 code points из последовательности 2-байтовых
+<xref to="utf16--code_unit_t"/>. Последовательность читается посредством
+специального reader, имеющего следующую структуру:</p>
+
+<code-block lang="C++"><![CDATA[
+class ]]><nt>CodeUnitReader</nt><![CDATA[
+{
+public:
+    utf16::status_t read_unit(utf16::code_unit_t &u);
+};
+]]></code-block>
+
+<synopsis>
+<prototype>utf16::status_t read_unit(utf16::code_unit_t &amp;u)</prototype>
+<p>Пытается вычитать следующий code unit. Возвращает <tt>utf16::status::ok</tt>
+в случае успеха, <tt>utf16::status::eof</tt>, если больше не осталось code units,
+либо <tt>utf16::status::truncated_code_unit</tt> если доступна только часть
+code unit.</p>
+</synopsis>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>CodeUnitReader &amp;get_code_unit_reader()</prototype>
+<prototype>const CodeUnitReader &amp;get_code_unit_reader() const</prototype>
+<p>Возвращает ссылку на используемый code unit reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args>
+explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Передаёт все параметры в используемый code unit reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>reader() <sign>C++98 only</sign></prototype>
+<prototype>explicit reader(CodeUnitReader r) <sign>C++98 only</sign></prototype>
+<p>Конструкторы для режима C++98.</p>
+</synopsis>
+
+<synopsis>
+<prototype>status_t parse(unicode_t &amp;cp)</prototype>
+<p>Пытается извлечь следующий code point из последовательности code unit,
+используя <tt>CodeUnitReader</tt>. В случае успеха возвращается
+<tt>utf16::status::ok</tt>, code point сохраняется в <tt>cp</tt>. Если code
+units кончились, возвращается <tt>utf16::status::eof</tt>. Другие значения
+возвращаются в случае ошибок, подробности см. в <xref to="utf16--status"/>.
+Для доступа к отдельным code units используется
+<tt>CodeUnitReader::read_unit()</tt>.</p>
+<note>Функция сама по себе не бросает исключений, но их может бросать
+<tt>CodeUnitReader::read_unit()</tt>.</note>
+</synopsis>
+
+<synopsis>
+<prototype>bool read(unicode_t &amp;cp)</prototype>
+<p>То же самое, что <tt>parse()</tt>, но возвращает <tt>true</tt> в случае
+успеха, <tt>false</tt> в случае EOF, бросает исключения из
+<xref to="utf16.exceptions.h"/> в остальных случаях.</p>
+</synopsis>
+
+</section>
+
+<section><title>Свободные функции</title>
+
+<synopsis>
+<prototype>template&lt;class CodeUnitReader>
+utf16::reader&lt;CodeUnitReader> utf16::make_reader(CodeUnitReader r)</prototype>
+<p>Создаёт UTF-16 reader используя указанный <tt>CodeUnitReader</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/utf16/reader.h>
+#include<__vic/readers/string.h>
+#include<string>
+#include<cstdint>
+#include<iostream>
+
+class u16string_code_unit_reader
+{
+    __vic::basic_string_reader<char16_t> r;
+public:
+    explicit u16string_code_unit_reader(const std::u16string &s) : r(s) {}
+
+    __vic::utf16::status_t read_unit(__vic::utf16::code_unit_t &u)
+    {
+        if(r.read(u)) return __vic::utf16::status::ok;
+        return __vic::utf16::status::eof;
+    }
+};
+
+void print_utf16_code_points(const std::u16string &s)
+{
+    __vic::utf16::reader<u16string_code_unit_reader> r(s);
+    __vic::unicode_t cp;
+    while(r.read(cp))
+        std::cout << uint_least32_t(cp) << '\n';
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

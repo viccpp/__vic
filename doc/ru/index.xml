@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../html.xsl"?>
+<!DOCTYPE document SYSTEM "../document.dtd" [
+    <!ENTITY why SYSTEM "why.xml">
+    <!ENTITY general SYSTEM "general.xml">
+    <!ENTITY build SYSTEM "build.xml">
+    <!ENTITY defs.h SYSTEM "defs.h.xml">
+    <!ENTITY ascii.h SYSTEM "ascii.h.xml">
+    <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
+    <!ENTITY base16.h SYSTEM "base16.h.xml">
+    <!ENTITY base64.h SYSTEM "base64.h.xml">
+    <!ENTITY bin_file.h SYSTEM "bin_file.h.xml">
+    <!ENTITY bits.h SYSTEM "bits.h.xml">
+    <!ENTITY date_time.h SYSTEM "date_time.h.xml">
+    <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY fs.h SYSTEM "fs.h.xml">
+    <!ENTITY iterator.h SYSTEM "iterator.h.xml">
+    <!ENTITY logger.h SYSTEM "logger.h.xml">
+    <!ENTITY mutex.h SYSTEM "mutex.h.xml">
+    <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
+    <!ENTITY packon.h SYSTEM "packon.h.xml">
+    <!ENTITY readers SYSTEM "readers.xml">
+    <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
+    <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
+    <!ENTITY stdint.h SYSTEM "stdint.h.xml">
+    <!ENTITY stdio_file.h SYSTEM "stdio_file.h.xml">
+    <!ENTITY str2num.h SYSTEM "str2num.h.xml">
+    <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
+    <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
+    <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
+    <!ENTITY tchar.h SYSTEM "tchar.h.xml">
+    <!ENTITY thread.h SYSTEM "thread.h.xml">
+    <!ENTITY to_text.h SYSTEM "to_text.h.xml">
+    <!ENTITY type_traits.h SYSTEM "type_traits.h.xml">
+    <!ENTITY unicode.h SYSTEM "unicode.h.xml">
+    <!ENTITY utf16.defs.h SYSTEM "utf16.defs.h.xml">
+    <!ENTITY utf16.exceptions.h SYSTEM "utf16.exceptions.h.xml">
+    <!ENTITY utf16.reader.h SYSTEM "utf16.reader.h.xml">
+    <!ENTITY utf16.status.h SYSTEM "utf16.status.h.xml">
+    <!ENTITY utf16.writer.h SYSTEM "utf16.writer.h.xml">
+    <!ENTITY utf8.exceptions.h SYSTEM "utf8.exceptions.h.xml">
+    <!ENTITY utf8.reader.h SYSTEM "utf8.reader.h.xml">
+    <!ENTITY utf8.status.h SYSTEM "utf8.status.h.xml">
+    <!ENTITY utf8.writer.h SYSTEM "utf8.writer.h.xml">
+    <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
+    <!ENTITY writers SYSTEM "writers.xml">
+]>
+<document xml:lang="ru" version="1.0" status="Draft">
+<title>__vic's C++ library</title>
+
+<annotation><documentation><![CDATA[
+Тэги, используемые для форматирования документа:
+
+document
+    Корневой элемент. Атрибуты:
+        * lang - язык документа,
+        * version - например "1.0",
+        * status - "Release" или "Draft".
+chapter
+    Глава. Попадает в оглавление. Главы могут вкладываться друг в друга. Атрибут
+    "xml:id" задаёт уникальный ID главы.
+section
+    Секция текста. Содержится в главе и не попадает в оглавление.
+title
+    Заголовок документа, главы или секции. Обязателен. Должен быть первым
+    элементом.
+p
+    Абзац.
+list
+    Список. Обязательный атрибут style задаёт тип списка:
+        * numbered - нумерованный,
+        * bulleted - маркированный,
+        * nomarks  - без маркировки.
+    Каждый элемент помещается в <item>.
+code-block
+    Прямоугольный блок текста с кодом. Атрибут lang указывает используемый язык.
+    Исходное форматирование сохраняется при показе.
+tty
+    Прямоугольный блок текста с выводом текстового терминала.
+    Исходное форматирование сохраняется при показе.
+note
+    Замечание.
+b
+    Выделение текста жирным.
+u
+    Подчеркнутый текст.
+tt
+    Моноширинный текст для элементов кода, имён файлов и т.п.
+nt
+    "Нетерминальный символ" (из теории формальных языков). Текст-placeholder,
+    который нужно заменить на что-то перед использованием.
+link
+    Гиперссылка. URL, либо текст + URL в атрибуте href.
+xref
+    Внутрення ссылка на главу документа. Атрибут to указывает ID главы.
+synopsis
+    Справка по функции, типу и т.п. Прототип функции или объявление типа
+    заключается в <prototype>. Исходное форматирование в нём сохраняется
+    при показе. Текстовое описание помещается в <p>. Предусловие помещается
+    в <precondition>, постусловие - в <postcondition>, инвариант - в
+    <invariant>.
+precondition
+    Предусловие. Часть <synopsis>.
+postcondition
+    Постусловие. Часть <synopsis>.
+invariant
+    Инвариант. Часть <synopsis>.
+sign
+    Небольшой значёк-пометка на слове или строке.
+TODO
+    Пометка TODO для редактора документа.
+]]></documentation></annotation>
+
+<chapter xml:id="intro">
+<title>Введение</title>
+&why;
+&general;
+</chapter>
+
+<chapter xml:id="components-reference">
+<title>Описание компонентов библиотеки</title>
+&defs.h;
+&ascii.h;
+&ascii_string.h;
+&base16.h;
+&base64.h;
+&bin_file.h;
+&bits.h;
+&date_time.h;
+&error.h;
+&fs.h;
+&iterator.h;
+&logger.h;
+&mutex.h;
+&object_pool.h;
+&packon.h;
+&readers;
+&readonly_cstring.h;
+&set_of_chars.h;
+&stdint.h;
+&stdio_file.h;
+&str2num.h;
+&string_buffer.h;
+&string_ref.h;
+&string_utils.h;
+&tchar.h;
+&thread.h;
+&to_text.h;
+&type_traits.h;
+&unicode.h;
+&utf8.status.h;
+&utf8.exceptions.h;
+&utf8.reader.h;
+&utf8.writer.h;
+&utf16.defs.h;
+&utf16.status.h;
+&utf16.exceptions.h;
+&utf16.reader.h;
+&utf16.writer.h;
+&waitable_event.h;
+&writers;
+</chapter>
+
+<chapter xml:id="build">
+<title>Сборка и установка</title>
+&build;
+</chapter>
+
+</document>

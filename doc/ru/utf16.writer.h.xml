@@ -1,0 +1,92 @@
+<chapter xml:id="utf16.writer.h">
+<title><tt>__vic/utf16/writer.h</tt></title>
+
+<chapter xml:id="utf16--writer">
+<title><tt>utf16::writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class CodeUnitWriter>
+class utf16::writer
+{
+public:
+    using code_unit_writer_type = CodeUnitWriter;
+    CodeUnitWriter &get_code_unit_writer();
+    const CodeUnitWriter &get_code_unit_writer() const;
+
+    template<class... Args>
+    explicit writer(Args&&... args); // since C++11
+
+    writer(); // C++98 only
+    explicit writer(CodeUnitWriter w); // C++98 only
+
+    void write(unicode_t cp);
+};
+
+template<class CodeUnitWriter>
+utf16::writer<CodeUnitWriter> utf16::make_writer(CodeUnitWriter w);
+]]></code-block>
+
+<p>Пишет UTF-16 code points в последовательность 2-байтовых
+<xref to="utf16--code_unit_t"/>. Для вывода code units используется
+<tt>CodeUnitWriter</tt>, моделирующий <tt>Writer&lt;utf16::code_unit_t></tt>
+(см. <xref to="writers"/>).</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>CodeUnitWriter &amp;get_code_unit_writer()</prototype>
+<prototype>const CodeUnitWriter &amp;get_code_unit_writer() const</prototype>
+<p>Возвращает ссылку на используемый code unit writer.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args>
+explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Передаёт все параметры в используемый code unit writer.</p>
+</synopsis>
+
+<synopsis>
+<prototype>writer() <sign>C++98 only</sign></prototype>
+<prototype>explicit writer(CodeUnitWriter r) <sign>C++98 only</sign></prototype>
+<p>Конструкторы для режима C++98.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void write(unicode_t cp)</prototype>
+<p>Выводит указанный code point согласно правилам кодирования UTF-16.
+Для записи отдельных code units ипользуется <tt>CodeUnitWriter::write()</tt>.
+</p>
+</synopsis>
+
+</section>
+
+<section><title>Свободные функции</title>
+
+<synopsis>
+<prototype>template&lt;class CodeUnitWriter>
+utf16::writer&lt;CodeUnitWriter> utf16::make_writer(CodeUnitWriter w)</prototype>
+<p>Создаёт UTF-16 writer используя указанный <tt>CodeUnitWriter</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/utf16/writer.h>
+#include<__vic/writers/string.h>
+#include<string>
+#include<vector>
+
+std::u16string encode_utf16(const std::vector<__vic::unicode_t> &code_points)
+{
+    std::u16string utf16_res;
+    __vic::utf16::writer<__vic::basic_string_writer<char16_t>> w(utf16_res);
+    for(auto cp : code_points) w.write(cp);
+    return utf16_res;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

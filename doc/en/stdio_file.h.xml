@@ -21,12 +21,14 @@ public:
     // END C++11 only
 
     bool open(const char *name, const char *mode);
-    void close();
     bool is_open() const;
+    void close();
     bool close_nt() noexcept;
-    std::FILE *detach() noexcept;
-    void attach(std::FILE *fp) noexcept;
+
     void swap(stdio_file &o) noexcept;
+    std::FILE *detach_handle() noexcept;
+    std::FILE *attach_handle(std::FILE *fp) noexcept;
+    std::FILE *handle() const;
     operator std::FILE*() const;
 };
 ]]></code-block>
@@ -57,7 +59,7 @@ subsequent <tt>is_open()</tt> call!</p>
 
 <synopsis>
 <prototype>~stdio_file()</prototype>
-<p>Calls std::fclose() if <tt>is_open() == true</tt>.</p>
+<p>Calls <tt>std::fclose()</tt> if <tt>is_open() == true</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -71,6 +73,11 @@ subsequent <tt>is_open()</tt> call!</p>
 <p>Calls <tt>std::fopen(name, mode)</tt>. Returns <tt>true</tt> in case of
 success.</p>
 <precondition><tt>is_open() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Returns <tt>true</tt> if file is open.</p>
 </synopsis>
 
 <synopsis>
@@ -88,28 +95,27 @@ instead in case of error.</p>
 </synopsis>
 
 <synopsis>
-<prototype>bool is_open() const</prototype>
-<p>Returns <tt>true</tt> if file is open.</p>
+<prototype>void swap(stdio_file &amp;o) noexcept</prototype>
+<p>Swaps the value with <tt>o</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>std::FILE *detach() noexcept</prototype>
+<prototype>std::FILE *detach_handle() noexcept</prototype>
 <p>Releases the file out of the object's control.</p>
 <postcondition><tt>is_open() == false</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>void attach(std::FILE *fp) noexcept</prototype>
-<p>Takes <tt>fp</tt> under control. Previous file IS NOT closed if was open!
-No preliminary checks are performed.</p>
+<prototype>std::FILE *attach_handle(std::FILE *fp) noexcept</prototype>
+<p>Takes <tt>fp</tt> under control and returns the previous handle value.</p>
 <precondition><tt>fp</tt> is either a poiner to the open file or
 <tt>nullptr</tt>.</precondition>
-<postcondition><tt>static_cast&lt;std::FILE*>(*this) == fp</tt></postcondition>
+<postcondition><tt>handle() == fp</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>void swap(stdio_file &amp;o) noexcept</prototype>
-<p>Swaps the value with <tt>o</tt>.</p>
+<prototype>std::FILE *handle() const</prototype>
+<p>Returns the held handle value.</p>
 </synopsis>
 
 <synopsis>
