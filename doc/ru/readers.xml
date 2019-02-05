@@ -15,27 +15,29 @@ public:
 };
 ]]></code-block>
 
-<p>A concept used by the library algorithms to read logical sequence of elements
-of type <tt>ElementT</tt> element by element. It is a generalization and rework
-of the <tt>InputIterator</tt> concept. In particular it handles streams,
-NULL-terminated strings and other sequences where <tt>end</tt>-iterator is
-meaningless or expensive to obtain better. At the same time, a traditional
-[<tt>begin</tt>,<tt>end</tt>) pair of iterators is just a particular case and
-fully and well handled by <tt>__vic::iterator_reader</tt> adapter.</p>
+<p>Concept, используемый алгоритмами библиотеки для поэлементного чтения
+логической последовательности элементов типа <tt>ElementT</tt>. Является
+обобщением и переработкой concept'а <tt>InputIterator</tt>. В частности,
+он лучше обрабатывает потоки ввода/вывода, строки с нулевым терминатором и
+другие последовательности, в которых <tt>end</tt>-итератор не имеет смысла или
+его получение дорого. В то же время, традиционные пары итераторов
+[<tt>begin</tt>,<tt>end</tt>) являются просто частным случаем и полностью
+поддерживаются адаптером <tt>__vic::iterator_reader</tt>.</p>
 
-<p>When the particular class meets the requirements of this concept for some
-<tt>ElementT = T</tt> it is said <b>to model</b> the <tt>Reader&lt;T></tt>
-concept.</p>
+<p>В случаях, когда конкретный класс удовлетворяет требованиям данного concept
+для некоторого <tt>ElementT = T</tt>, говорят, что он <b>моделирует</b> concept
+<tt>Reader&lt;T></tt>.</p>
 
-<p>Each instance of the class has to be move- or copy-constructible.</p>
+<p>Каждый экземпляр класса должен быть move- или copy-constructible.</p>
 
-<section><title>Class members</title>
+<section><title>Члены класса</title>
 
 <synopsis>
 <prototype>bool read(ElementT &amp;v)</prototype>
-<p>Attempts to get the next element of the sequence. Returns <tt>true</tt> and
-places the value to <tt>v</tt> on success. Returns <tt>false</tt> if no element
-available (EOF). Throws an exception in other cases.</p>
+<p>Пытается получить следующий элемент последовательности. Возвращает
+<tt>true</tt> и помещает прочитанное значение в <tt>v</tt> в случае успеха.
+Возвращает <tt>false</tt>, если больше элементов не осталось (EOF). Бросает
+исключения в остальных случаях.</p>
 </synopsis>
 
 </section>
@@ -66,13 +68,13 @@ template<class T, class InputIterator> iterator_reader<InputIterator,T>
 make_iterator_reader_for(InputIterator begin, InputIterator end);
 ]]></code-block>
 
-<p>An adapter for a traditional [<tt>begin</tt>,<tt>end</tt>) pair of iterators.
-</p>
+<p>Адаптер для традиционной [<tt>begin</tt>,<tt>end</tt>) пары итераторов.</p>
 
-<p>Additional <tt>position()</tt> function returns the current iterator
-position.</p>
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
 
-<p>Can be created using constructor or one of <tt>make_...</tt> functions.</p>
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
 
 </chapter>
 
@@ -100,12 +102,13 @@ template<class T, class InputIterator> iterator_reader_n<InputIterator,T>
 make_iterator_reader_n_for(InputIterator begin, size_t n);
 ]]></code-block>
 
-<p>An adapter for iterator + elements counter.</p>
+<p>Адаптер для итератора со счётчиком элементов.</p>
 
-<p>Additional <tt>position()</tt> function returns the current iterator
-position.</p>
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
 
-<p>Can be created using constructor or one of <tt>make_...</tt> functions.</p>
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
 
 </chapter>
 
@@ -132,13 +135,14 @@ template<class T, class Cont>
 container_reader<Cont,T> make_container_reader_for(const Cont &c);
 ]]></code-block>
 
-<p>An adapter for STL-style container classes with <tt>begin()</tt> and
-<tt>end()</tt> members.</p>
+<p>Адаптер для контейнеров в стиле STL, имеющих члены <tt>begin()</tt> и
+<tt>end()</tt>.</p>
 
-<p>Additional <tt>position()</tt> function returns the current iterator
-position.</p>
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
 
-<p>Can be created using constructor or one of <tt>make_...</tt> functions.</p>
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
 
 </chapter>
 
@@ -173,15 +177,15 @@ template<class charT>
 basic_cstring_reader<charT> make_cstring_reader(const charT *s);
 ]]></code-block>
 
-<p>An adapter for NULL-terminated C-style strings.</p>
+<p>Адаптер для C-строк с нулевым терминатором.</p>
 
-<p>Additional <tt>position()</tt> function returns the current pointer
-position.</p>
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+указателя внутри строки.</p>
 
-<p><tt>char</tt> specialization models <tt>Reader&lt;unsigned char></tt> as
-well as <tt>Reader&lt;char></tt>.</p>
+<p>Специализация для <tt>char</tt> моделирует как <tt>Reader&lt;char></tt>,
+так и<tt>Reader&lt;unsigned char></tt>.</p>
 
-<p>Can be created using constructor or <tt>make_...</tt> function.</p>
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
 
 </chapter>
 
@@ -221,15 +225,15 @@ basic_string_reader<charT,Tr,Al>
     make_string_reader(const std::basic_string<charT,Tr,Al> &s);
 ]]></code-block>
 
-<p>An adapter for <tt>std::basic_string</tt>.</p>
+<p>Адаптер для <tt>std::basic_string</tt>.</p>
 
-<p>Additional <tt>position()</tt> function returns the current pointer
-position.</p>
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+указателя внутри строки.</p>
 
-<p><tt>char</tt> specialization models <tt>Reader&lt;unsigned char></tt> as
-well as <tt>Reader&lt;char></tt>.</p>
+<p>Специализация для <tt>char</tt> моделирует как <tt>Reader&lt;char></tt>,
+так и <tt>Reader&lt;unsigned char></tt>.</p>
 
-<p>Can be created using constructor or <tt>make_...</tt> function.</p>
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
 
 </chapter>
 
@@ -251,10 +255,10 @@ public:
 cstream_reader make_cstream_reader(std::FILE *fp);
 ]]></code-block>
 
-<p>Models <tt>Reader&lt;char></tt> and <tt>Reader&lt;unsigned char></tt> for
+<p>Моделирует <tt>Reader&lt;char></tt> и <tt>Reader&lt;unsigned char></tt> для
 <tt>std::FILE</tt>.</p>
 
-<p>Can be created using constructor or <tt>make_...</tt> function.</p>
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
 
 </chapter>
 

@@ -145,6 +145,7 @@ error code is now saved in the exception and cannot be rewritten by accident.
 <synopsis>
 <prototype>explicit libc_error(int err_no = errno)</prototype>
 <p><tt>err_no</tt> - error code.</p>
+<postcondition><tt>code() == err_no</tt></postcondition>
 </synopsis>
 
 <synopsis>

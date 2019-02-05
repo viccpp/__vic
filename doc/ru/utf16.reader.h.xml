@@ -27,9 +27,9 @@ template<class CodeUnitReader>
 utf16::reader<CodeUnitReader> utf16::make_reader(CodeUnitReader r);
 ]]></code-block>
 
-<p>UTF-16 code points from 2-byte <xref to="utf16--code_unit_t"/> sequence
-reader. The sequence is accessed using the special reader of the following
-structure:</p>
+<p>Вычитывает UTF-16 code points из последовательности 2-байтовых
+<xref to="utf16--code_unit_t"/>. Последовательность читается посредством
+специального reader, имеющего следующую структуру:</p>
 
 <code-block lang="C++"><![CDATA[
 class ]]><nt>CodeUnitReader</nt><![CDATA[
@@ -41,63 +41,65 @@ public:
 
 <synopsis>
 <prototype>utf16::status_t read_unit(utf16::code_unit_t &amp;u)</prototype>
-<p>Tries to read the next code unit. Returns <tt>utf16::status::ok</tt> on
-success, <tt>utf16::status::eof</tt> if no more code units available or
-<tt>utf16::status::truncated_code_unit</tt> if only partial code unit
-is available.</p>
+<p>Пытается вычитать следующий code unit. Возвращает <tt>utf16::status::ok</tt>
+в случае успеха, <tt>utf16::status::eof</tt>, если больше не осталось code units,
+либо <tt>utf16::status::truncated_code_unit</tt> если доступна только часть
+code unit.</p>
 </synopsis>
 
-<section><title>Class members</title>
+<section><title>Члены класса</title>
 
 <synopsis>
 <prototype>CodeUnitReader &amp;get_code_unit_reader()</prototype>
 <prototype>const CodeUnitReader &amp;get_code_unit_reader() const</prototype>
-<p>Returns reference to the used code unit reader.</p>
+<p>Возвращает ссылку на используемый code unit reader.</p>
 </synopsis>
 
 <synopsis>
 <prototype>template&lt;class... Args>
 explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
-<p>Forwards all parameters to the used code unit reader.</p>
+<p>Передаёт все параметры в используемый code unit reader.</p>
 </synopsis>
 
 <synopsis>
 <prototype>reader() <sign>C++98 only</sign></prototype>
 <prototype>explicit reader(CodeUnitReader r) <sign>C++98 only</sign></prototype>
-<p>Constructors for C++98 mode.</p>
+<p>Конструкторы для режима C++98.</p>
 </synopsis>
 
 <synopsis>
 <prototype>status_t parse(unicode_t &amp;cp)</prototype>
-<p>Tries to extract the next code point from code unit sequence using
-<tt>CodeUnitReader</tt>. On success <tt>utf16::status::ok</tt> is returned and
-the code point is stored in <tt>cp</tt>. <tt>utf16::status::eof</tt> is
-returned when no more code units available. Other values are returned on errors,
-see <xref to="utf16--status"/> for more details.
-<tt>CodeUnitReader::read_unit()</tt> is used to access code units.</p>
-<note>The function itself doesn't throw exceptions but exception can be
-thrown by <tt>CodeUnitReader::read_unit()</tt>.</note>
+<p>Пытается извлечь следующий code point из последовательности code unit,
+используя <tt>CodeUnitReader</tt>. В случае успеха возвращается
+<tt>utf16::status::ok</tt>, code point сохраняется в <tt>cp</tt>. Если code
+units кончились, возвращается <tt>utf16::status::eof</tt>. Другие значения
+возвращаются в случае ошибок, подробности см. в <xref to="utf16--status"/>.
+Для доступа к отдельным code units используется
+<tt>CodeUnitReader::read_unit()</tt>.</p>
+<note>Функция сама по себе не бросает исключений, но их может бросать
+<tt>CodeUnitReader::read_unit()</tt>.</note>
 </synopsis>
 
 <synopsis>
 <prototype>bool read(unicode_t &amp;cp)</prototype>
-<p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
-on EOF or throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p>
+<p>То же самое, что <tt>parse()</tt>, но возвращает <tt>true</tt> в случае
+успеха, <tt>false</tt> в случае EOF, бросает исключения из
+<xref to="utf16.exceptions.h"/> в остальных случаях.</p>
 </synopsis>
 
 </section>
 
-<section><title>Free functions</title>
+<section><title>Свободные функции</title>
 
 <synopsis>
 <prototype>template&lt;class CodeUnitReader>
 utf16::reader&lt;CodeUnitReader> utf16::make_reader(CodeUnitReader r)</prototype>
-<p>Creates UTF-16 reader using specified <tt>CodeUnitReader</tt>.</p>
+<p>Создаёт UTF-16 reader используя указанный <tt>CodeUnitReader</tt>.</p>
 </synopsis>
 
 </section>
 
-<section><title>Example</title>
+<section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 #include<__vic/utf16/reader.h>
 #include<__vic/readers/string.h>

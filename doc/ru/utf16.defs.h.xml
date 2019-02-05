@@ -1,0 +1,21 @@
+<chapter xml:id="utf16.defs.h">
+<title><tt>__vic/utf16/defs.h</tt></title>
+
+<chapter xml:id="utf16--code_unit_t">
+<title><tt>utf16::code_unit_t</tt></title>
+
+<code-block lang="C++">
+namespace utf16 {
+
+using code_unit_t = char16_t; // since C++11
+// или
+using code_unit_t = uint_least16_t; // C++98
+
+} // namespace
+</code-block>
+
+<p>Тип для UTF-16 <link href="https://unicode.org/glossary/#code_unit">code unit</link>.</p>
+
+</chapter>
+
+</chapter>

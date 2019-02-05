@@ -1,17 +1,17 @@
 <chapter xml:id="stdint.h">
 <title><tt>__vic/stdint.h</tt></title>
 
-<p>ISO C99 <tt>&lt;stdint.h></tt> for C++98. Since C++11 - just a redirector to
-<tt>&lt;cstdint></tt>.</p>
-<p>Additionally, some metafunctions for template metaprogramming are provided.
-</p>
+<p><tt>&lt;stdint.h></tt> из ISO C99 для C++98. Начиная с C++11 - просто
+перенаправление на <tt>&lt;cstdint></tt>.</p>
+<p>Дополнительно содержит некоторые метафункции для шаблонного
+метапрограммирования.</p>
 
 
 <chapter xml:id="intN_t">
-<title>Exact-width integer types</title>
+<title>Целые с точной длиной</title>
 
-<p>Following types are guaranteed to be available in the <b>global
-namespace</b>:</p>
+<p>Гарантируется, что следующие типы доступны в <b>глобальном пространстве
+имён</b>:</p>
 <list style="bulleted">
     <item><tt>int8_t</tt></item>
     <item><tt>int16_t</tt></item>
@@ -27,10 +27,10 @@ namespace</b>:</p>
 
 
 <chapter xml:id="int_leastN_t">
-<title>Minimum-width integer types</title>
+<title>Целые с минимальной длиной</title>
 
-<p>Following types are guaranteed to be available in the <b>global
-namespace</b>:</p>
+<p>Гарантируется, что следующие типы доступны в <b>глобальном пространстве
+имён</b>:</p>
 <list style="bulleted">
     <item><tt>int_least8_t</tt></item>
     <item><tt>int_least16_t</tt></item>
@@ -46,10 +46,10 @@ namespace</b>:</p>
 
 
 <chapter xml:id="int_fastN_t">
-<title>Fastest minimum-width integer types</title>
+<title>Быстрейшие целые с минимальной длиной</title>
 
-<p>Following types are guaranteed to be available in the <b>global
-namespace</b>:</p>
+<p>Гарантируется, что следующие типы доступны в <b>глобальном пространстве
+имён</b>:</p>
 <list style="bulleted">
     <item><tt>int_fast8_t</tt></item>
     <item><tt>int_fast16_t</tt></item>
@@ -65,10 +65,10 @@ namespace</b>:</p>
 
 
 <chapter xml:id="intmax_t">
-<title>Greatest-width integer types</title>
+<title>Целые наибольшего размера</title>
 
-<p>Following types are guaranteed to be available in the <b>global
-namespace</b>:</p>
+<p>Гарантируется, что следующие типы доступны в <b>глобальном пространстве
+имён</b>:</p>
 <list style="bulleted">
     <item><tt>intmax_t</tt></item>
     <item><tt>uintmax_t</tt></item>
@@ -78,10 +78,10 @@ namespace</b>:</p>
 
 
 <chapter xml:id="intptr_t">
-<title>Integer types capable of holding object pointers</title>
+<title>Целые, вмещающие указатели на объекты</title>
 
-<p>Following types are guaranteed to be available in the <b>global
-namespace</b>:</p>
+<p>Гарантируется, что следующие типы доступны в <b>глобальном пространстве
+имён</b>:</p>
 <list style="bulleted">
     <item><tt>intptr_t</tt></item>
     <item><tt>uintptr_t</tt></item>
@@ -115,12 +115,12 @@ using uint_exact_bytes = typename uint_exactly_bytes<N>::type;
 // END C++11 only
 ]]></code-block>
 
-<p>Metafunctions returning the signed/unsigned interger type of the requested
-exact size in bytes. Shorter aliases are available in C++11 mode.
-Valid <tt>SizeInBytes</tt> values are <tt>1</tt>, <tt>2</tt>, <tt>4</tt>,
-<tt>8</tt>.</p>
+<p>Метафункции, возвращающие знаковый/беззнаковый целый тип для указанного
+размера в байтах. Более короткие псевдонимы доступны в режиме C++11.
+Допустимые значения для <tt>SizeInBytes</tt>: <tt>1</tt>, <tt>2</tt>,
+<tt>4</tt>, <tt>8</tt>.</p>
 
-<section><title>Example</title>
+<section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 typedef __vic::int_exactly_bytes< sizeof(void *) >::type my_intptr_t;
 // or in C++11

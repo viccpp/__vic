@@ -59,7 +59,7 @@ subsequent <tt>is_open()</tt> call!</p>
 
 <synopsis>
 <prototype>~stdio_file()</prototype>
-<p>Calls std::fclose() if <tt>is_open() == true</tt>.</p>
+<p>Calls <tt>std::fclose()</tt> if <tt>is_open() == true</tt>.</p>
 </synopsis>
 
 <synopsis>

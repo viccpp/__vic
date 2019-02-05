@@ -1,13 +1,13 @@
 <chapter xml:id="ascii.h">
 <title><tt>__vic/ascii.h</tt></title>
 
-<p>Fast, compact and locale-independent tools for ASCII-characters
-processing. All the tools are located within <tt>__vic::ascii</tt>
-namespace.</p>
+<p>Быстрые, компактные и независимые от locale инструменты для обработки
+ASCII-символов. Все инструменты находятся в пространстве имён
+<tt>__vic::ascii</tt>.</p>
 
 
 <chapter xml:id="ascii--is-functions">
-<title><tt>ascii::is</tt>-functions</title>
+<title><tt>ascii::is</tt>-функции</title>
 
 <code-block lang="C++">
 namespace ascii {
@@ -24,7 +24,7 @@ constexpr bool isascii(char c);
 }
 </code-block>
 
-<p>Counterparts of the corresponding <tt>&lt;cctype></tt> functions.</p>
+<p>Аналоги соответствующих функций из <tt>&lt;cctype></tt>.</p>
 
 </chapter>
 
@@ -36,8 +36,8 @@ constexpr bool isascii(char c);
 constexpr char ascii::todigit(int d);
 </code-block>
 
-<p>Converts integer value from 0 to 9 to the decimal digit. The result is
-undefined if the input value goes beyond the range.</p>
+<p>Преобразует целое значение от 0 до 9 в десятичную цифру. Результат
+неопределён, если входное значение не попадает в указанный диапазон.</p>
 <precondition><tt><![CDATA[0 <= d && d <= 9]]></tt></precondition>
 
 </chapter>
@@ -55,9 +55,10 @@ constexpr char toxdigit_lower(int d);
 }
 </code-block>
 
-<p>Converts integer value from 0 to 15 to the hexadecimal digit. The first one
-uses upper case for <tt>A</tt>-<tt>F</tt>, the latter - lower. The result
-is undefined if the input value goes beyond the range.</p>
+<p>Преобразует целое значение от 0 до 15 в шестнадцатеричную цифру. Первая
+функция использует верхний регистр для <tt>A</tt>-<tt>F</tt>, вторая - нижний.
+Результат неопределён, если входное значение не попадает в указанный диапазон.
+</p>
 <precondition><tt><![CDATA[0 <= d && d <= 15]]></tt></precondition>
 
 </chapter>
@@ -70,8 +71,8 @@ is undefined if the input value goes beyond the range.</p>
 constexpr int ascii::digit_to_number(char d);
 </code-block>
 
-<p>Converts the given decimal digit to the number if <tt>ascii::isdigit(d)</tt>.
-<tt>-1</tt> is returned otherwise.</p>
+<p>Преобразует десятичную цифру в число, если <tt>ascii::isdigit(d)</tt>.
+В противном случае возвращается <tt>-1</tt>.</p>
 
 </chapter>
 
@@ -83,8 +84,8 @@ constexpr int ascii::digit_to_number(char d);
 constexpr int ascii::xdigit_to_number(char d);
 </code-block>
 
-<p>Converts the given hexadecimal digit to the number if
-<tt>ascii::isxdigit(d)</tt>. <tt>-1</tt> is returned otherwise.</p>
+<p>Преобразует шестнадцатеричную цифру в число, если
+<tt>ascii::isxdigit(d)</tt>. В противном случае возвращается <tt>-1</tt>.</p>
 
 </chapter>
 
@@ -106,20 +107,20 @@ constexpr char lower_to_upper(char lower);
 <synopsis>
 <prototype>constexpr char tolower(char c)</prototype>
 <prototype>constexpr char toupper(char c)</prototype>
-<p>Counterparts of the corresponding <tt>&lt;cctype></tt> functions.</p>
+<p>Аналоги соответствующих функций из <tt>&lt;cctype></tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>constexpr char upper_to_lower(char upper)</prototype>
-<p>More restricted counterpart of <tt>tolower()</tt>. The result is undefined
-if the argument is not an ASCII capital letter.</p>
+<p>Более ограниченный аналог <tt>tolower()</tt>. Результат неопределён, если
+аргумент не является заглавной буквой ASCII.</p>
 <precondition><tt>ascii::isupper(upper)</tt></precondition>
 </synopsis>
 
 <synopsis>
 <prototype>constexpr char lower_to_upper(char lower)</prototype>
-<p>More restricted counterpart of <tt>toupper()</tt>. The result is undefined
-if the argument is not an ASCII small letter.</p>
+<p>Более ограниченный аналог <tt>toupper()</tt>. Результат неопределён, если
+аргумент не является строчной буквой ASCII.</p>
 <precondition><tt>ascii::islower(lower)</tt></precondition>
 </synopsis>
 
@@ -133,7 +134,7 @@ if the argument is not an ASCII small letter.</p>
 constexpr bool ascii::equal_icase(char ch1, char ch2);
 </code-block>
 
-<p>Checks equality of the two ASCII-characters ignoring the case.</p>
+<p>Проверяет два ASCII-символа на равенство без учета регистра букв.</p>
 
 </chapter>
 

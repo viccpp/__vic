@@ -1,7 +1,8 @@
 <chapter xml:id="unicode.h">
 <title><tt>__vic/unicode.h</tt></title>
 
-<p><link href="https://www.unicode.org/">Unicode</link> support utilities.</p>
+<p>Утилиты для поддержки <link href="https://www.unicode.org/">Unicode</link>.
+</p>
 
 
 <chapter xml:id="unicode_t">
@@ -9,11 +10,11 @@
 
 <code-block lang="C++">
 using unicode_t = char32_t; // since C++11
-// or
+// или
 using unicode_t = uint_least32_t; // C++98
 </code-block>
 
-<p>Type able to store any Unicode
+<p>Тип, предназначениый для хранения Unicode
 <link href="https://www.unicode.org/glossary/#code_point">code point</link>.</p>
 
 </chapter>
@@ -27,9 +28,9 @@ template<class UTFReader, class UTFWriter>
 void utf_transcode(UTFReader r, UTFWriter w);
 ]]></code-block>
 
-<p>An algorithm that reads all code points of type <xref to="unicode_t"/> from
-<tt>UTFReader</tt> using <tt>r.read()</tt> and writes them to <tt>UTFWriter</tt>
-using <tt>w.write()</tt>.</p>
+<p>Алгоритм, читающий code points типа <xref to="unicode_t"/> из
+<tt>UTFReader</tt>, используя <tt>r.read()</tt>, и записывающий их в
+<tt>UTFWriter</tt>, используя <tt>w.write()</tt>.</p>
 
 </chapter>
 
@@ -43,7 +44,7 @@ constexpr unicode_t unicode_bom = 0xFEFF;
 constexpr unicode_t unicode_replacement_char = 0xFFFD;
 </code-block>
 
-<p>Named constants for some useful Unicode code points.</p>
+<p>Именованные константы некоторых полезных Unicode code points.</p>
 
 </chapter>
 

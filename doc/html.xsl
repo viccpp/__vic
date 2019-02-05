@@ -4,6 +4,7 @@
 	doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
 	doctype-system="http://www.w3.org/TR/html4/loose.dtd"/>
 
+<xsl:variable name="lang" select="string(/document/@xml:lang)"/>
 <xsl:key name="chapters" match="chapter" use="@xml:id"/>
 
 <xsl:template match="/">
@@ -156,7 +157,12 @@ blockquote * {
 
 <xsl:template name="toc">
 	<table style="font-size:10pt;" cellspacing="0" cellpadding="0">
-		<caption class="toc">Contents</caption>
+		<caption class="toc">
+			<xsl:choose>
+				<xsl:when test="$lang='ru'">Содержание</xsl:when>
+				<xsl:otherwise>Contents</xsl:otherwise>
+			</xsl:choose>
+		</caption>
 		<xsl:call-template name="toc-entry"/>
 	</table>
 </xsl:template>
@@ -306,23 +312,48 @@ blockquote * {
 </xsl:template>
 
 <xsl:template match="note">
-	<div><u><b>Note</b></u>: <xsl:apply-templates/></div>
+	<div><u><b>
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Замечание</xsl:when>
+			<xsl:otherwise>Note</xsl:otherwise>
+		</xsl:choose>
+	</b></u>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="note[parent::synopsis]">
-	<div><u>Note</u>: <xsl:apply-templates/></div>
+	<div><u>
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Замечание</xsl:when>
+			<xsl:otherwise>Note</xsl:otherwise>
+		</xsl:choose>
+	</u>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="precondition">
-	<div><u>Precondition</u>: <xsl:apply-templates/></div>
+	<div><u>
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Предусловие</xsl:when>
+			<xsl:otherwise>Precondition</xsl:otherwise>
+		</xsl:choose>
+	</u>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="postcondition">
-	<div><u>Postcondition</u>: <xsl:apply-templates/></div>
+	<div><u>
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Постусловие</xsl:when>
+			<xsl:otherwise>Postcondition</xsl:otherwise>
+		</xsl:choose>
+	</u>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="invariant">
-	<div><u>Invariant</u>: <xsl:apply-templates/></div>
+	<div><u>
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Инвариант</xsl:when>
+			<xsl:otherwise>Invariant</xsl:otherwise>
+		</xsl:choose>
+	</u>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="synopsis">

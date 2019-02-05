@@ -1,7 +1,7 @@
 <chapter xml:id="bits.h">
 <title><tt>__vic/bits.h</tt></title>
 
-<p>Bits and bytes manipulation tools.</p>
+<p>Инструменты для манипуляции битами и байтами.</p>
 
 
 <chapter xml:id="lo_nibble">
@@ -12,8 +12,8 @@ constexpr uint8_t lo_nibble(uint8_t byte);
 constexpr uint8_t hi_nibble(uint8_t byte);
 </code-block>
 
-<p>Return the value of the low-order/high-order half-byte (tetrad),
-respectively.</p>
+<p>Возвращают значение младшего/старшего полубайта (тетрады), соответственно.
+</p>
 
 </chapter>
 
@@ -26,9 +26,9 @@ template<class T> T lsb_ones(unsigned bits_num);
 template<class T> T msb_ones(unsigned bits_num);
 ]]></code-block>
 
-<p>Return the value of the type <tt>T</tt> with all least/most significant
-<tt>bits_num</tt> bits filled with <tt>1</tt>, respectively. All other bits
-are set to <tt>0</tt>.</p>
+<p>Возвращают значение типа <tt>T</tt> со всеми младшими/старшими
+<tt>bits_num</tt> битами заполненными <tt>1</tt>, соответственно. Все остальные
+биты установлены в <tt>0</tt>.</p>
 
 </chapter>
 
@@ -40,8 +40,8 @@ are set to <tt>0</tt>.</p>
 template&lt;class T> T get_lsbs(T v, unsigned bits_num);
 </code-block>
 
-<p>Returns <tt>bits_num</tt> least significant bits of <tt>v</tt>. In other
-words, zeroes all but <tt>bits_num</tt> least significant bits.</p>
+<p>Возвращает <tt>bits_num</tt> младших битов значения <tt>v</tt>. Другими
+словами, заполняет нулями все, кроме младших <tt>bits_num</tt> битов.</p>
 
 </chapter>
 
@@ -53,7 +53,7 @@ words, zeroes all but <tt>bits_num</tt> least significant bits.</p>
 constexpr int ord(char ch);
 </code-block>
 
-<p>Returns the character code from 0 to 255.</p>
+<p>Возвращает код символа от 0 до 255.</p>
 <postcondition>ord(ch) >= 0</postcondition>
 
 </chapter>
@@ -74,8 +74,8 @@ uint32_t rotr(uint32_t v, int shift);
 uint64_t rotr(uint64_t v, int shift);
 </code-block>
 
-<p>The functions perform circular left (<tt>rotl</tt>) or right
-(<tt>rotr</tt>) bitwise shift (rotation).</p>
+<p>Функции выполняют циклический побитовый сдвиг (rotation) влево
+(<tt>rotl</tt>) или вправо (<tt>rotr</tt>).</p>
 <precondition>shift >= 0</precondition>
 
 </chapter>
@@ -88,7 +88,7 @@ uint64_t rotr(uint64_t v, int shift);
 constexpr uint8_t swapped_nibbles(uint8_t b);
 </code-block>
 
-<p>Swaps a low-order half-byte with a high-order one and returns the value.</p>
+<p>Меняет местами младший и старший полубайт значения и возвращает его.</p>
 
 </chapter>
 

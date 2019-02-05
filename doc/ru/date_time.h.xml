@@ -1,0 +1,89 @@
+<chapter xml:id="date_time.h">
+<title><tt>__vic/date_time.h</tt></title>
+
+<p>Работа с датой и временем.</p>
+
+
+<chapter xml:id="is_leap_year">
+<title><tt>is_leap_year()</tt></title>
+
+<code-block lang="C++">
+constexpr bool is_leap_year(int year);
+</code-block>
+
+<p>Определяет, является ли данный год високосным, согласно Григорианскому
+календарю.</p>
+
+</chapter>
+
+
+<chapter xml:id="days_in_month">
+<title><tt>days_in_month()</tt></title>
+
+<code-block lang="C++">
+int days_in_month(int month, int year);
+</code-block>
+
+<p>Возвращает количество дней в данном месяце. Месяц - это число от 1 до 12.
+Второй параметр используется только, если месяц - 2 (февраль), в остальных
+случаях просто игнорируется.</p>
+
+</chapter>
+
+
+<chapter xml:id="days_between_years">
+<title><tt>days_between_years()</tt></title>
+
+<code-block lang="C++">
+long days_between_years(unsigned year1, unsigned year2);
+</code-block>
+
+<p>Возвращает разность в днях между началами годов <tt>year2</tt> и
+<tt>year1</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="invalid_date">
+<title><tt>invalid_date</tt></title>
+
+<code-block lang="C++">
+class invalid_date; // : public std::exception
+</code-block>
+
+<p>Исключение, бросаемое в случае неправильного элемента даты или времени.</p>
+
+</chapter>
+
+
+<chapter xml:id="validate_date_time">
+<title><tt>validate_date()</tt>, <tt>validate_time()</tt>,
+<tt>validate_date_time()</tt></title>
+
+<code-block lang="C++">
+void validate_date(int yy, int mm, int dd);
+void validate_time(int hh, int mi, int ss);
+void validate_date_time(int yy, int mm, int dd, int hh, int mi, int ss);
+</code-block>
+
+<p>Проверяет правильность даты/времени. Проверяются следующие ограничения:</p>
+<list style="bulleted">
+    <item><tt>yy</tt> (год) - не может быть <tt>0</tt>,</item>
+    <item><tt>mm</tt> (месяц) - <tt>1..12</tt>,</item>
+    <item><tt>dd</tt> (день месяца) - <tt>1..{28..31}</tt>, в зависимости
+        от месяца,</item>
+    <item><tt>hh</tt> (час) - <tt>0..23</tt>,</item>
+    <item><tt>mi</tt> (минута) - <tt>0..59</tt>,</item>
+    <item><tt>ss</tt> (секунда) - <tt>0..59</tt>.</item>
+</list>
+
+<p>В случае нарушения какого-то из ограничений бросается <tt>invalid_date</tt>.
+</p>
+
+<note>Специальные значения, такие как <tt>24:00:00</tt> (полночь в конце дня)
+или <tt>59:60</tt> (високосная секунда) рассматриваются как неправильные!</note>
+
+</chapter>
+
+
+</chapter>

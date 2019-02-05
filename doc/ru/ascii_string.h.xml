@@ -1,7 +1,7 @@
 <chapter xml:id="ascii_string.h">
 <title><tt>__vic/ascii_string.h</tt></title>
 
-<p>ASCII-strings processing tools.</p>
+<p>Инструменты обработки ASCII-строк.</p>
 
 
 <chapter xml:id="ascii--tolower-str">
@@ -16,8 +16,8 @@ std::string &tolower(std::string &str);
 }
 ]]></code-block>
 
-<p>Translates all Latin capital letters of <tt>str</tt> to the small ones.
-Returns <tt>str</tt>. C-string must not be <tt>nullptr</tt>!</p>
+<p>Переводит все заглавные латинские буквы <tt>str</tt> в строчные. Возвращает
+<tt>str</tt>. Указатель на C-строку не должен быть <tt>nullptr</tt>!</p>
 
 </chapter>
 
@@ -34,8 +34,8 @@ std::string &toupper(std::string &str);
 }
 ]]></code-block>
 
-<p>Translates all Latin small letters of <tt>str</tt> to the capital ones.
-Returns <tt>str</tt>. C-string must not be <tt>nullptr</tt>!</p>
+<p>Переводит все строчные латинские буквы <tt>str</tt> в заглавные. Возвращает
+<tt>str</tt>. Указатель на C-строку не должен быть <tt>nullptr</tt>!</p>
 
 </chapter>
 
@@ -56,8 +56,8 @@ bool equal_icase(const char *s1, size_t s1_len,
 }
 ]]></code-block>
 
-<p>Checks equality of two ASCII-strings ignoring the case. The pointers must not
-be <tt>nullptr</tt>!</p>
+<p>Проверяет две ASCII-строки на равенство без учета регистра букв. Указатели
+на строки не должны быть <tt>nullptr</tt>!</p>
 
 </chapter>
 

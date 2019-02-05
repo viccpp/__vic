@@ -1,0 +1,90 @@
+<chapter xml:id="iterator.h">
+<title><tt>__vic/iterator.h</tt></title>
+
+<p>Инструменты работы с итераторами.</p>
+
+
+<chapter xml:id="begin-array">
+<title><tt>begin(T[])</tt>, <tt>end(T[])</tt>, <tt>cbegin(T[])</tt>,
+<tt>cend(T[])</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, size_t N> constexpr T *begin(T (&arr)[N]);
+template<class T, size_t N> constexpr T *end(T (&arr)[N]);
+
+template<class T, size_t N> constexpr const T *cbegin(T (&arr)[N]);
+template<class T, size_t N> constexpr const T *cend(T (&arr)[N]);
+]]></code-block>
+
+<p>Возвращают указатели на начало и за конец массива.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+int vals[] = { 1, 2, 3 };
+std::list<int> lst(__vic::begin(vals), __vic::end(vals));
+assert(lst.size() == 3);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="advance">
+<title><tt>advance()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class Iter>
+void advance(Iter &it, Iter end, size_t n);
+]]></code-block>
+
+<p>Функция похожа на <tt>std::advance()</tt>, но отличается по формату вызова
+и поведению. Главные отличия:</p>
+<list style="numbered">
+    <item>Позволяет двигаться только вперёд (<tt>++</tt>),</item>
+    <item>Контролирует выход за границу диапазона. Прекращает работу, если
+        достигнут <tt>end</tt>.</item>
+</list>
+
+</chapter>
+
+
+<chapter xml:id="next">
+<title><tt>next()</tt>, <tt>prev()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ForwardIterator>
+ForwardIterator next(ForwardIterator it);
+
+template<class ForwardIterator>
+ForwardIterator next(ForwardIterator it, size_t n);
+
+template<class BidirectionalIterator>
+BidirectionalIterator prev(BidirectionalIterator it);
+
+template<class BidirectionalIterator>
+BidirectionalIterator prev(BidirectionalIterator it, size_t n);
+]]></code-block>
+
+<p><tt>next()</tt> возвращает значение итератора, передвинутое вперёд на
+<tt>n</tt> позиций. <tt>prev()</tt> делает то же самое, но в противоположную
+сторону. В отличие от одноимённых функций из STL C++11, смещение не может быть
+отрицательным. Версии с одним параметром просто вызывают
+<tt>++it</tt>/<tt>--it</tt> и возвращают результат.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+template<class Container>
+void f(const Container &c)
+{
+    // Начать обход со второго элемента
+    // v.begin() + 1 работает только для RandomAccessIterator
+    // ++v.begin() может вообще не скомпилироваться
+    for(auto it = __vic::next(c.begin()); it != c.end(); ++it) ...;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

@@ -63,127 +63,131 @@ bool operator>=(const char *s1, const readonly_cstring &s2);
 void swap(readonly_cstring &s1, readonly_cstring &s2) noexcept;
 ]]></code-block>
 
-<p>The simple non-mutable null-terminated string class with automatic memory
-management. Has simple and predictable structure that can be useful when
-ABI compatibility/stability is required or when usage of <tt>std::string</tt>
-is objectionable for some reason. The functionality provided by the class is
-also minimal. It provides string copying and storing and read access to it.
-One cannot modify string parts - only replace the whole value.</p>
+<p>Простой класс неизменяемой строки с нулевым терминатором, автоматически
+управляющий памятью. Имеет простейшую предсказуемую структуру, что может быть
+полезно для обеспечения двоичной совместимости или в случаях, когда
+использование <tt>std::string</tt> нежелательно по каким-либо причинам.
+Функциональность класса также минимальна. Она обеспечивает копирование и
+хранение строки, а также доступ к ней на чтение. Модифицировать строку нельзя –
+только заменять полностью на другую.</p>
 
-<p>If one need to store a string value in a class, usage of this class may be a
-good choice. It's easier-to-use, more clear and safer than array of chars
-(<tt>char[]</tt>) and can be more efficient than <tt>std::string</tt>,
-though, of course, less universal. If modifications of the string parts are
-expected, usage of another string class should be considered, for instance,
-<tt>__vic::string_buffer</tt>. Class <tt>readonly_cstring</tt> is not designed
-for such purposes.</p>
+<p>Если Вам нужно хранить в классе строковое значение, то использование данного
+типа для строкового поля – это хороший вариант. Это более удобно, универсально
+и безопасно, чем массив символов (<tt>char[]</tt>) и часто более эффективно,
+чем <tt>std::string</tt>, хотя, конечно, менее универсально. Если строку
+предстоит часто редактировать (не считая полной замены), то лучше рассмотреть
+альтернативные варианты представления, например <tt>__vic::string_buffer</tt>.
+Класс <tt>readonly_cstring</tt> разработан не для этих целей.</p>
 
-<section><title>Guarantees provided by the class design</title>
+<section><title>Гарантии, предоставляемые дизайном класса</title>
 <list style="bulleted">
-    <item>Null pointer value is treated as an empty string.</item>
-    <item>Cast to C-string (<tt>const char *</tt>) always returns valid
-        pointer, never <tt>nullptr</tt>.</item>
-    <item>For each string value, exact amount of memory is allocated. No extra
-        memory reserved.</item>
-    <item>Class contains single data member - pointer to the holded string,
-        so the total object's size is likely one pointer.</item>
+    <item>Пустой указатель корректно воспринимается как пустая строка.</item>
+    <item>Преобразователь в C-строку (<tt>const char *</tt>) всегда возвращает
+        корректный указатель, никогда не возвращается <tt>nullptr</tt>.</item>
+    <item>Хранимая строка занимает в памяти ровно столько места, сколько ей
+        требуется. Никогда не резервируется дополнительная память.</item>
+    <item>Набор полей-данных состоит только из одного поля – указателя на
+        хранимую строку. Поэтому, если компилятор не применяет выравнивание,
+        размер объекта будет равен размеру указателя.</item>
 </list>
 </section>
 
-<section><title>Class members</title>
+<section><title>Члены класса</title>
 
 <synopsis>
 <prototype>readonly_cstring()</prototype>
-<p>Creates an empty string.</p>
+<p>Создаёт пустую строку.</p>
 <postcondition><tt>empty() == true</tt></postcondition>
 </synopsis>
 
 <synopsis>
 <prototype>readonly_cstring(const char *str)</prototype>
 <prototype>readonly_cstring(const readonly_cstring &amp;str)</prototype>
-<p>Creates a copy of <tt>str</tt>.</p>
+<p>Создаёт копию <tt>str</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>readonly_cstring(const char *begin, const char *end)</prototype>
 <prototype>readonly_cstring(const char *chars, size_t n)</prototype>
-<p>Creates a string from characters range.</p>
+<p>Создаёт строку из диапазона символов.</p>
 </synopsis>
 
 <synopsis>
 <prototype>readonly_cstring &amp;operator=(const char *str)</prototype>
 <prototype>readonly_cstring &amp;operator=(const readonly_cstring &amp;str)</prototype>
-<p>Assigns <tt>str</tt>.</p>
+<p>Присваивает <tt>str</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>readonly_cstring(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
 <prototype>readonly_cstring &amp;operator=(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
-<p>Move operations for C++11 mode.</p>
+<p>Операции перемещения для режима C++11.</p>
 </synopsis>
 
 <synopsis>
 <prototype>readonly_cstring &amp;assign(const char *begin, const char *end)</prototype>
 <prototype>readonly_cstring &amp;assign(const char *chars, size_t n)</prototype>
-<p>Assigns the string constructed from characters range.</p>
+<p>Присваивает строку из диапазона символов.</p>
 </synopsis>
 
 <synopsis>
 <prototype>char *reserve(size_t n)</prototype>
-<p>Allocates internal buffer for <tt>n</tt> chars and returns the pointer to
-it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p>
-<note>Try to avoid this unsafe function!</note>
+<p>Резервирует внутренний буфер в <tt>n</tt> символов и возвращает указатель на
+него. Бывает полезно для использования с функциями вроде <tt>std::sprintf()</tt>.
+</p>
+<note>Используйте как можно реже данную опасную функцию!</note>
 </synopsis>
 
 <synopsis>
 <prototype>int compare(const char *str) const</prototype>
-<p>Compares the string with <tt>str</tt>. Return values are similar to
+<p>Сравнивает строку с <tt>str</tt>. Возвращаемые значения аналогичны
 <tt>std::strcmp</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>bool empty() const</prototype>
-<p>Returns <tt>true</tt> if string is empty.</p>
+<p>Возвращает <tt>true</tt>, если строка пустая.</p>
 </synopsis>
 
 <synopsis>
 <prototype>const char *c_str() const</prototype>
 <prototype>operator const char*() const</prototype>
-<p>Returns a pointer to the stored string. The pointer is never null.</p>
+<p>Возвращает указатель на хранимую строку. Возвращаемый указатель никогда не
+бывает пустым.</p>
 </synopsis>
 
 <synopsis>
 <prototype>void swap(readonly_cstring &amp;str) noexcept</prototype>
-<p>Swaps the value with <tt>str</tt>.</p>
+<p>Меняется содержимым с <tt>str</tt>.</p>
 </synopsis>
 
 </section>
 
-<section><title>Free functions</title>
+<section><title>Свободные функции</title>
 
 <synopsis>
 <prototype>int compare(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
 <prototype>int compare(const readonly_cstring &amp;s1, const char *s2)</prototype>
 <prototype>int compare(const char *s1, const readonly_cstring &amp;s2)</prototype>
-<p>Compares two strings as <tt>std::strcmp</tt> does.</p>
+<p>Сравнивает две строки аналогично <tt>std::strcmp</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>bool operator==(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
 <prototype>...</prototype>
 <prototype>bool operator>=(const char *s1, const readonly_cstring &amp;s2)</prototype>
-<p>Full set of comparators for <tt>readonly_cstring</tt> and <tt>const char *</tt>
-in all combinations.</p>
+<p>Полный набор операторов сравнения <tt>readonly_cstring</tt> и
+<tt>const char *</tt> в различных сочетаниях.</p>
 </synopsis>
 
 <synopsis>
 <prototype>void swap(readonly_cstring &amp;s1, readonly_cstring &amp;s2) noexcept</prototype>
-<p>Specialization of the standard algorithm.</p>
+<p>Специализация стандартного алгоритма.</p>
 </synopsis>
 
 </section>
 
-<section><title>Example</title>
+<section><title>Пример</title>
 <code-block lang="C++">
 class C
 {

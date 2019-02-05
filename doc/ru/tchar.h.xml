@@ -1,18 +1,21 @@
 <chapter xml:id="tchar.h">
 <title><tt>__vic/tchar.h</tt></title>
 
-<p>Generic functions to manipulate C-strings regardless of the underlying
-char-type, like <tt>std::char_traits&lt;></tt>. All the functions are located
-within <tt>__vic::tchar</tt> namespace.</p>
+<p>Обобщенные (generic) функции для манипуляции С-строками независимо от
+используемого ими типа символов, подобно <tt>std::char_traits&lt;></tt>.
+Использование данных функций в шаблонах нередко значительно сокращает
+потребность в написании специализаций для различных типов символов.</p>
 
-<p>Most of the functions are just generic redirectors to calls like
-<tt>strcpy</tt>, <tt>wcscpy</tt>, et al. Searching functions have more
-intelligible names that ones in the C-library and unified parameters: they
-always take pointers and never indices. Also the set of the functions is
-complemented with "logically symmetrical" ones missed in the standard library.
-Searching functions return <tt>nullptr</tt> in case of failure.</p>
+<p>Все функции находятся в пространстве имён <tt>__vic::tchar</tt>.</p>
 
-<section><title>Example</title>
+<p>Большинство функций являются просто обобщёнными обёртками для функций,
+вроде <tt>strcpy</tt>, <tt>wcscpy</tt> и т.п. Поисковые функции имеют более
+осмысленные имена, чем их аналоги в билиотеке C, и унифицированные параметры:
+они всегда принимают указатели и никогда индексы. Также набор функций дополнен
+«логически симметричными», но отсутствующими в стандартной билиотеке.
+Поисковые функции возвращают <tt>nullptr</tt> в случае неудачи.</p>
+
+<section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 template<class charT>
 charT *generic_dup(const charT *st)
@@ -35,7 +38,7 @@ template<class charT>
 size_t tchar::length(const charT *str);
 ]]></code-block>
 
-<p>String length in elements. Generic <tt>strlen</tt> / <tt>wcslen</tt>.</p>
+<p>Длина строки в элементах. Обобщённый <tt>strlen</tt> / <tt>wcslen</tt>.</p>
 
 </chapter>
 
@@ -55,12 +58,13 @@ charT *end(charT *str);
 }
 ]]></code-block>
 
-<p>Pointer to the NULL-terminator. Generic <tt>strchr(str, '\0')</tt> /
+<p>Указатель на NULL-терминатор. Обобщённый <tt>strchr(str, '\0')</tt> /
 <tt>wcschr(str, L'\0')</tt>.</p>
 
-<note>Some buggy implementations of <tt>std::strchr()</tt> like MinGW return
-non-const <tt>char *</tt> even if the argument is <tt>const char *</tt> so
-this function can be used as a workaround in the similar use case.</note>
+<note>Некоторые «кривые» реализации <tt>std::strchr()</tt>, например в  MinGW,
+возвращают неконстантный <tt>char *</tt>, даже если аргумент - <tt>const char
+*</tt>. В связи с этим, данные функции могут быть использованы как обход
+данной проблемы.</note>
 
 </chapter>
 
@@ -73,7 +77,7 @@ template<class charT>
 int tchar::compare(const charT *str1, const charT *str2);
 ]]></code-block>
 
-<p>Compare two strings. Generic <tt>strcmp</tt> / <tt>wcscmp</tt>.</p>
+<p>Сравнивает две строки. Обобщённый <tt>strcmp</tt> / <tt>wcscmp</tt>.</p>
 
 </chapter>
 
@@ -86,7 +90,7 @@ template<class charT>
 charT *tchar::copy(charT *dest, const charT *src);
 ]]></code-block>
 
-<p>Copy string. Generic <tt>strcpy</tt> / <tt>wcscpy</tt>.</p>
+<p>Копирует строку. Обобщённый <tt>strcpy</tt> / <tt>wcscpy</tt>.</p>
 
 </chapter>
 
@@ -99,7 +103,7 @@ template<class charT>
 charT *tchar::move(charT *dest, const charT *src);
 ]]></code-block>
 
-<p>Move the string in memory (<tt>memmove</tt>).</p>
+<p>Сдвигает строку в памяти (<tt>memmove</tt>).</p>
 
 </chapter>
 
@@ -112,7 +116,7 @@ template<class charT>
 charT *tchar::concat(charT *dest, const charT *src);
 ]]></code-block>
 
-<p>Concatenate two strings. Generic <tt>strcat</tt> / <tt>wcscat</tt>.</p>
+<p>Конкатенирует две строки. Обобщённый <tt>strcat</tt> / <tt>wcscat</tt>.</p>
 
 </chapter>
 
@@ -138,7 +142,7 @@ charT *find(charT *str, const charT *sub);
 }
 ]]></code-block>
 
-<p>Find the first occurrence of the character or substring. Generic
+<p>Ищет первое вхождение символа или подстроки. Обобщённые
 <tt>strchr</tt> / <tt>wcschr</tt> / <tt>strstr</tt> / <tt>wcsstr</tt>.</p>
 
 </chapter>
@@ -159,7 +163,7 @@ charT *rfind(charT *str, charT ch);
 }
 ]]></code-block>
 
-<p>Find the last occurrence of the character. Generic <tt>strrchr</tt> /
+<p>Ищет последнее вхождение символа. Обобщённые <tt>strrchr</tt> /
 <tt>wcsrchr</tt>.</p>
 
 </chapter>
@@ -180,8 +184,7 @@ charT *find_if(charT *str, Pred pred);
 }
 ]]></code-block>
 
-<p>Find the first occurrence of the character that satisfies the specified
-predicate.</p>
+<p>Ищет первое вхождение символа, удовлетворяющего указанному предикату.</p>
 
 </chapter>
 
@@ -201,8 +204,7 @@ charT *find_if_not(charT *str, Pred pred);
 }
 ]]></code-block>
 
-<p>Find the first occurrence of the character that doesn't satisfy the
-specified predicate.</p>
+<p>Ищет первое вхождение символа, не удовлетворяющего указанному предикату.</p>
 
 </chapter>
 
@@ -222,8 +224,7 @@ charT *rfind_if(charT *str, Pred pred);
 }
 ]]></code-block>
 
-<p>Find the last occurrence of the character that satisfies the specified
-predicate.</p>
+<p>Ищет последнее вхождение символа, удовлетворяющего указанному предикату.</p>
 
 </chapter>
 
@@ -243,8 +244,8 @@ charT *rfind_if_not(charT *str, Pred pred);
 }
 ]]></code-block>
 
-<p>Find the last occurrence of the character that doesn't satisfy the specified
-predicate.</p>
+<p>Ищет последнее вхождение символа, не удовлетворяющего указанному предикату.
+</p>
 
 </chapter>
 
@@ -264,7 +265,7 @@ charT *find_first_of(charT *str, const charT *set);
 }
 ]]></code-block>
 
-<p>Find the first occurrence of the character from the specified set. Generic
+<p>Ищет первое вхождение символа из указанного набора. Обобщённый
 <tt>strpbrk</tt> / <tt>wcspbrk</tt>.</p>
 
 </chapter>
@@ -285,8 +286,8 @@ charT *find_first_not_of(charT *str, const charT *set);
 }
 ]]></code-block>
 
-<p>Find the first occurrence of the character absent in the specified set.
-Generic <tt>strspn</tt> / <tt>wcsspn</tt>.</p>
+<p>Ищет первое вхождение символа, отсутствующего в указанном наборе.
+Обобщённый <tt>strspn</tt> / <tt>wcsspn</tt>.</p>
 
 </chapter>
 
@@ -306,7 +307,7 @@ charT *find_last_of(charT *str, const charT *set);
 }
 ]]></code-block>
 
-<p>Find the last occurrence of the character from the specified set.</p>
+<p>Ищет последнее вхождение символа из указанного набора.</p>
 
 </chapter>
 
@@ -326,7 +327,7 @@ charT *find_last_not_of(charT *str, const charT *set);
 }
 ]]></code-block>
 
-<p>Find the last occurrence of the character absent in the specified set.</p>
+<p>Ищет последнее вхождение символа, отсутсвующего в указанном наборе.</p>
 
 </chapter>
 
@@ -346,8 +347,9 @@ charT *skip(charT *str, charT ch);
 }
 ]]></code-block>
 
-<p>Skip all occurrences of the specified character and return the pointer.
-Pointer to NULL-terminator is returned if no other characters is presented.</p>
+<p>Пропускает все вхождения указанного символа и возвращает указатель.
+Если другие символы в строке отсутствуют, возвращает указатель на
+NULL-терминатор.</p>
 
 </chapter>
 

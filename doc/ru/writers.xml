@@ -15,25 +15,25 @@ public:
 };
 ]]></code-block>
 
-<p>A concept used by the library algorithms to write logical sequence of elements
-of type <tt>ElementT</tt> element by element. It is a generalization and rework
-of the <tt>OutputIterator</tt> concept. In particular it handles streams
-and other output sequences where <tt>end</tt>-iterator is meaningless or
-expensive to obtain better. At the same time, a traditional output iterators
-are just a particular case and fully and well handled by
-<tt>__vic::iterator_writer</tt> adapter.</p>
+<p>Concept, используемый алгоритмами библиотеки для поэлементной записи
+логической последовательности элементов типа <tt>ElementT</tt>. Является
+обобщением и переработкой concept'а <tt>OutputIterator</tt>. В частности,
+он лучше обрабатывает потоки ввода/вывода и другие последовательности, в
+которых <tt>end</tt>-итератор не имеет смысла или его получение дорого. В то
+же время, традиционные выходные итераторы являются частным просто случаем и
+полностью поддерживаются адаптером <tt>__vic::iterator_writer</tt>.</p>
 
-<p>When the particular class meets the requirements of this concept for some
-<tt>ElementT = T</tt> it is said <b>to model</b> the <tt>Writer&lt;T></tt>
-concept.</p>
+<p>В случаях, когда конкретный класс удовлетворяет требованиям данного concept
+для некоторого <tt>ElementT = T</tt>, говорят, что он <b>моделирует</b> concept
+<tt>Writer&lt;T></tt>.</p>
 
-<p>Each instance of the class has to be move- or copy-constructible.</p>
+<p>Каждый экземпляр класса должен быть move- или copy-constructible.</p>
 
-<section><title>Class members</title>
+<section><title>Члены класса</title>
 
 <synopsis>
 <prototype>void write(ElementT v)</prototype>
-<p>Writes the element or throws an exception on error.</p>
+<p>Записывает элемент или бросает исключение в случае ошибки.</p>
 </synopsis>
 
 </section>
@@ -56,8 +56,8 @@ public:
 null_writer make_null_writer();
 ]]></code-block>
 
-<p>Fake writer that accepts any value and does nothing with it (like UNIX
-<tt>/dev/null</tt>).</p>
+<p>Фиктивный writer, принимающий любые значения и никуда их не выводящий (как
+<tt>/dev/null</tt> в UNIX).</p>
 
 </chapter>
 
@@ -83,8 +83,9 @@ template<class T, class Cont>
 push_back_writer<Cont,T> make_push_back_writer_for(Cont &c);
 ]]></code-block>
 
-<p>An adapter. Uses <tt>push_back()</tt> member function to write elements.
-Can be created using constructor or one of <tt>make_...</tt> functions.</p>
+<p>Адаптер. Использует функцию-член <tt>push_back()</tt> для записи элементов.
+Может быть создан с помощью конструктора или одной из функций <tt>make_...</tt>.
+</p>
 
 </chapter>
 
@@ -111,8 +112,8 @@ template<class T, class OutputIterator>
 iterator_writer<OutputIterator,T> make_iterator_writer_for(OutputIterator it);
 ]]></code-block>
 
-<p>Output iterator writer. Can be created using constructor or one of
-<tt>make_...</tt> functions.</p>
+<p>Записывает элементы в выходной итератор. Может быть создан с помощью
+конструктора или одной из функций <tt>make_...</tt>.</p>
 
 </chapter>
 
@@ -142,8 +143,8 @@ basic_string_writer<charT,Tr,Al>
     make_string_writer(std::basic_string<charT,Tr,Al> &s);
 ]]></code-block>
 
-<p>An adapter for <tt>std::basic_string</tt>. Can be created using constructor
-or <tt>make_...</tt> function.</p>
+<p>Адаптер для <tt>std::basic_string</tt>. Может быть создан с помощью
+конструктора или функции <tt>make_...</tt>.</p>
 
 </chapter>
 
@@ -164,8 +165,8 @@ public:
 cstream_writer make_cstream_writer(std::FILE *fp);
 ]]></code-block>
 
-<p>Models <tt>Writer&lt;char></tt> for <tt>std::FILE</tt>. Can be created using
-constructor or <tt>make_...</tt> function.</p>
+<p>Моделирует <tt>Writer&lt;char></tt> для <tt>std::FILE</tt>. Может быть
+создан с помощью конструктора или функции <tt>make_...</tt>.</p>
 
 </chapter>
 

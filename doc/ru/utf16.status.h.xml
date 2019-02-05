@@ -1,0 +1,63 @@
+<chapter xml:id="utf16.status.h">
+<title><tt>__vic/utf16/status.h</tt></title>
+
+
+<chapter xml:id="utf16--status">
+<title><tt>utf16::status</tt></title>
+
+<code-block lang="C++">
+enum class utf16::status
+{
+    ok = 0,
+    eof,
+    // Errors
+    truncated_code_unit,
+    truncated_code_point,
+    invalid_sequence
+};
+using utf16::status_t = utf16::status; // for C++98
+</code-block>
+
+<p>Значения, возвращаемые функцией <tt>parse()</tt> класса
+<xref to="utf16--reader"/>.</p>
+
+<list style="bulleted">
+    <item><tt>ok</tt> - code point успешно прочитан</item>
+    <item><tt>eof</tt> - больше нечего читать</item>
+    <item><tt>truncated_code_unit</tt> - оборванный code unit</item>
+    <item><tt>truncated_code_point</tt> - оборванный code point</item>
+    <item><tt>invalid_sequence</tt> - байты не кодируют правильный
+        UTF-16 code point</item>
+</list>
+
+</chapter>
+
+
+<chapter xml:id="utf16--is_error">
+<title><tt>utf16::is_error()</tt></title>
+
+<code-block lang="C++">
+constexpr bool utf16::is_error(utf16::status s);
+</code-block>
+
+<p>Возвращает <tt>false</tt> для значений <tt>utf16::status::ok</tt> и
+<tt>utf16::status::eof</tt>. В остальных случаях возвращается <tt>true</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="utf16--throw_if_error">
+<title><tt>utf16::throw_if_error()</tt></title>
+
+<code-block lang="C++">
+bool utf16::throw_if_error(utf16::status s);
+</code-block>
+
+<p>Бросает исключение из <xref to="utf16.exceptions.h"/> в случае
+<tt>is_error(s)</tt>. Возвращает <tt>true</tt> для <tt>utf16::status::ok</tt>
+или <tt>false</tt> для <tt>utf16::status::eof</tt>.</p>
+
+</chapter>
+
+
+</chapter>

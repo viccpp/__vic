@@ -1,0 +1,180 @@
+<chapter xml:id="bin_file.h">
+<title><tt>__vic/bin_file.h</tt></title>
+
+<chapter xml:id="bin_file">
+<title><tt>bin_file</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class bin_file : private non_copyable
+{
+public:
+    enum in_t { in };
+    enum out_t { out };
+    enum append_t { append };
+
+    bin_file();
+    bin_file(const char *fname, in_t);
+    bin_file(const char *fname, out_t);
+    bin_file(const char *fname, append_t);
+    ~bin_file();
+
+    // BEGIN C++11 only
+    bin_file(bin_file &&o) noexcept;
+    bin_file &operator=(bin_file &&o) noexcept;
+    // END C++11 only
+
+    bool open_in(const char *fname);
+    bool open_out(const char *fname);
+    bool open_append(const char *fname);
+
+    size_t read_max(void *buf, size_t n);
+    size_t read_some(void *buf, size_t n);
+
+    void write_all(const void *buf, size_t n);
+
+    bool is_open() const;
+    void close();
+    bool close_nt() noexcept;
+
+    void swap(bin_file &o) noexcept;
+
+    [[noreturn]] void throw_last_error(const char *msg);
+    void throw_if_closed(const char *msg);
+};
+]]></code-block>
+
+<p>Небуферизированный двоичный файл. Независимая от ОС обёртка низкоуровневого
+системного API.</p>
+
+<p>Доступны следующие режимы открытия:</p>
+<list style="bulleted">
+    <item><tt>in</tt> - открыть существующий файл для чтения;</item>
+    <item><tt>out</tt> - создать новый файл для записи, перетереть старый,
+        если уже существует;</item>
+    <item><tt>append</tt> - открыть существующий файл для добавления (запись в
+        конец файла), создать новый, если не существует.</item>
+</list>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>enum in_t { in }</prototype>
+<prototype>enum out_t { out }</prototype>
+<prototype>enum append_t { append }</prototype>
+<p>Тэги конструкторов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bin_file()</prototype>
+<postcondition><tt>is_open() == false()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bin_file(const char *fname, in_t)</prototype>
+<prototype>bin_file(const char *fname, out_t)</prototype>
+<prototype>bin_file(const char *fname, append_t)</prototype>
+<p>Вызывают <tt>open_in(fname)</tt>, <tt>open_out(fname)</tt> или
+<tt>open_append(fname)</tt>, соответственно. <tt>is_open()</tt> или
+<tt>throw_if_closed()</tt> должен быть вызван после для проверки результата.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~bin_file()</prototype>
+<p>Закрывает файл, если <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bin_file(bin_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>bin_file &amp;operator=(bin_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Операции перемещения для режима C++11.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool open_in(const char *fname)</prototype>
+<prototype>bool open_out(const char *fname)</prototype>
+<prototype>bool open_append(const char *fname)</prototype>
+<p>Открыть файл для чтения, записи или добавления, соответственно. Возвращает
+<tt>is_open()</tt>.</p>
+<precondition><tt>is_open() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Возвращает <tt>true</tt> если файл открыт.</p>
+</synopsis>
+
+<synopsis>
+<prototype>size_t read_max(void *buf, size_t n)</prototype>
+<p>Пытается прочитать <tt>n</tt> байтов в указанный буфер. Возвращает количество
+байтов, которое удалось прочитать. Возвращённое значение может быть меньше
+запрошенного только в случае, если достигнут конец файла. При ошибках бросает
+исключения.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>size_t read_some(void *buf, size_t n)</prototype>
+<p>Читает не более <tt>n</tt> байтов в указанный буфер. Возвращает количество
+прочитанных байтов или <tt>0</tt> при достижении конца файлов. Функция
+сразу возвращает управление, как только прочитан блок байтов любого размера.
+При ошибках бросает исключения.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>void write_all(const void *buf, size_t n)</prototype>
+<p>Записывает весь переданный буфер в файл. При ошибках бросает исключения.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Закрывает открытый файл. При ошибках бросает исключения.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool close_nt() noexcept</prototype>
+<p>Аналог <tt>close()</tt>, но никогда не бросает исключений. Вместо этого
+возвращает <tt>false</tt> при ошибках.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(bin_file &amp;o) noexcept</prototype>
+<p>Обменивается значением с <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>[[noreturn]] void throw_last_error(const char *msg)</prototype>
+<p>Бросает исключение с описанием последней ошибки, если оно доступно. В любом
+случае <tt>what()</tt> будет содержать <tt>msg</tt> в виде подстроки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void throw_if_closed(const char *msg)</prototype>
+<p>Вызывает <tt>throw_last_error(msg)</tt>, если <tt>!is_open()</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+// Copy file
+__vic::bin_file in("file", __vic::bin_file::in);
+in.throw_if_closed("Cannot open file")
+__vic::bin_file out("file.copy", __vic::bin_file::out);
+out.throw_if_closed("Cannot create file")
+
+char buf[512];
+while(size_t n = in.read_some(buf, sizeof buf))
+    out.write_all(buf, n);
+
+out.close();
+// in will be closed by destructor
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

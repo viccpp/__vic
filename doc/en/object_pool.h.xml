@@ -27,8 +27,8 @@ public:
     // size in objects
     size_t size() const;
     size_t capacity() const;
-    bool full();
-    bool empty();
+    bool full() const;
+    bool empty() const;
 
     void recreate(size_t new_max_size, bool size_exact = false);
     void *alloc(); // returns pointer to memory for object allocation
@@ -64,7 +64,7 @@ objects.</p>
 <p>Without <tt>emplace()</tt> it is impossible to create arbitrary new object
 right in the container's memory. C++98 lacks forwarding references so it is
 near impossible to pass arbitrary parameters to the element's constructor.
-<tt>object_pool</tt> solves this problem using the following mechanism.
+<tt>object_pool</tt> overcomes this problem using the following mechanism.
 The new element is created using several phases:</p>
 <list style="numbered">
     <item>Requesting memory for the new element in the container -
@@ -139,12 +139,12 @@ store and placing only pointers to the container, even if we have
 </synopsis>
 
 <synopsis>
-<prototype>bool empty()</prototype>
+<prototype>bool empty() const</prototype>
 <p>Returns <tt>size() == 0</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>bool full()</prototype>
+<prototype>bool full() const</prototype>
 <p>Returns <tt>size() == capacity()</tt>.</p>
 </synopsis>
 
