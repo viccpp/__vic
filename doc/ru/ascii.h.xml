@@ -1,0 +1,142 @@
+<chapter xml:id="ascii.h">
+<title><tt>__vic/ascii.h</tt></title>
+
+<p>Быстрые, компактные и независимые от locale инструменты для обработки
+ASCII-символов. Все инструменты находятся в пространстве имён
+<tt>__vic::ascii</tt>.</p>
+
+
+<chapter xml:id="ascii--is-functions">
+<title><tt>ascii::is</tt>-функции</title>
+
+<code-block lang="C++">
+namespace ascii {
+
+constexpr bool isdigit(char c);
+constexpr bool isxdigit(char c);
+constexpr bool islower(char c);
+constexpr bool isupper(char c);
+constexpr bool isalpha(char c);
+constexpr bool isalnum(char c);
+constexpr bool isspace(char c);
+constexpr bool isascii(char c);
+
+}
+</code-block>
+
+<p>Аналоги соответствующих функций из <tt>&lt;cctype></tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="ascii--todigit">
+<title><tt>ascii::todigit()</tt></title>
+
+<code-block lang="C++">
+constexpr char ascii::todigit(int d);
+</code-block>
+
+<p>Преобразует целое значение от 0 до 9 в десятичную цифру. Результат
+неопределён, если входное значение не попадает в указанный диапазон.</p>
+<precondition><tt><![CDATA[0 <= d && d <= 9]]></tt></precondition>
+
+</chapter>
+
+
+<chapter xml:id="ascii--toxdigit">
+<title><tt>ascii::toxdigit_upper()</tt>, <tt>ascii::toxdigit_lower()</tt></title>
+
+<code-block lang="C++">
+namespace ascii {
+
+constexpr char toxdigit_upper(int d);
+constexpr char toxdigit_lower(int d);
+
+}
+</code-block>
+
+<p>Преобразует целое значение от 0 до 15 в шестнадцатеричную цифру. Первая
+функция использует верхний регистр для <tt>A</tt>-<tt>F</tt>, вторая - нижний.
+Результат неопределён, если входное значение не попадает в указанный диапазон.
+</p>
+<precondition><tt><![CDATA[0 <= d && d <= 15]]></tt></precondition>
+
+</chapter>
+
+
+<chapter xml:id="ascii--digit_to_number">
+<title><tt>ascii::digit_to_number()</tt></title>
+
+<code-block lang="C++">
+constexpr int ascii::digit_to_number(char d);
+</code-block>
+
+<p>Преобразует десятичную цифру в число, если <tt>ascii::isdigit(d)</tt>.
+В противном случае возвращается <tt>-1</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="ascii--xdigit_to_number">
+<title><tt>ascii::xdigit_to_number()</tt></title>
+
+<code-block lang="C++">
+constexpr int ascii::xdigit_to_number(char d);
+</code-block>
+
+<p>Преобразует шестнадцатеричную цифру в число, если
+<tt>ascii::isxdigit(d)</tt>. В противном случае возвращается <tt>-1</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="ascii--tolower-char">
+<title><tt>ascii::tolower(char)</tt>, <tt>ascii::toupper(char)</tt></title>
+
+<code-block lang="C++">
+namespace ascii {
+
+constexpr char tolower(char c);
+constexpr char toupper(char c);
+constexpr char upper_to_lower(char upper);
+constexpr char lower_to_upper(char lower);
+
+}
+</code-block>
+
+<synopsis>
+<prototype>constexpr char tolower(char c)</prototype>
+<prototype>constexpr char toupper(char c)</prototype>
+<p>Аналоги соответствующих функций из <tt>&lt;cctype></tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr char upper_to_lower(char upper)</prototype>
+<p>Более ограниченный аналог <tt>tolower()</tt>. Результат неопределён, если
+аргумент не является заглавной буквой ASCII.</p>
+<precondition><tt>ascii::isupper(upper)</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr char lower_to_upper(char lower)</prototype>
+<p>Более ограниченный аналог <tt>toupper()</tt>. Результат неопределён, если
+аргумент не является строчной буквой ASCII.</p>
+<precondition><tt>ascii::islower(lower)</tt></precondition>
+</synopsis>
+
+</chapter>
+
+
+<chapter xml:id="ascii--equal_icase-char">
+<title><tt>ascii::equal_icase(char,char)</tt></title>
+
+<code-block lang="C++">
+constexpr bool ascii::equal_icase(char ch1, char ch2);
+</code-block>
+
+<p>Проверяет два ASCII-символа на равенство без учета регистра букв.</p>
+
+</chapter>
+
+
+</chapter>

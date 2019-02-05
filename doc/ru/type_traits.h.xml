@@ -1,0 +1,237 @@
+<chapter xml:id="type_traits.h">
+<title><tt>__vic/type_traits.h</tt></title>
+
+<p>Поддержка метапрограммирования с помощью шаблонов.</p>
+<p>Все метафункции-предикаты имеют член в виде булевой статической константы
+по имени <tt>value</tt> и, как правило, порождены от
+<tt>integral_constant</tt>.</p>
+<p>Все метафункции-преобразователи типов имеют член-тип по имени <tt>type</tt>,
+являющийся результатом преобразования.</p>
+<p>Все шаблонные псевдонимы доступны только в режиме C++11.</p>
+
+
+<chapter xml:id="integral_constant">
+<title><tt>integral_constant</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, T Val>
+struct integral_constant
+{
+    using value_type = T;
+    using type = integral_constant<T, Val>;
+
+    static constexpr T value = Val;
+};
+]]></code-block>
+
+<p>Базовый класс большиства метафункций с <tt>value</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="true_type">
+<title><tt>true_type</tt></title>
+
+<code-block lang="C++"><![CDATA[
+using true_type = integral_constant<bool, true>;
+]]></code-block>
+
+<p>Базовый класс метафункций-предикатов со значением <tt>true</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="false_type">
+<title><tt>false_type</tt></title>
+
+<code-block lang="C++"><![CDATA[
+using false_type = integral_constant<bool, false>;
+]]></code-block>
+
+<p>Базовый класс метафункций-предикатов со значением <tt>false</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="is_same">
+<title><tt>is_same</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T1, class T2> struct is_same;
+]]></code-block>
+
+<p>Предикат. Истинен, если <tt>T1</tt> и <tt>T2</tt> - это в точности один и
+тот же тип.</p>
+
+</chapter>
+
+
+<chapter xml:id="is_const">
+<title><tt>is_const</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct is_const;
+]]></code-block>
+
+<p>Предикат. Истинен, если <tt>T</tt> имеет квалификатор <tt>const</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="is_signed_integer">
+<title><tt>is_signed_integer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct is_signed_integer;
+]]></code-block>
+
+<p>Предикат. Истинен, если <tt>T</tt> - «стандартный целый тип со знаком»
+(см. Стандарт).</p>
+
+</chapter>
+
+
+<chapter xml:id="is_unsigned_integer">
+<title><tt>is_unsigned_integer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct is_unsigned_integer;
+]]></code-block>
+
+<p>Предикат. Истинен, если <tt>T</tt> - «стандартный целый беззнаковый тип»
+(см. Стандарт).</p>
+
+</chapter>
+
+
+<chapter xml:id="remove_const">
+<title><tt>remove_const</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_const;
+template<class T> using remove_const_t = typename remove_const<T>::type;
+]]></code-block>
+
+<p>Преобразователь типа. Удаляет у типа самый верхний квалификатор
+<tt>const</tt>, либо просто возвращает <tt>T</tt>, если такого квалификатора
+нет.</p>
+
+</chapter>
+
+
+<chapter xml:id="remove_volatile">
+<title><tt>remove_volatile</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_volatile;
+template<class T> using remove_volatile_t = typename remove_volatile<T>::type;
+]]></code-block>
+
+<p>Преобразователь типа. Удаляет у типа самый верхний квалификатор
+<tt>volatile</tt>, либо просто возвращает <tt>T</tt>, если такого квалификатора
+нет.</p>
+
+</chapter>
+
+
+<chapter xml:id="remove_cv">
+<title><tt>remove_cv</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_cv;
+template<class T> using remove_cv_t = typename remove_cv<T>::type;
+]]></code-block>
+
+<p>Преобразователь типа. Удаляет у типа самые верхние квалификаторы
+<tt>const</tt> и/или <tt>volatile</tt>, либо просто возвращает <tt>T</tt>,
+если таких квалификаторов нет.</p>
+
+</chapter>
+
+
+<chapter xml:id="remove_reference">
+<title><tt>remove_reference</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_reference;
+template<class T> using remove_reference_t = typename remove_reference<T>::type;
+]]></code-block>
+
+<p>Преобразователь типа. Возвращает тип, на который ссылается <tt>T</tt>, либо
+просто возвращает <tt>T</tt>, если он не является ссылкой.</p>
+
+</chapter>
+
+
+<chapter xml:id="remove_cvref">
+<title><tt>remove_cvref</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_cvref;
+template<class T> using remove_cvref_t = typename remove_cvref<T>::type;
+]]></code-block>
+
+<p>Преобразователь типа. Применяет <tt>remove_reference</tt>, затем
+<tt>remove_cv</tt> к <tt>T</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="remove_pointer">
+<title><tt>remove_pointer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct remove_pointer;
+template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
+]]></code-block>
+
+<p>Преобразователь типа. Возвращает тип, на который указывает <tt>T</tt>, либо
+просто возвращает <tt>T</tt>, если он не является указателем.</p>
+
+</chapter>
+
+
+<chapter xml:id="enable_if">
+<title><tt>enable_if</tt>, <tt>disable_if</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<bool Test, class T = void>
+struct enable_if
+{
+    using type = T;
+};
+template<class T>
+struct enable_if<false, T> {};
+
+template<bool Test, class T = void>
+struct disable_if : enable_if<!Test, T> {};
+]]></code-block>
+
+<p>Классические инструменты для фокусов со SFINAE.</p>
+
+</chapter>
+
+
+<chapter xml:id="index_sequence">
+<title><tt>index_sequence</tt>, <tt>make_index_sequence</tt> <sign>C++11</sign></title>
+
+<code-block lang="C++"><![CDATA[
+template<size_t... I>
+struct index_sequence
+{
+    static constexpr size_t size() { return sizeof...(I); }
+};
+
+template<size_t Size>
+using make_index_sequence = index_sequence<0, 1, ..., Size-1>;
+]]></code-block>
+
+<p>Реализация <tt>std::index_sequence</tt> из  C++14 для C++11.</p>
+
+<note>В отличие от <tt>std::index_sequence</tt>, не является специализацией
+какого-то аналога <tt>std::integer_sequence</tt>.</note>
+
+</chapter>
+
+
+</chapter>

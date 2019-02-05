@@ -1,0 +1,47 @@
+<chapter xml:id="posix.error.h">
+<title><tt>__vic/posix/error.h</tt></title>
+
+<p>Инструменты обработки ошибок специфичные для POSIX.</p>
+
+<chapter xml:id="posix--is_EAGAIN">
+<title><tt>posix::is_EAGAIN()</tt>, <tt>posix::is_ENOENT()</tt></title>
+
+<code-block lang="C++">
+namespace posix {
+
+bool is_EAGAIN(int err_no);
+bool is_ENOENT(int err_no);
+
+#define __VIC_CASE_EAGAIN <nt>case &lt;val1>: case &lt;val2>: ...</nt>
+#define __VIC_CASE_ENOENT <nt>case &lt;val1>: case &lt;val2>: ...</nt>
+
+}
+</code-block>
+
+<p>Первая функция проверяет, имеет ли код значение <tt>EAGAIN</tt> или
+<tt>EWOULDBLOCK</tt>. Это работает независимо от того, имеют они одно и
+то же числовое значение на данной платформе или нет.</p>
+
+<p>Вторая функция проверяет, имеет ли код значение <tt>ENOENT</tt>,
+<tt>ESTALE</tt> и им подобные, означающие, что произошла попытка обращения к
+несуществующему файлу.</p>
+
+<p>Макросы должны использоваться внутри конструкции <tt>switch</tt>. Они
+раскрываются в один <tt>case</tt> с двоеточием, либо в набор <tt>case</tt>’ов,
+и выполняют ту же функцию, что и функции, описанные выше.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+switch(errno)
+{
+    __VIC_CASE_ENOENT
+        std::cout << "No file found!\n"; break;
+    case EPERM:
+       ...
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

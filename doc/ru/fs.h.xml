@@ -1,0 +1,231 @@
+<chapter xml:id="fs.h">
+<title><tt>__vic/fs.h</tt></title>
+
+<p>Утилиты для работы с файловой системой.</p>
+
+<note>Для всех путей ожидается использование кодировки UTF-8!</note>
+
+
+<chapter xml:id="path_exists">
+<title><tt>path_exists()</tt>, <tt>file_exists()</tt>, <tt>dir_exists()</tt>
+</title>
+
+<code-block lang="C++"><![CDATA[
+bool path_exists(const char *path);
+bool path_exists(const std::string &path);
+
+bool file_exists(const char *path);
+bool file_exists(const std::string &path);
+
+bool dir_exists(const char *path);
+bool dir_exists(const std::string &path);
+]]></code-block>
+
+<p><tt>path_exists()</tt> проверяет, существует ли путь в фаловой системе.
+Вторая и третья функции дополнительно, кроме существования, проверяют,
+ссылается ли путь на регулярный файл или на каталог, соответсвенно.</p>
+
+</chapter>
+
+
+<chapter xml:id="mkdir">
+<title><tt>mkdir()</tt>, <tt>mkdir_if_absent()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void mkdir(const char *path);
+void mkdir(const std::string &path);
+
+bool mkdir_if_absent(const char *path);
+bool mkdir_if_absent(const std::string &path);
+]]></code-block>
+
+<p>Создаёт каталог. Бросает исключения в случае ошибок.
+<tt>mkdir_if_absent()</tt> возвращает <tt>false</tt> вместо исключения, если
+каталог с таким именем уже существует.</p>
+
+</chapter>
+
+
+<chapter xml:id="rmdir">
+<title><tt>rmdir()</tt>, <tt>rmdir_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void rmdir(const char *path);
+void rmdir(const std::string &path);
+
+bool rmdir_if_exists(const char *path);
+bool rmdir_if_exists(const std::string &path);
+]]></code-block>
+
+<p>Удаляет пустой каталог. Бросает исключения в случае ошибок.
+<tt>rmdir_if_exists()</tt> возвращает <tt>false</tt> вместо исключения, если
+каталога с таким именем не существует.</p>
+
+</chapter>
+
+
+<chapter xml:id="get_current_dir">
+<title><tt>get_current_dir()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+std::string get_current_dir();
+]]></code-block>
+
+<p>Возвращает текущий рабочий каталог.</p>
+
+</chapter>
+
+
+<chapter xml:id="remove_file">
+<title><tt>remove_file()</tt>, <tt>remove_file_if_exists()</tt>,
+<tt>remove_file_nt()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void remove_file(const char *path);
+void remove_file(const std::string &path);
+
+bool remove_file_if_exists(const char *path);
+bool remove_file_if_exists(const std::string &path);
+
+bool remove_file_nt(const char *path) noexcept;
+bool remove_file_nt(const std::string &path) noexcept;
+]]></code-block>
+
+<p>Удаляет файл. Бросает исключения в случае ошибок.</p>
+
+<p><tt>remove_file_if_exists()</tt> возвращает <tt>false</tt> вместо
+исключения, если файл с таким именем не существует.</p>
+
+<p><tt>remove_file_nt()</tt> вообще не бросает исключений, а возвращает
+<tt>false</tt> в случае ошибок.</p>
+
+</chapter>
+
+
+<chapter xml:id="copy_file">
+<title><tt>copy_file()</tt>, <tt>copy_file_if_exists()</tt>,
+<tt>copy_file_replace()</tt>, <tt>copy_file_replace_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void copy_file(
+    const char *src_path, const char *dest_path, bool replace = false);
+void copy_file(
+    const std::string &src_path, const std::string &dest_path,
+    bool replace = false);
+
+bool copy_file_if_exists(
+    const char *src_path, const char *dest_path, bool replace = false);
+bool copy_file_if_exists(
+    const std::string &src_path, const std::string &dest_path,
+    bool replace = false);
+
+void copy_file_replace(
+    const char *src_path, const char *dest_path);
+void copy_file_replace(
+    const std::string &src_path, const std::string &dest_path);
+
+bool copy_file_replace_if_exists(
+    const char *src_path, const char *dest_path);
+bool copy_file_replace_if_exists(
+    const std::string &src_path, const std::string &dest_path);
+]]></code-block>
+
+<p>Создаёт новый файл <tt>dest_path</tt>, являющийся копией файла
+<tt>src_path</tt>. Вызов заканчивается ошибкой, если новый файл существует и
+<tt>replace == false</tt>.</p>
+
+<p><tt>copy_file_if_exists()</tt> возвращает <tt>false</tt> вместо исключения,
+если файла с именем <tt>src_path</tt> не существует.</p>
+
+<p><tt>copy_file_replace()</tt> - то же самое, что <tt>copy_file(..., true)</tt>.
+</p>
+
+<p><tt>copy_file_replace_if_exists()</tt> - то же самое, что
+<tt>copy_file_if_exists(..., true)</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="move_file">
+<title><tt>move_file()</tt>, <tt>move_file_if_exists()</tt>,
+<tt>move_file_replace()</tt>, <tt>move_file_replace_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void move_file(const char *src_path, const char *dest_path);
+void move_file(const std::string &src_path, const std::string &dest_path);
+
+bool move_file_if_exists(const char *src_path, const char *dest_path);
+bool move_file_if_exists(
+    const std::string &src_path, const std::string &dest_path);
+
+void move_file_replace(const char *src_path, const char *dest_path);
+void move_file_replace(
+    const std::string &src_path, const std::string &dest_path);
+
+bool move_file_replace_if_exists(
+    const char *src_path, const char *dest_path);
+bool move_file_replace_if_exists(
+    const std::string &src_path, const std::string &dest_path);
+]]></code-block>
+
+<p>Перемещает файл <tt>src_path</tt> в новое место, указанное в
+<tt>dest_path</tt>.</p>
+
+<p>Функции с суффиксом <tt>_replace</tt> перетирают целевой файл, если он
+существует, остальные - возвращают ошибку в таком случае.</p>
+
+<p><tt>move_file_if_exists()</tt> возвращает <tt>false</tt> вместо ошибки,
+если файл с именем <tt>src_path</tt> не существует.</p>
+
+</chapter>
+
+
+<chapter xml:id="rename_file">
+<title><tt>rename_file()</tt>, <tt>rename_file_if_exists()</tt>,
+    <tt>rename_file_replace()</tt>, <tt>rename_file_replace_if_exists()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void rename_file(const char *src_name, const char *dest_name);
+void rename_file(const std::string &src_name, const std::string &dest_name);
+
+bool rename_file_if_exists(const char *src_name, const char *dest_name);
+bool rename_file_if_exists(
+    const std::string &src_name, const std::string &dest_name);
+
+void rename_file_replace(const char *src_name, const char *dest_name);
+void rename_file_replace(
+    const std::string &src_name, const std::string &dest_name);
+
+bool rename_file_replace_if_exists(
+    const char *src_name, const char *dest_name);
+bool rename_file_replace_if_exists(
+    const std::string &src_name, const std::string &dest_name);
+]]></code-block>
+
+<p>Переименовывает файл <tt>src_path</tt> в <tt>dest_path</tt>. Новый путь
+должен находиться на той же самой физической файловой системе.</p>
+
+<p>В отличие от <tt>std::rename()</tt>, вызов функций без суффикса
+<tt>_replace</tt> заканчивается ошибкой, если файл с именем <tt>dest_path</tt>
+уже существует.</p>
+
+<p><tt>rename_file_if_exists()</tt> возвращает <tt>false</tt> вместо
+исключения, если файла с именем <tt>src_path</tt> не существует.</p>
+
+</chapter>
+
+
+<chapter xml:id="file_size">
+<title><tt>file_size()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+uintmax_t file_size(const char *path);
+uintmax_t file_size(const std::string &path);
+]]></code-block>
+
+<p>Возвращает размер файла в байтах.</p>
+
+</chapter>
+
+
+</chapter>

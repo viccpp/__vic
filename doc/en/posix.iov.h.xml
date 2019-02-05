@@ -25,7 +25,7 @@ public:
 };
 ]]></code-block>
 
-<p>Wrapper for static array of system structs <tt>iovec</tt> that serves
+<p>Wrapper for array of system structs <tt>iovec</tt> that serves
 gathered output from the set of buffers. Template argument is the maximun
 number of the buffers.</p>
 
@@ -41,7 +41,7 @@ number of the buffers.</p>
 <p>Adds the specified buffer to the set.</p>
 <precondition><tt>size() &lt; max_size()</tt></precondition>
 <postcondition><tt>size()</tt> is increased by <tt>1</tt>,
-<tt>total_bytes()</tt> is increased by <tt>buf_len</tt></postcondition>
+<tt>total_bytes()</tt> is increased by <tt>buf_len</tt>.</postcondition>
 </synopsis>
 
 <synopsis>

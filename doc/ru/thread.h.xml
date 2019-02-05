@@ -1,0 +1,202 @@
+<chapter xml:id="thread.h">
+<title><tt>__vic/thread.h</tt></title>
+
+<p>Поддержка вычислительных потоков.</p>
+
+
+<chapter xml:id="thread">
+<title><tt>thread</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class thread : private non_copyable
+{
+public:
+    class id;
+    using native_handle_type = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
+
+    thread();
+    virtual ~thread();
+
+    // BEGIN C++11 only
+    thread(thread &&o) noexcept;
+    thread &operator=(thread &&o) noexcept;
+    // END C++11 only
+
+    void start();
+    void cancel();
+    void join();
+
+    bool alive() const;
+    bool joinable() const;
+
+    id get_id() const;
+    native_handle_type handle() const;
+protected:
+    virtual void worker() = 0;
+};
+]]></code-block>
+
+<p>Абстрактный базовый класс потоков. Реализует pattern «Active object».
+Унаследуйте данный класс и определите функцию <tt>worker()</tt>, содержимое
+которой будет выполнено в новом потоке после вызова <tt>start()</tt>. Затем
+где-то в Вашей программе Вы должны будете вызвать <tt>join()</tt> для
+освобождения ресурсов ОС, ассоциированных с порождённым потоком.</p>
+
+<note>Объект должен всегда жить дольше, чем ассоциированный с ним поток ОС.
+Если это соглашение будет нарушено, программа будет завершена вызовом
+<tt>std::terminate()</tt>.</note>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>thread()</prototype>
+<postcondition><tt>joinable() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~thread()</prototype>
+<p>Вызывает <tt>std::terminate()</tt>, если нарушено предусловие.</p>
+<precondition><tt>joinable() == false || alive() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>thread(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Перемещающий конструктор для режима C++11.</p>
+</synopsis>
+
+<synopsis>
+<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Перемещающее присваивание для режима C++11. Вызывает
+<tt>std::terminate()</tt>, если нарушено предусловие.</p>
+<precondition><tt>joinable() == false || alive() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>void start()</prototype>
+<p>Порождает новый поток и вызывает в нём <tt>worker()</tt>.</p>
+<precondition><tt>joinable() == false</tt></precondition>
+<postcondition><tt>joinable() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void cancel()</prototype>
+<p>Прерывает выполнение потока.</p>
+<precondition><tt>joinable() == true</tt></precondition>
+<postcondition><tt>joinable() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void join()</prototype>
+<p>Ждёт завершения работы потока, если он выполняется в данный момент, и делает
+его <tt>joinable() == false</tt>.</p>
+<precondition><tt>joinable() == true</tt></precondition>
+<postcondition><tt>joinable() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool alive() const</prototype>
+<p>Возращает <tt>true</tt>, если выполнение потока ещё не завершилось
+(он находится в функции <tt>worker()</tt>).</p>
+<precondition><tt>joinable() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool joinable() const</prototype>
+<p>Возвращает <tt>true</tt>, если объект имеет соответсвующий объект ОС
+(поток), созданный вызовом <tt>start()</tt> и ещё не уничтоженный вызовом
+<tt>join()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>id get_id() const</prototype>
+<p>Возвращает ID потока.</p>
+</synopsis>
+
+<synopsis>
+<prototype>native_handle_type handle() const</prototype>
+<p>Возвращает дескриптор потока, используемый в данной ОС.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="thread--id">
+<title><tt>thread::id</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class thread::id
+{
+public:
+    id();
+    explicit operator bool() const;
+    native_handle_type handle() const;
+};
+bool operator==(thread::id a, thread::id b);
+bool operator!=(thread::id a, thread::id b);
+]]></code-block>
+
+<p>Уникальный идентификатор потока. Может содержать значение, ассоциированное
+с потоком или специальное значение, не ассоциированное ни с одним потоком.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>id()</prototype>
+<p>Создаёт специальное значение не ассоциированное ни с одним потоком.</p>
+<postcondition><tt>bool(*this) == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit operator bool() const</prototype>
+<p>Возвращает <tt>true</tt>, если объект хранит ID какого-то потока.</p>
+</synopsis>
+
+<synopsis>
+<prototype>native_handle_type handle() const</prototype>
+<p>Возвращает дескриптор потока, используемый в данной ОС.</p>
+<precondition><tt>bool(*this) == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool operator==(thread::id a, thread::id b)</prototype>
+<prototype>bool operator!=(thread::id a, thread::id b)</prototype>
+<p>Проверяет, ассоциированы ли <tt>a</tt> и <tt>b</tt> с одним и тем же
+потоком (либо оба содержат значение по умолчанию).</p>
+<invariant><tt>id() == id()</tt></invariant>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="this_thread">
+<title><tt>this_thread</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace this_thread
+{
+    thread::id get_id();
+    void sleep_ms(unsigned msec);
+}
+]]></code-block>
+
+<p>Набор функций для манипуляции с текущим (вызывающим) потоком.</p>
+
+<synopsis>
+<prototype>thread::id get_id()</prototype>
+<p>Возвращает ID вызывающего потока.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void sleep_ms(unsigned msec)</prototype>
+<p>Приостанавливает выполнение вызывающего потока на указанное время в
+миллисекундах.</p>
+</synopsis>
+
+</chapter>
+
+
+</chapter>

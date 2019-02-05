@@ -95,7 +95,7 @@ str << "Error message: " << err_msg << "\n";
 
 <item>Specific amount of bytes can be reserved using constructor as well as
 <tt>reserve()</tt> call. Reserving required amount of space in advance can
-greatly improve performance.
+improve performance significantly.
 <code-block lang="C++">
 __vic::string_buffer st(4096);
 
@@ -133,16 +133,16 @@ __vic::string_buffer fname(...);
 FILE *fp = fopen(fname, "r");)
 </code-block></item>
 
-<item>Some design irregularities of std::string are corrected. For instance
-<tt>std::string</tt> is a complete container but operations <tt>front()</tt>
-and <tt>back()</tt> are missed in C++98. There is <tt>push_back()</tt> but
-no <tt>pop_back()</tt>.</item>
+<item>Some design irregularities of <tt>std::string</tt> are corrected. For
+instance <tt>std::string</tt> is a complete container but operations
+<tt>front()</tt> and <tt>back()</tt> are missed in C++98. There is
+<tt>push_back()</tt> but no <tt>pop_back()</tt>.</item>
 
 </list>
 
-<p>For all that improvements, interface of this class is completely compatible
-with <tt>std::string</tt>. Objects can be passed in contexts that require
-<tt>std::string</tt>. Class has no additional data-members.</p>
+<p>In spite of all these improvements, the interface of this class is completely
+backward compatible with <tt>std::string</tt>. Objects can be passed in contexts
+that require <tt>std::string</tt>. Class has no additional data-members.</p>
 
 <p>Using of inserter (operator <tt>&lt;&lt;</tt>) provides the easiest way to
 convert numbers to decimal string representation. Using of
@@ -151,7 +151,7 @@ specify radix, formatting, etc) but too tedious and not efficient in most
 cases.</p>
 
 <p>Additionally this type has a short synonym <tt>msg</tt>. It is very
-convenient for usage when one need to construct complex message with a
+convenient for usage when one needs to construct a complex message with a
 single expression, without introducing unnecessary variables:</p>
 
 <code-block lang="C++"><![CDATA[
@@ -161,7 +161,7 @@ if(res != 0) throw __vic::exception(
 );
 ]]></code-block>
 
-<p>As you can see, expected maximum size of the message is specified in the
+<p>As you can see, the maximum size of the message expected is specified in the
 constructor for optimization purposes.</p>
 
 <section><title>Class members</title>
@@ -260,7 +260,7 @@ expressions.</p>
 <prototype>const_reference front() const</prototype>
 <prototype>const_reference back() const</prototype>
 <prototype>void pop_back()</prototype>
-<p>Absent container operations in the <tt>std::string</tt> interface in
+<p>Missed container operations in the <tt>std::string</tt> interface in
 C++98.</p>
 </synopsis>
 

@@ -126,8 +126,7 @@ void base64::decode(CharReader reader, ByteWriter writer);
 
 <p>Decodes characters form <tt>reader</tt> and writes the resulting bytes to
 <tt>writer</tt>. Exception derived from <xref to="base64--bad_format"/> is
-thrown if the input sequence has invalid Base64 format. ASCII whitespaces are
-ignored.</p>
+thrown if the input sequence has invalid Base64 format.</p>
 
 <p><tt>CharReader</tt> has to model <tt>Reader&lt;char></tt> concept.
 See <xref to="readers"/>.</p>

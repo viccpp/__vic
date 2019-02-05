@@ -1,7 +1,7 @@
 ################################################################
 # GNU Make Makefile. Building the doc using XML-tools
 
-LANGS = en
+LANGS = en ru
 CHECKS := $(addprefix check-,$(LANGS))
 
 # Oracle tools

@@ -1,0 +1,115 @@
+<chapter xml:id="utf8.reader.h">
+<title><tt>__vic/utf8/reader.h</tt></title>
+
+<chapter xml:id="utf8--reader">
+<title><tt>utf8::reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ByteReader>
+class utf8::reader
+{
+public:
+    using byte_reader_type = ByteReader;
+    ByteReader &get_byte_reader();
+    const ByteReader &get_byte_reader() const;
+
+    template<class... Args>
+    explicit reader(Args&&... args); // since C++11
+
+    reader(); // C++98 only
+    explicit reader(ByteReader r); // C++98 only
+
+    status_t parse(unicode_t &cp);
+    bool read(unicode_t &cp);
+};
+
+template<class ByteReader>
+utf8::reader<ByteReader> utf8::make_reader(ByteReader r);
+]]></code-block>
+
+<p>Вычитывает UTF-8 code points из последовательности байтов.
+Последовательность читается посредством <tt>ByteReader</tt>, который
+моделирует <tt>Reader&lt;unsigned char></tt> (см. <xref to="readers"/>).</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>ByteReader &amp;get_byte_reader()</prototype>
+<prototype>const ByteReader &amp;get_byte_reader() const</prototype>
+<p>Возвращает ссылку на используемый byte reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args>
+explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Передаёт все параметры в используемый byte reader.</p>
+</synopsis>
+
+<synopsis>
+<prototype>reader() <sign>C++98 only</sign></prototype>
+<prototype>explicit reader(ByteReader r) <sign>C++98 only</sign></prototype>
+<p>Конструкторы для режима C++98.</p>
+</synopsis>
+
+<synopsis>
+<prototype>status_t parse(unicode_t &amp;cp)</prototype>
+<p>Пытается извлечь следующий code point из последовательности байтов, используя
+<tt>ByteReader</tt>. В случае успеха возвращается <tt>utf8::status::ok</tt>,
+code point сохраняется в <tt>cp</tt>. Если байты кончились, возвращается
+<tt>utf8::status::eof</tt>. Другие значения возвращаются в случае ошибок,
+подробности см. в <xref to="utf8--status"/>. Для доступа к отдельным байтам
+используется <tt>ByteReader::read()</tt>.</p>
+<note>Функция сама по себе не бросает исключений, но их может бросать
+<tt>ByteReader::read()</tt>.</note>
+</synopsis>
+
+<synopsis>
+<prototype>bool read(unicode_t &amp;cp)</prototype>
+<p>То же самое, что <tt>parse()</tt>, но возвращает <tt>true</tt> в случае
+успеха, <tt>false</tt> в случае EOF, бросает исключения из
+<xref to="utf8.exceptions.h"/> в остальных случаях.</p>
+</synopsis>
+
+</section>
+
+<section><title>Свободные функции</title>
+
+<synopsis>
+<prototype>template&lt;class ByteReader>
+utf8::reader&lt;ByteReader> utf8::make_reader(ByteReader r)</prototype>
+<p>Создаёт UTF-8 reader используя указанный <tt>ByteReader</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/utf8/reader.h>
+#include<__vic/readers/string.h>
+#include<string>
+#include<cstdint>
+#include<iostream>
+
+// C++11
+using utf8_string_reader = __vic::utf8::reader<__vic::string_reader>;
+
+// C++98
+struct utf8_string_reader : __vic::utf8::reader<__vic::string_reader>
+{
+    explicit utf8_string_reader(const std::string &s)
+        : __vic::utf8::reader<__vic::string_reader>(__vic::string_reader(s)) {}
+};
+
+void print_utf8_code_points(const string &s)
+{
+    utf8_string_reader r(s);
+    __vic::unicode_t cp;
+    while(r.read(cp))
+        std::cout << uint_least32_t(cp) << '\n';
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

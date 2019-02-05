@@ -176,7 +176,7 @@ than <tt>n</tt> instead and <tt>errno</tt> contains error code.</p>
 __vic::posix::file file("path/file", O_WRONLY | O_CREAT);
 if(!file.is_open()) throw __vic::libc_error("Cannot create file");
 const char msg[] = "Hello";
-file.write_all(msg, sizeof msg - 1); // write without nul-terminator
+file.write_all(msg, sizeof msg - 1); // write without null-terminator
 file.close();
 ]]></code-block>
 </section>

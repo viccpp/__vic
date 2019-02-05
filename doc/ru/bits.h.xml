@@ -1,0 +1,96 @@
+<chapter xml:id="bits.h">
+<title><tt>__vic/bits.h</tt></title>
+
+<p>Инструменты для манипуляции битами и байтами.</p>
+
+
+<chapter xml:id="lo_nibble">
+<title><tt>lo_nibble()</tt>, <tt>hi_nibble()</tt></title>
+
+<code-block lang="C++">
+constexpr uint8_t lo_nibble(uint8_t byte);
+constexpr uint8_t hi_nibble(uint8_t byte);
+</code-block>
+
+<p>Возвращают значение младшего/старшего полубайта (тетрады), соответственно.
+</p>
+
+</chapter>
+
+
+<chapter xml:id="msb_ones">
+<title><tt>msb_ones()</tt>, <tt>lsb_ones()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> T lsb_ones(unsigned bits_num);
+template<class T> T msb_ones(unsigned bits_num);
+]]></code-block>
+
+<p>Возвращают значение типа <tt>T</tt> со всеми младшими/старшими
+<tt>bits_num</tt> битами заполненными <tt>1</tt>, соответственно. Все остальные
+биты установлены в <tt>0</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="get_lsbs">
+<title><tt>get_lsbs()</tt></title>
+
+<code-block lang="C++">
+template&lt;class T> T get_lsbs(T v, unsigned bits_num);
+</code-block>
+
+<p>Возвращает <tt>bits_num</tt> младших битов значения <tt>v</tt>. Другими
+словами, заполняет нулями все, кроме младших <tt>bits_num</tt> битов.</p>
+
+</chapter>
+
+
+<chapter xml:id="ord">
+<title><tt>ord()</tt></title>
+
+<code-block lang="C++">
+constexpr int ord(char ch);
+</code-block>
+
+<p>Возвращает код символа от 0 до 255.</p>
+<postcondition>ord(ch) >= 0</postcondition>
+
+</chapter>
+
+
+<chapter xml:id="rotl">
+<title><tt>rotl()</tt>, <tt>rotr()</tt></title>
+
+<code-block lang="C++">
+uint8_t  rotl(uint8_t  v, int shift);
+uint16_t rotl(uint16_t v, int shift);
+uint32_t rotl(uint32_t v, int shift);
+uint64_t rotl(uint64_t v, int shift);
+
+uint8_t  rotr(uint8_t  v, int shift);
+uint16_t rotr(uint16_t v, int shift);
+uint32_t rotr(uint32_t v, int shift);
+uint64_t rotr(uint64_t v, int shift);
+</code-block>
+
+<p>Функции выполняют циклический побитовый сдвиг (rotation) влево
+(<tt>rotl</tt>) или вправо (<tt>rotr</tt>).</p>
+<precondition>shift >= 0</precondition>
+
+</chapter>
+
+
+<chapter xml:id="swapped_nibbles">
+<title><tt>swapped_nibbles()</tt></title>
+
+<code-block lang="C++">
+constexpr uint8_t swapped_nibbles(uint8_t b);
+</code-block>
+
+<p>Меняет местами младший и старший полубайт значения и возвращает его.</p>
+
+</chapter>
+
+
+</chapter>

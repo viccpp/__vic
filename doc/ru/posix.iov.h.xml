@@ -1,0 +1,145 @@
+<chapter xml:id="posix.iov.h">
+<title><tt>__vic/posix/iov.h</tt></title>
+
+<p>Векторизованный ввод/вывод.</p>
+
+
+<chapter xml:id="posix--ovectors">
+<title><tt>posix::ovectors</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<unsigned N>
+class posix::ovectors
+{
+public:
+    ovectors();
+
+    void add(const void *buf, size_t buf_len);
+
+    ::iovec *ptr();
+    const ::iovec *ptr() const;
+    unsigned size() const;
+
+    static constexpr unsigned max_size() { return N; }
+    size_t total_bytes() const;
+};
+]]></code-block>
+
+<p>Обёртка для массива системных структур <tt>iovec</tt>, предназначенного для
+вывода набора разрозненных буферов со сбором (gathering). Параметр шаблона
+задаёт максимальное количество буферов.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>ovectors()</prototype>
+<postcondition><tt>size() == 0 &amp;&amp; total_bytes() == 0</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void add(const void *buf, size_t buf_len)</prototype>
+<p>Добавляет указанный буфер к набору.</p>
+<precondition><tt>size() &lt; max_size()</tt></precondition>
+<postcondition><tt>size()</tt> увеличивается на <tt>1</tt>,
+<tt>total_bytes()</tt> увеличивается на <tt>buf_len</tt>.</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>::iovec *ptr()</prototype>
+<prototype>const ::iovec *ptr() const</prototype>
+<p>Возвращает указатель на массив выходных векторов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>unsigned size() const</prototype>
+<p>Возвращает текущее количество векторов в массиве.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static constexpr unsigned max_size()</prototype>
+<p>Возвращает <tt>N</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>size_t total_bytes() const</prototype>
+<p>Возвращает суммарное количество байт во всех буферах массива.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+__vic::posix::ovectors<3> v;
+v.add("ovectors", 8);
+v.add(" in work", 8);
+const char nl = '\n';
+v.add(&nl, 1);
+
+// Prints:
+// ovectors in work
+__vic::posix::writev_all(1, v); // ::writev(1, v.ptr(), v.size());
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="posix--total-iovec">
+<title><tt>posix::total(iovec[])</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+size_t total(const ::iovec vec[], unsigned vec_len);
+template<unsigned vsize> size_t total(const ::iovec (&vec)[vsize]);
+
+}
+]]></code-block>
+
+<p>Подсчитывает суммарный размер буферов в массиве <tt>vec</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="posix--cut_prefix-iovec">
+<title><tt>posix::cut_prefix(iovec[])</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void posix::cut_prefix(::iovec *&vec, unsigned &vec_len, size_t n);
+]]></code-block>
+
+<p>Удаляет из вектора <tt>vec</tt> первые <tt>n</tt> байтов. Возвращает
+указатель на модифицированный набор буферов и новую длину вектора. Если
+<tt>n</tt> больше суммарной длины всех буферов вектора, то <tt>vec_len</tt>
+станет <tt>0</tt>, значение <tt>vec</tt> при этом неопределенно.</p>
+
+<p>Функция полезна для возобновления прерванного сигналом системного вызова,
+если записалась только часть данных.</p>
+
+</chapter>
+
+
+<chapter xml:id="posix--writev_all">
+<title><tt>posix::writev_all()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+void writev_all(int fd, ::iovec vec[], unsigned vec_len, size_t total);
+
+template<unsigned vsize>
+void writev_all(int fd, ovectors<vsize> &vec);
+
+}
+]]></code-block>
+
+<p>Функции записывают всё содержимое вектора <tt>vec</tt> в файловый дескриптор
+<tt>fd</tt>. Параметр <tt>total</tt> должен содержать суммарный размер буферов
+вектора (может быть посчитан вызовом <tt>__vic::posix::total(vec,
+vec_len)</tt> или <tt>__vic::posix::total(vec)</tt>). Функция не прерывается
+сигналами. В случае ошибок бросаются исключения.</p>
+
+</chapter>
+
+
+</chapter>

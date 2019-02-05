@@ -1,0 +1,133 @@
+<chapter xml:id="posix.sigset.h">
+<title><tt>__vic/posix/sigset.h</tt></title>
+
+<chapter xml:id="posix--sigset">
+<title><tt>posix::sigset</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::sigset
+{
+public:
+    sigset() = default;
+    sigset(const ::sigset_t &set);
+    // BEGIN C++11 only
+    sigset(std::initializer_list<int> sigs);
+    // END C++11 only
+
+    sigset &add(int signo);
+    sigset &del(int signo);
+    sigset &operator+=(int signo);
+    sigset &operator-=(int signo);
+    sigset &operator<<(int signo);
+    sigset &operator>>(int signo);
+
+    sigset &fill();
+    sigset &clear();
+
+    static sigset full();
+    static sigset empty();
+
+    bool is_member(int signo) const;
+    bool contains(int signo) const;
+
+    operator ::sigset_t &();
+    operator const ::sigset_t &() const;
+
+    ::sigset_t *operator&();
+    const ::sigset_t *operator&() const;
+};
+]]></code-block>
+
+<p>Удобная C++ обёртка для системного типа <tt>sigset_t</tt>. Набор операций
+определён в виде C++-операторов и функций-членов.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>sigset()</prototype>
+<p>Создаёт неинициализированный объект.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset(const ::sigset_t &amp;set)</prototype>
+<p>Создаёт копию <tt>set</tt>. Неявный преобразователь из типа
+<tt>sigset_t</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset(std::initializer_list&lt;int> sigs) <sign>C++11</sign></prototype>
+<p>Создаёт набор, заполненный сигналами из <tt>sigs</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;add(int signo)</prototype>
+<prototype>sigset &amp;operator+=(int signo)</prototype>
+<prototype>sigset &amp;operator&lt;&lt;(int signo)</prototype>
+<p>Добавляет сигнал к набору.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;del(int signo)</prototype>
+<prototype>sigset &amp;operator-=(int signo)</prototype>
+<prototype>sigset &amp;operator>>(int signo)</prototype>
+<p>Удаляет сигнал из набора.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;fill()</prototype>
+<p>Заполняет набор всеми сигналами (<tt>sigfillset()</tt>).</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;clear()</prototype>
+<p>Очищает набор - удаляет все сигналы из набора (<tt>sigemptyset()</tt>).</p>
+</synopsis>
+
+<synopsis>
+<prototype>static sigset full()</prototype>
+<p>Создаёт полный набор сигналов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static sigset empty()</prototype>
+<p>Создаёт пустой набор сигналов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_member(int signo)</prototype>
+<prototype>bool contains(int signo)</prototype>
+<p>Проверяет, содержит ли набор <tt>signo</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>operator ::sigset_t &amp;()</prototype>
+<prototype>operator const ::sigset_t &amp;() const</prototype>
+<p>Неявный преобразователь в <tt>sigset_t</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>::sigset_t *operator&amp;()</prototype>
+<prototype>const ::sigset_t *operator&amp;() const</prototype>
+<p>Перегруженный оператор адреса.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+using __vic::posix::sigset;
+using namespace __vic::posix::this_thread;
+
+// Ожидаем все сигналы, кроме SIGTERM и SIGQUIT
+int sig = this_thread::sigwait( sigset::full() >> SIGTERM >> SIGQUIT );
+
+// Ждём Ctrl+C
+this_thread::sigwait( sigset::empty() << SIGINT );
+// или в C++11
+this_thread::sigwait( sigset{ SIGINT } );
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

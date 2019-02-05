@@ -1,0 +1,168 @@
+<chapter xml:id="posix.file_stat.h">
+<title><tt>__vic/posix/file_stat.h</tt></title>
+
+<chapter xml:id="posix--file_stat">
+<title><tt>posix::file_stat</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+struct file_stat : public ::stat
+{
+    enum for_link_t { for_link };
+
+    file_stat() = default;
+    file_stat(const struct ::stat &s);
+    explicit file_stat(int fd);
+    explicit file_stat(const char *path);
+    explicit file_stat(const std::string &path);
+    file_stat(const char *path, for_link_t);
+    file_stat(const std::string &path, for_link_t);
+
+    void get(int fd);
+    void get(const char *path);
+    void get(const std::string &path);
+    void get_for_link(const char *path);
+    void get_for_link(const std::string &path);
+
+    bool try_get(int fd);
+    bool try_get(const char *path);
+    bool try_get(const std::string &path);
+    bool try_get_for_link(const char *path);
+    bool try_get_for_link(const std::string &path);
+
+    bool get_if_exists(const char *path);
+    bool get_if_exists(const std::string &path);
+
+    // POSIX-defined attributes
+    dev_t   dev() const { return this->st_dev; }
+    ino_t   ino() const { return this->st_ino; }
+    mode_t  mode() const { return this->st_mode; }
+    nlink_t nlink() const { return this->st_nlink; }
+    uid_t   uid() const { return this->st_uid; }
+    gid_t   gid() const { return this->st_gid; }
+    off_t   size() const { return this->st_size; }
+    time_t  atime() const { return this->st_atime; }
+    time_t  mtime() const { return this->st_mtime; }
+    time_t  ctime() const { return this->st_ctime; }
+
+    bool is_block() const { return S_ISBLK(mode()); }
+    bool is_char() const { return S_ISCHR(mode()); }
+    bool is_dir() const { return S_ISDIR(mode()); }
+    bool is_fifo() const { return S_ISFIFO(mode()); }
+    bool is_regular() const { return S_ISREG(mode()); }
+    bool is_link() const { return S_ISLNK(mode()); }
+    bool is_socket() const { return S_ISSOCK(mode()); }
+};
+inline bool is_block(const struct ::stat &s) { return S_ISBLK(s.st_mode); }
+inline bool is_char(const struct ::stat &s) { return S_ISCHR(s.st_mode); }
+inline bool is_dir(const struct ::stat &s) { return S_ISDIR(s.st_mode); }
+inline bool is_fifo(const struct ::stat &s) { return S_ISFIFO(s.st_mode); }
+inline bool is_regular(const struct ::stat &s) { return S_ISREG(s.st_mode); }
+inline bool is_link(const struct ::stat &s) { return S_ISLNK(s.st_mode); }
+inline bool is_socket(const struct ::stat &s) { return S_ISSOCK(s.st_mode); }
+
+bool is_same_file(const struct ::stat &s1, const struct ::stat &s2);
+
+}
+]]></code-block>
+
+<p>C++ обёртка для системной структуры <tt>stat</tt>. Конструкторы и функции
+<tt>get()</tt> бросают <tt>__vic::libc_error</tt> в случае ошибок. Функции
+<tt>try_get()</tt> вместо этого возвращают <tt>false</tt>, код ошибки содержится
+в <tt>errno</tt>..</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>enum for_link_t { for_link }</prototype>
+<p>Тэг конструктора.</p>
+</synopsis>
+
+<synopsis>
+<prototype>file_stat()</prototype>
+<p>Создаёт неинициализированную структуру.</p>
+</synopsis>
+
+<synopsis>
+<prototype>file_stat(const struct ::stat &amp;s)</prototype>
+<p>Копирует <tt>s</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit file_stat(int fd)</prototype>
+<prototype>void get(int fd)</prototype>
+<p>Получает stat для файлового дескриптора <tt>fd</tt> (системный вызов
+<tt>fstat()</tt>).</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit file_stat(const char *path)</prototype>
+<prototype>explicit file_stat(const std::string &amp;path)</prototype>
+<prototype>void get(const char *path)</prototype>
+<prototype>void get(const std::string &amp;path)</prototype>
+<p>Получает stat по файловому пути (системный вызов <tt>stat()</tt>).</p>
+</synopsis>
+
+<synopsis>
+<prototype>file_stat(const char *path, for_link_t)</prototype>
+<prototype>file_stat(const std::string &amp;path, for_link_t)</prototype>
+<prototype>void get_for_link(const char *path)</prototype>
+<prototype>void get_for_link(const std::string &amp;path)</prototype>
+<p>Получает stat для символической ссылки (системный вызов <tt>lstat()</tt>).
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool try_get(int fd)</prototype>
+<prototype>bool try_get(const char *path)</prototype>
+<prototype>bool try_get(const std::string &amp;path)</prototype>
+<prototype>bool try_get_for_link(const char *path)</prototype>
+<prototype>bool try_get_for_link(const std::string &amp;path)</prototype>
+<p>Аналоги <tt>get()</tt> и <tt>get_for_link()</tt>, но возвращают
+<tt>false</tt> вместо выброса исключений.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool get_if_exists(const char *path)</prototype>
+<prototype>bool get_if_exists(const std::string &amp;path)</prototype>
+<p>Аналог <tt>get()</tt>, но возвращает <tt>false</tt> в случае, если файл не
+найден, вместо выброса исключения. Бросает исключения в случае других ошибок.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>dev_t   dev() const</prototype>
+<prototype>ino_t   ino() const</prototype>
+<prototype>mode_t  mode() const</prototype>
+<prototype>nlink_t nlink() const</prototype>
+<prototype>uid_t   uid() const</prototype>
+<prototype>gid_t   gid() const</prototype>
+<prototype>off_t   size() const</prototype>
+<prototype>time_t  atime() const</prototype>
+<prototype>time_t  mtime() const</prototype>
+<prototype>time_t  ctime() const</prototype>
+<p>Атрибуты структуры <tt>stat</tt> определённые стандартом POSIX.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_block() const</prototype>
+<prototype>bool is_char() const</prototype>
+<prototype>bool is_dir() const</prototype>
+<prototype>bool is_fifo() const</prototype>
+<prototype>bool is_regular() const</prototype>
+<prototype>bool is_link() const</prototype>
+<prototype>bool is_socket() const</prototype>
+<p>Обёртки стандартных макросов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_same_file(const struct ::stat &amp;s1, const struct ::stat &amp;s2)</prototype>
+<p>Определяет, ссылаются ли структуры на один и тот же файл.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

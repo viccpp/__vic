@@ -1,0 +1,63 @@
+<chapter xml:id="posix.thread.h">
+<title><tt>__vic/posix/thread.h</tt></title>
+
+<p>C++ обёртки для Pthreads.</p>
+
+
+<chapter xml:id="posix--this_thread">
+<title><tt>posix::this_thread</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix::this_thread
+{
+    int sigwait(const ::sigset_t &set);
+    ::siginfo_t sigwaitinfo(const ::sigset_t &set);
+
+    void block_signals(const ::sigset_t &mask,
+                                ::sigset_t *oldmask = nullptr);
+    void unblock_signals(const ::sigset_t &mask,
+                                ::sigset_t *oldmask = nullptr);
+    void set_sigmask(const ::sigset_t &mask, ::sigset_t *oldmask = nullptr);
+}
+]]></code-block>
+
+<p>Набор функций для управления текущим потоком.</p>
+
+<synopsis>
+<prototype>int sigwait(const ::sigset_t &amp;set)</prototype>
+<p>Приостанавливает текущий поток до получения сигнала из набора <tt>set</tt>.
+Полученный сигнал возвращается в качестве результата.</p>
+</synopsis>
+
+<synopsis>
+<prototype>::siginfo_t sigwaitinfo(const ::sigset_t &amp;set)</prototype>
+<p>Аналог <tt>sigwait()</tt>, но возвращает дополнительную информацию о
+полученном сигнале. Сам сигнал возвращается в поле <tt>si_signo</tt>.</p>
+<note>Функция не прерывается сигналами, в отличие от одноимённого системного
+вызова.</note>
+<note>Перед использованием для каждого сигнала из <tt>set</tt> должна быть
+вызвана <tt>::sigaction()</tt> с <tt>sa_flags</tt> содержащим
+<tt>SA_SIGINFO</tt>! В противном случае возвращаемое значение будет содержать
+мусор!</note>
+</synopsis>
+
+<synopsis>
+<prototype>void block_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
+<p>Добавляет сигналы из набора к блокируемым в текущем потоке.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void unblock_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
+<p>Удаляет сигналы из набора из блокируемых в текущем потоке.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void set_sigmask(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
+<p>Устанавливает маску блокируемых сигналов для текущего потока. Все сигналы
+из набора блокируются, остальные - нет.</p>
+</synopsis>
+
+</chapter>
+
+
+</chapter>

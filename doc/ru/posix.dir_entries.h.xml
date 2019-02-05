@@ -1,0 +1,117 @@
+<chapter xml:id="posix.dir_entries.h">
+<title><tt>__vic/posix/dir_entries.h</tt></title>
+
+<chapter xml:id="posix--dir_entries">
+<title><tt>posix::dir_entries</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::dir_entries : private non_copyable
+{
+public:
+    dir_entries();
+    explicit dir_entries(const char *dir);
+    ~dir_entries();
+
+    // BEGIN C++11 only
+    dir_entries(dir_entries &&o) noexcept;
+    dir_entries &operator=(dir_entries &&o) noexcept;
+    // END C++11 only
+
+    void reopen(const char *dir);
+    void close();
+    bool is_open() const;
+
+    const char *next();
+#ifdef _DIRENT_HAVE_D_TYPE
+    unsigned char type() const;
+#endif
+    void rewind();
+};
+]]></code-block>
+
+<p>Класс позволяет просматривать список элементов в указанном каталоге.
+Специальные ссылки <tt>.</tt> и <tt>..</tt> никогда не включаются в
+результирующий набор.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>dir_entries()</prototype>
+<p>Создаёт закрытый объект.</p>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit dir_entries(const char *dir)</prototype>
+<p>Открывает каталог <tt>dir</tt> для просмотра. Бросает исключения при
+ошибках.</p>
+<postcondition><tt>is_open() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~dir_entries()</prototype>
+<p>Вызывает <tt>close()</tt>, если <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>dir_entries(dir_entries &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>dir_entries &amp;operator=(dir_entries &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Операции перемещения для режима C++11.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void reopen(const char *dir)</prototype>
+<p>Инициализирует новый листинг. Предварительно вызывает <tt>close()</tt>,
+если необходимо.</p>
+<postcondition><tt>is_open() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Освобождает ресурсы. Бросает исключения при ошибках.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Возвращает <tt>true</tt>, если <tt>next()</tt> может быть вызван.</p>
+</synopsis>
+
+<synopsis>
+<prototype>const char *next()</prototype>
+<p>Возвращает следующий элемент или <tt>nullptr</tt>, если достигнут конец
+списка.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>unsigned char type() const</prototype>
+<p>Возвращает тип элемента: <tt>DT_REG</tt>, <tt>DT_DIR</tt> и т.п. (см.
+документацию на <tt>dirent</tt> в Вашей системе). Функция доступна только если
+определён макрос <tt>_DIRENT_HAVE_D_TYPE</tt>. Но в любом случае, в некоторых
+ситуациях тип не может быть определён, и возвращается <tt>DT_UNKNOWN</tt>.
+Все приложения должны предусматривать данную ситуацию и быть готовымив таких
+случаях явно получать тип вызовом <tt>stat()</tt>!</p>
+</synopsis>
+
+<synopsis>
+<prototype>void rewind()</prototype>
+<p>Перематывает курсор списка на начало.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+// Выводит содержимое текущего каталога
+__vic::posix::dir_entries list(".");
+while(const char *entry = list.next())
+    std::cout << entry << '\n';
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

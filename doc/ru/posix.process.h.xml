@@ -1,0 +1,65 @@
+<chapter xml:id="posix.process.h">
+<title><tt>__vic/posix/process.h</tt></title>
+
+<p>Инструменты для работы с процессами ОС.</p>
+
+
+<chapter xml:id="posix--daemon">
+<title><tt>posix::daemon()</tt></title>
+
+<code-block lang="C++">
+void posix::daemon(bool nochdir, bool noclose = false);
+</code-block>
+
+<p>Делает вызывающий процесс UNIX-демоном. Вызов является полным аналогом
+одноимённого системного вызова из BSD и является просто редиректором к нему на
+тех системах, где вызов реализован (*BSD, Linux, QNX). В случае ошибок функция
+бросает исключения.</p>
+
+</chapter>
+
+
+<chapter xml:id="posix--ignore_signals">
+<title><tt>posix::ignore_signals()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+void ignore_signals(const int sigs[], size_t sigs_len);
+template<size_t Size> void ignore_signals(const int (&sigs)[Size]);
+// BEGIN C++11 only
+void ignore_signals(std::initializer_list<int> sigs);
+// END C++11 only
+
+}
+]]></code-block>
+
+<p>Игнорировать указанные сигналы (используется вызов <tt>sigaction()</tt>).</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+int sigs[] = { SIGINT, SIGQUIT, SIGTERM };
+__vic::posix::ignore_signals(sigs);
+
+// или в C++11 просто
+__vic::posix::ignore_signals({SIGINT, SIGQUIT, SIGTERM});
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="posix--process_alive">
+<title><tt>posix::process_alive()</tt></title>
+
+<code-block lang="C++">
+bool posix::process_alive(pid_t pid);
+</code-block>
+
+<p>Возвращает <tt>true</tt>, если процесс с указанным PID существует и не
+является зомби.</p>
+
+</chapter>
+
+
+</chapter>

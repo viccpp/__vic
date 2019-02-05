@@ -1,0 +1,189 @@
+<chapter xml:id="str2num.h">
+<title><tt>__vic/str2num.h</tt></title>
+
+
+<chapter xml:id="decimal_to_number">
+<title><tt>decimal_to_number()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void decimal_to_number(const std::string &s, long long &res);
+void decimal_to_number(const std::string &s, long &res);
+void decimal_to_number(const std::string &s, int &res);
+void decimal_to_number(const std::string &s, short &res);
+void decimal_to_number(const std::string &s, signed char &res);
+
+void decimal_to_number(const std::string &s, unsigned long long &res);
+void decimal_to_number(const std::string &s, unsigned long &res);
+void decimal_to_number(const std::string &s, unsigned &res);
+void decimal_to_number(const std::string &s, unsigned short &res);
+void decimal_to_number(const std::string &s, unsigned char &res);
+
+void decimal_to_number(const char *s, long long &res);
+void decimal_to_number(const char *s, long &res);
+void decimal_to_number(const char *s, int &res);
+void decimal_to_number(const char *s, short &res);
+void decimal_to_number(const char *s, signed char &res);
+
+void decimal_to_number(const char *s, unsigned long long &res);
+void decimal_to_number(const char *s, unsigned long &res);
+void decimal_to_number(const char *s, unsigned &res);
+void decimal_to_number(const char *s, unsigned short &res);
+void decimal_to_number(const char *s, unsigned char &res);
+
+template<class TInteger>
+TInteger decimal_to_number(const std::string &s);
+
+template<class TInteger>
+TInteger decimal_to_number(const char *s);
+]]></code-block>
+
+<p>Набор функций, преобразующих строки, содержащие десятичное представление
+целого числа, в один из стандартных целых типов C++. Входная строка может быть
+как C-строкой, так и <tt>std::string</tt>.</p>
+
+<p>В отличие от стандартных преобразователей, вроде <tt>std::strtol()</tt>,
+производится строгая проверка на формат строки и диапазон значения. В частности,
+лидирующие пробелы и символы, не являющиеся цифрами, в конце не допустимы. Для
+беззнаковых типов недопустим символ '-', который <tt>std::strtoul()</tt> по
+непонятной причине воспринимает как корректный.</p>
+
+<p>В случае ошибок бросаются исключения:</p>
+<list style="bulleted">
+    <item><tt>std::invalid_argument</tt> – строка не является корректным целым
+        десятичным числом;</item>
+    <item><tt>std::range_error</tt> – строка является корректным числом, но
+        результат не представим в диапазоне запрошенного типа (целочисленное
+        переполнение).</item>
+</list>
+
+<p>Для данных функций доступны две категории прототипов:</p>
+<list style="numbered">
+    <item>Значение возвращается через дополнительный выходной параметр и</item>
+    <item>Значение возвращается естественным образом, а его тип задаётся
+        аргументом шаблона.</item>
+</list>
+
+</chapter>
+
+
+<chapter xml:id="decimal_to_number_range">
+<title><tt>decimal_to_number_range()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, class InputIterator>
+void decimal_to_number_range(InputIterator begin, InputIterator end, T &res);
+
+template<class T, class InputIterator>
+T decimal_to_number_range(InputIterator begin, InputIterator end);
+]]></code-block>
+
+<p>Функции являются полным аналогом функций <tt>decimal_to_number()</tt> за
+тем исключением, что на вход принимают диапазон символов вместо строки.</p>
+
+</chapter>
+
+
+<chapter xml:id="decimal_parser">
+<title><tt>decimal_parser</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class decimal_parser
+{
+    using status = number_parse_status; // только для краткости
+public:
+    template<class InputIterator>
+    status parse(InputIterator begin, InputIterator end);
+    status parse(const std::string &str);
+    status parse(const char *str);
+    T result() const;
+};
+]]></code-block>
+
+<p>Аналог функций <tt>decimal_to_number()</tt>, но ни бросает исключений.
+Вместо них <tt>parse()</tt> возвращает коды <xref to="number_parse_status"/>.
+</p>
+
+<section><title>Коды статусов</title>
+<synopsis>
+<prototype>number_parse_status::ok</prototype>
+<p>Удачно, результат может быть получен вызовом функции <tt>result()</tt>.</p>
+</synopsis>
+<synopsis>
+<prototype>number_parse_status::invalid_number</prototype>
+<p>Строка не является корректным десятичным целым.</p>
+</synopsis>
+<synopsis>
+<prototype>number_parse_status::unrepresentable</prototype>
+<p>Строка, возможно, корректна, но результат не представим в диапазоне
+запрошенного типа (целочисленное переполнение).</p>
+</synopsis>
+</section>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>template&lt;class InputIterator>
+status parse(InputIterator begin, InputIterator end)</prototype>
+<prototype>status parse(const std::string &amp;str)</prototype>
+<prototype>status parse(const char *str)</prototype>
+<p>Преобразует диапазон символов или строку в число.</p>
+<postcondition>Результат преобразования может быть получен вызовом
+<tt>result()</tt>, если возвращён <tt>number_parse_status::ok</tt>.
+</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>T result() const</prototype>
+<p>Возвращает результат преобразования последнего вызова <tt>parse()</tt>.</p>
+<precondition>Последний вызов <tt>parse()</tt> вернул
+<tt>number_parse_status::ok</tt>.</precondition>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+template<class T>
+bool to_number(const std::string &s, T &result) noexcept
+{
+    __vic::decimal_parser<T> p;
+    if(p.parse(s) != __vic::number_parse_status::ok) return false;
+    result = p.result();
+    returt true; // 'result' содержит результат преобразования
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="number_parse_status">
+<title><tt>number_parse_status</tt></title>
+
+<code-block lang="C++"><![CDATA[
+enum class number_parse_status
+{
+    ok,
+    invalid_number,
+    unrepresentable
+};
+using number_parse_status_t = number_parse_status; // for C++98
+]]></code-block>
+
+<p>Коды статусов результата разбора.</p>
+
+<section><title>Типы</title>
+
+<synopsis>
+<prototype>typename number_parse_status_t</prototype>
+<p>Используйте данное имя типа, если коду требуется совместимость с режимом
+C++98.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+</chapter>

@@ -1,0 +1,79 @@
+<chapter xml:id="posix.fs.h">
+<title><tt>__vic/posix/fs.h</tt></title>
+
+<p>Инструменты для работы с файлами и путями на POSIX-совместимых файловых
+системах.</p>
+
+
+<chapter xml:id="posix--basename">
+<title><tt>posix::basename()</tt>, <tt>posix::dirname()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+std::string basename(const std::string &path);
+std::string dirname(const std::string &path);
+void basename(const std::string &path, std::string &res);
+void dirname(const std::string &path, std::string &res);
+void append_basename(const std::string &path, std::string &res);
+void append_dirname(const std::string &path, std::string &res);
+
+}
+]]></code-block>
+
+<p>Функции являются аналогами стандартных shell-команд. Извлекают имя файла
+или каталога из пути. Есть 3 варианта функций:</p>
+<list style="bulleted">
+    <item>Результат возвращается стандартным способом,</item>
+    <item>Результат возвращается через выходной параметр и</item>
+    <item>Результат добавляется к выходному параметру.</item>
+</list>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+std::cout << __vic::posix::dirname("/usr/lib") << '\n';   // "/usr"
+std::cout << __vic::posix::basename("/usr/lib") << '\n';  // "lib"
+std::cout << __vic::posix::dirname("/usr/lib/") << '\n';  // "/usr"
+std::cout << __vic::posix::basename("/usr/lib/") << '\n'; // "lib"
+std::cout << __vic::posix::dirname("lib") << '\n';        // "."
+std::cout << __vic::posix::basename("lib") << '\n';       // "lib"
+std::cout << __vic::posix::dirname("/") << '\n';          // "/"
+std::cout << __vic::posix::basename("/") << '\n';         // "/"
+std::cout << __vic::posix::dirname("") << '\n';           // "."
+std::cout << __vic::posix::basename("") << '\n';          // ""
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="posix--add_trailing_slash">
+<title><tt>posix::add_trailing_slash()</tt>,
+    <tt>posix::with_trailing_slash()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix {
+
+std::string &add_trailing_slash(std::string &path);
+std::string with_trailing_slash(const std::string &s);
+std::string with_trailing_slash(const char *s);
+
+}
+]]></code-block>
+
+<p>Добавляют завершающий слеш к пути, если его там нет.
+<tt>add_trailing_slash()</tt> модифицирует свой аргумент, а
+<tt>with_trailing_slash()</tt> всегда создаёт новый объект и возвращает его.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+std::string path = get_directory();
+__vic::posix::add_trailing_slash(path) += "file.name"; // dir/file.name
+create_file(path);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

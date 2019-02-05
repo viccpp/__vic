@@ -1,0 +1,52 @@
+<chapter xml:id="unicode.h">
+<title><tt>__vic/unicode.h</tt></title>
+
+<p>Утилиты для поддержки <link href="https://www.unicode.org/">Unicode</link>.
+</p>
+
+
+<chapter xml:id="unicode_t">
+<title><tt>unicode_t</tt></title>
+
+<code-block lang="C++">
+using unicode_t = char32_t; // since C++11
+// или
+using unicode_t = uint_least32_t; // C++98
+</code-block>
+
+<p>Тип, предназначениый для хранения Unicode
+<link href="https://www.unicode.org/glossary/#code_point">code point</link>.</p>
+
+</chapter>
+
+
+<chapter xml:id="utf_transcode">
+<title><tt>utf_transcode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UTFReader, class UTFWriter>
+void utf_transcode(UTFReader r, UTFWriter w);
+]]></code-block>
+
+<p>Алгоритм, читающий code points типа <xref to="unicode_t"/> из
+<tt>UTFReader</tt>, используя <tt>r.read()</tt>, и записывающий их в
+<tt>UTFWriter</tt>, используя <tt>w.write()</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="unicode_code_point_constants">
+<title><tt>Code point constants</tt></title>
+
+<code-block lang="C++">
+constexpr unicode_t unicode_max = 0x10FFFF;
+constexpr unicode_t unicode_bom = 0xFEFF;
+constexpr unicode_t unicode_replacement_char = 0xFFFD;
+</code-block>
+
+<p>Именованные константы некоторых полезных Unicode code points.</p>
+
+</chapter>
+
+
+</chapter>

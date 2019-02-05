@@ -8,7 +8,7 @@
 class logger : private non_copyable
 {
 public:
-    enum class severity
+    enum class severity : unsigned char
     {
         trace,
         debug,
@@ -102,7 +102,7 @@ ascending order):</p>
         continue.</item>
 </list>
 
-<p>INFO is the default logging level but any another can be chosen. If severety
+<p>INFO is the default logging level but any other can be chosen. If severity
 of the log message (record) is below the logging level, it will be ignored and
 will not be published in the log's output.</p>
 
@@ -154,8 +154,8 @@ log.info("Message");
 log.info() << "Message";
 ]]></code-block>
 
-<p>Output of the records with the severities DEBUG and TRACE usually disabled.
-Such records will not be published in the log but the program will waste the
+<p>Output of the records with the severities DEBUG and TRACE is usually disabled.
+Such records will not be published in the log but the program will waste
 time to format it. Therefore before creating any debug message using operator
 <tt>&lt;&lt;</tt> one should check if debug is enabled using
 <tt>debug_visible()</tt> or <tt>trace_visible()</tt> call:</p>
@@ -163,8 +163,8 @@ time to format it. Therefore before creating any debug message using operator
 if(log.debug_visible())
     log.debug() << ...; // build the message
 ]]></code-block>
-<p>This advise doesn't cover plain calls <tt>debug(msg)</tt> and
-<tt>trace(msg)</tt>, which have already prepared message and don't perform any
+<p>This advice doesn't cover plain calls <tt>debug(msg)</tt> and
+<tt>trace(msg)</tt>, which have a prepared message already and don't perform any
 formatting.</p>
 
 <p>To use <tt>logger</tt> one has to implement abstract base class
@@ -199,7 +199,7 @@ Since C++11 it is just a synonym for <tt>severity</tt>.</p>
 <synopsis>
 <prototype>void output::publish_record(severity_t sev, const char *buf, size_t buf_len)</prototype>
 <p>The implementaion of this pure virtual function has to output the content of
-<tt>buf</tt> to the log as a one record. <tt>buf_len</tt> is the length of
+<tt>buf</tt> to the log as one record. <tt>buf_len</tt> is the length of
 <tt>buf</tt>. The function is always called with <tt>sev >= level()</tt>.
 The implementation can rely on it.</p>
 </synopsis>
@@ -292,7 +292,7 @@ added using operators <tt>&lt;&lt;</tt>.</p>
 <prototype>bool error_visible() const</prototype>
 <prototype>bool fatal_visible() const</prototype>
 <p>Returns <tt>true</tt> if a record with the corresponding severity will be
-published. Usage of this functions enables to avoid the formatting of the
+published. Usage of this functions enables to avoid formatting of the
 messages which eventually will not be published.</p>
 </synopsis>
 

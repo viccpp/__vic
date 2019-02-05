@@ -1,0 +1,190 @@
+<chapter xml:id="base16.h">
+<title><tt>__vic/base16.h</tt></title>
+
+<p>Кодировщик и декодировщик Base16.</p>
+
+
+<chapter xml:id="base16">
+<title><tt>base16</tt></title>
+
+<p>Класс, используемый как пространство имён. Содержит только типы, константы
+и статические функции. Создание объектов данного класса не предполагается.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--bad_format">
+<title><tt>base16::bad_format</tt></title>
+
+<code-block lang="C++">
+struct base16::bad_format : public std::exception {};
+</code-block>
+
+<p>Абстрактный базовый класс исключений.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--bad_digit">
+<title><tt>base16::bad_digit</tt></title>
+
+<code-block lang="C++">
+struct base16::bad_digit : public base16::bad_format
+{
+    const char *what() const noexcept;
+};
+</code-block>
+
+<p>Класс исключений, бросаемый <xref to="base16--decode"/> если входная
+последовательность содержит символ, не являющийся шестнадцатеричной цифрой.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--bad_length">
+<title><tt>base16::bad_length</tt></title>
+
+<code-block lang="C++">
+struct base16::bad_length : public base16::bad_format
+{
+    const char *what() const noexcept;
+};
+</code-block>
+
+<p>Класс исключений, бросаемый <xref to="base16--decode"/> если входная
+последовательность состоит из нечётного количества символов.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--status">
+<title><tt>base16::status</tt></title>
+
+<code-block lang="C++">
+enum class base16::status
+{
+    ok,
+    invalid_length,
+    invalid_digit
+};
+using base16::status_t = base16::status; // for C++98
+</code-block>
+
+<p>Коды статусов разбора входной последовательности, возвращаемые
+<xref to="base16--try_decode"/>.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--encode_upper">
+<title><tt>base16::encode_upper()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Bytes -> Text
+template<class ByteReader, class CharWriter>
+void base16::encode_upper(ByteReader reader, CharWriter writer);
+]]></code-block>
+
+<p>Кодирует байты из <tt>reader</tt> и записывает результирующие символы во
+<tt>writer</tt>. Для шестнадцатеричных цифр используется верхний регистр.</p>
+
+<p><tt>ByteReader</tt> должен моделировать concept
+<tt>Reader&lt;unsigned char></tt>. См. <xref to="readers"/>.</p>
+
+<p><tt>CharWriter</tt> должен моделировать concept <tt>Writer&lt;char></tt>.
+См. <xref to="writers"/>.</p>
+
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/string.h>
+#include<__vic/writers/string.h>
+
+using bytes = std::string;
+using bytes_reader = __vic::string_reader;
+
+std::string encode_base16(const bytes &s)
+{
+    std::string res;
+    res.reserve(s.length() * 2);
+    __vic::base16::encode_upper(bytes_reader(s), __vic::string_writer(res));
+    return res;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="base16--encode_lower">
+<title><tt>base16::encode_lower()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Bytes -> Text
+template<class ByteReader, class CharWriter>
+void base16::encode_lower(ByteReader reader, CharWriter writer);
+]]></code-block>
+
+<p>То же самое, что <xref to="base16--encode_upper"/>, но использует нижний
+регистр для шестнадцатеричных цифр.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--decode">
+<title><tt>base16::decode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Text -> Bytes
+template<class CharReader, class ByteWriter>
+void base16::decode(CharReader reader, ByteWriter writer);
+]]></code-block>
+
+<p>Декодирует символы из <tt>reader</tt> и записывает результирующие байты во
+<tt>writer</tt>. Если входная последовательность имеет неправильный Base16
+формат, бросается исключение наследник <xref to="base16--bad_format"/>.</p>
+
+<p><tt>CharReader</tt> должен моделировать concept <tt>Reader&lt;char></tt>.
+См. <xref to="readers"/>.</p>
+
+<p><tt>ByteWriter</tt> должен моделировать concept
+<tt>Writer&lt;unsigned char></tt>. См. <xref to="writers"/>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/string.h>
+#include<__vic/writers/string.h>
+
+using bytes = std::string;
+using bytes_writer = __vic::string_writer;
+
+bytes decode_base16(const std::string &s)
+{
+    bytes res;
+    res.reserve(s.length() / 2);
+    __vic::base16::decode(__vic::string_reader(s), bytes_writer(res));
+    return res;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="base16--try_decode">
+<title><tt>base16::try_decode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Text -> Bytes
+template<class CharReader, class ByteWriter>
+base16::status_t base16::try_decode(CharReader reader, ByteWriter writer);
+]]></code-block>
+
+<p>То же самое, что <xref to="base16--decode"/>, но возвращает
+<xref to="base16--status"/> отличный от <tt>base16::status::ok</tt> в случае
+неправильного формата входной последовательности вместо бросания исключений.</p>
+
+</chapter>
+
+
+</chapter>

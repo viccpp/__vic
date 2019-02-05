@@ -4,15 +4,39 @@ Legend:
     * Changes
     ! Important
 
+2019-02-05
+    + doc: russian translation
+
+2019-01-31
+    * object_pool: renamed push() -> push_allocated()
+
+2018-12-17  __vic
+    + writers/null.h:
+        + null_writer
+
+2018-11-20  __vic
+    * base64::decode(): no whitespaces skip
+
 2018-11-14  __vic
+    * stdio_file:
+        * Renamed attach() -> attach_handle(), detach() -> detach_handle()
+        + attach_handle() returns old value
     * posix::file:
         * Renamed attach() -> attach_handle(), detach() -> detach_handle()
         + attach_handle() returns old value
+
+2018-10-30  __vic
+    + Handmade integers to text converters (to_text_append())
+
+2018-10-24  __vic
+    * Underlying type is specified for logger::severity
 
 2018-10-08  __vic
     + readers, writers: make_...()
     + utf{8|16}: make_reader(), make_writer()
     + unicode.h: utf_transcode()
+    + writers/iterator.h:
+        + iterator_writer
 
 2018-09-28  __vic
     + utf16/defs.h:
@@ -409,6 +433,18 @@ Legend:
 
 2016-06-23  __vic
     * Total revision and rework started in order to publish the code
+
+
+VERSION 0.6
+
+2011-05-17  __vic
+    * The last internal release before rework (no distribution)
+
+
+VERSION 0.5.1
+
+2010-09-08
+    * The last released version before rework
 
 2007-08-15  __vic
     * The project is started

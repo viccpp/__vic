@@ -1,0 +1,37 @@
+<chapter xml:id="packon.h">
+<title><tt>__vic/packon.h</tt> &amp; <tt>__vic/packoff.h</tt></title>
+
+<p>Включение первого файла отключает выравнивание полей структур. Другими
+словами, включает «упаковку структур» - размер структуры - это строго сумма
+размеров его полей. Включение второго файла восстанавливает выравнивание,
+используемое по умолчанию. Таким образом, пара директив <tt>#include</tt>
+формируют секцию исходного файла с отключенным выравниванием сруктур.</p>
+
+<note>Каждый <tt>#include&lt;__vic/packon.h></tt> должен иметь соответсвующий
+<tt>#include&lt;__vic/packoff.h></tt>.</note>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+struct unpacked
+{
+    bool f1;
+    int f2;
+};
+static_assert(sizeof(unpacked) >= sizeof(bool) + sizeof(int),
+    "Total struct size can exceed the sum of members sizes");
+
+#include<__vic/packon.h> // выравнивание отключено, начиная отсюда
+
+struct packed
+{
+    bool f1;
+    int f2;
+};
+static_assert(sizeof(packed) == sizeof(bool) + sizeof(int),
+    "Total struct size is exactly the sum of members sizes");
+
+#include<__vic/packoff.h> // выравнивание снова включено
+]]></code-block>
+</section>
+
+</chapter>

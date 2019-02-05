@@ -1,0 +1,44 @@
+<chapter xml:id="posix.dir_files.h">
+<title><tt>__vic/posix/dir_files.h</tt></title>
+
+<chapter xml:id="posix--dir_files">
+<title><tt>posix::dir_files</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::dir_files : private non_copyable
+{
+public:
+    dir_files();
+    explicit dir_files(const char *dir, const char *pattern = nullptr);
+    ~dir_files();
+
+    // BEGIN C++11 only
+    dir_files(dir_files &&o);
+    dir_files &operator=(dir_files &&o);
+    // END C++11 only
+
+    void reopen(const char *dir, const char *pattern = nullptr);
+    void close();
+    bool is_open() const;
+
+    const char *next();
+    void rewind();
+};
+]]></code-block>
+
+<p>Класс аналогичен классу <tt>dir_entries</tt>, но игнорирует все элементы
+каталога, не являющиеся регулярными файлами. Также имеется возможность задания
+опциональной маски имён файлов с помощью параметра <tt>pattern</tt>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+// Выводит список cpp-файлов в текущем каталоге
+__vic::posix::dir_files files(".", "*.cpp");
+while(const char *file = files.next())
+    std::cout << file << '\n';
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

@@ -1,0 +1,212 @@
+<chapter xml:id="defs.h">
+<title><tt>__vic/defs.h</tt></title>
+<p>Различные фундаментальные определения.</p>
+
+
+<chapter xml:id="nullptr">
+<title><tt>nullptr</tt> <sign>C++98 only</sign></title>
+
+<p>Литерал для пустого указателя. Может использоваться вместо <tt>NULL</tt> или
+<tt>0</tt>. В режиме ISO C++ 98 определён как</p>
+
+<code-block lang="C++">
+const int nullptr = 0;
+</code-block>
+
+<p>Данное определение позволяет писать код в стиле C++11 при использовании
+стандарта C++98.</p>
+
+<p>Это одно из немногих глобальных определений библиотеки. Определение можно
+предотвратить, определив макрос <tt>__VIC_NO_NULLPTR_DEF</tt> перед включением.
+</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+int *p = nullptr;
+pthread_create(&tid, nullptr, thread_func, nullptr);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="noexcept">
+<title><tt>noexcept</tt> <sign>C++98 only</sign></title>
+
+<p>В режиме C++98 - макроопределение, синоним <tt>throw()</tt>. В режимах
+остальных стандартов данное определение отсутсвует.</p>
+
+</chapter>
+
+
+<chapter xml:id="array_size">
+<title><tt>array_size()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T, size_t N>
+constexpr size_t array_size(T (&array)[N]);
+]]></code-block>
+
+<p>Возвращает количество элементов массива. Может вычисляться во время
+компиляции.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+int m[] = { 1, 2, 3, 5, 7 };
+
+size_t n = __vic::array_size(m); // n == 5
+
+int *dup = new int[n];
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="non_copyable">
+<title><tt>non_copyable</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class non_copyable
+{
+    non_copyable(const non_copyable &) = delete;
+    non_copyable &operator=(const non_copyable &) = delete;
+protected:
+    non_copyable() = default;
+};
+]]></code-block>
+
+<p>Наследование данного класса подавляет генерацию копирующих конструктора
+и присваивания. Аналог <tt>boost::noncopyable</tt>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+class C : private __vic::non_copyable
+{
+};
+
+C c1;
+C c2 = c1; // Error! Non-copyable object
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="non_heap_allocatable">
+<title><tt>non_heap_allocatable</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class non_heap_allocatable
+{
+    void *operator new(std::size_t ) = delete;
+    void *operator new(std::size_t , const std::nothrow_t & ) = delete;
+    void *operator new[](std::size_t ) = delete;
+    void *operator new[](std::size_t , const std::nothrow_t & ) = delete;
+protected:
+    non_heap_allocatable() = default;
+};
+]]></code-block>
+
+<p>Наследование данного класса предотвращает размещение объекта в куче с
+использованием оператора <tt>new</tt>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+class C : private __vic::non_heap_allocatable
+{
+};
+
+C c; // Ok. Allocation on stack
+C *p = new C; // Error! Attempt to allocate on heap
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="uninizialized">
+<title><tt>uninizialized</tt></title>
+
+<code-block lang="C++">
+class uninitialized;
+
+constexpr uninitialized noinit;
+</code-block>
+
+<p>Данный тип имеет единственное значение - <tt>noinit</tt>. Может
+использоваться в качестве тэга конструктора для подавления инициализации
+объекта. Конструктор по умолчанию, обычно, должен инициализировать объект
+некоторым значением по умолчанию, поэтому, если по каким-то причинам требуется
+неинициализированный объект, это должно быть явно указано в коде.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+class Complex
+{
+    double re, im;
+public:
+    Complex() : re(0.0), im(0.0) {}
+    Complex(__vic::uninitialized) {}
+    Complex(double r, double i) : re(r), im(i) {}
+};
+
+Complex c1;                // c1 == Complex(0, 0)
+Complex c2(__vic::noinit); // c2 contains unknown garbage value
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="std--move">
+<title><tt>std::move()</tt>, <tt>std::forward()</tt>, <tt>std::swap()</tt>
+<sign>C++11</sign></title>
+
+<p>Данный заголовочный файл всегда включает эти утилиты в режиме C++11.</p>
+
+</chapter>
+
+
+<chapter xml:id="VIC_SWAP_HEADER">
+<title><tt>__VIC_SWAP_HEADER</tt></title>
+
+<p>Макроопределение для <tt>#include</tt>. Раскрывается в имя заголовочного
+файла, который содержит определение <tt>std::swap()</tt>, в зависимости от
+используемого стандарта языка.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+#include __VIC_SWAP_HEADER
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="platform-dependent-macros">
+<title>Системно-зависимые макроопределения</title>
+
+<p>Библиотека предоставляет набор макроопределений, позволяющий программе
+определить, для какой целевой платформы она собирается. Подобные определения
+предоставляются компиляторами, но везде под разными именами. Использование
+макроопределений библиотеки позволяет не зависеть от компилятора.</p>
+
+<p>Список аппаратных платформ (процессоров):</p>
+<list style="bulleted">
+    <item><tt>__VIC_X86__</tt> - Intel x86 (IA32)</item>
+    <item><tt>__VIC_X64__</tt> - x64 aka AMD 64</item>
+    <item><tt>__VIC_IA64__</tt> - Intel IA64</item>
+    <item><tt>__VIC_POWERPC__</tt> - PowerPC</item>
+</list>
+
+<p>Другие макроопределения:</p>
+<list style="bulleted">
+    <item><tt>__VIC_STRICT_RAM_ALIGNMENT__</tt> - попытка вычитать из памяти
+        невыровненные данные приведёт к ошибке шины</item>
+</list>
+
+</chapter>
+
+
+</chapter>

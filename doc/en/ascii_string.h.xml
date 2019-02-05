@@ -56,7 +56,7 @@ bool equal_icase(const char *s1, size_t s1_len,
 }
 ]]></code-block>
 
-<p>Checks equality of the two strings ignoring the case. The pointers must not
+<p>Checks equality of two ASCII-strings ignoring the case. The pointers must not
 be <tt>nullptr</tt>!</p>
 
 </chapter>

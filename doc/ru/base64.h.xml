@@ -1,0 +1,201 @@
+<chapter xml:id="base64.h">
+<title><tt>__vic/base64.h</tt></title>
+
+<p>Кодировщик и декодировщик Base64.</p>
+
+
+<chapter xml:id="base64">
+<title><tt>base64</tt></title>
+
+<p>Класс, используемый как пространство имён. Содержит только типы, константы
+и статические функции. Создание объектов данного класса не предполагается.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--bad_format">
+<title><tt>base64::bad_format</tt></title>
+
+<code-block lang="C++">
+struct base64::bad_format : public std::exception {};
+</code-block>
+
+<p>Абстрактный базовый класс исключений.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--bad_digit">
+<title><tt>base64::bad_digit</tt></title>
+
+<code-block lang="C++">
+struct base64::bad_digit : public base64::bad_format
+{
+    const char *what() const noexcept;
+};
+</code-block>
+
+<p>Класс исключений, бросаемый <xref to="base64--decode"/> если входная
+последовательность содержит символ, не являющийся цифрой Base64.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--bad_length">
+<title><tt>base64::bad_length</tt></title>
+
+<code-block lang="C++">
+struct base64::bad_length : public base64::bad_format
+{
+    const char *what() const noexcept;
+};
+</code-block>
+
+<p>Класс исключений, бросаемый <xref to="base64--decode"/> если входная
+последовательность состоит из количества символов не кратного 4.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--status">
+<title><tt>base64::status</tt></title>
+
+<code-block lang="C++">
+enum class base64::status
+{
+    ok,
+    invalid_length,
+    invalid_digit
+};
+using base64::status_t = base64::status; // for C++98
+</code-block>
+
+<p>Коды статусов разбора входной последовательности, возвращаемые
+<xref to="base64--try_decode"/>.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--encode">
+<title><tt>base64::encode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Bytes -> Text
+template<class ByteReader, class CharWriter>
+void base64::encode(ByteReader reader, CharWriter writer);
+]]></code-block>
+
+<p>Кодирует байты из <tt>reader</tt> и записывает результирующие символы во
+<tt>writer</tt>.</p>
+
+<p><tt>ByteReader</tt> должен моделировать concept
+<tt>Reader&lt;unsigned char></tt>. См. <xref to="readers"/>.</p>
+
+<p><tt>CharWriter</tt> должен моделировать concept <tt>Writer&lt;char></tt>.
+См. <xref to="writers"/>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/string.h>
+#include<__vic/writers/string.h>
+
+using bytes = std::string;
+using bytes_reader = __vic::string_reader;
+
+std::string encode_base64(const bytes &s)
+{
+    std::string res;
+    res.reserve(__vic::base64::encoded_length(s.length()));
+    __vic::base64::encode(bytes_reader(s), __vic::string_writer(res));
+    return res;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="base64--decode">
+<title><tt>base64::decode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Text -> Bytes
+template<class CharReader, class ByteWriter>
+void base64::decode(CharReader reader, ByteWriter writer);
+]]></code-block>
+
+<p>Декодирует символы из <tt>reader</tt> и записывает результирующие байты во
+<tt>writer</tt>. Если входная последовательность имеет неправильный Base64
+формат, бросается исключение наследник <xref to="base64--bad_format"/>.</p>
+
+<p><tt>CharReader</tt> должен моделировать concept <tt>Reader&lt;char></tt>.
+См. <xref to="readers"/>.</p>
+
+<p><tt>ByteWriter</tt> должен моделировать concept
+<tt>Writer&lt;unsigned char></tt>. См. <xref to="writers"/>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/string.h>
+#include<__vic/writers/string.h>
+
+using bytes = std::string;
+using bytes_writer = __vic::string_writer;
+
+bytes decode_base64(const std::string &s)
+{
+    bytes res;
+    res.reserve(__vic::base64::max_decoded_length(s.length()));
+    __vic::base64::decode(__vic::string_reader(s), bytes_writer(res));
+    return res;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="base64--try_decode">
+<title><tt>base64::try_decode()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Text -> Bytes
+template<class CharReader, class ByteWriter>
+base64::status_t base64::try_decode(CharReader reader, ByteWriter writer);
+]]></code-block>
+
+<p>То же самое, что <xref to="base64--decode"/>, но возвращает
+<xref to="base64--status"/> отличный от <tt>base64::status::ok</tt> в случае
+неправильного формата входной последовательности вместо бросания исключений.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--encoded_length">
+<title><tt>base64::encoded_length()</tt></title>
+
+<code-block lang="C++">
+constexpr size_t base64::encoded_length(size_t orig_len);
+</code-block>
+
+<p>Высчитывает длину закодированной последовательности символов на основе длины
+входной последовательности в байтах.</p>
+
+</chapter>
+
+
+<chapter xml:id="base64--max_decoded_length">
+<title><tt>base64::max_decoded_length()</tt></title>
+
+<code-block lang="C++">
+constexpr size_t base64::max_decoded_length(size_t orig_len);
+</code-block>
+
+<p>Оценивает максимальную длину декодированной последовательности байтов на
+основе длины входной последовательности символов. Точная длина зависит от
+символов <tt>'='</tt> на конце закодированной последовательности.</p>
+
+</chapter>
+
+
+</chapter>

@@ -1,0 +1,79 @@
+<chapter xml:id="posix.cond_variable.h">
+<title><tt>__vic/posix/cond_variable.h</tt></title>
+
+<chapter xml:id="posix--cond_variable">
+<title><tt>posix::cond_variable</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::cond_variable
+{
+public:
+    constexpr cond_variable() noexcept;
+    ~cond_variable();
+
+    cond_variable(const cond_variable & ) = delete;
+    cond_variable &operator=(const cond_variable & ) = delete;
+
+    void wait(::pthread_mutex_t &m);
+    void wait(posix::mutex &m);
+
+    bool wait_until(::pthread_mutex_t &m, const ::timespec &abstime);
+    bool wait_until(posix::mutex &m, const ::timespec &abstime);
+
+    void signal();
+    void broadcast();
+
+    // C++11-compatible synonyms
+    void notify_one() { signal(); }
+    void notify_all() { broadcast(); }
+};
+]]></code-block>
+
+<p>Переменные условий POSIX.</p>
+
+<note>В режиме С++11 <tt>std::condition_variable</tt> может быть более
+подходящим вариантом.</note>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>cond_variable()</prototype>
+<p>Создаёт объект.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~cond_variable()</prototype>
+<p>Уничтожает объект.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void wait(::pthread_mutex_t &amp;m)</prototype>
+<prototype>void wait(posix::mutex &amp;m)</prototype>
+<p>Блокирует вызывающий поток и ждёт сигналов (уведомлений).</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool wait_until(::pthread_mutex_t &amp;m, const ::timespec &amp;abstime)</prototype>
+<prototype>bool wait_until(posix::mutex &amp;m, const ::timespec &amp;abstime)</prototype>
+<p>То же, что <tt>wait()</tt>, но время ожидания ограничено таймаутом.
+Возвращает <tt>true</tt>, если сигнал был получен, <tt>false</tt>, если
+таймаут истёк.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void signal()</prototype>
+<prototype>void notify_one()</prototype>
+<p>Шлёт сигнал (уведомление) одному из ожидающих потоков.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void broadcast()</prototype>
+<prototype>void notify_all()</prototype>
+<p>Шлёт сигнал (уведомление) всем ожидающим потокам.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

@@ -1,0 +1,86 @@
+<chapter xml:id="waitable_event.h">
+<title><tt>__vic/waitable_event.h</tt></title>
+
+<chapter xml:id="waitable_event">
+<title><tt>waitable_event</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class waitable_event : private non_copyable
+{
+public:
+    explicit waitable_event(bool signaled = false);
+    ~waitable_event();
+
+    void set();
+    void reset();
+    bool signaled() const;
+
+    void wait();
+    bool wait_ms(unsigned msec);
+
+    // BEGIN C++11 only
+    template<class Rep, class Period>
+    bool wait_for(const std::chrono::duration<Rep,Period> &d);
+    template<class Clock, class Duration>
+    bool wait_until(const std::chrono::time_point<Clock,Duration> &t);
+    // END C++11 only
+};
+]]>
+</code-block>
+
+<p>Инструмент синхронизации, подобный «Event Object» в ОС Windows. Может
+находиться в одном из двух состояний: сигнальном или несигнальном. Поток
+может эффективно ждать перехода в сигнальное состояние, используя
+предоставляемые wait-функции (с минимальным потреблением ресурсов системы).</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit waitable_event(bool signaled = false)</prototype>
+<postcondition><tt>signaled() == signaled</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool signaled() const</prototype>
+<p>Возвращает <tt>true</tt>, если объект находится в сигнальном состоянии.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void set()</prototype>
+<p>Устанавливает сигнальное состояние.</p>
+<postcondition><tt>signaled() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void reset()</prototype>
+<p>Устанавливает несигнальное состояние.</p>
+<postcondition><tt>signaled() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void wait()</prototype>
+<p>Ждёт сигнального состояния без таймаута.</p>
+<postcondition><tt>signaled() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool wait_ms(unsigned msec)</prototype>
+<p>Ждёт сигнального состояния не дольше указанного таймаута в миллисекундах.
+Returns <tt>signaled()</tt>.</p>
+<note>В режиме C++11 используйте <tt>wait_for()</tt>.</note>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class Rep, class Period>
+bool wait_for(const std::chrono::duration<Rep,Period> &d)]]> <sign>C++11</sign></prototype>
+<prototype><![CDATA[template<class Clock, class Duration>
+bool wait_until(const std::chrono::time_point<Clock,Duration> &t)]]> <sign>C++11</sign></prototype>
+<p>Ждёт сигнального состояния не дольше указанного таймаута. Возвращает
+<tt>signaled()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

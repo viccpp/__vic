@@ -1,0 +1,186 @@
+<chapter xml:id="posix.file.h">
+<title><tt>__vic/posix/file.h</tt></title>
+
+<chapter xml:id="posix--file">
+<title><tt>posix::file</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::file : private non_copyable
+{
+public:
+    explicit constexpr file(int fd = -1);
+    file(const char *name, int flags, ::mode_t mode = 0666);
+    ~file();
+
+    // BEGIN C++11 only
+    file(file &&o) noexcept;
+    file &operator=(file &&o) noexcept;
+    // END C++11 only
+
+    bool open(const char *name, int flags, ::mode_t mode = 0666);
+    bool is_open() const;
+    void close();
+    bool close_nt() noexcept;
+
+    void swap(file &o) noexcept;
+    int detach_handle() noexcept;
+    int attach_handle(int fd) noexcept;
+    int handle() const;
+    int descriptor() const { return handle(); }
+
+    size_t read_max(void *buf, size_t n)
+        { return read_max(handle(), buf, n); }
+    size_t read_some(void *buf, size_t n)
+        { return read_some(handle(), buf, n); }
+    void write_all(const void *buf, size_t n)
+        { write_all(handle(), buf, n); }
+    size_t write_all_nt(const void *buf, size_t n) noexcept
+        { return write_all_nt(handle(), buf, n); }
+
+    static size_t read_max(int fd, void *buf, size_t n);
+    static size_t read_some(int fd, void *buf, size_t n);
+    static void write_all(int fd, const void *buf, size_t n);
+    static size_t write_all_nt(int fd, const void *buf, size_t n) noexcept;
+    static void close_reset(int &fd);
+    static bool close_nt(int fd) noexcept;
+};
+]]></code-block>
+
+<p>RAII-обёртка для POSIX'овых файловых дескрипторов, а также обёртки для
+системных вызовов <tt>::read()</tt> и <tt>::write()</tt>.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit constexpr file(int fd = -1)</prototype>
+<p>Принимает уже существующий дескриптор.</p>
+<precondition><tt>fd</tt> - либо открытый дескриптор, либо <tt>-1</tt>.</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>file(const char *name, int flags, ::mode_t mode = 0666)</prototype>
+<p>Вызывает <tt>open()</tt>. Результат должен быть проверен последующим вызовом
+<tt>is_open()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~file()</prototype>
+<p>Вызывает <tt>::close()</tt>, если <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>file(file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>file &amp;operator=(file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Операции перемещения для режима C++11.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool open(const char *name, int flags, ::mode_t mode = 0666)</prototype>
+<p>Вызывает <tt>::open()</tt> с указанными параметрами. Возвращает
+<tt>is_open()</tt>. <tt>errno</tt> содержит код ошибки в случае неудачи.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Возвращает <tt>true</tt>, если файл открыт.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Безусловно вызывает <tt>::close()</tt>. Никаких предварительных проверок,
+открыт ли файл, не производится! Корректно обрабатывает прерывания сигналами.
+Бросает исключения в случае ошибок. Постусловие соблюдается даже если функция
+выбросила исключение.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>static void close_reset(int &amp;fd)</prototype>
+<p>Безусловно вызывает <tt>::close()</tt> с указанным дескриптором и присваивает
+ему <tt>-1</tt>. Никаких предварительных проверок не производится! Корректно
+обрабатывает прерывания сигналами. Бросает исключения в случае ошибок.
+Постусловие соблюдается даже если функция выбросила исключение.</p>
+<precondition><tt>fd >= 0</tt></precondition>
+<postcondition><tt>fd == -1</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool close_nt() noexcept</prototype>
+<prototype>static bool close_nt(int fd) noexcept</prototype>
+<p>Аналог <tt>close()</tt>, но не бросает исключений. В случае неудачи
+возвращается <tt>false</tt>, и <tt>errno</tt> содержит код ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int detach_handle() noexcept</prototype>
+<p>Освобождает дескриптор из-под контроля объекта и возвращает его.</p>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>int attach_handle(int fd) noexcept</prototype>
+<p>Берёт <tt>fd</tt> под контроль и возвращает предыдущий дескриптор.</p>
+<precondition><tt>fd</tt> - либо открытый дескриптор, либо <tt>-1</tt>.</precondition>
+<postcondition><tt>handle() == fd</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(file &amp;o) noexcept</prototype>
+<p>Обменивается значением с <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int handle() const</prototype>
+<prototype>int descriptor() const { return handle(); }</prototype>
+<p>Возвращает контролируемый дескриптор.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static size_t read_max(int fd, void *buf, size_t n)</prototype>
+<prototype>size_t read_max(void *buf, size_t n) { return read_max(handle(), buf, n); }</prototype>
+<p>Пытается прочитать <tt>n</tt> байт в указанный буфер. Возвращает количество
+прочитанных байтов. Возвращённое значение может быть меньше запрошенного только
+в случае достижения конца файла. Набирает вычитанные фрагменты, пока буфер не
+заполнится. Не прерывается сигналами. Бросает <tt>libc_error</tt> в случае
+ошибок.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static size_t read_some(int fd, void *buf, size_t n)</prototype>
+<prototype>size_t read_some(void *buf, size_t n) { return read_some(handle(), buf, n); }</prototype>
+<p>Читает не более <tt>n</tt> байтов в указанный буфер. Возвращает количество
+прочитанных байтов или <tt>0</tt> при достижении конца файла. Функция сразу
+возвращает управление, как только считан первый фрагмент данных. Не прерывается
+сигналами. Бросает <tt>libc_error</tt> в случае ошибок.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static void write_all(int fd, const void *buf, size_t n);</prototype>
+<prototype>void write_all(const void *buf, size_t n) { write_all(handle(), buf, n); }</prototype>
+<p>Записывает весь буфер в указанный дескриптор. Не прерывается сигналами.
+Бросает <tt>libc_error</tt> в случае ошибок.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static size_t write_all_nt(int fd, const void *buf, size_t n) noexcept</prototype>
+<prototype>size_t write_all_nt(const void *buf, size_t n) noexcept</prototype>
+<p>Аналог <tt>write_all()</tt>, но не бросает исключений. Вместо них возвращает
+значение меньше <tt>n</tt>, <tt>errno</tt> содержит код ошибки.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+__vic::posix::file file("path/file", O_WRONLY | O_CREAT);
+if(!file.is_open()) throw __vic::libc_error("Cannot create file");
+const char msg[] = "Hello";
+file.write_all(msg, sizeof msg - 1); // write without null-terminator
+file.close();
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

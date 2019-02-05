@@ -1,0 +1,266 @@
+<chapter xml:id="readers">
+<title><tt>__vic/readers/</tt></title>
+
+
+<chapter xml:id="reader-concept">
+<title><tt>Reader</tt> concept</title>
+
+<code-block lang="C++"><![CDATA[
+template<class ElementT>
+class ]]><nt>Reader</nt><![CDATA[
+{
+public:
+    Reader(Reader &&o); or Reader(const Reader &o);
+    bool read(ElementT &v); // throws on errors
+};
+]]></code-block>
+
+<p>Concept, используемый алгоритмами библиотеки для поэлементного чтения
+логической последовательности элементов типа <tt>ElementT</tt>. Является
+обобщением и переработкой concept'а <tt>InputIterator</tt>. В частности,
+он лучше обрабатывает потоки ввода/вывода, строки с нулевым терминатором и
+другие последовательности, в которых <tt>end</tt>-итератор не имеет смысла или
+его получение дорого. В то же время, традиционные пары итераторов
+[<tt>begin</tt>,<tt>end</tt>) являются просто частным случаем и полностью
+поддерживаются адаптером <tt>__vic::iterator_reader</tt>.</p>
+
+<p>В случаях, когда конкретный класс удовлетворяет требованиям данного concept
+для некоторого <tt>ElementT = T</tt>, говорят, что он <b>моделирует</b> concept
+<tt>Reader&lt;T></tt>.</p>
+
+<p>Каждый экземпляр класса должен быть move- или copy-constructible.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>bool read(ElementT &amp;v)</prototype>
+<p>Пытается получить следующий элемент последовательности. Возвращает
+<tt>true</tt> и помещает прочитанное значение в <tt>v</tt> в случае успеха.
+Возвращает <tt>false</tt>, если больше элементов не осталось (EOF). Бросает
+исключения в остальных случаях.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="iterator_reader">
+<title><tt>iterator_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/iterator.h>
+
+template<class InputIterator,
+         class T = typename std::iterator_traits<InputIterator>::value_type>
+class iterator_reader
+{
+public:
+    iterator_reader(InputIterator begin, InputIterator end);
+    bool read(T &v);
+    InputIterator position() const;
+};
+
+template<class InputIterator> iterator_reader<InputIterator>
+make_iterator_reader(InputIterator begin, InputIterator end);
+
+template<class T, class InputIterator> iterator_reader<InputIterator,T>
+make_iterator_reader_for(InputIterator begin, InputIterator end);
+]]></code-block>
+
+<p>Адаптер для традиционной [<tt>begin</tt>,<tt>end</tt>) пары итераторов.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
+
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="iterator_reader_n">
+<title><tt>iterator_reader_n</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/iterator.h>
+
+template<class InputIterator,
+         class T = typename std::iterator_traits<InputIterator>::value_type>
+class iterator_reader_n
+{
+public:
+    iterator_reader_n(InputIterator begin, size_t n);
+    bool read(T &v);
+    InputIterator position() const;
+};
+
+template<class InputIterator> iterator_reader_n<InputIterator>
+make_iterator_reader_n(InputIterator begin, size_t n);
+
+template<class T, class InputIterator> iterator_reader_n<InputIterator,T>
+make_iterator_reader_n_for(InputIterator begin, size_t n);
+]]></code-block>
+
+<p>Адаптер для итератора со счётчиком элементов.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
+
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="container_reader">
+<title><tt>container_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/container.h>
+
+template<class Cont, class T = typename Cont::value_type>
+class container_reader
+{
+public:
+    explicit container_reader(const Cont &c);
+    bool read(T &v);
+    typename Cont::const_iterator position() const;
+};
+
+template<class Cont>
+container_reader<Cont> make_container_reader(const Cont &c);
+
+template<class T, class Cont>
+container_reader<Cont,T> make_container_reader_for(const Cont &c);
+]]></code-block>
+
+<p>Адаптер для контейнеров в стиле STL, имеющих члены <tt>begin()</tt> и
+<tt>end()</tt>.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
+
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="cstring_reader">
+<title><tt>cstring_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/cstring.h>
+
+template<class charT>
+class basic_cstring_reader
+{
+public:
+    explicit basic_cstring_reader(const charT *s);
+    bool read(charT &ch);
+    const charT *position() const;
+};
+
+template<>
+class basic_cstring_reader<char>
+{
+public:
+    explicit basic_cstring_reader(const char *s);
+    bool read(char &ch);
+    bool read(unsigned char &ch);
+    const char *position() const;
+};
+using cstring_reader = basic_cstring_reader<char>;
+
+template<class charT>
+basic_cstring_reader<charT> make_cstring_reader(const charT *s);
+]]></code-block>
+
+<p>Адаптер для C-строк с нулевым терминатором.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+указателя внутри строки.</p>
+
+<p>Специализация для <tt>char</tt> моделирует как <tt>Reader&lt;char></tt>,
+так и<tt>Reader&lt;unsigned char></tt>.</p>
+
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="string_reader">
+<title><tt>string_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/string.h>
+
+template<
+    class charT,
+    class Tr = std::char_traits<charT>,
+    class Al = std::allocator<charT>
+>
+class basic_string_reader
+{
+public:
+    explicit basic_string_reader(const std::basic_string<charT,Tr,Al> &s);
+    bool read(charT &ch);
+    const charT *position() const;
+};
+
+template<class Tr, class Al>
+class basic_string_reader<char,Tr,Al>
+{
+public:
+    explicit basic_string_reader(const std::basic_string<char,Tr,Al> &s);
+    bool read(char &ch);
+    bool read(unsigned char &ch);
+    const char *position() const;
+};
+using string_reader = basic_string_reader<char>;
+
+template<class charT, class Tr, class Al>
+basic_string_reader<charT,Tr,Al>
+    make_string_reader(const std::basic_string<charT,Tr,Al> &s);
+]]></code-block>
+
+<p>Адаптер для <tt>std::basic_string</tt>.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+указателя внутри строки.</p>
+
+<p>Специализация для <tt>char</tt> моделирует как <tt>Reader&lt;char></tt>,
+так и <tt>Reader&lt;unsigned char></tt>.</p>
+
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="cstream_reader">
+<title><tt>cstream_reader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/readers/cstream.h>
+
+class cstream_reader
+{
+public:
+    explicit cstream_reader(std::FILE *fp);
+    bool read(char &ch) { return __vic::read(fp, ch); }
+    bool read(unsigned char &ch) { return __vic::read(fp, ch); }
+};
+
+cstream_reader make_cstream_reader(std::FILE *fp);
+]]></code-block>
+
+<p>Моделирует <tt>Reader&lt;char></tt> и <tt>Reader&lt;unsigned char></tt> для
+<tt>std::FILE</tt>.</p>
+
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+</chapter>

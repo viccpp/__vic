@@ -9,8 +9,8 @@ within <tt>__vic::tchar</tt> namespace.</p>
 <tt>strcpy</tt>, <tt>wcscpy</tt>, et al. Searching functions have more
 intelligible names that ones in the C-library and unified parameters: they
 always take pointers and never indices. Also the set of the functions is
-complemented with "logically symmetrical" ones. Searching functions return
-<tt>nullptr</tt> in case of failure.</p>
+complemented with "logically symmetrical" ones missed in the standard library.
+Searching functions return <tt>nullptr</tt> in case of failure.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[

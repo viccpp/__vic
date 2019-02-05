@@ -41,14 +41,14 @@ exception safety and it's handy for usage.</p>
 
 <synopsis>
 <prototype>void lock()</prototype>
-<p>Acquires a lock on the mutex. Waits until released if acquired by other
+<p>Acquires the mutex. Waits until released if acquired by other
 thread at the moment.</p>
 </synopsis>
 
 <synopsis>
 <prototype>bool try_lock()</prototype>
-<p>Tries to lock the mutex. Immediately returns <tt>false</tt> if acquired by
-other thread, without waiting.</p>
+<p>Tries to acquire the mutex. Immediately returns <tt>false</tt> if it's
+already acquired by another thread, without waiting.</p>
 </synopsis>
 
 <synopsis>
@@ -87,22 +87,22 @@ public:
 
 <synopsis>
 <prototype>adopt</prototype>
-<p>Constructor tag, suppresses the lock acquisition.</p>
+<p>Constructor tag, suppresses the mutex acquisition.</p>
 </synopsis>
 
 <synopsis>
 <prototype>explicit mutex_lock(mutex &amp;mtx)</prototype>
-<p>Locks <tt>mtx</tt>.</p>
+<p>Acquires <tt>mtx</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>~mutex_lock()</prototype>
-<p>Unlocks <tt>mtx</tt>.</p>
+<p>Releases <tt>mtx</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>mutex_lock(mutex &amp;mtx, adopt_t)</prototype>
-<p>Adopts already locked <tt>mtx</tt>. See the example.</p>
+<p>Adopts already acquired <tt>mtx</tt>. See the example.</p>
 </synopsis>
 
 </section>
@@ -118,17 +118,17 @@ void reentrant_function()
     ...
 }
 
-// Usage of non-locking constructor
-if(mtx.try_lock()) // Try to lock the mutex
+// Usage of non-acquiring constructor
+if(mtx.try_lock()) // Try to acquire the mutex
 {
-    // The mutex is successfully locked
+    // The mutex has been successfully acquired
     __vic::mutex_lock lock(mtx, __vic::mutex_lock::adopt);
     // Critical section code until the end of the block
     ...
 }
 else
 {
-    // The mutex is locked by another thread
+    // The mutex is acquired by another thread
     ...
 }
 </code-block>

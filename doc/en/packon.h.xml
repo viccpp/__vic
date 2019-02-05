@@ -7,7 +7,7 @@ its members sizes. Inclusion of the second one restores the default alignment.
 So that the pair of <tt>#include</tt> directives forms a section in the source
 file where structs alignment is disabled.</p>
 
-<note>each <tt>#include&lt;__vic/packon.h></tt> must have the corresponding
+<note>Each <tt>#include&lt;__vic/packon.h></tt> must have the corresponding
 <tt>#include&lt;__vic/packoff.h></tt>.</note>
 
 <section><title>Example</title>

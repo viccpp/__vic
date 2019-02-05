@@ -15,13 +15,13 @@ public:
 };
 ]]></code-block>
 
-<p>A concept used by the library algorihms to write logical sequence of elements
+<p>A concept used by the library algorithms to write logical sequence of elements
 of type <tt>ElementT</tt> element by element. It is a generalization and rework
-of the <tt>OutputIterator</tt> concept. In particular it better handles streams
+of the <tt>OutputIterator</tt> concept. In particular it handles streams
 and other output sequences where <tt>end</tt>-iterator is meaningless or
-expensive to obtain. At the same time, traditional output iterators as
-<tt>std::back_insert_iterator</tt> are just a particular case and fully and well
-handled by <tt>__vic::push_back_writer</tt> adapter.</p>
+expensive to obtain better. At the same time, a traditional output iterators
+are just a particular case and fully and well handled by
+<tt>__vic::iterator_writer</tt> adapter.</p>
 
 <p>When the particular class meets the requirements of this concept for some
 <tt>ElementT = T</tt> it is said <b>to model</b> the <tt>Writer&lt;T></tt>
@@ -37,6 +37,27 @@ concept.</p>
 </synopsis>
 
 </section>
+
+</chapter>
+
+
+<chapter xml:id="null_writer">
+<title><tt>null_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/writers/null.h>
+
+class null_writer
+{
+public:
+    template<class T> void write(T v) {}
+};
+
+null_writer make_null_writer();
+]]></code-block>
+
+<p>Fake writer that accepts any value and does nothing with it (like UNIX
+<tt>/dev/null</tt>).</p>
 
 </chapter>
 
@@ -64,6 +85,34 @@ push_back_writer<Cont,T> make_push_back_writer_for(Cont &c);
 
 <p>An adapter. Uses <tt>push_back()</tt> member function to write elements.
 Can be created using constructor or one of <tt>make_...</tt> functions.</p>
+
+</chapter>
+
+
+<chapter xml:id="iterator_writer">
+<title><tt>iterator_writer</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/writers/iterator.h>
+
+template<class OutputIterator,
+         class T = typename std::iterator_traits<OutputIterator>::value_type>
+class iterator_writer
+{
+public:
+    explicit iterator_writer(OutputIterator it);
+    void write(T v);
+};
+
+template<class OutputIterator>
+iterator_writer<OutputIterator> make_iterator_writer(OutputIterator it);
+
+template<class T, class OutputIterator>
+iterator_writer<OutputIterator,T> make_iterator_writer_for(OutputIterator it);
+]]></code-block>
+
+<p>Output iterator writer. Can be created using constructor or one of
+<tt>make_...</tt> functions.</p>
 
 </chapter>
 
