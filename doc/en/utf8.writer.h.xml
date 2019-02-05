@@ -46,7 +46,7 @@ explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
 
 <synopsis>
 <prototype>writer() <sign>C++98 only</sign></prototype>
-<prototype>explicit writer(const ByteWriter &amp;r) <sign>C++98 only</sign></prototype>
+<prototype>explicit writer(ByteWriter r) <sign>C++98 only</sign></prototype>
 <p>Constructors for C++98 mode.</p>
 </synopsis>
 
@@ -85,7 +85,7 @@ struct utf8_string_writer : __vic::utf8::writer<__vic::string_writer>
         : __vic::utf8::writer<__vic::string_writer>(__vic::string_writer(s)) {}
 };
 
-std::string encode_utf8(const std::vector<__vic::unicode> &code_points)
+std::string encode_utf8(const std::vector<__vic::unicode_t> &code_points)
 {
     std::string utf8_res;
     utf8_string_writer w(utf8_res);

@@ -9,7 +9,6 @@
 #define __VIC_BASE64_H
 
 #include<__vic/defs.h>
-#include<__vic/ascii.h>
 #include<exception>
 #include<cstring>
 
@@ -105,7 +104,6 @@ base64::status_t base64::try_decode(CharReader r, ByteWriter w)
     char ch;
     while(r.read(ch))
     {
-        if(ascii::isspace(ch)) continue; // skip whitespace
         quad[pos] = ch;
         if(pos == 3)
         {

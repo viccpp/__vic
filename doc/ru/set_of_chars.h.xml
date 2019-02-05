@@ -1,0 +1,113 @@
+<chapter xml:id="set_of_chars.h">
+<title><tt>__vic/set_of_chars.h</tt></title>
+
+<chapter xml:id="set_of_chars">
+<title><tt>set_of_chars</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class set_of_chars
+{
+public:
+    constexpr set_of_chars();
+    template<class Iter> constexpr set_of_chars(Iter begin, Iter end);
+    constexpr set_of_chars(std::initializer_list<char> set); // C++11 only
+    constexpr set_of_chars(const char *c_str);
+
+    constexpr bool contains(char ch) const;
+
+    constexpr void add(char ch);
+    constexpr void remove(char ch);
+
+    template<class Iter> constexpr void add(Iter begin, Iter end);
+    constexpr void add(const char *c_str);
+    constexpr void add(std::initializer_list<char> set); // C++11 only
+
+    template<class Iter> void assign(Iter begin, Iter end);
+    void assign(const char *c_str)
+    void assign(std::initializer_list<char> set); // C++11 only
+
+    void clear();
+};
+]]></code-block>
+
+<p>Компактная (всего 32 байта) и очень быстрая реализация множества символов.
+Операция <tt>contains()</tt> всегда выполняется за константное время, независимо
+от аргумента и количества элементов во множестве.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>constexpr set_of_chars()</prototype>
+<p>Создаёт пустое множество.</p>
+<postcondition><tt>contains(char(ch)) == false</tt> для любого символа
+</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Iter> constexpr set_of_chars(Iter begin, Iter end)</prototype>
+<prototype>constexpr set_of_chars(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<p>Создаёт множество, заполненное символами из указанного диапазона значений.
+</p>
+<note><tt>constexpr</tt> только начиная с C++14!</note>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr set_of_chars(const char *c_str)</prototype>
+<p>Создаёт множество, заполненное символами указанной C-строки, исключая
+нулевой терминатор.</p>
+<note><tt>constexpr</tt> только начиная с C++14!</note>
+</synopsis>
+
+<synopsis>
+<prototype>bool contains(char ch) const</prototype>
+<p>Проверяет, содержит ли множество <tt>ch</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr void add(char ch)</prototype>
+<p>Добавляет <tt>ch</tt> во множество.</p>
+<postcondition><tt>contains(ch) == true</tt></postcondition>
+<note><tt>constexpr</tt> только начиная с C++14!</note>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr void remove(char ch)</prototype>
+<p>Удаляет <tt>ch</tt> из множества.</p>
+<postcondition><tt>contains(ch) == false</tt></postcondition>
+<note><tt>constexpr</tt> только начиная с C++14!</note>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Iter> constexpr void add(Iter begin, Iter end)</prototype>
+<prototype>constexpr void add(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<p>Вызывает <tt>add(ch)</tt> для каждого значения из диапазона.</p>
+<note><tt>constexpr</tt> только начиная с C++14!</note>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr void add(const char *c_str)</prototype>
+<p>Вызывает <tt>add(ch)</tt> для каждого символа C-строки, исключая нулевой
+терминатор.</p>
+<note><tt>constexpr</tt> только начиная с C++14!</note>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Iter> void assign(Iter begin, Iter end)</prototype>
+<prototype>void assign(const char *c_str)</prototype>
+<prototype>void assign(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<p>Вызывает <tt>clear()</tt>, затемn <tt>add()</tt> с указанными параметрами.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>void clear()</prototype>
+<p>Удаляет все элементы из множества.</p>
+<postcondition><tt>contains(char(ch)) == false</tt> для любого символа
+</postcondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

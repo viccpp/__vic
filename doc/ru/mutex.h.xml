@@ -1,0 +1,142 @@
+<chapter xml:id="mutex.h">
+<title><tt>__vic/mutex.h</tt></title>
+
+
+<chapter xml:id="mutex">
+<title><tt>mutex</tt></title>
+
+<code-block lang="C++">
+class mutex : private non_copyable
+{
+public:
+    mutex();
+    ~mutex();
+
+    void lock();
+    bool try_lock();
+    bool unlock() noexcept;
+};
+</code-block>
+
+<p>Обычный нерекурсивный мьютекс.</p>
+
+<section><title>Замечания по использованию</title>
+<p>В большинстве случаев, явного использования <tt>lock()</tt> и
+<tt>unlock()</tt> нужно избегать. Вместо этого используйте класс
+<xref to="mutex_lock"/> для управления блокировкими. Он обеспечивает
+безопасность при исключениях и удобен для использования.</p>
+<p>В режиме C++11 <tt>std::mutex</tt> может быть более подходящим вариантом.</p>
+</section>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>mutex()</prototype>
+<p>Создаёт незаблокированный мьютекс.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~mutex()</prototype>
+<p>Уничтожает мьютекс.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void lock()</prototype>
+<p>Захватывает блокировку на мьютексе. Ждёт его освобождения, если он уже
+захвачен другим потоком в данный момент.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool try_lock()</prototype>
+<p>Пытается захватить мьютекс. Немедленно возвращает <tt>false</tt> без
+ожидания, если он уже захвачен другим потоком.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool unlock() noexcept</prototype>
+<p>Освобождает ранее захваченный мьютекс. Иногда может возвращать <tt>false</tt>
+в случае ошибок, но в общем случае обнаружение ошибок не гарантируется.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<p>См. <xref to="mutex_lock"/>.</p>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="mutex_lock">
+<title><tt>mutex_lock</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class mutex_lock : private non_copyable
+{
+public:
+    enum adopt_t { adopt };
+
+    explicit mutex_lock(mutex &mtx);
+    mutex_lock(mutex &mtx, adopt_t);
+    ~mutex_lock();
+};
+]]></code-block>
+
+<p>Управляет блокировкой на мьютексе. Снимает блокировку по окончании времени
+жизни объекта.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>adopt</prototype>
+<p>Тэг конструктора, подавляет захват мьютекса.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit mutex_lock(mutex &amp;mtx)</prototype>
+<p>Захватывает <tt>mtx</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~mutex_lock()</prototype>
+<p>Освобождает <tt>mtx</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>mutex_lock(mutex &amp;mtx, adopt_t)</prototype>
+<p>Принимает уже захваченный <tt>mtx</tt>. См. пример.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+// Типичное использование
+__vic::mutex mtx;
+void reentrant_function()
+{
+    __vic::mutex_lock lock(mtx);
+    // Критическая секция до конца этого блока
+    ...
+}
+
+// Использование незахватывающего конструктора
+if(mtx.try_lock()) // Пытаемся захватить мьютекс
+{
+    // Мьютекс успешно захвачен
+    __vic::mutex_lock lock(mtx, __vic::mutex_lock::adopt);
+    // Критическая секция до конца этого блока
+    ...
+}
+else
+{
+    // Мьютекс удерживается другим потоком
+    ...
+}
+</code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

@@ -27,12 +27,12 @@ public:
     // size in objects
     size_t size() const;
     size_t capacity() const;
-    bool full();
-    bool empty();
+    bool full() const;
+    bool empty() const;
 
     void recreate(size_t new_max_size, bool size_exact = false);
     void *alloc(); // returns pointer to memory for object allocation
-    void push();   // adds last allocated object to the pool
+    void push_allocated(); // adds last allocated object to the pool
     void pop();
     void clear();
     void swap(object_pool &o) noexcept;
@@ -64,7 +64,7 @@ objects.</p>
 <p>Without <tt>emplace()</tt> it is impossible to create arbitrary new object
 right in the container's memory. C++98 lacks forwarding references so it is
 near impossible to pass arbitrary parameters to the element's constructor.
-<tt>object_pool</tt> solves this problem using the following mechanism.
+<tt>object_pool</tt> overcomes this problem using the following mechanism.
 The new element is created using several phases:</p>
 <list style="numbered">
     <item>Requesting memory for the new element in the container -
@@ -72,7 +72,7 @@ The new element is created using several phases:</p>
     <item>Creation of the object using placement new -
         <tt>new(ptr) type(...)</tt>,</item>
     <item>Fixation of the newly created object in the container -
-        <tt>push()</tt>.</item>
+        <tt>push_allocated()</tt>.</item>
 </list>
 <p>See the example at the end of the article.</p>
 
@@ -139,12 +139,12 @@ store and placing only pointers to the container, even if we have
 </synopsis>
 
 <synopsis>
-<prototype>bool empty()</prototype>
+<prototype>bool empty() const</prototype>
 <p>Returns <tt>size() == 0</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>bool full()</prototype>
+<prototype>bool full() const</prototype>
 <p>Returns <tt>size() == capacity()</tt>.</p>
 </synopsis>
 
@@ -166,7 +166,7 @@ can be allocated. <tt>overflow</tt> is thrown if the container is full.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void push()</prototype>
+<prototype>void push_allocated()</prototype>
 <p>This call right after <tt>alloc()</tt> adds the just created object to the
 pool.</p>
 </synopsis>
@@ -174,8 +174,8 @@ pool.</p>
 <synopsis>
 <prototype>template&lt;class... Args> T &amp;emplace(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
 <p>Constructs new object and adds it to the container (<tt>alloc()</tt> +
-<tt>new</tt> + <tt>push()</tt> with a single call). A reference to the new
-object is returned.</p>
+<tt>new</tt> + <tt>push_allocated()</tt> with a single call). A reference to
+the new object is returned.</p>
 </synopsis>
 
 <synopsis>
@@ -229,7 +229,7 @@ __vic::object_pool<C> pool(2);
 
 // Creating new object in C++98 mode:
 new(pool.alloc()) C(...); // Request memory and construct the object
-pool.push(); // Fixate successfully created object in the container
+pool.push_allocated(); // Fixate successfully created object in the container
 
 // Creating new object in C++11 mode:
 pool.emplace(...);

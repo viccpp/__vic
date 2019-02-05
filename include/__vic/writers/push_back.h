@@ -1,4 +1,4 @@
-// push_back() wrater
+// push_back() writer
 //
 // Platform: ISO C++ 98/11
 // $Id$

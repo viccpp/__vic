@@ -1,0 +1,77 @@
+<chapter xml:id="to_text.h">
+<title><tt>__vic/to_text.h</tt></title>
+
+<p>Преобразователи типов в текстовое представление.</p>
+
+
+<chapter xml:id="to_text_append">
+<title><tt>to_text_append()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void to_text_append(long long n, std::string &str);
+void to_text_append(long n, std::string &str);
+void to_text_append(int n, std::string &str);
+void to_text_append(short n, std::string &str);
+void to_text_append(signed char n, std::string &str);
+
+void to_text_append(unsigned long long , std::string &str);
+void to_text_append(unsigned long n, std::string &str);
+void to_text_append(unsigned n, std::string &str);
+void to_text_append(unsigned short n, std::string &str);
+void to_text_append(unsigned char n, std::string &str);
+
+void to_text_append(long double n, std::string &str);
+void to_text_append(double n, std::string &str);
+void to_text_append(float n, std::string &str);
+
+void to_text_append(bool f, std::string &str);
+
+void to_text_append(const void *p, std::string &str);
+]]></code-block>
+
+<p>Преобразователи несимвольных типов C++ в некоторое текстовое представление.
+Второй параметр <tt>str</tt> - выходной параметр, к нему добавляется результат.
+</p>
+
+<note>Типы <tt>signed char</tt> и <tt>unsigned char</tt> воспринимаются как
+целые, а не символы!</note>
+
+<synopsis>
+<prototype>void to_text_append(long long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(int n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(short n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(signed char n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned long long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned long n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned short n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(unsigned  char n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(long double n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(double n, std::string &amp;str)</prototype>
+<prototype>void to_text_append(float n, std::string &amp;str)</prototype>
+<p>Преобразуют число в десятичное представление.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void to_text_append(bool f, std::string &amp;str)</prototype>
+<p>Преобразует булев тип в <tt>0</tt> или <tt>1</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void to_text_append(const void *p, std::string &amp;str)</prototype>
+<p>Преобразует указатель в некоторое платформо-специфичное представление.</p>
+</synopsis>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+int n = 5;
+std::string st = "n = ";
+__vic::to_text_append(n, st);
+assert(st == "n = 5");
+</code-block>
+</section>
+
+</chapter>
+
+</chapter>

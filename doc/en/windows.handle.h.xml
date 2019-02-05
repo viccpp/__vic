@@ -48,7 +48,7 @@ public:
 
 <synopsis>
 <prototype>bool IsInvalid() const</prototype>
-<p>Returns <tt>true</tt> is the handle has value <tt>INVALID_HANDLE_VALUE</tt>.
+<p>Returns <tt>true</tt> if the handle has value <tt>INVALID_HANDLE_VALUE</tt>.
 </p>
 </synopsis>
 
@@ -75,9 +75,9 @@ description.</p>
 
 <synopsis>
 <prototype>bool Wait(DWORD timeout = INFINITE) const</prototype>
-<p>Calls <tt>::WaitForSingleObject()</tt> with the specified timeout. Rerturns
+<p>Calls <tt>::WaitForSingleObject()</tt> with the specified timeout. Returns
 <tt>false</tt> in case of <tt>WAIT_TIMEOUT</tt>. Throws on error.
-<tt>__vic::windows::WaitAbandoned</tt> is thrown in case of
+<xref to="windows--WaitAbandoned"/> is thrown in case of
 <tt>WAIT_ABANDONED</tt>.</p>
 </synopsis>
 

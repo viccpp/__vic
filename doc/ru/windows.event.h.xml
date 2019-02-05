@@ -1,0 +1,68 @@
+<chapter xml:id="windows.event.h">
+<title><tt>__vic/windows/event.h</tt></title>
+
+<chapter xml:id="windows--event">
+<title><tt>windows::event</tt></title>
+
+<code-block lang="C++">
+class windows::Event : private non_copyable
+{
+public:
+    explicit Event(bool bManualReset,
+         bool bInitialSignaled = false, LPCSTR lpName = nullptr);
+    ~Event();
+
+    void Set();
+    void Reset();
+    bool Wait(DWORD timeout = INFINITE) const;
+    bool wait_for(std::chrono::milliseconds ms) const; // C++11
+
+    HANDLE handle() const;
+};
+</code-block>
+
+<p>Обёртка для Win32 API event synchronization object.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit Event(bool bManualReset, bool bInitialSignaled = false, LPCSTR lpName = nullptr)</prototype>
+<p>Создаёт объект используя <tt>::CreateEvent()</tt>. Бросает исключения при
+ошибках.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~Event()</prototype>
+<p>Уничтожает объект.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Set()</prototype>
+<p>Вызывает <tt>::SetEvent()</tt>. Бросает исключения при ошибках.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Reset()</prototype>
+<p>Вызывает <tt>::ResetEvent()</tt>. Бросает исключения при ошибках.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool Wait(DWORD timeout = INFINITE) const</prototype>
+<p>Вызывает <tt>::WaitForSingleObject()</tt>. Бросает исключения при ошибках.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool wait_for(std::chrono::milliseconds ms) const <sign>C++11</sign></prototype>
+<p>Обёртка <tt>Wait()</tt>, адаптированная для chrono.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HANDLE handle() const</prototype>
+<p>Возвращает Win32 API handle.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

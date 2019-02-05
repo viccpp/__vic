@@ -1,0 +1,357 @@
+<chapter xml:id="tchar.h">
+<title><tt>__vic/tchar.h</tt></title>
+
+<p>Обобщенные (generic) функции для манипуляции С-строками независимо от
+используемого ими типа символов, подобно <tt>std::char_traits&lt;></tt>.
+Использование данных функций в шаблонах нередко значительно сокращает
+потребность в написании специализаций для различных типов символов.</p>
+
+<p>Все функции находятся в пространстве имён <tt>__vic::tchar</tt>.</p>
+
+<p>Большинство функций являются просто обобщёнными обёртками для функций,
+вроде <tt>strcpy</tt>, <tt>wcscpy</tt> и т.п. Поисковые функции имеют более
+осмысленные имена, чем их аналоги в билиотеке C, и унифицированные параметры:
+они всегда принимают указатели и никогда индексы. Также набор функций дополнен
+«логически симметричными», но отсутствующими в стандартной билиотеке.
+Поисковые функции возвращают <tt>nullptr</tt> в случае неудачи.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *generic_dup(const charT *st)
+{
+    namespace tchar = __vic::tchar;
+
+    charT *st_copy = new charT[tchar::length(st) + 1];
+    tchar::copy(st_copy, st);
+    return st_copy;
+}
+]]></code-block>
+</section>
+
+
+<chapter xml:id="tchar--length">
+<title><tt>tchar::length()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+size_t tchar::length(const charT *str);
+]]></code-block>
+
+<p>Длина строки в элементах. Обобщённый <tt>strlen</tt> / <tt>wcslen</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--end">
+<title><tt>tchar::end()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *end(const charT *str);
+
+template<class charT>
+charT *end(charT *str);
+
+}
+]]></code-block>
+
+<p>Указатель на NULL-терминатор. Обобщённый <tt>strchr(str, '\0')</tt> /
+<tt>wcschr(str, L'\0')</tt>.</p>
+
+<note>Некоторые «кривые» реализации <tt>std::strchr()</tt>, например в  MinGW,
+возвращают неконстантный <tt>char *</tt>, даже если аргумент - <tt>const char
+*</tt>. В связи с этим, данные функции могут быть использованы как обход
+данной проблемы.</note>
+
+</chapter>
+
+
+<chapter xml:id="tchar--compare">
+<title><tt>tchar::compare()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+int tchar::compare(const charT *str1, const charT *str2);
+]]></code-block>
+
+<p>Сравнивает две строки. Обобщённый <tt>strcmp</tt> / <tt>wcscmp</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--copy">
+<title><tt>tchar::copy()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *tchar::copy(charT *dest, const charT *src);
+]]></code-block>
+
+<p>Копирует строку. Обобщённый <tt>strcpy</tt> / <tt>wcscpy</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--move">
+<title><tt>tchar::move()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *tchar::move(charT *dest, const charT *src);
+]]></code-block>
+
+<p>Сдвигает строку в памяти (<tt>memmove</tt>).</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--concat">
+<title><tt>tchar::concat()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+charT *tchar::concat(charT *dest, const charT *src);
+]]></code-block>
+
+<p>Конкатенирует две строки. Обобщённый <tt>strcat</tt> / <tt>wcscat</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--find">
+<title><tt>tchar::find()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find(const charT *str, charT ch);
+
+template<class charT>
+charT *find(charT *str, charT ch);
+
+template<class charT>
+const charT *find(const charT *str, const charT *sub);
+
+template<class charT>
+charT *find(charT *str, const charT *sub);
+
+}
+]]></code-block>
+
+<p>Ищет первое вхождение символа или подстроки. Обобщённые
+<tt>strchr</tt> / <tt>wcschr</tt> / <tt>strstr</tt> / <tt>wcsstr</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--rfind">
+<title><tt>tchar::rfind()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *rfind(const charT *str, charT ch);
+
+template<class charT>
+charT *rfind(charT *str, charT ch);
+
+}
+]]></code-block>
+
+<p>Ищет последнее вхождение символа. Обобщённые <tt>strrchr</tt> /
+<tt>wcsrchr</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--find_if">
+<title><tt>tchar::find_if()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *find_if(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *find_if(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Ищет первое вхождение символа, удовлетворяющего указанному предикату.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--find_if_not">
+<title><tt>tchar::find_if_not()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *find_if_not(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *find_if_not(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Ищет первое вхождение символа, не удовлетворяющего указанному предикату.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--rfind_if">
+<title><tt>tchar::rfind_if()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *rfind_if(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *rfind_if(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Ищет последнее вхождение символа, удовлетворяющего указанному предикату.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--rfind_if_not">
+<title><tt>tchar::rfind_if_not()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT, class Pred>
+const charT *rfind_if_not(const charT *str, Pred pred);
+
+template<class charT, class Pred>
+charT *rfind_if_not(charT *str, Pred pred);
+
+}
+]]></code-block>
+
+<p>Ищет последнее вхождение символа, не удовлетворяющего указанному предикату.
+</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--find_first_of">
+<title><tt>tchar::find_first_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_first_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_first_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Ищет первое вхождение символа из указанного набора. Обобщённый
+<tt>strpbrk</tt> / <tt>wcspbrk</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--find_first_not_of">
+<title><tt>tchar::find_first_not_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_first_not_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_first_not_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Ищет первое вхождение символа, отсутствующего в указанном наборе.
+Обобщённый <tt>strspn</tt> / <tt>wcsspn</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--find_last_of">
+<title><tt>tchar::find_last_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_last_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_last_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Ищет последнее вхождение символа из указанного набора.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--find_last_not_of">
+<title><tt>tchar::find_last_not_of()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *find_last_not_of(const charT *str, const charT *set);
+
+template<class charT>
+charT *find_last_not_of(charT *str, const charT *set);
+
+}
+]]></code-block>
+
+<p>Ищет последнее вхождение символа, отсутсвующего в указанном наборе.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--skip">
+<title><tt>tchar::skip()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace tchar {
+
+template<class charT>
+const charT *skip(const charT *str, charT ch);
+
+template<class charT>
+charT *skip(charT *str, charT ch);
+
+}
+]]></code-block>
+
+<p>Пропускает все вхождения указанного символа и возвращает указатель.
+Если другие символы в строке отсутствуют, возвращает указатель на
+NULL-терминатор.</p>
+
+</chapter>
+
+
+</chapter>

@@ -34,7 +34,7 @@ using <tt>w.write()</tt>.</p>
 </chapter>
 
 
-<chapter xml:id="unicode_codepoint_constants">
+<chapter xml:id="unicode_code_point_constants">
 <title><tt>Code point constants</tt></title>
 
 <code-block lang="C++">
@@ -43,7 +43,7 @@ constexpr unicode_t unicode_bom = 0xFEFF;
 constexpr unicode_t unicode_replacement_char = 0xFFFD;
 </code-block>
 
-<p>Named constants for some useful code points.</p>
+<p>Named constants for some useful Unicode code points.</p>
 
 </chapter>
 

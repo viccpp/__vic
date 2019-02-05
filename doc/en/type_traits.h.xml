@@ -167,7 +167,8 @@ template<class T> struct remove_cvref;
 template<class T> using remove_cvref_t = typename remove_cvref<T>::type;
 ]]></code-block>
 
-<p>Applies <tt>remove_reference</tt> then <tt>remove_cv</tt> to <tt>T</tt>.</p>
+<p>A type transformer. Applies <tt>remove_reference</tt> then <tt>remove_cv</tt>
+to <tt>T</tt>.</p>
 
 </chapter>
 
@@ -180,8 +181,8 @@ template<class T> struct remove_pointer;
 template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
 ]]></code-block>
 
-<p>A type transformer. Returns the type of the object to that the pointer type
-points or just <tt>T</tt> if it isn't a pointer type.</p>
+<p>A type transformer. Returns the type pointed by <tt>T</tt> or just
+<tt>T</tt> if it isn't a pointer type.</p>
 
 </chapter>
 

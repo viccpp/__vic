@@ -1,0 +1,247 @@
+<chapter xml:id="object_pool.h">
+<title><tt>__vic/object_pool.h</tt></title>
+
+<chapter xml:id="object_pool">
+<title><tt>object_pool</tt></title>
+<code-block lang="C++"><![CDATA[
+template<class T>
+class object_pool : private non_copyable
+{
+public:
+    using object_type    = T;
+    using value_type     = object_type; // standard synonym
+    using iterator       = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
+    using const_iterator = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
+    class overflow; // : public std::exception
+
+    object_pool();
+    explicit object_pool(size_t max_size);
+    ~object_pool();
+
+    // BEGIN C++11 only
+    object_pool(object_pool &&o) noexcept;
+    object_pool &operator=(object_pool &&o) noexcept;
+    template<class... Args> T &emplace(Args &&... args)
+    // END C++11 only
+
+    // size in objects
+    size_t size() const;
+    size_t capacity() const;
+    bool full() const;
+    bool empty() const;
+
+    void recreate(size_t new_max_size, bool size_exact = false);
+    void *alloc(); // returns pointer to memory for object allocation
+    void push_allocated(); // adds last allocated object to the pool
+    void pop();
+    void clear();
+    void swap(object_pool &o) noexcept;
+
+    // element access
+    object_type &operator[](size_t i);
+    iterator begin();
+    iterator end();
+    object_type &front();
+    object_type &back();
+
+    const object_type &operator[](size_t i) const;
+    const_iterator begin() const;
+    const_iterator end() const;
+    const_iterator cbegin() const;
+    const_iterator cend() const;
+    const object_type &front() const;
+    const object_type &back() const;
+};
+template<class T>
+void swap(object_pool<T> &o1, object_pool<T> &o2) noexcept;
+]]></code-block>
+
+<p>Стандартные контейнеры в C++98 не позволяют хранить в себе объекты, которые
+нельзя копировать (недоступны копирующий конструктор и копирующее присваивание).
+Даже в C++11 элементы контейнера, вроде <tt>std::vector</tt>, должны быть как
+минимум перемещаемыми. Данный класс решает эту проблему и представляет собой
+массив некопируемых объектов.</p>
+
+<p>Без использования <tt>emplace()</tt> невозможно создать произвольный новый
+объект непосредственно в памяти контейнера. В C++98 forwarding ссылки вообще
+отсутствуют, делая почти невозможным передачу произвольных параметров в
+конструктор элемента. В <tt>object_pool</tt> это ограничение обходится с
+использованием следующего механизма. Создание элемента происходит в несколько
+фаз:</p>
+<list style="numbered">
+    <item>Запрос в контейнере блока памяти, достаточного для размешения
+        объекта - <tt>alloc()</tt>,</item>
+    <item>Создание объекта в полученной памяти с помощью placement new -
+        <tt>new(ptr) type(...)</tt>,</item>
+    <item>Фиксация успешно созданного объекта в контейнере -
+        <tt>push_allocated()</tt>.</item>
+</list>
+<p>Пример кода смотрите в конце статьи.</p>
+
+<p>При создании задаётся максимальная ёмкость пула. Изменить в будущем её
+можно, но только разрушив содержащиеся в нём объекты, то есть пересоздав
+пул.</p>
+
+<p>Всегда следует использовать функцию <tt>emplace()</tt> для создания
+элементов, когда она доступна. Если же нет, то использовать небезопасный
+интерфейс, описанный выше, с большой осторожностью. Он достаточно страшный и
+подверженный ошибкам, но выполняет свою функцию. После того, как элемент
+размещён в контейнере, работать с ним также удобно, как и с любым другим
+копируемым объектом в стандартных контейнерах. В любом случае, в целом это
+гораздо удобнее и эффективнее использования альтернатив, таких как создание
+объектов в куче с последующим хранением в контейнере указателей на них, даже
+если нам доступен <tt>std::unique_ptr</tt> для управления временем жизни
+объектов.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>typename object_type</prototype>
+<prototype>typename value_type</prototype>
+<p>Тип элементов.</p>
+</synopsis>
+
+<synopsis>
+<prototype>typename iterator</prototype>
+<prototype>typename const_iterator</prototype>
+<p>Итераторы.</p>
+</synopsis>
+
+<synopsis>
+<prototype>class overflow</prototype>
+<p>Тип исключений, генерируемых при переполнении контейнера.</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_pool()</prototype>
+<p>Создаёт объект без выделения памяти под элементы.</p>
+<postcondition><tt>capacity() == 0</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit object_pool(size_t max_size)</prototype>
+<p>Создаёт контейнер ёмкости <tt>max_size</tt> элементов.</p>
+<postcondition><tt>capacity() == max_size</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~object_pool()</prototype>
+<p>Вызывает <tt>clear()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_pool(object_pool &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>object_pool &amp;operator=(object_pool &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Операции перемещения для режима C++11.</p>
+</synopsis>
+
+<synopsis>
+<prototype>size_t size() const</prototype>
+<prototype>size_t capacity() const</prototype>
+<p>Текущее и максимальное количество элементов в данном экземпляре контейнера.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool empty() const</prototype>
+<p>Возвращает <tt>size() == 0</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool full() const</prototype>
+<p>Возвращает <tt>size() == capacity()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void recreate(size_t new_max_size, bool size_exact = false)</prototype>
+<p>Пересоздаёт контейнер. Сначала вызывается <tt>clear()</tt>, затем
+перевыделяется буфер, если <tt>new_max_size > capacity()</tt> или <tt>size_exact
+== true</tt> и <tt>new_max_size != capacity()</tt>.</p>
+<postcondition><tt>capacity() >= new_max_size &amp;&amp; empty() == true</tt>
+(если <tt>size_exact == true</tt>, то <tt>capacity() == new_max_size &amp;&amp;
+empty() == true</tt>)</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void *alloc()</prototype>
+<p>Возвращает указатель на блок памяти, достаточный для размещения экземпляра
+<tt>object_type</tt>. Если ёмкость контейнера исчерпана, бросает
+<tt>overflow</tt>.</p>
+<note>Используйте <tt>emplace()</tt> в режиме C++11.</note>
+</synopsis>
+
+<synopsis>
+<prototype>void push_allocated()</prototype>
+<p>Фиксирует успешно созданный объект в контейнере, увеличивая <tt>size()</tt>
+на единицу.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class... Args> T &amp;emplace(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
+<p>Конструирует новый объект в контейнере с помощью переданных аргументов и
+увеличивает <tt>size()</tt> на единицу (<tt>alloc()</tt> + <tt>new</tt> +
+<tt>push_allocated()</tt> одним вызовом). Возвращает ссылку на новый элемент.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>void pop()</prototype>
+<p>Удаляет из контейнера последний элемент, если он существует.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void clear()</prototype>
+<p>Разрушает все элементы контейнера в порядке обратном порядку создания.</p>
+<postcondition><tt>size() == 0</tt> (<tt>empty() == true</tt>)</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(object_pool &amp;o)</prototype>
+<prototype><![CDATA[template<class T> void swap(object_pool<T> &o1, object_pool<T> &o2) noexcept]]></prototype>
+<p>Обменивается значением с <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_type &amp;operator[](size_t i)</prototype>
+<prototype>const object_type &amp;operator[](size_t i) const</prototype>
+<p>Доступ к элементам контейнера по индексу.</p>
+</synopsis>
+
+<synopsis>
+<prototype>object_type &amp;front()</prototype>
+<prototype>const object_type &amp;front() const</prototype>
+<prototype>object_type &amp;back()</prototype>
+<prototype>const object_type &amp;back() const</prototype>
+<p>Доступ к первому и последнему элементу контейнера.</p>
+<precondition>!empty()</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>iterator begin()</prototype>
+<prototype>const_iterator begin() const</prototype>
+<prototype>const_iterator cbegin() const</prototype>
+<prototype>iterator end()</prototype>
+<prototype>const_iterator end() const</prototype>
+<prototype>const_iterator cend() const</prototype>
+<p>Доступ к элементам через итераторы.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+// Создаём пул на два объекта класса C
+__vic::object_pool<C> pool(2);
+
+// Создание элемента в режиме C++98:
+new(pool.alloc()) C(...); // Запрашиваем блок памяти в пуле и создаём в нём объект
+pool.push_allocated(); // Фиксируем в пуле успешно созданный объект
+
+// Создание элемента в режиме C++11:
+pool.emplace(...);
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

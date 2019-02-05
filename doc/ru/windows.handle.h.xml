@@ -1,0 +1,109 @@
+<chapter xml:id="windows.handle.h">
+<title><tt>__vic/windows/handle.h</tt></title>
+
+
+<chapter xml:id="windows--Handle">
+<title><tt>windows::Handle</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::Handle
+{
+public:
+    Handle() = default; // uninitialized
+    constexpr Handle(HANDLE h);
+
+    void Close();
+    bool CloseNT() noexcept;
+    static void Close(HANDLE h);
+
+    bool Wait(DWORD timeout = INFINITE) const;
+
+    bool IsInvalid() const;
+    void SetInvalid();
+    operator HANDLE() const;
+
+    void swap(Handle &o) noexcept;
+};
+]]></code-block>
+
+<p>C++ обёртка для Win32 API <tt>HANDLE</tt>.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>Handle() = default</prototype>
+<p>Создаёт неинициализированное значение.</p>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr Handle(HANDLE h)</prototype>
+<p>Неявный преобразователь из <tt>HANDLE</tt>.</p>
+<postcondition><tt>*this == h</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>operator HANDLE() const</prototype>
+<p>Неявный преобразователь в <tt>HANDLE</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool IsInvalid() const</prototype>
+<p>Возвращает <tt>true</tt> если хранит значение <tt>INVALID_HANDLE_VALUE</tt>.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetInvalid()</prototype>
+<p>Присваивает значение <tt>INVALID_HANDLE_VALUE</tt>.</p>
+<postcondition><tt>IsInvalid() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void Close()</prototype>
+<prototype>static void Close(HANDLE h)</prototype>
+<p>Вызывает <tt>::CloseHandle()</tt>. Бросает исключения при ошибках.</p>
+<precondition>То же, что и для <tt>::CloseHandle()</tt>.</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool CloseNT() noexcept</prototype>
+<p>Вызывает <tt>::CloseHandle()</tt> и возвращает <tt>true</tt> в случае
+успеха. В случае ошибки <tt>::GetLastError()</tt> может быть использована
+для получения описания ошибки.</p>
+<precondition>То же, что и для <tt>::CloseHandle()</tt>.</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool Wait(DWORD timeout = INFINITE) const</prototype>
+<p>Вызывает <tt>::WaitForSingleObject()</tt> с указанным таймаутом. Возвращает
+<tt>false</tt> в случае <tt>WAIT_TIMEOUT</tt>. Бросает исключения при ошибках.
+<xref to="windows--WaitAbandoned"/> бросается в случае <tt>WAIT_ABANDONED</tt>.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(Handle &amp;o) noexcept</prototype>
+<p>Обменивается значением с <tt>o</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--WaitAbandoned">
+<title><tt>windows::WaitAbandoned</tt></title>
+
+<code-block lang="C++"><![CDATA[
+struct windows::WaitAbandoned : public std::exception
+{
+    const char *what() const noexcept;
+};
+]]></code-block>
+
+<p>Исключение, бросаемое <tt>__vic::windows::Handle::Wait()</tt>.</p>
+
+</chapter>
+
+
+</chapter>

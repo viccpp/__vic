@@ -63,7 +63,7 @@ explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
 
 <synopsis>
 <prototype>reader() <sign>C++98 only</sign></prototype>
-<prototype>explicit reader(const CodeUnitReader &amp;r) <sign>C++98 only</sign></prototype>
+<prototype>explicit reader(CodeUnitReader r) <sign>C++98 only</sign></prototype>
 <p>Constructors for C++98 mode.</p>
 </synopsis>
 
@@ -72,7 +72,7 @@ explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
 <p>Tries to extract the next code point from code unit sequence using
 <tt>CodeUnitReader</tt>. On success <tt>utf16::status::ok</tt> is returned and
 the code point is stored in <tt>cp</tt>. <tt>utf16::status::eof</tt> is
-returned when no more bytes available. Other values are returned on errors,
+returned when no more code units available. Other values are returned on errors,
 see <xref to="utf16--status"/> for more details.
 <tt>CodeUnitReader::read_unit()</tt> is used to access code units.</p>
 <note>The function itself doesn't throw exceptions but exception can be

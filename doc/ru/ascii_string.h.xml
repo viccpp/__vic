@@ -1,0 +1,65 @@
+<chapter xml:id="ascii_string.h">
+<title><tt>__vic/ascii_string.h</tt></title>
+
+<p>Инструменты обработки ASCII-строк.</p>
+
+
+<chapter xml:id="ascii--tolower-str">
+<title><tt>ascii::tolower()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace ascii {
+
+char *tolower(char *str);
+std::string &tolower(std::string &str);
+
+}
+]]></code-block>
+
+<p>Переводит все заглавные латинские буквы <tt>str</tt> в строчные. Возвращает
+<tt>str</tt>. Указатель на C-строку не должен быть <tt>nullptr</tt>!</p>
+
+</chapter>
+
+
+<chapter xml:id="ascii--toupper-str">
+<title><tt>ascii::toupper()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace ascii {
+
+char *toupper(char *str);
+std::string &toupper(std::string &str);
+
+}
+]]></code-block>
+
+<p>Переводит все строчные латинские буквы <tt>str</tt> в заглавные. Возвращает
+<tt>str</tt>. Указатель на C-строку не должен быть <tt>nullptr</tt>!</p>
+
+</chapter>
+
+
+<chapter xml:id="ascii--equal_icase-str">
+<title><tt>ascii::equal_icase()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace ascii {
+
+bool equal_icase(const char *s1, const char *s2);
+bool equal_icase(const std::string &s1, const std::string &s2);
+bool equal_icase(const std::string &s1, const char *s2);
+bool equal_icase(const char *s1, const std::string &s2);
+bool equal_icase(const char *s1, size_t s1_len,
+                 const char *s2, size_t s2_len);
+
+}
+]]></code-block>
+
+<p>Проверяет две ASCII-строки на равенство без учета регистра букв. Указатели
+на строки не должны быть <tt>nullptr</tt>!</p>
+
+</chapter>
+
+
+</chapter>

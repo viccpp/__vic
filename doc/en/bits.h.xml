@@ -81,4 +81,16 @@ uint64_t rotr(uint64_t v, int shift);
 </chapter>
 
 
+<chapter xml:id="swapped_nibbles">
+<title><tt>swapped_nibbles()</tt></title>
+
+<code-block lang="C++">
+constexpr uint8_t swapped_nibbles(uint8_t b);
+</code-block>
+
+<p>Swaps a low-order half-byte with a high-order one and returns the value.</p>
+
+</chapter>
+
+
 </chapter>

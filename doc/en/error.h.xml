@@ -21,10 +21,10 @@ protected:
 
 <p>Small extension of <tt>std::exception</tt> - the object carries message
 specified in the constructor, <tt>what()</tt> returns this message. Can be used
-either as a base or concrete exception class. Does not use/depend on
+either as a base or a concrete exception class. Does not use/depend on
 <tt>std::string</tt> as opposed to <tt>std::logic_error</tt> and
-<tt>std::runtime_error</tt>. You also don't have to decide which one of the
-formers you should use in the particular case.</p>
+<tt>std::runtime_error</tt>. You also don't have to decide which one of them
+you should use in the particular case.</p>
 
 <section><title>Class members</title>
 
@@ -45,7 +45,7 @@ formers you should use in the particular case.</p>
 
 <synopsis>
 <prototype>void set_message(const char *message)</prototype>
-<p>Sets new message.</p>
+<p>Sets a new message.</p>
 </synopsis>
 
 </section>
@@ -82,7 +82,7 @@ public:
 
 <p>This class is an easy and straightforward replacement of the standard error
 handling machinery used in the C-world - <tt>errno</tt>, with exceptions. The
-class also is suitable for usage in the multithread environment instead of
+class is also suitable for usage in the multithread environment instead of
 not always reentrant call <tt>std::strerror()</tt>.</p>
 <p>Below you can see typical C code:</p>
 
@@ -97,19 +97,19 @@ if((fd = open("qqqq", O_RDONLY)) == -1)
 }
 </code-block>
 
-<p>If the file is not found, message like this</p>
+<p>If the file is not found, the message like this</p>
 <tty>
 open: No such file or directory
 </tty>
-<p>is printed to <tt>stderr</tt> and program exits with the status
+<p>is printed to <tt>stderr</tt> and the program exits with the status
 <tt>1</tt>.</p>
 
 <p>What issues are inherent in this code? Firstly, not every program has
 <tt>stderr</tt>, so a library function is not allowed to print error messages
 there. Secondly, the value of the global variable <tt>errno</tt> can be
 rewritten by any subsequent call unless the value is saved explicitly right
-after the call. Thirdly, decision about termination of the process can only
-be made by the application. Ordinary library function is not allowed to do
+after the call. Thirdly, the decision about termination of the process can only
+be made by the application. An ordinary library function is not allowed to do
 this. Fourthly, in general case C++ program cannot call <tt>std::exit()</tt>,
 because destructors of the live objects allocated on the stack won't be
 called, and program's logic can be corrupted.</p>
@@ -137,7 +137,7 @@ catch(const __vic::libc_error &ex)
 reports it to the caller. Afterwards the caller can handle the error
 appropriately. In the elementary case it acts as the former C-program: prints
 the message to the standard error output stream and terminates. Moreover,
-error code now is saved in the exception and cannot be rewritten by accident.
+error code is now saved in the exception and cannot be rewritten by accident.
 </p>
 
 <section><title>Class members</title>
@@ -145,6 +145,7 @@ error code now is saved in the exception and cannot be rewritten by accident.
 <synopsis>
 <prototype>explicit libc_error(int err_no = errno)</prototype>
 <p><tt>err_no</tt> - error code.</p>
+<postcondition><tt>code() == err_no</tt></postcondition>
 </synopsis>
 
 <synopsis>

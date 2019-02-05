@@ -1,0 +1,182 @@
+<chapter xml:id="stdio_file.h">
+<title><tt>__vic/stdio_file.h</tt></title>
+
+<p>C++ обёртки для <tt>std::FILE</tt>.</p>
+
+
+<chapter xml:id="stdio_file">
+<title><tt>stdio_file</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class stdio_file : private non_copyable
+{
+public:
+    explicit stdio_file(std::FILE *fp = nullptr);
+    stdio_file(const char *name, const char *mode);
+    ~stdio_file();
+
+    // BEGIN C++11 only
+    stdio_file(stdio_file &&o) noexcept;
+    stdio_file &operator=(stdio_file &&o) noexcept;
+    // END C++11 only
+
+    bool open(const char *name, const char *mode);
+    bool is_open() const;
+    void close();
+    bool close_nt() noexcept;
+
+    void swap(stdio_file &o) noexcept;
+    std::FILE *detach_handle() noexcept;
+    std::FILE *attach_handle(std::FILE *fp) noexcept;
+    std::FILE *handle() const;
+    operator std::FILE*() const;
+};
+]]></code-block>
+
+<p>Тонкая RAII-обёртка для <tt>std::FILE *</tt>. Контролирует время жизни
+файла. Автоматический преобразователь типа позволяет использовать объекты
+данного типа в контекстах, требующих <tt>FILE *</tt>.</p>
+
+<note>Хоть деструктор объекта и закрывает незакрытый поток, но лучше
+использовать явный вызов <tt>close()</tt>. При закрытии потока также могут
+происходить ошибки, и <tt>close()</tt> проинформирует о них исключением.
+Деструктор же их просто проигнорирует, и они останутся незамечены приложением.
+</note>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit stdio_file(std::FILE *fp = nullptr)</prototype>
+<p>Создаёт обёртку для уже имеющегося указателя потока.</p>
+<precondition><tt>fp</tt> указывает на открытый файл или <tt>nullptr</tt>.
+</precondition>
+</synopsis>
+
+<synopsis>
+<prototype>stdio_file(const char *name, const char *mode)</prototype>
+<p>Вызывает <tt>open(name, mode)</tt>. Необходимо проверить результат открытия
+последующим вызовом <tt>is_open()</tt>!</p>
+</synopsis>
+
+<synopsis>
+<prototype>~stdio_file()</prototype>
+<p>Вызывает <tt>std::fclose()</tt>, если <tt>is_open() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>stdio_file(stdio_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>stdio_file &amp;operator=(stdio_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<p>Операции перемещения для режима C++11.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool open(const char *name, const char *mode)</prototype>
+<p>Вызывает <tt>std::fopen(name, mode)</tt>. Возвращает <tt>true</tt> в случае
+успеха.</p>
+<precondition><tt>is_open() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_open() const</prototype>
+<p>Возвращает <tt>true</tt> если файл открыт.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void close()</prototype>
+<p>Вызывает <tt>std::fclose()</tt>. Проверка на то, открыт ли файл, не
+производится! Если <tt>std::fclose()</tt> возвращает ошибку, то бросается
+исключение.</p>
+<precondition><tt>is_open() == true</tt></precondition>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool close_nt() noexcept</prototype>
+<p>Аналог <tt>close()</tt>, но никогда не бросает исключений, а возвращает
+<tt>false</tt> в случае ошибок.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void swap(stdio_file &amp;o) noexcept</prototype>
+<p>Обменивается значением с <tt>o</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>std::FILE *detach_handle() noexcept</prototype>
+<p>Освобождает файл из-под контроля объекта.</p>
+<postcondition><tt>is_open() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>std::FILE *attach_handle(std::FILE *fp) noexcept</prototype>
+<p>Помещает <tt>fp</tt> под контроль объекта и возвращает предыдущее хранимое
+значение.</p>
+<precondition><tt>fp</tt> – указатель на открытый файл или <tt>nullptr</tt>.
+</precondition>
+<postcondition><tt>handle() == fp</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>std::FILE *handle() const</prototype>
+<p>Возвращает хранимое завёрнутое значение.</p>
+</synopsis>
+
+<synopsis>
+<prototype>operator std::FILE*() const</prototype>
+<p>Позволяет использовать объект как <tt>std::FILE *</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+__vic::stdio_file file("file.txt", "w");
+if(!file.is_open()) throw __vic::exception("Cannot open file");
+std::fprintf(file, "Message");
+file.close();
+// fclose() также вызовется автоматически деструктором при исключениях
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="read-FILE-char">
+<title><tt>read(std::FILE, char&amp;)</tt>,
+    <tt>read(std::FILE, unsigned char&amp;)</tt></title>
+
+<code-block lang="C++"><![CDATA[
+bool read(std::FILE *fp, char &ch);
+bool read(std::FILE *fp, unsigned char &ch);
+]]></code-block>
+
+<p>Пытается прочитать байт из потока C. Возвращает <tt>true</tt> в случае
+успеха, <tt>false</tt> при достижении конца файла или бросает исключение в
+случае ошибки.</p>
+</chapter>
+
+
+<chapter xml:id="write-FILE-char">
+<title><tt>write(std::FILE, char)</tt></title>
+
+<code-block lang="C++"><![CDATA[
+void write(std::FILE *fp, char ch);
+]]></code-block>
+
+<p>Записывает байт в поток C. Бросает исключение в случае ошибки.</p>
+</chapter>
+
+
+<chapter xml:id="getline-FILE">
+<title><tt>getline(std::FILE)</tt></title>
+
+<code-block lang="C++"><![CDATA[
+bool getline(std::FILE *fp, std::string &str, char delim = '\n');
+]]></code-block>
+
+<p>Аналог <tt>std::getline</tt> для потоков C. Возвращает <tt>false</tt>,
+если конец файла достигнут раньше, чем что-то было прочитано.</p>
+</chapter>
+
+
+</chapter>

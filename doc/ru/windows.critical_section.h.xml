@@ -1,0 +1,138 @@
+<chapter xml:id="windows.critical_section.h">
+<title><tt>__vic/windows/critical_section.h</tt></title>
+
+
+<chapter xml:id="windows--CriticalSection">
+<title><tt>windows::CriticalSection</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::CriticalSection : private non_copyable
+{
+public:
+    CriticalSection();
+    ~CriticalSection();
+
+    void Enter();
+    bool TryEnter();
+    void Leave() noexcept;
+
+    ::CRITICAL_SECTION *handle();
+    const ::CRITICAL_SECTION *handle() const;
+};
+]]></code-block>
+
+<p>C++ обёртка для <tt>CRITICAL_SECTION</tt> из Win32 API.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>CriticalSection()</prototype>
+<p>Вызывает <tt>::InitializeCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~CriticalSection()</prototype>
+<p>Вызывает <tt>::LeaveCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Enter()</prototype>
+<p>Вызывает <tt>::EnterCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool TryEnter()</prototype>
+<p>Вызывает <tt>::TryEnterCriticalSection()</tt> и возвращает результат.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Leave() noexcept</prototype>
+<p>Вызывает <tt>::LeaveCriticalSection()</tt>.</p>
+</synopsis>
+
+</section>
+
+<note>Следует избегать прямых вызовов <tt>Enter()</tt>/<tt>Leave()</tt>,
+используйте объекты <xref to="windows--CSGuard"/>.</note>
+
+</chapter>
+
+
+<chapter xml:id="windows--CSGuard">
+<title><tt>windows::CSGuard</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::CSGuard : private non_copyable
+{
+public:
+    enum adopt_t { adopt };
+
+    explicit CSGuard(::CRITICAL_SECTION &cs);
+    CSGuard(::CRITICAL_SECTION &cs, adopt_t);
+
+    explicit CSGuard(CriticalSection &cs);
+    CSGuard(CriticalSection &cs, adopt_t);
+
+    ~CSGuard();
+};
+]]></code-block>
+
+<p>Класс, контролирующий время жизни блокировки. Работает как с
+<tt>::CRITICAL_SECTION</tt>, так и с <xref to="windows--CriticalSection"/>.
+</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit CSGuard(::CRITICAL_SECTION &amp;cs)</prototype>
+<prototype>explicit CSGuard(CriticalSection &amp;cs)</prototype>
+<p>Вызывает <tt>::EnterCriticalSection(&amp;cs)</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>CSGuard(::CRITICAL_SECTION &amp;cs, adopt_t)</prototype>
+<prototype>CSGuard(CriticalSection &amp;cs, adopt_t)</prototype>
+<p>Только сохраняет ссылку на <tt>cs</tt> без вызова
+<tt>::EnterCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~CSGuard()</prototype>
+<p>Вызывает <tt>::LeaveCriticalSection(&amp;cs)</tt>.</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+// Типичное использование
+void reentrant_function()
+{
+    static __vic::windows::CriticalSection cs;
+    __vic::windows::CSGuard guard(cs);
+    // Критическая секция до конца этого блока
+    ...
+}
+
+// Использование adopt-конструктора
+__vic::windows::CriticalSection cs;
+if(cs.TryEnter()) // Пытаемся войти в критическую секцию
+{
+    // Удачно
+    using __vic::windows::CSGuard;
+    CSGuard guard(cs, CSGuard::adopt);
+    // Критическая секция до конца этого блока
+    ...
+}
+else
+{
+    // Критическая секция занята
+    ...
+}
+</code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

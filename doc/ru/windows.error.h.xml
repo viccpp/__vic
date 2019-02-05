@@ -1,0 +1,26 @@
+<chapter xml:id="windows.error.h">
+<title><tt>__vic/windows/error.h</tt></title>
+
+<p>Специфичные для Windows инструменты обработки ошибок.</p>
+
+<chapter xml:id="windows--error">
+<title><tt>windows::error</tt></title>
+
+<code-block lang="C++">
+class windows::error : public std::exception
+{
+public:
+    explicit error(DWORD err_code = ::GetLastError());
+    explicit error(const char *prompt, DWORD err_code = ::GetLastError());
+
+    const char *what() const noexcept;
+    DWORD code() const;
+};
+</code-block>
+
+<p>Обёртка для системных кодов ошибок Windows, возвращаемых функцией Win32 API
+<tt>GetLastError()</tt>. См. <xref to="libc_error"/> для справки.</p>
+
+</chapter>
+
+</chapter>

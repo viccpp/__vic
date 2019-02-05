@@ -46,14 +46,14 @@ explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
 
 <synopsis>
 <prototype>writer() <sign>C++98 only</sign></prototype>
-<prototype>explicit writer(const ByteWriter &amp;r) <sign>C++98 only</sign></prototype>
+<prototype>explicit writer(CodeUnitWriter r) <sign>C++98 only</sign></prototype>
 <p>Constructors for C++98 mode.</p>
 </synopsis>
 
 <synopsis>
 <prototype>void write(unicode_t cp)</prototype>
 <p>Writes the specified code point according to UTF-16 encoding rules.
-<tt>CodeUnitWriter::write()</tt> is used to write individual code points.</p>
+<tt>CodeUnitWriter::write()</tt> is used to write individual code units.</p>
 </synopsis>
 
 </section>
@@ -75,7 +75,7 @@ utf16::writer&lt;CodeUnitWriter> utf16::make_writer(CodeUnitWriter w)</prototype
 #include<string>
 #include<vector>
 
-std::u16string encode_utf16(const std::vector<__vic::unicode> &code_points)
+std::u16string encode_utf16(const std::vector<__vic::unicode_t> &code_points)
 {
     std::u16string utf16_res;
     __vic::utf16::writer<__vic::basic_string_writer<char16_t>> w(utf16_res);

@@ -36,8 +36,8 @@ constexpr bool isascii(char c);
 constexpr char ascii::todigit(int d);
 </code-block>
 
-<p>Converts the value from 0 to 9 to the decimal digit. The result is undefined
-if the input value goes beyond the range.</p>
+<p>Converts integer value from 0 to 9 to the decimal digit. The result is
+undefined if the input value goes beyond the range.</p>
 <precondition><tt><![CDATA[0 <= d && d <= 9]]></tt></precondition>
 
 </chapter>
@@ -55,7 +55,7 @@ constexpr char toxdigit_lower(int d);
 }
 </code-block>
 
-<p>Converts the value from 0 to 15 to the hexadecimal digit. The first one
+<p>Converts integer value from 0 to 15 to the hexadecimal digit. The first one
 uses upper case for <tt>A</tt>-<tt>F</tt>, the latter - lower. The result
 is undefined if the input value goes beyond the range.</p>
 <precondition><tt><![CDATA[0 <= d && d <= 15]]></tt></precondition>
@@ -133,7 +133,7 @@ if the argument is not an ASCII small letter.</p>
 constexpr bool ascii::equal_icase(char ch1, char ch2);
 </code-block>
 
-<p>Checks equality of the two characters ignoring the case.</p>
+<p>Checks equality of the two ASCII-characters ignoring the case.</p>
 
 </chapter>
 

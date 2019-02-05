@@ -129,7 +129,6 @@ assert( sizeof(my_intptr) == sizeof(intptr_t) );
 ]]></code-block>
 </section>
 
-
 </chapter>
 
 
