@@ -136,7 +136,7 @@ void reentrant_function()
 
 // Использование незахватывающего конструктора
 __vic::posix::mutex mtx;
-if(mtx.try_lock()) // Try to lock the mutex
+if(mtx.try_lock()) // Пытаемся захватить мьютекс
 {
     // Мьютекс успешно захвачен
     using __vic::posix::mutex_lock;

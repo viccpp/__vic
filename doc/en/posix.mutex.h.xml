@@ -136,7 +136,7 @@ void reentrant_function()
 
 // Usage of non-acquiring constructor
 __vic::posix::mutex mtx;
-if(mtx.try_lock()) // Try to lock the mutex
+if(mtx.try_lock()) // Try to acquire the mutex
 {
     // The mutex has been successfully acquired
     using __vic::posix::mutex_lock;
