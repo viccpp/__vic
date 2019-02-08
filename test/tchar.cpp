@@ -27,7 +27,7 @@ void run()
 
     char st[32] = "a";
     tchar::concat(st, "b");
-    assert(tchar::compare(st, "ab") == 0);
+    assert(tchar::equal(st, "ab"));
 
     const char *p;
     p = tchar::find("abc", 'b');

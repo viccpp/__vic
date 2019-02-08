@@ -43,6 +43,19 @@ size_t tchar::length(const charT *str);
 </chapter>
 
 
+<chapter xml:id="tchar--empty">
+<title><tt>tchar::empty()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+bool tchar::empty(const charT *str);
+]]></code-block>
+
+<p>Проверяет, является ли <tt>str</tt> <tt>nullptr</tt> или пустой строкой.</p>
+
+</chapter>
+
+
 <chapter xml:id="tchar--end">
 <title><tt>tchar::end()</tt></title>
 
@@ -78,6 +91,21 @@ int tchar::compare(const charT *str1, const charT *str2);
 ]]></code-block>
 
 <p>Сравнивает две строки. Обобщённый <tt>strcmp</tt> / <tt>wcscmp</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="tchar--equal">
+<title><tt>tchar::equal()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class charT>
+bool tchar::equal(const charT *str1, const charT *str2);
+]]></code-block>
+
+<p>Проверяет двестроки на равенство.</p>
+
+<precondition><tt>str1 != nullptr &amp;&amp; str2 != nullptr</tt></precondition>
 
 </chapter>
 
