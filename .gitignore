@@ -3,6 +3,8 @@
 /test/*.test
 /test/*.exe
 /doc/*.html
+/release.tmp
+/__vic-*-src.tar.gz
 *.o
 *.a
 *.d
