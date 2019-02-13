@@ -1,0 +1,39 @@
+#!/bin/sh
+
+[ $# -eq 1 ] || { echo "Usage: $0 VERSION"; exit 1; }
+
+VERSION=$1
+BRANCH=posix
+TMPDIR=release.tmp
+PKGNAME=__vic-$VERSION-$BRANCH-src
+MAKE=gmake
+
+set -e
+cd "$(dirname 0)/.."
+COMMIT_ID="$VERSION-$BRANCH `git log -n1 --format="%cI %cn" $VERSION/$BRANCH --`"
+
+[ $TMPDIR ] && rm -rf $TMPDIR
+mkdir $TMPDIR
+git archive --format=tar $VERSION/$BRANCH | (cd $TMPDIR && tar xf -)
+cd $TMPDIR
+
+cd include
+for f in `find . -type f | cut -c 3-`; do
+    sed -i "s|\$Id.*\$|\$Id: $f $COMMIT_ID \$|" $f
+done
+cd ../src
+for f in *.cpp; do
+    sed -i "s|\$Id.*\$|\$Id: $f $COMMIT_ID \$|" $f
+done
+cd ..
+
+mv doc doc.src
+mkdir doc
+cd doc.src
+$MAKE
+mv *.html ../doc
+cd ..
+
+rm -rf .gitignore test doc.src src/make-release
+tar cf - * | gzip > ../$PKGNAME.tar.gz
+cd .. && rm -rf $TMPDIR
