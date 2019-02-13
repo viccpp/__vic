@@ -1,0 +1,81 @@
+<chapter xml:id="endian.h">
+<title><tt>__vic/endian.h</tt></title>
+
+<p>Утилиты для манипуляций порядком байт.</p>
+
+
+<chapter xml:id="endianness">
+<title><tt>endianness</tt></title>
+
+<code-block lang="C++">
+namespace endian {
+enum endianness
+{
+    unknown = 0,
+    little  = 1234,
+    big     = 4321,
+    pdp     = 3412,
+    native  = <nt>&lt;one-of-the-above></nt>
+};
+} // namespace
+
+using endian::endianness;
+</code-block>
+
+<p>Константы, соответсвующие различным порядкам байт. <tt>endian::native</tt>
+принимает значение одной из констант, в зависимости от текущей платформы
+(подобно макросу <tt>__BYTE_ORDER__</tt> в UNIX-подобных системах).
+Предполагается использование данных констант для специализации шаблонов или
+проверках времени компиляции (например с использованием <tt>static_assert</tt>).
+</p>
+
+<section><title>Примеры</title>
+<code-block lang="C++"><![CDATA[
+template<__vic::endianness > struct some_algo; // not implemented
+
+// Реализация для little-endian
+template<> struct some_algo<__vic::endian::little>
+{
+    static void doit() { ... }
+};
+// Реализация для big-endian
+template<> struct some_algo<__vic::endian::big>
+{
+    static void doit() { ... }
+};
+
+// Автоматически выбрать подходящую для используемой платформы реализацию
+some_algo<__vic::endian::native>::doit();
+]]></code-block>
+
+<code-block lang="C++">
+static_assert(__vic::endian::native == __vic::endian:little,
+    "Litte-endian is expected");
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="swab">
+<title><tt>swab16()</tt>, <tt>swab32()</tt>, <tt>swab64()</tt></title>
+
+<code-block lang="C++">
+constexpr uint16_t swab16(uint16_t v);
+constexpr uint32_t swab32(uint32_t v);
+constexpr uint64_t swab64(uint64_t v);
+</code-block>
+
+<p>Быстрые утилиты для обращения порядка байт (обычно реализуются с помощью
+специфичных для компилятора intrinsics).</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+static_assert(__vic::swab32(0x01020304) == 0x04030201);
+</code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

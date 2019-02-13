@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2019-02-13  __vic
+    + endian.h:
+        + endian
+        + swab16(), swab32(), swab64()
+
 2019-02-08  __vic
     + tchar.h: tchar::empty(), tchar::equal()
 
