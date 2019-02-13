@@ -5,6 +5,8 @@
 /test/*.test
 /test/*.exe
 /doc/*.html
+/release.tmp
+/__vic-*-src.zip
 *.o
 *.a
 *.d
