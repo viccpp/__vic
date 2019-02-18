@@ -11,9 +11,9 @@ void run_tests()
     s.get("posix_file_stat.cpp");
     assert(s.is_regular());
 
-    assert(s.get_if_exists("posix_file_stat.notexists") == false);
+    assert(s.get_if_exists("posix_file_stat.doesnotexist") == false);
     try {
-        s.get("posix_file_stat.notexists");
+        s.get("posix_file_stat.doesnotexist");
         assert(false);
     } catch(const std::exception &) {
         // OK

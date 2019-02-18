@@ -17,6 +17,14 @@ void run_tests()
     assert(!set.is_member(SIGINT));
     set << SIGINT >> SIGINT;
     assert(!set.is_member(SIGINT));
+
+    int sigs[] = { SIGINT, SIGTERM };
+    sigset set2(sigs);
+    assert(set2.is_member(SIGINT));
+    assert(set2.is_member(SIGTERM));
+    set2 = sigs;
+    assert(set2.is_member(SIGINT));
+    assert(set2.is_member(SIGTERM));
 }
 
 int main()

@@ -8,6 +8,7 @@
 #ifndef __VIC_POSIX_ERROR_H
 #define __VIC_POSIX_ERROR_H
 
+#include<__vic/defs.h>
 #include<cerrno>
 
 namespace __vic { namespace posix {

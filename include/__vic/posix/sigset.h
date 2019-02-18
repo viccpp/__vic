@@ -23,16 +23,35 @@ class sigset
 public:
     sigset() __VIC_DEFAULT_CTR // uninitialized!
     sigset(const ::sigset_t &s) : set(s) {}
+    template<size_t Size> sigset(const int (&sigs)[Size])
+    {
+        assign(sigs, Size);
+    }
 #if __cpp_initializer_lists
     sigset(std::initializer_list<int> sigs)
     {
-        clear();
-        for(int signo : sigs) add(signo);
+        assign(sigs.begin(), sigs.size());
+    }
+    sigset &operator=(std::initializer_list<int> sigs)
+    {
+        return assign(sigs.begin(), sigs.size());
     }
 #endif
 
     static sigset full() { sigset s; s.fill(); return s; }
     static sigset empty() { sigset s; s.clear(); return s; }
+
+    sigset &assign(const int *sigs, size_t n)
+    {
+        clear();
+        while(n--) add(*sigs++);
+        return *this;
+    }
+    template<size_t Size>
+    sigset &operator=(const int (&sigs)[Size])
+    {
+        return assign(sigs, Size);;
+    }
 
     sigset &add(int signo) { ::sigaddset(&set, signo); return *this; }
     sigset &del(int signo) { ::sigdelset(&set, signo); return *this; }

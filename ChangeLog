@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2019-02-18  __vic
+    * posix/sigset.h: posix::sigset:
+        + Constructor and assignment from array
+        + assign()
+
 2019-02-05
     + doc: russian translation
 

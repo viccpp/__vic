@@ -8,6 +8,7 @@
 #ifndef __VIC_POSIX_FS_H
 #define __VIC_POSIX_FS_H
 
+#include<__vic/defs.h>
 #include<string>
 
 namespace __vic { namespace posix {

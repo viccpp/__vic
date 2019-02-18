@@ -10,9 +10,15 @@ class posix::sigset
 public:
     sigset() = default;
     sigset(const ::sigset_t &set);
+    template<size_t Size> sigset(const int (&sigs)[Size]);
     // BEGIN C++11 only
     sigset(std::initializer_list<int> sigs);
+    sigset &operator=(std::initializer_list<int> sigs)
     // END C++11 only
+
+    sigset &assign(const int *sigs, size_t n);
+    template<size_t Size>
+    sigset &operator=(const int (&sigs)[Size]);
 
     sigset &add(int signo);
     sigset &del(int signo);
@@ -56,7 +62,15 @@ defined as C++-operators and member-functions.</p>
 
 <synopsis>
 <prototype>sigset(std::initializer_list&lt;int> sigs) <sign>C++11</sign></prototype>
+<prototype><![CDATA[template<size_t Size> sigset(const int (&sigs)[Size])]]></prototype>
 <p>Creates the set filled with signals from <tt>sigs</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>sigset &amp;operator=(std::initializer_list&lt;int> sigs) <sign>C++11</sign></prototype>
+<prototype><![CDATA[template<size_t Size> sigset &operator=(const int (&sigs)[Size])]]></prototype>
+<prototype>sigset &amp;assign(const int *sigs, size_t n)</prototype>
+<p>Calls <tt>clear()</tt> and fills the set with signals from <tt>sigs</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -117,7 +131,7 @@ defined as C++-operators and member-functions.</p>
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 using __vic::posix::sigset;
-using namespace __vic::posix::this_thread;
+namespace this_thread = __vic::posix::this_thread;
 
 // Waiting for all but SIGTERM and SIGQUIT
 int sig = this_thread::sigwait( sigset::full() >> SIGTERM >> SIGQUIT );
