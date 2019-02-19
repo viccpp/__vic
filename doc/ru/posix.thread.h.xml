@@ -7,12 +7,80 @@
 <chapter xml:id="posix--this_thread">
 <title><tt>posix::this_thread</tt></title>
 
+<code-block lang="C++">
+namespace posix::this_thread { ... }
+</code-block>
+
+<p>Набор функций для управления текущим потоком.</p>
+
+</chapter>
+
+
+<chapter xml:id="posix--this_thread--sigwait">
+<title><tt>posix::this_thread::sigwait()</tt>,
+       <tt>posix::this_thread::sigwait_at_most()</tt></title>
+
 <code-block lang="C++"><![CDATA[
 namespace posix::this_thread
 {
     int sigwait(const ::sigset_t &set);
+
+    int sigwait_at_most(const ::sigset_t &set, const ::timespec &timeout);
+}
+]]></code-block>
+
+<p><tt>sigwait()</tt> приостанавливает текущий поток до получения сигнала из
+набора <tt>set</tt>. Полученный сигнал возвращается в качестве результата.</p>
+
+<p><tt>sigwait_at_most()</tt> - то же самое, но ждёт не дольше указанного
+таймаута. Возвращает <tt>0</tt> в случае таймаута, либо в случае прывания
+сигналом не из указанного набора.</p>
+
+</chapter>
+
+
+<chapter xml:id="posix--this_thread--sigwaitinfo">
+<title><tt>posix::this_thread::sigwaitinfo()</tt>,
+       <tt>posix::this_thread::sigwaitinfo_at_most()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix::this_thread
+{
     ::siginfo_t sigwaitinfo(const ::sigset_t &set);
 
+    bool sigwaitinfo_at_most(const ::sigset_t &set,
+        const ::timespec &timeout, ::siginfo_t &res);
+}
+]]></code-block>
+
+<p><tt>sigwaitinfo()</tt> - аналог <tt>sigwait()</tt>, но возвращает
+дополнительную информацию о полученном сигнале. Сам сигнал возвращается в поле
+<tt>si_signo</tt>.</p>
+
+<note>Функция не прерывается сигналами, в отличие от одноимённого системного
+вызова.</note>
+
+<p><tt>sigwaitinfo_at_most()</tt> - то же самое, но ждёт не дольше указанного
+таймаута. Возвращает <tt>false</tt> в случае таймаута, либо в случае прывания
+сигналом не из указанного набора. Если вернула <tt>true</tt>, то <tt>res</tt>
+содержит заполненную структуру <tt>siginfo_t</tt>.</p>
+
+<note>Перед использованием любой из этих функций, для каждого сигнала из
+<tt>set</tt> должна быть вызвана <tt>::sigaction()</tt> с <tt>sa_flags</tt>
+содержащим <tt>SA_SIGINFO</tt>! В противном случае возвращаемое в
+<tt>siginfo_t</tt> значение будет содержать мусор!</note>
+
+</chapter>
+
+
+<chapter xml:id="posix--this_thread--block_signals">
+<title><tt>posix::this_thread::block_signals()</tt>,
+       <tt>posix::this_thread::unblock_signals()</tt>,
+       <tt>posix::this_thread::set_sigmask()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix::this_thread
+{
     void block_signals(const ::sigset_t &mask,
                                 ::sigset_t *oldmask = nullptr);
     void unblock_signals(const ::sigset_t &mask,
@@ -21,41 +89,14 @@ namespace posix::this_thread
 }
 ]]></code-block>
 
-<p>Набор функций для управления текущим потоком.</p>
+<p><tt>block_signals()</tt> добавляет сигналы из набора к блокируемым в текущем
+потоке.</p>
 
-<synopsis>
-<prototype>int sigwait(const ::sigset_t &amp;set)</prototype>
-<p>Приостанавливает текущий поток до получения сигнала из набора <tt>set</tt>.
-Полученный сигнал возвращается в качестве результата.</p>
-</synopsis>
+<p><tt>unblock_signals()</tt> удаляет сигналы из набора блокируемых в текущем
+потоке.</p>
 
-<synopsis>
-<prototype>::siginfo_t sigwaitinfo(const ::sigset_t &amp;set)</prototype>
-<p>Аналог <tt>sigwait()</tt>, но возвращает дополнительную информацию о
-полученном сигнале. Сам сигнал возвращается в поле <tt>si_signo</tt>.</p>
-<note>Функция не прерывается сигналами, в отличие от одноимённого системного
-вызова.</note>
-<note>Перед использованием для каждого сигнала из <tt>set</tt> должна быть
-вызвана <tt>::sigaction()</tt> с <tt>sa_flags</tt> содержащим
-<tt>SA_SIGINFO</tt>! В противном случае возвращаемое значение будет содержать
-мусор!</note>
-</synopsis>
-
-<synopsis>
-<prototype>void block_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
-<p>Добавляет сигналы из набора к блокируемым в текущем потоке.</p>
-</synopsis>
-
-<synopsis>
-<prototype>void unblock_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
-<p>Удаляет сигналы из набора из блокируемых в текущем потоке.</p>
-</synopsis>
-
-<synopsis>
-<prototype>void set_sigmask(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
-<p>Устанавливает маску блокируемых сигналов для текущего потока. Все сигналы
-из набора блокируются, остальные - нет.</p>
-</synopsis>
+<p><tt>set_sigmask()</tt> устанавливает маску блокируемых сигналов для текущего
+потока. Все сигналы из набора блокируются, остальные - нет.</p>
 
 </chapter>
 

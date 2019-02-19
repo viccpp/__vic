@@ -20,7 +20,11 @@ namespace this_thread
 {
     int sigwait(const ::sigset_t & );
 #ifdef __VIC_POSIX_RT__
+    int sigwait_at_most(const ::sigset_t & , const ::timespec & );
+
     ::siginfo_t sigwaitinfo(const ::sigset_t & );
+    bool sigwaitinfo_at_most(
+        const ::sigset_t & , const ::timespec & , ::siginfo_t & );
 #endif
 
     void change_sigmask(int , const ::sigset_t & , ::sigset_t * = nullptr);

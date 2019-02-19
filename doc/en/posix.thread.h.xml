@@ -7,12 +7,79 @@
 <chapter xml:id="posix--this_thread">
 <title><tt>posix::this_thread</tt></title>
 
+<code-block lang="C++">
+namespace posix::this_thread { ... }
+</code-block>
+
+<p>Set of the functions to control the current thread.</p>
+
+</chapter>
+
+
+<chapter xml:id="posix--this_thread--sigwait">
+<title><tt>posix::this_thread::sigwait()</tt>,
+       <tt>posix::this_thread::sigwait_at_most()</tt></title>
+
 <code-block lang="C++"><![CDATA[
 namespace posix::this_thread
 {
     int sigwait(const ::sigset_t &set);
+
+    int sigwait_at_most(const ::sigset_t &set, const ::timespec &timeout);
+}
+]]></code-block>
+
+<p><tt>sigwait()</tt> suspends the current thread until the signal from
+<tt>set</tt> is received. Received signal is returned as a result.</p>
+
+<p><tt>sigwait_at_most()</tt> is the same but waits no longer than the specified
+timeout. Returns <tt>0</tt> on timeout or when interrupted by signal other than
+one of those in set.</p>
+
+</chapter>
+
+
+<chapter xml:id="posix--this_thread--sigwaitinfo">
+<title><tt>posix::this_thread::sigwaitinfo()</tt>,
+       <tt>posix::this_thread::sigwaitinfo_at_most()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix::this_thread
+{
     ::siginfo_t sigwaitinfo(const ::sigset_t &set);
 
+    bool sigwaitinfo_at_most(const ::sigset_t &set,
+        const ::timespec &timeout, ::siginfo_t &res);
+}
+]]></code-block>
+
+<p><tt>sigwaitinfo()</tt> is a counterpart of <tt>sigwait()</tt> but returns
+an additional information about the received signal. The signal is returned in
+<tt>si_signo</tt> field.</p>
+<note>The function is not interrupted by signal handlers as opposed to the
+system call of the same name.</note>
+
+<p><tt>sigwaitinfo_at_most()</tt> is the same but waits no longer than the
+specified timeout. Returns <tt>false</tt> on timeout or when interrupted by
+signal other than one of those in set. If <tt>true</tt> is returned <tt>res</tt>
+contains filled <tt>siginfo_t</tt>.</p>
+
+<note><tt>::sigaction()</tt> with <tt>sa_flags</tt> containing
+<tt>SA_SIGINFO</tt> has to be called for each signal from <tt>set</tt> before
+usage of any of these functions! Otherwise the returned <tt>siginfo_t</tt>
+value will contain garbage!</note>
+
+</chapter>
+
+
+<chapter xml:id="posix--this_thread--block_signals">
+<title><tt>posix::this_thread::block_signals()</tt>,
+       <tt>posix::this_thread::unblock_signals()</tt>,
+       <tt>posix::this_thread::set_sigmask()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+namespace posix::this_thread
+{
     void block_signals(const ::sigset_t &mask,
                                 ::sigset_t *oldmask = nullptr);
     void unblock_signals(const ::sigset_t &mask,
@@ -21,41 +88,14 @@ namespace posix::this_thread
 }
 ]]></code-block>
 
-<p>Set of the functions to control the current thread.</p>
+<p><tt>block_signals()</tt> adds signals from the set to the blocked ones in
+the calling thread.</p>
 
-<synopsis>
-<prototype>int sigwait(const ::sigset_t &amp;set)</prototype>
-<p>Suspends the current thread until the signal from <tt>set</tt> is received.
-Received signal is returned as a result.</p>
-</synopsis>
+<p><tt>unblock_signals()</tt> removes the signals from the set from the blocked
+ones in the calling thread.</p>
 
-<synopsis>
-<prototype>::siginfo_t sigwaitinfo(const ::sigset_t &amp;set)</prototype>
-<p>Counterpart of <tt>sigwait()</tt> but returns additional information about
-the received signal. The signal is returned in <tt>si_signo</tt> field.</p>
-<note>The function is not interrupted by signal handlers as opposed to the
-system call of the same name.</note>
-<note><tt>::sigaction()</tt> with <tt>sa_flags</tt> containing
-<tt>SA_SIGINFO</tt> has to be called for each signal from <tt>set</tt> before
-usage! Otherwise the returned value will contain garbage!</note>
-</synopsis>
-
-<synopsis>
-<prototype>void block_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
-<p>Adds the signals from the set to the blocked ones in the calling thread.</p>
-</synopsis>
-
-<synopsis>
-<prototype>void unblock_signals(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
-<p>Removes the signals from the set from the blocked ones in the calling
-thread.</p>
-</synopsis>
-
-<synopsis>
-<prototype>void set_sigmask(const ::sigset_t &amp;mask, ::sigset_t *oldmask = nullptr)</prototype>
-<p>Sets the mask of blocked signals for the calling thread. All signals from
-the set are blocked, others - aren't.</p>
-</synopsis>
+<p><tt>set_sigmask()</tt> sets the mask of blocked signals for the calling
+thread. All signals from the set are blocked, others - aren't.</p>
 
 </chapter>
 
