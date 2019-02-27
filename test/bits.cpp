@@ -9,7 +9,8 @@ void nibble_tests()
 {
     char ch = '\xFA';
     std::cout << std::hex << std::uppercase <<
-        __vic::hi_nibble(ch) << ' ' << __vic::lo_nibble(ch) << '\n';
+        unsigned(__vic::hi_nibble(ch)) << ' ' <<
+        unsigned(__vic::lo_nibble(ch)) << '\n';
     assert(__vic::hi_nibble(ch) == 0xF);
     assert(__vic::lo_nibble(ch) == 0xA);
 }
