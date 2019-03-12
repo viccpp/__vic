@@ -61,9 +61,9 @@ static_assert(__vic::endian::native == __vic::endian:little,
 <title><tt>swab16()</tt>, <tt>swab32()</tt>, <tt>swab64()</tt></title>
 
 <code-block lang="C++">
-constexpr uint16_t swab16(uint16_t v);
-constexpr uint32_t swab32(uint32_t v);
-constexpr uint64_t swab64(uint64_t v);
+[[nodiscard]] constexpr uint16_t swab16(uint16_t v);
+[[nodiscard]] constexpr uint32_t swab32(uint32_t v);
+[[nodiscard]] constexpr uint64_t swab64(uint64_t v);
 </code-block>
 
 <p>Быстрые утилиты для обращения порядка байт (обычно реализуются с помощью
