@@ -56,6 +56,54 @@ static_assert(__vic::endian::native == __vic::endian:little,
 </chapter>
 
 
+<chapter xml:id="endian--from">
+<title><tt>endian::from_...()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> [[nodiscard]] constexpr T endian::from_little(T v);
+template<class T> [[nodiscard]] constexpr T endian::from_big(T v);
+]]></code-block>
+
+<p>Return a value represented in native byte order converted from litte/big
+endian if appropriate.</p>
+
+<p><tt>T</tt> can be any integral type or enum with size up to
+<tt>sizeof(long long)</tt>.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+uint16_t v;
+read_bytes(&v, 2); // serialized as big endian
+std::cout << "The value is " << __vic::endian::from_big(v) << '\n';
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="endian--to">
+<title><tt>endian::to_...()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> [[nodiscard]] constexpr T endian::to_little(T v);
+template<class T> [[nodiscard]] constexpr T endian::to_big(T v);
+]]></code-block>
+
+<p>Return a value represented in litte/big endian byte order.</p>
+
+<p><tt>T</tt> can be any integral type or enum with size up to
+<tt>sizeof(long long)</tt>.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+uint16_t v = __vic::endian::to_big(...);
+write_bytes(&v, 2); // serialize as big endian
+]]></code-block>
+</section>
+
+</chapter>
+
+
 <chapter xml:id="swab">
 <title><tt>swab16()</tt>, <tt>swab32()</tt>, <tt>swab64()</tt></title>
 

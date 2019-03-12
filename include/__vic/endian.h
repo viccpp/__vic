@@ -50,6 +50,47 @@ __VIC_NODISCARD __VIC_CONSTEXPR_FUNC uint64_t swab64(uint64_t v)
 }
 //----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+template<class T, size_t = sizeof(T)>
+struct bytes_inverter; // not defined
+//----------------------------------------------------------------------------
+template<class T>
+struct bytes_inverter<T,1>
+{
+    static __VIC_CONSTEXPR_FUNC T value(T v)
+    {
+        return v;
+    }
+};
+//----------------------------------------------------------------------------
+template<class T>
+struct bytes_inverter<T,2>
+{
+    static __VIC_CONSTEXPR_FUNC T value(T v)
+    {
+        return static_cast<T>(swab16(static_cast<uint16_t>(v)));
+    }
+};
+//----------------------------------------------------------------------------
+template<class T>
+struct bytes_inverter<T,4>
+{
+    static __VIC_CONSTEXPR_FUNC T value(T v)
+    {
+        return static_cast<T>(swab32(static_cast<uint32_t>(v)));
+    }
+};
+//----------------------------------------------------------------------------
+template<class T>
+struct bytes_inverter<T,8>
+{
+    static __VIC_CONSTEXPR_FUNC T value(T v)
+    {
+        return static_cast<T>(swab64(static_cast<uint64_t>(v)));
+    }
+};
+//----------------------------------------------------------------------------
+
 namespace endian {
 
 //////////////////////////////////////////////////////////////////////////////
@@ -75,6 +116,64 @@ enum endianness
 #endif
 };
 //////////////////////////////////////////////////////////////////////////////
+
+//----------------------------------------------------------------------------
+template<endianness From, endianness To>
+struct transformer; // not defined
+//----------------------------------------------------------------------------
+template<endianness E>
+struct transformer<E,E> // same endianness
+{
+    template<class T> static __VIC_CONSTEXPR_FUNC T value(T v)
+    {
+        return v;
+    }
+};
+//----------------------------------------------------------------------------
+template<>
+struct transformer<little,big>
+{
+    template<class T> static __VIC_CONSTEXPR_FUNC T value(T v)
+    {
+        return bytes_inverter<T>::value(v);
+    }
+};
+//----------------------------------------------------------------------------
+template<>
+struct transformer<big,little>
+{
+    template<class T> static __VIC_CONSTEXPR_FUNC T value(T v)
+    {
+        return bytes_inverter<T>::value(v);
+    }
+};
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD __VIC_CONSTEXPR_FUNC T from_big(T v)
+{
+    return transformer<big,native>::value(v);
+}
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD __VIC_CONSTEXPR_FUNC T from_little(T v)
+{
+    return transformer<little,native>::value(v);
+}
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD __VIC_CONSTEXPR_FUNC T to_big(T v)
+{
+    return transformer<native,big>::value(v);
+}
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD __VIC_CONSTEXPR_FUNC T to_little(T v)
+{
+    return transformer<native,little>::value(v);
+}
+//----------------------------------------------------------------------------
 
 } // namespace
 

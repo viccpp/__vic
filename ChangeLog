@@ -6,6 +6,7 @@ Legend:
 
 2019-03-12  __vic
     + [[nodiscard]] support
+    + endian.h: endian::to/from_big/little()
 
 2019-02-13  __vic
     + endian.h:
