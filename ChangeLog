@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2019-03-13  __vic
+    + memory.h:
+        + load_unaligned()
+
 2019-03-12  __vic
     + [[nodiscard]] support
     + endian.h: endian::to/from_big/little()

@@ -16,6 +16,7 @@
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
+    <!ENTITY memory.h SYSTEM "memory.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
@@ -128,6 +129,7 @@ TODO
 &error.h;
 &iterator.h;
 &logger.h;
+&memory.h;
 &object_pool.h;
 &readers;
 &readonly_cstring.h;
