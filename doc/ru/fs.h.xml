@@ -32,11 +32,11 @@ bool dir_exists(const std::string &path);
 <title><tt>mkdir()</tt>, <tt>mkdir_if_absent()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-void mkdir(const char *path);
-void mkdir(const std::string &path);
+void mkdir(const char *path, mode_t mode = 0777);
+void mkdir(const std::string &path, mode_t mode = 0777);
 
-bool mkdir_if_absent(const char *path);
-bool mkdir_if_absent(const std::string &path);
+bool mkdir_if_absent(const char *path, mode_t mode = 0777);
+bool mkdir_if_absent(const std::string &path, mode_t mode = 0777);
 ]]></code-block>
 
 <p>Создаёт каталог. Бросает исключения в случае ошибок.

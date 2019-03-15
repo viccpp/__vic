@@ -6,6 +6,7 @@
 <list style="bulleted">
     <item>GNU C++ v 4.7+ [<tt>gcc</tt>]</item>
     <item>Clang v 3.4+ [<tt>clang</tt>]</item>
+    <item>Intel C++ 17.0+ [<tt>intel</tt>]</item>
 </list>
 
 <p>Перейдите в подкаталог <tt>src</tt> и наберите:</p>
@@ -25,6 +26,19 @@ $ gmake std=98
 <p>Также можно вручную выбрать используемый компилятор:</p>
 <tty>
 $ gmake compiler=gcc
+</tty>
+
+<p>Для генерации position-independent code (PIC), который позволяет компоновать
+библиотеку с shared object, наберите:</p>
+<tty>
+$ gmake pic=1
+</tty>
+
+<p>Для сборки на FreeBSD 10+ вместо gmake может использоваться утилита
+<link href="https://www.freebsd.org/cgi/man.cgi?query=make&amp;sektion=1">
+bmake</link>:</p>
+<tty>
+$ make -f Makefile.freebsd
 </tty>
 
 <p>После всего этого нужно скопировать получившийся файл библиотеки и содержимое

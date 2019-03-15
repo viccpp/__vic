@@ -28,6 +28,7 @@ public:
 
     bool alive() const;
     bool joinable() const;
+    void kill(int signo); // POSIX only
 
     id get_id() const;
     native_handle_type handle() const;
@@ -105,6 +106,12 @@ protected:
 <p>Возвращает <tt>true</tt>, если объект имеет соответсвующий объект ОС
 (поток), созданный вызовом <tt>start()</tt> и ещё не уничтоженный вызовом
 <tt>join()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void kill(int signo) <sign>POSIX</sign></prototype>
+<p>Посылает сигнал потоку сигнал <tt>signo</tt>.</p>
+<precondition><tt>joinable() == true</tt></precondition>
 </synopsis>
 
 <synopsis>
