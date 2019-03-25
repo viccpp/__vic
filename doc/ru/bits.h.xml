@@ -76,7 +76,7 @@ uint64_t rotr(uint64_t v, int shift);
 
 <p>Функции выполняют циклический побитовый сдвиг (rotation) влево
 (<tt>rotl</tt>) или вправо (<tt>rotr</tt>).</p>
-<precondition>shift >= 0</precondition>
+<precondition><tt>0 &lt;= shift &amp;&amp; shift &lt; sizeof(v)*CHAR_BIT</tt></precondition>
 
 </chapter>
 

@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2019-03-25  __vic
+    - bits.h: UB on rot{l|r}(..., 0)
+
 2019-03-13  __vic
     + memory.h:
         + load_unaligned()

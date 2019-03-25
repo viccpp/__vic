@@ -65,13 +65,17 @@ __VIC_CONSTEXPR_FUNC uint8_t swapped_nibbles(uint8_t b)
 template<class UInt>
 inline UInt rotl_uint(UInt v, int shift)
 {
-    return (v << shift) | (v >> (sizeof(UInt) * CHAR_BIT - shift));
+    const int w = sizeof(UInt) * CHAR_BIT; // width in bits
+    //return (v << shift) | (v >> (w - shift)); // UB if shift == 0
+    return (v << shift) | (v >> ((w - shift) & (w - 1)));
 }
 //----------------------------------------------------------------------------
 template<class UInt>
 inline UInt rotr_uint(UInt v, int shift)
 {
-    return (v >> shift) | (v << (sizeof(UInt) * CHAR_BIT - shift));
+    const int w = sizeof(UInt) * CHAR_BIT; // width in bits
+    //return (v >> shift) | (v << (w - shift)); // UB if shift == 0
+    return (v >> shift) | (v << ((w - shift) & (w - 1)));
 }
 //----------------------------------------------------------------------------
 inline uint8_t  rotl(uint8_t  v, int sh) { return rotl_uint(v, sh); }

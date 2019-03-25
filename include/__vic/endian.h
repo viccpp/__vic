@@ -8,6 +8,7 @@
 #ifndef __VIC_ENDIAN_H
 #define __VIC_ENDIAN_H
 
+#include<__vic/defs.h>
 #include<__vic/stdint.h>
 
 namespace __vic {

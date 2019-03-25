@@ -76,7 +76,7 @@ uint64_t rotr(uint64_t v, int shift);
 
 <p>The functions perform circular left (<tt>rotl</tt>) or right
 (<tt>rotr</tt>) bitwise shift (rotation).</p>
-<precondition>shift >= 0</precondition>
+<precondition><tt>0 &lt;= shift &amp;&amp; shift &lt; sizeof(v)*CHAR_BIT</tt></precondition>
 
 </chapter>
 

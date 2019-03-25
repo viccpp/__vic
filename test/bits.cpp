@@ -40,6 +40,10 @@ void rot_tests()
 {
     assert(__vic::rotl(uint32_t(0x12345678), 8) == uint32_t(0x34567812));
     assert(__vic::rotr(uint32_t(0x12345678), 8) == uint32_t(0x78123456));
+    // corner case
+    const uint32_t v = 1;
+    assert(__vic::rotl(v, 0) == v);
+    assert(__vic::rotr(v, 0) == v);
 }
 void run()
 {
