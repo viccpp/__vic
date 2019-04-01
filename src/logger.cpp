@@ -13,14 +13,14 @@ extern const char * const logger_severity_strs[] =
 logger::logger(output &out, severity_t level)
 :
     log_level(level), out(&out),
-    cur_msg(lo_water_mark), rec_objs_count(0)
+    cur_msg(min_buffer_size), rec_objs_count(0)
 {
 }
 //----------------------------------------------------------------------------
 logger::logger(settings_t s)
 :
     log_level(s.level()), out(&s.output()),
-    cur_msg(lo_water_mark), rec_objs_count(0)
+    cur_msg(min_buffer_size), rec_objs_count(0)
 {
 }
 //----------------------------------------------------------------------------
@@ -44,11 +44,8 @@ void logger::_flush()
     //message(cur_severity, cur_msg.data(), cur_msg.length());
     if(cur_severity >= level())
         out->publish_record(cur_severity, cur_msg.data(), cur_msg.length());
-
     cur_msg.clear();
-    // prevent uncontrolled buffer growth
-    if(cur_msg.capacity() > hi_water_mark)
-        string_buffer(lo_water_mark).swap(cur_msg);
+    //shrink_buffer(hi_water_mark); // prevent uncontrolled buffer growth
 }
 //----------------------------------------------------------------------------
 

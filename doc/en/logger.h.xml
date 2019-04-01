@@ -42,6 +42,9 @@ public:
     output &get_output();
     const output &get_output() const;
 
+    static constexpr size_t min_buffer_size = ...;
+    void shrink_buffer(size_t limit);
+
     void message(severity_t severity, const char *msg, size_t msg_len);
     void message(severity_t severity, const char *msg);
     void message(severity_t severity, const std::string &msg);
@@ -248,6 +251,18 @@ must outlive the logger object!</p>
 <prototype>output &amp;get_output()</prototype>
 <prototype>const output &amp;get_output() const</prototype>
 <p>Returns reference to the current logging output.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static constexpr size_t min_buffer_size</prototype>
+<p>Minimal size of the internal buffer in bytes.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void shrink_buffer(size_t limit)</prototype>
+<p>Sets the internal buffer size to <tt>min_buffer_size</tt> if it is more than
+<tt>limit</tt> bytes. Allows to restrict the buffer growth when long records
+are formed.</p>
 </synopsis>
 
 <synopsis>

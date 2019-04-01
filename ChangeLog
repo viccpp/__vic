@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2019-04-01  __vic
+    * logger:
+        + shrink_buffer()
+        ! No autoshrink
+
 2019-03-25  __vic
     - bits.h: UB on rot{l|r}(..., 0)
 
