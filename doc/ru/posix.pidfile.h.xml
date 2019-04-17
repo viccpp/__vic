@@ -1,0 +1,66 @@
+<chapter xml:id="posix.pidfile.h">
+<title><tt>__vic/posix/pidfile.h</tt></title>
+
+<chapter xml:id="posix--pidfile">
+<title><tt>posix::pidfile</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::pidfile : private non_copyable
+{
+public:
+    class already_exists; // : public std::exception
+
+    explicit pidfile(std::string file_name);
+    ~pidfile();
+
+    void create();
+    void prepare_to_daemon();
+    void rewrite_pid();
+};
+]]></code-block>
+
+<p>Класс предназначен для работы с PID-файлами. То есть файлами, хранящими PID
+процесса, обычно являющегося процессом-демоном. Механизм используется для
+корректной остановки работы демона, а также для защиты от одновременного
+запуска нескольких экземпляров процесса.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>class already_exists</prototype>
+<p>Исключение. См. описание <tt>create()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit pidfile(std::string file_name)</prototype>
+<p>Задаёт имя PID-файла.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~pidfile()</prototype>
+<p>Удаляет PID-файл с диска.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void create()</prototype>
+<p>Создаёт PID-файл с именем, указанным в конструкторе. Если такой PID-файл
+уже создан другим экземпляром процесса, бросает <tt>already_exists</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void prepare_to_daemon()</prototype>
+<p>Данную функцию необходимо вызывать перед системным вызовом
+<tt>daemon()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void rewrite_pid()</prototype>
+<p>Обновляет PID процесса в PID-файле. В частности PID меняется после
+системного вызова <tt>daemon()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2019-04-18  __vic
+    + posix/pidfile.h:
+        + posix::pidfile
+    + posix/daemon_control.h:
+        + posix::daemon_control
+
 2019-02-18  __vic
     * posix/sigset.h: posix::sigset:
         + Constructor and assignment from array

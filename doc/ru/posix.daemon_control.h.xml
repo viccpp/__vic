@@ -1,0 +1,104 @@
+<chapter xml:id="posix.daemon_control.h">
+<title><tt>__vic/posix/daemon_control.h</tt></title>
+
+<chapter xml:id="posix--daemon_control">
+<title><tt>posix::daemon_control</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::daemon_control : private non_copyable
+{
+public:
+    class already_running; // public std::exception
+
+    explicit daemon_control(std::string pid_file_name);
+    ~daemon_control();
+
+    void daemonize();
+
+    static int control(const char *cmd, const char *pid_file_name);
+    static void stop_and_wait(const char *pid_file_name);
+};
+]]></code-block>
+
+<p>Класс реализует функции запуска, остановки, перезапуска, контроля состояния
+и защиту от многократного запуска для приложений-daemon’ов. Рекомендуемый
+способ использования – private-наследование классом вроде <tt>application</tt>
+конкретного приложения.</p>
+
+<note>Поиск процесса осуществляется по PID-файлу, который создаётся в текущей
+директории при запуске. Если этот файл удалить, то механизмы будут считать,
+что процесс не запущен, несмотря на его действительное состояние! Поэтому
+PID-файл безопасно можно только читать сторонними средствами или удалять,
+если точно известно, что процесс не запущен в данный момент.</note>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>class already_running</prototype>
+<p>Исключение. Бросается конструктором, если запускаемый демон уже запущен в
+данный момент.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit daemon_control(std::string pid_file_name)</prototype>
+<p>Запускает приложение и создаёт файл с именем, переданным в
+<tt>pid_file_name</tt>, в текущем каталоге, содержащий PID созданного
+процесса. Если при запуске обнаруживается, что процесс уже запущен, то
+бросается <tt>already_running</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~daemon_control()</prototype>
+<p>Удаляет PID-файл, созданный конструктором.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void daemonize()</prototype>
+<p>Делает вызывающий процесс daemon’ом и обновляет значение в PID-файле.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static int control(const char *cmd, const char *pid_file_name)</prototype>
+<p>Выполняет одну из команд, заданных первым параметром, и возвращает
+статус:</p>
+<list style="bulleted">
+    <item>
+        <tt>stop</tt> - посылка сигнала <tt>SIGTERM</tt> выполняющемуся
+        процессу, возвращает статус успешно/неуспешно (<tt>0</tt>/<tt>1</tt>),
+    </item>
+    <item>
+        <tt>kill</tt> - убийство выполняющегося процесса сигналом
+        <tt>SIGKILL</tt>, возвращает статус успешно/неуспешно
+        (<tt>0</tt>/<tt>1</tt>),
+    </item>
+    <item>
+        <tt>status</tt> - проверка текущего состояния процесса:
+        <list style="bulleted">
+            <item>вывод «Running» в <tt>stdout</tt> и возврат статуса
+                <tt>0</tt>, если процесс выполняется,</item>
+            <item>вывод «Not running» и статус <tt>1</tt>, если не
+                выполняется,</item>
+            <item>вывод сообщения об ошибке в <tt>stderr</tt> и возврат
+                статуса <tt>>1</tt> в случае ошибок.</item>
+        </list>
+    </item>
+</list>
+<p>Если передана команда, отличная от перечисленных выше, то бросается
+исключение. Вторым параметром передаётся имя PID-файла, которое передавалось
+в конструктор при запуске.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static void stop_and_wait(const char *pid_file_name)</prototype>
+<p>Посылает сигнал <tt>SIGTERM</tt>, если процесс выполняется, и дожидается его
+завершения. Если процесс в данный момент не выполняется, то просто возвращает
+управление. Функция используется для рестарта приложения. После её вызова
+можно создавать экземпляр <tt>daemon_control</tt> и запускать работу
+приложения.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

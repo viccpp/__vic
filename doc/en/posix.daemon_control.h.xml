@@ -1,0 +1,100 @@
+<chapter xml:id="posix.daemon_control.h">
+<title><tt>__vic/posix/daemon_control.h</tt></title>
+
+<chapter xml:id="posix--daemon_control">
+<title><tt>posix::daemon_control</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class posix::daemon_control : private non_copyable
+{
+public:
+    class already_running; // public std::exception
+
+    explicit daemon_control(std::string pid_file_name);
+    ~daemon_control();
+
+    void daemonize();
+
+    static int control(const char *cmd, const char *pid_file_name);
+    static void stop_and_wait(const char *pid_file_name);
+};
+]]></code-block>
+
+<p>A class that implements start, stop, restart, status check and protection
+against multiple daemon-process instances launch. It is recommended to
+private-inherit this class by some sort of <tt>application</tt> class in
+your application.</p>
+
+<note>PID-file is used to find the process instance. It is created in CWD
+during process launch. If one removes this file all functions will assume
+that the process is not running despite the actual status! Therefore only
+read access to the PID-file by another tools is safe. It can be removed
+only if it is known for sure that the process is not running at the moment.
+</note>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>class already_running</prototype>
+<p>An exception thrown by the constructor if the daemon already running at
+the moment.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit daemon_control(std::string pid_file_name)</prototype>
+<p>Starts the application and creates PID-file named <tt>pid_file_name</tt>
+in CWD. <tt>already_running</tt> is thrown if the process is already running.
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>~daemon_control()</prototype>
+<p>Deletes PID-file created by the constructor.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void daemonize()</prototype>
+<p>Makes the calling process a daemon and updates PID in the PID-file.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static int control(const char *cmd, const char *pid_file_name)</prototype>
+<p>Executes one of the commands specified by the first parameter and returns
+a status:</p>
+<list style="bulleted">
+    <item>
+        <tt>stop</tt> - send <tt>SIGTERM</tt> to the running process and
+        return a success/unsuccess status (<tt>0</tt>/<tt>1</tt>),
+    </item>
+    <item>
+        <tt>kill</tt> - kill the process with <tt>SIGKILL</tt> signal and
+        return a success/unsuccess status (<tt>0</tt>/<tt>1</tt>),
+    </item>
+    <item>
+        <tt>status</tt> - check the current process status:
+        <list style="bulleted">
+            <item>print "Running" to <tt>stdout</tt> and return <tt>0</tt>
+                if the process is running,</item>
+            <item>print "Not running" and return <tt>1</tt> if not,</item>
+            <item>print error message to <tt>stderr</tt> and return status
+                <tt>>1</tt> on failure.</item>
+        </list>
+    </item>
+</list>
+<p>If any other command is passed exception is thrown. The second parameter
+is the PID-file name passed to the constructor on start.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static void stop_and_wait(const char *pid_file_name)</prototype>
+<p>Sends <tt>SIGTERM</tt> and waits while process is running. If the process
+is not running at the moment just returns. This function is used to restart
+the application, after the call new instance of <tt>daemon_control</tt> can be
+created and the application can start its work.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

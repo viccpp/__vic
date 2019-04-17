@@ -45,6 +45,7 @@
     <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
     <!ENTITY writers SYSTEM "writers.xml">
     <!ENTITY posix.cond_variable.h SYSTEM "posix.cond_variable.h.xml">
+    <!ENTITY posix.daemon_control.h SYSTEM "posix.daemon_control.h.xml">
     <!ENTITY posix.dir_entries.h SYSTEM "posix.dir_entries.h.xml">
     <!ENTITY posix.dir_files.h SYSTEM "posix.dir_files.h.xml">
     <!ENTITY posix.error.h SYSTEM "posix.error.h.xml">
@@ -53,6 +54,7 @@
     <!ENTITY posix.fs.h SYSTEM "posix.fs.h.xml">
     <!ENTITY posix.iov.h SYSTEM "posix.iov.h.xml">
     <!ENTITY posix.mutex.h SYSTEM "posix.mutex.h.xml">
+    <!ENTITY posix.pidfile.h SYSTEM "posix.pidfile.h.xml">
     <!ENTITY posix.process.h SYSTEM "posix.process.h.xml">
     <!ENTITY posix.sigset.h SYSTEM "posix.sigset.h.xml">
     <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
@@ -173,6 +175,7 @@ TODO
 &waitable_event.h;
 &writers;
 &posix.cond_variable.h;
+&posix.daemon_control.h;
 &posix.dir_entries.h;
 &posix.dir_files.h;
 &posix.error.h;
@@ -181,6 +184,7 @@ TODO
 &posix.fs.h;
 &posix.iov.h;
 &posix.mutex.h;
+&posix.pidfile.h;
 &posix.process.h;
 &posix.sigset.h;
 &posix.thread.h;
