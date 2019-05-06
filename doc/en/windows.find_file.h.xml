@@ -1,0 +1,72 @@
+<chapter xml:id="windows.find_file.h">
+<title><tt>__vic/windows/find_file.h</tt></title>
+
+<chapter xml:id="windows--find_file">
+<title><tt>windows::find_file</tt></title>
+
+<code-block lang="C++">
+class windows::FindFile : public WIN32_FIND_DATA, private non_copyable
+{
+public:
+    FindFile();
+    ~FindFile();
+
+    bool FindFirst(LPCTSTR filename);
+    bool FindNext();
+
+    bool IsOpen() const;
+    void Close();
+    bool CloseNT() noexcept;
+};
+</code-block>
+
+<p>Wrapper for Win32 API <tt>FindFirstFile()</tt>/<tt>FindNextFile()</tt>
+functions. Special entries <tt>.</tt> and <tt>..</tt> are newer included in
+the resulting set.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>FindFile()</prototype>
+<postcondition><tt>IsOpen() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~FindFile()</prototype>
+<p>Calls <tt>CloseNT()</tt> if <tt>IsOpen() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool FindFirst(LPCTSTR filename)</prototype>
+<p>Calls <tt>FindFirstFile()</tt>. Returns <tt>false</tt> if no files found.
+Throws <xref to="windows--error"/> on other errors.</p>
+<precondition><tt>IsOpen() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool FindNext()</prototype>
+<p>Calls <tt>FindNextFile()</tt>. Returns <tt>false</tt> if no more files
+available. Throws <xref to="windows--error"/> on other errors.</p>
+<precondition><tt>IsOpen() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool Close()</prototype>
+<p>Closes the find handle. Throws <xref to="windows--error"/> on errors.</p>
+<precondition><tt>IsOpen() == true</tt></precondition>
+<postcondition><tt>IsOpen() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool CloseNT() noexcept</prototype>
+<p>Same as <tt>Close()</tt> but returns <tt>false</tt> instead of throwing
+exceptions.</p>
+<precondition><tt>IsOpen() == true</tt></precondition>
+<postcondition><tt>IsOpen() == false</tt></postcondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

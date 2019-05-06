@@ -47,6 +47,7 @@
     <!ENTITY windows.critical_section.h SYSTEM "windows.critical_section.h.xml">
     <!ENTITY windows.error.h SYSTEM "windows.error.h.xml">
     <!ENTITY windows.event.h SYSTEM "windows.event.h.xml">
+    <!ENTITY windows.find_file.h SYSTEM "windows.find_file.h.xml">
     <!ENTITY windows.handle.h SYSTEM "windows.handle.h.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
@@ -167,6 +168,7 @@ TODO
 &windows.critical_section.h;
 &windows.error.h;
 &windows.event.h;
+&windows.find_file.h;
 &windows.handle.h;
 </chapter>
 

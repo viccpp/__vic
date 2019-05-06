@@ -1,0 +1,74 @@
+﻿<chapter xml:id="windows.find_file.h">
+<title><tt>__vic/windows/find_file.h</tt></title>
+
+<chapter xml:id="windows--find_file">
+<title><tt>windows::find_file</tt></title>
+
+<code-block lang="C++">
+class windows::FindFile : public WIN32_FIND_DATA, private non_copyable
+{
+public:
+    FindFile();
+    ~FindFile();
+
+    bool FindFirst(LPCTSTR filename);
+    bool FindNext();
+
+    bool IsOpen() const;
+    void Close();
+    bool CloseNT() noexcept;
+};
+</code-block>
+
+<p>Обёртка для функций Win32 API
+<tt>FindFirstFile()</tt>/<tt>FindNextFile()</tt>. Специальные элементы <tt>.</tt>
+и <tt>..</tt> никогда не включаются в результирующий набор.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>FindFile()</prototype>
+<postcondition><tt>IsOpen() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~FindFile()</prototype>
+<p>Вызывает <tt>CloseNT()</tt>, если <tt>IsOpen() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool FindFirst(LPCTSTR filename)</prototype>
+<p>Вызывает <tt>FindFirstFile()</tt>. Возвращает <tt>false</tt>, если таких
+файлов не найдено. Бросает <xref to="windows--error"/> в случае других ошибок.</p>
+<precondition><tt>IsOpen() == false</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool FindNext()</prototype>
+<p>Вызывает <tt>FindNextFile()</tt>. Возвращает <tt>false</tt>, если больше
+таких файлов нет. Бросает <xref to="windows--error"/> в случае других
+ошибок.</p>
+<precondition><tt>IsOpen() == true</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool Close()</prototype>
+<p>Закрывает поисковый дескриптор. Бросает <xref to="windows--error"/> в случае
+ошибок.</p>
+<precondition><tt>IsOpen() == true</tt></precondition>
+<postcondition><tt>IsOpen() == false</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool CloseNT() noexcept</prototype>
+<p>То же самое, что <tt>Close()</tt>, но возвращает <tt>false</tt> вместо того,
+чтобы бросать исключения.</p>
+<precondition><tt>IsOpen() == true</tt></precondition>
+<postcondition><tt>IsOpen() == false</tt></postcondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>
