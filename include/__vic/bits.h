@@ -11,6 +11,17 @@
 #include<__vic/defs.h>
 #include<__vic/stdint.h>
 #include<climits>
+#if defined(_MSC_VER) && !defined(__VIC_NO_BUITLINS)
+#include<intrin.h>
+#endif
+
+#if __cpp_static_assert
+#define __VIC_ASSERT_UINT(T) \
+    static_assert(T(-1) > 0, "Unsigned type is required")
+#else
+#define __VIC_ASSERT_UINT(T) \
+    typedef char assert_argument_is_unsigned[T(-1) > 0 : 1 : -1]
+#endif
 
 namespace __vic {
 
@@ -61,6 +72,71 @@ __VIC_CONSTEXPR_FUNC uint8_t swapped_nibbles(uint8_t b)
 {
     return (b << 4) | (b >> 4);
 }
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+// Counts 1-bits
+template<class UInt>
+__VIC_CONSTEXPR14 unsigned popcount_uint(UInt v)
+{
+    __VIC_ASSERT_UINT(UInt);
+    unsigned c = 0;
+    for(; v; v >>= 1) c += v & 1;
+    return c;
+}
+//----------------------------------------------------------------------------
+inline unsigned popcount(unsigned v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return __builtin_popcount(v);
+#elif defined(_MSC_VER) && !defined(__VIC_NO_BUITLINS)
+    return __popcnt(v);
+#else
+    return popcount_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+inline unsigned popcount(unsigned long v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return __builtin_popcountl(v);
+#else
+    return popcount_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+#ifdef __VIC_LONGLONG
+inline unsigned popcount(unsigned __VIC_LONGLONG v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return __builtin_popcountll(v);
+#elif defined(_MSC_VER) && !defined(__VIC_NO_BUITLINS)
+    return static_cast<unsigned>(__popcnt64(v));
+#else
+    return popcount_uint(v);
+#endif
+}
+#endif
+//----------------------------------------------------------------------------
+inline unsigned popcount(unsigned short v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return __builtin_popcount(v);
+#else
+    return popcount_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+inline unsigned popcount(unsigned char v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return __builtin_popcount(v);
+#else
+    return popcount_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+
 //----------------------------------------------------------------------------
 template<class UInt>
 inline UInt rotl_uint(UInt v, int shift)

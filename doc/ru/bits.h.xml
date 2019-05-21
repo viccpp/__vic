@@ -59,6 +59,22 @@ constexpr int ord(char ch);
 </chapter>
 
 
+<chapter xml:id="popcount">
+<title><tt>popcount()</tt></title>
+
+<code-block lang="C++">
+unsigned popcount(unsigned v);
+unsigned popcount(unsigned long v);
+unsigned popcount(unsigned long long v);
+unsigned popcount(unsigned short v);
+unsigned popcount(unsigned char v);
+</code-block>
+
+<p>Возвращает количество единичных битов в данном значении.</p>
+
+</chapter>
+
+
 <chapter xml:id="rotl">
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 

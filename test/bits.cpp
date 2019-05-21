@@ -45,6 +45,21 @@ void rot_tests()
     assert(__vic::rotl(v, 0) == v);
     assert(__vic::rotr(v, 0) == v);
 }
+void popcount_tests()
+{
+    assert(__vic::popcount(0U) == 0);
+    assert(__vic::popcount(1U) == 1);
+    assert(__vic::popcount(0x11U) == 2);
+    assert(__vic::popcount(0x1111U) == 4);
+    assert(__vic::popcount(0x0FF0U) == 8);
+
+    assert(__vic::popcount(0x11UL) == 2);
+#ifdef __VIC_LONGLONG
+    assert(__vic::popcount(static_cast<unsigned __VIC_LONGLONG>(0x11)) == 2);
+#endif
+    assert(__vic::popcount(static_cast<unsigned short>(0x11)) == 2);
+    assert(__vic::popcount(static_cast<unsigned char>(0x11)) == 2);
+}
 void run()
 {
     nibble_tests();
@@ -53,6 +68,7 @@ void run()
     ord_test();
     swap_nibbles_test();
     rot_tests();
+    popcount_tests();
 }
 
 } // namespace

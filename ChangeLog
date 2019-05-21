@@ -6,6 +6,7 @@ Legend:
 
 2019-05-21  __vic
     * Renamed __VIC_NO_GCC_BUITLINS -> __VIC_NO_BUITLINS
+    + bits.h: popcount()
 
 2019-04-01  __vic
     * logger:
