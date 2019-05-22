@@ -147,15 +147,17 @@ UInt floor2(UInt n);
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 
 <code-block lang="C++">
-uint8_t  rotl(uint8_t  v, int shift);
-uint16_t rotl(uint16_t v, int shift);
-uint32_t rotl(uint32_t v, int shift);
-uint64_t rotl(uint64_t v, int shift);
+unsigned long long rotl(unsigned long long v, int shift);
+unsigned long      rotl(unsigned long v, int shift);
+unsigned           rotl(unsigned v, int shift);
+unsigned short     rotl(unsigned short v, int shift);
+unsigned char      rotl(unsigned char v, int shift);
 
-uint8_t  rotr(uint8_t  v, int shift);
-uint16_t rotr(uint16_t v, int shift);
-uint32_t rotr(uint32_t v, int shift);
-uint64_t rotr(uint64_t v, int shift);
+unsigned long long rotr(unsigned long long v, int shift);
+unsigned long      rotr(unsigned long v, int shift);
+unsigned           rotr(unsigned v, int shift);
+unsigned short     rotr(unsigned short v, int shift);
+unsigned char      rotr(unsigned char v, int shift);
 </code-block>
 
 <p>Функции выполняют циклический побитовый сдвиг (rotation) влево

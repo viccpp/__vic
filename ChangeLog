@@ -5,7 +5,9 @@ Legend:
     ! Important
 
 2019-05-22  __vic
-    + bits.h: ceil2(), floor2(), ispow2(), msb_position()
+    * bits.h:
+        + ceil2(), floor2(), ispow2(), msb_position()
+        * rotl()/rotr() use language types instead of cstdint typedefs
 
 2019-05-21  __vic
     * Renamed __VIC_NO_GCC_BUITLINS -> __VIC_NO_BUITLINS

@@ -214,15 +214,26 @@ inline UInt rotr_uint(UInt v, int shift)
     return (v >> shift) | (v << ((w - shift) & (w - 1)));
 }
 //----------------------------------------------------------------------------
-inline uint8_t  rotl(uint8_t  v, int sh) { return rotl_uint(v, sh); }
-inline uint16_t rotl(uint16_t v, int sh) { return rotl_uint(v, sh); }
-inline uint32_t rotl(uint32_t v, int sh) { return rotl_uint(v, sh); }
-inline uint64_t rotl(uint64_t v, int sh) { return rotl_uint(v, sh); }
+inline unsigned rotl(unsigned v, int sh) { return rotl_uint(v, sh); }
+inline unsigned long rotl(unsigned long v, int sh) { return rotl_uint(v, sh); }
+inline unsigned short rotl(unsigned short v, int sh) { return rotl_uint(v, sh); }
+inline unsigned char rotl(unsigned char v, int sh) { return rotl_uint(v, sh); }
 //----------------------------------------------------------------------------
-inline uint8_t  rotr(uint8_t  v, int sh) { return rotr_uint(v, sh); }
-inline uint16_t rotr(uint16_t v, int sh) { return rotr_uint(v, sh); }
-inline uint32_t rotr(uint32_t v, int sh) { return rotr_uint(v, sh); }
-inline uint64_t rotr(uint64_t v, int sh) { return rotr_uint(v, sh); }
+inline unsigned rotr(unsigned v, int sh) { return rotr_uint(v, sh); }
+inline unsigned long rotr(unsigned long v, int sh) { return rotr_uint(v, sh); }
+inline unsigned short rotr(unsigned short v, int sh) { return rotr_uint(v, sh); }
+inline unsigned char rotr(unsigned char v, int sh) { return rotr_uint(v, sh); }
+//----------------------------------------------------------------------------
+#ifdef __VIC_LONGLONG
+inline unsigned __VIC_LONGLONG rotl(unsigned __VIC_LONGLONG v, int sh)
+{
+    return rotl_uint(v, sh);
+}
+inline unsigned __VIC_LONGLONG rotr(unsigned __VIC_LONGLONG v, int sh)
+{
+    return rotr_uint(v, sh);
+}
+#endif
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
