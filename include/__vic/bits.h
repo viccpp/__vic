@@ -138,6 +138,66 @@ inline unsigned popcount(unsigned char v)
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
+// Returns position of the most significant 1-bit
+// Precondition: v != 0
+template<class UInt>
+inline unsigned msb_position_uint(UInt v)
+{
+    __VIC_ASSERT_UINT(UInt);
+    unsigned c = 0;
+    while(v >>= 1) c++;
+    return c;
+}
+//----------------------------------------------------------------------------
+inline unsigned msb_position(unsigned v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return sizeof(v) * CHAR_BIT - __builtin_clz(v) - 1U;
+#else
+    return msb_position_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+inline unsigned msb_position(unsigned long v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return sizeof(v) * CHAR_BIT - __builtin_clzl(v) - 1U;
+#else
+    return msb_position_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+#ifdef __VIC_LONGLONG
+inline unsigned msb_position(unsigned __VIC_LONGLONG v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return sizeof(v) * CHAR_BIT - __builtin_clzll(v) - 1U;
+#else
+    return msb_position_uint(v);
+#endif
+}
+#endif
+//----------------------------------------------------------------------------
+inline unsigned msb_position(unsigned short v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return msb_position(static_cast<unsigned>(v));
+#else
+    return msb_position_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+inline unsigned msb_position(unsigned char v)
+{
+#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+    return msb_position(static_cast<unsigned>(v));
+#else
+    return msb_position_uint(v);
+#endif
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
 template<class UInt>
 inline UInt rotl_uint(UInt v, int shift)
 {
@@ -163,6 +223,33 @@ inline uint8_t  rotr(uint8_t  v, int sh) { return rotr_uint(v, sh); }
 inline uint16_t rotr(uint16_t v, int sh) { return rotr_uint(v, sh); }
 inline uint32_t rotr(uint32_t v, int sh) { return rotr_uint(v, sh); }
 inline uint64_t rotr(uint64_t v, int sh) { return rotr_uint(v, sh); }
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+template<class UInt>
+inline bool ispow2(UInt n)
+{
+    __VIC_ASSERT_UINT(UInt);
+    return popcount(n) == 1;
+}
+//----------------------------------------------------------------------------
+// Returns the number x: ispow2(x) && x >= n
+template<class UInt>
+inline UInt ceil2(UInt n)
+{
+    __VIC_ASSERT_UINT(UInt);
+    if(n == 0 || n == 1) return 1;
+    return UInt(1) << (msb_position(UInt(n - 1)) + 1);
+}
+//----------------------------------------------------------------------------
+// If n != 0 returns the number x: ispow2(x) && x <= n
+// Otherwise 0 is returned
+template<class UInt>
+inline UInt floor2(UInt n)
+{
+    __VIC_ASSERT_UINT(UInt);
+    return n ? UInt(1) << msb_position(n) : 0;
+}
 //----------------------------------------------------------------------------
 
 } // namespace

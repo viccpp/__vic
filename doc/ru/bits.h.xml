@@ -75,6 +75,74 @@ unsigned popcount(unsigned char v);
 </chapter>
 
 
+<chapter xml:id="msb_position">
+<title><tt>msb_position()</tt></title>
+
+<code-block lang="C++">
+unsigned msb_position(unsigned v)
+unsigned msb_position(unsigned long v);
+unsigned msb_position(unsigned long long v);
+unsigned msb_position(unsigned short v);
+unsigned msb_position(unsigned char v);
+</code-block>
+
+<precondition><tt>v != 0</tt></precondition>
+
+<p>Возвращает позицию самого значимого единичного бита. Результат неопределён,
+если <tt>v == 0</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="ispow2">
+<title><tt>ispow2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+bool ispow2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> - беззнаковый целый тип</precondition>
+
+<p>Возвращает <tt>true</tt>, если <tt>n</tt> является целой степенью 2.</p>
+
+</chapter>
+
+
+<chapter xml:id="ceil2">
+<title><tt>ceil2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+UInt ceil2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> - беззнаковый целый тип</precondition>
+
+<p>Возвращает минимальное значение <tt>m</tt>, такое что <tt>ispow(m) &amp;&amp;
+m >= n</tt>. Если <tt>m</tt> непредставимо типом <tt>UInt</tt>, результат
+неопределён.</p>
+
+</chapter>
+
+
+<chapter xml:id="floor2">
+<title><tt>floor2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+UInt floor2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> - беззнаковый целый тип</precondition>
+
+<p>Если <tt>n != 0</tt>, возвращает максимальное значение <tt>m</tt>, такое что
+<tt>ispow2(m) &amp;&amp; m &lt;= n</tt>. В противном случае возвращается
+<tt>0</tt>.</p>
+
+</chapter>
+
+
 <chapter xml:id="rotl">
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 
