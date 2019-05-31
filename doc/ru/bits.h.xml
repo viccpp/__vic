@@ -143,6 +143,38 @@ UInt floor2(UInt n);
 </chapter>
 
 
+<chapter xml:id="ceil_log2">
+<title><tt>ceil_log2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+unsigned ceil_log2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> - беззнаковый целый тип</precondition>
+
+<p>Возвращает <tt>ceil(log2(n))</tt>, если <tt>n != 0</tt>, или 0 в
+противном случае.</p>
+
+</chapter>
+
+
+<chapter xml:id="floor_log2">
+<title><tt>floor_log2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+unsigned floor_log2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> - беззнаковый целый тип</precondition>
+
+<p>Возвращает <tt>floor(log2(n))</tt>, если <tt>n != 0</tt>, или 0 в
+противном случае.</p>
+
+</chapter>
+
+
 <chapter xml:id="rotl">
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 

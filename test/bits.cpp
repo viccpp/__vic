@@ -102,6 +102,42 @@ void ispow2_tests()
     assert(__vic::ispow2(static_cast<unsigned char>(2)));
 }
 //----------------------------------------------------------------------------
+void ceil_log2_tests()
+{
+    assert(__vic::ceil_log2(0U) == 0);
+    assert(__vic::ceil_log2(1U) == 0);
+    assert(__vic::ceil_log2(2U) == 1);
+    assert(__vic::ceil_log2(3U) == 2);
+    assert(__vic::ceil_log2(4U) == 2);
+    assert(__vic::ceil_log2(5U) == 3);
+    assert(__vic::ceil_log2(0x11U) == 5);
+
+    assert(__vic::ceil_log2(static_cast<unsigned long>(0x11)) == 5);
+#ifdef __VIC_LONGLONG
+    assert(__vic::ceil_log2(static_cast<unsigned __VIC_LONGLONG>(0x11)) == 5);
+#endif
+    assert(__vic::ceil_log2(static_cast<unsigned short>(0x11)) == 5);
+    assert(__vic::ceil_log2(static_cast<unsigned char>(0x11)) == 5);
+}
+//----------------------------------------------------------------------------
+void floor_log2_tests()
+{
+    assert(__vic::floor_log2(0U) == 0);
+    assert(__vic::floor_log2(1U) == 0);
+    assert(__vic::floor_log2(2U) == 1);
+    assert(__vic::floor_log2(3U) == 1);
+    assert(__vic::floor_log2(4U) == 2);
+    assert(__vic::floor_log2(5U) == 2);
+    assert(__vic::floor_log2(0xFFU) == 7);
+
+    assert(__vic::floor_log2(static_cast<unsigned long>(0xFF)) == 7);
+#ifdef __VIC_LONGLONG
+    assert(__vic::floor_log2(static_cast<unsigned __VIC_LONGLONG>(0xFF)) == 7);
+#endif
+    assert(__vic::floor_log2(static_cast<unsigned short>(0xFF)) == 7);
+    assert(__vic::floor_log2(static_cast<unsigned char>(0xFF)) == 7);
+}
+//----------------------------------------------------------------------------
 void ceil2_tests()
 {
     assert(__vic::ceil2(0U) == 1);
@@ -149,6 +185,8 @@ void run()
     popcount_tests();
     msb_position_tests();
     ispow2_tests();
+    ceil_log2_tests();
+    floor_log2_tests();
     ceil2_tests();
     floor2_tests();
 }

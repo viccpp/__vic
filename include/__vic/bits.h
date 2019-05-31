@@ -244,6 +244,20 @@ inline bool ispow2(UInt n)
     return popcount(n) == 1;
 }
 //----------------------------------------------------------------------------
+template<class UInt>
+inline unsigned ceil_log2(UInt n)
+{
+    __VIC_ASSERT_UINT(UInt);
+    return n >> 1 ? msb_position(UInt(n - 1)) + 1 : 0;
+}
+//----------------------------------------------------------------------------
+template<class UInt>
+inline unsigned floor_log2(UInt n)
+{
+    __VIC_ASSERT_UINT(UInt);
+    return n ? msb_position(n) : 0;
+}
+//----------------------------------------------------------------------------
 // Returns the number x: ispow2(x) && x >= n
 template<class UInt>
 inline UInt ceil2(UInt n)

@@ -119,7 +119,7 @@ UInt ceil2(UInt n);
 
 <precondition><tt>UInt</tt> is an unsigned integer type</precondition>
 
-<p>Returns the minimal value <tt>m</tt> such that <tt>ispow(m) &amp;&amp;
+<p>Returns the minimal value <tt>m</tt> such that <tt>ispow2(m) &amp;&amp;
 m >= n</tt>. If <tt>m</tt> is not representable as a value of type
 <tt>UInt</tt>, the result is an unspecified value.</p>
 
@@ -138,6 +138,36 @@ UInt floor2(UInt n);
 
 <p>If <tt>n != 0</tt> returns the maximal value <tt>m</tt> such that
 <tt>ispow2(m) &amp;&amp; m &lt;= n</tt>. Otherwise <tt>0</tt> is returned.</p>
+
+</chapter>
+
+
+<chapter xml:id="ceil_log2">
+<title><tt>ceil_log2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+unsigned ceil_log2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+
+<p>Returns <tt>ceil(log2(n))</tt> if <tt>n != 0</tt> or 0 otherwise.</p>
+
+</chapter>
+
+
+<chapter xml:id="floor_log2">
+<title><tt>floor_log2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+unsigned floor_log2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+
+<p>Returns <tt>floor(log2(n))</tt> if <tt>n != 0</tt> or 0 otherwise.</p>
 
 </chapter>
 

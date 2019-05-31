@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2019-05-31  __vic
+    + bits.h: ceil_log2(), floor_log2()
+
 2019-05-22  __vic
     * bits.h:
         + ceil2(), floor2(), ispow2(), msb_position()
