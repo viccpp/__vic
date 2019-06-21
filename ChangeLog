@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2019-06-21  __vic
+    - "__VIC_NO_BUITLINS" was used instead of __VIC_NO_BUILTINS
+
 2019-05-31  __vic
     + bits.h: ceil_log2(), floor_log2()
 
