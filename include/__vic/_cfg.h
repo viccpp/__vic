@@ -278,6 +278,16 @@
 #   define __VIC_CONSTEXPR14 inline
 #endif
 
+#ifndef __has_cpp_attribute
+#   define __has_cpp_attribute(a) 0
+#endif
+
+#if __cpp_attributes && __has_cpp_attribute(nodiscard)
+#   define __VIC_NODISCARD [[nodiscard]]
+#else
+#   define __VIC_NODISCARD
+#endif
+
 #if __cpp_attributes
 #   define __VIC_NORETURN [[noreturn]]
 #else

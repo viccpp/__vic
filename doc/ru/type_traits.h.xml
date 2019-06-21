@@ -226,7 +226,7 @@ template<size_t Size>
 using make_index_sequence = index_sequence<0, 1, ..., Size-1>;
 ]]></code-block>
 
-<p>Реализация <tt>std::index_sequence</tt> из  C++14 для C++11.</p>
+<p>Реализация <tt>std::index_sequence</tt> из C++14 для C++11.</p>
 
 <note>В отличие от <tt>std::index_sequence</tt>, не является специализацией
 какого-то аналога <tt>std::integer_sequence</tt>.</note>

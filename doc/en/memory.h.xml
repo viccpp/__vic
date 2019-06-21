@@ -1,0 +1,28 @@
+<chapter xml:id="memory.h">
+<title><tt>__vic/memory.h</tt></title>
+
+<p>Memory-related utilities.</p>
+
+
+<chapter xml:id="load_unaligned">
+<title><tt>load_unaligned()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+T load_unaligned(const void *p);
+]]></code-block>
+
+<p>Load value from potentially unaligned address without causing bus error.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+const void *p = ...;
+// int data = *static_cast<const int *>(p); // potential bus error
+int data = __vic::load_unaligned<int>(p);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

@@ -12,10 +12,12 @@
     <!ENTITY bin_file.h SYSTEM "bin_file.h.xml">
     <!ENTITY bits.h SYSTEM "bits.h.xml">
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
+    <!ENTITY endian.h SYSTEM "endian.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY fs.h SYSTEM "fs.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
+    <!ENTITY memory.h SYSTEM "memory.h.xml">
     <!ENTITY mutex.h SYSTEM "mutex.h.xml">
     <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY packon.h SYSTEM "packon.h.xml">
@@ -133,10 +135,12 @@ TODO
 &bin_file.h;
 &bits.h;
 &date_time.h;
+&endian.h;
 &error.h;
 &fs.h;
 &iterator.h;
 &logger.h;
+&memory.h;
 &mutex.h;
 &object_pool.h;
 &packon.h;

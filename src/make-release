@@ -9,7 +9,7 @@ PKGNAME=__vic-$VERSION-$BRANCH-src
 MAKE=make
 
 set -e
-cd "$(dirname 0)/.."
+cd "`dirname $0`/.."
 COMMIT_ID="$VERSION-$BRANCH `git log -n1 --format="%cI %cn" $VERSION/$BRANCH --`"
 
 [ $TMPDIR ] && rm -rf $TMPDIR
