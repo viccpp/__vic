@@ -1,4 +1,4 @@
-// The pool controlling objects lifetime
+// A pool controlling objects lifetime
 // Objects are not required be CopyConstructable
 // Pool is organized as stack
 //

@@ -1,7 +1,7 @@
 // Some ISO C99/C++11 integer types + Generic integer types
 // This file introduces definitions to the global namespace!
 //
-// Platform: ISO C++98/11
+// Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2006
@@ -99,4 +99,4 @@ typedef __vic::uint_exactly_bytes<sizeof(void*)>::type uintptr_t;
 #undef __VIC_NEED_INTPTR_T
 #endif
 
-#endif // __VIC_STDINT_H
+#endif // header guard

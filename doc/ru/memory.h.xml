@@ -1,0 +1,29 @@
+<chapter xml:id="memory.h">
+<title><tt>__vic/memory.h</tt></title>
+
+<p>Утилиты для работы с памятью.</p>
+
+
+<chapter xml:id="load_unaligned">
+<title><tt>load_unaligned()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+T load_unaligned(const void *p);
+]]></code-block>
+
+<p>Загружает значение с потенциально невыровненного адреса не вызывая ошибку
+шины.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+const void *p = ...;
+// int data = *static_cast<const int *>(p); // потенциальная ошибка шины
+int data = __vic::load_unaligned<int>(p);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+</chapter>

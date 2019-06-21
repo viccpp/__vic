@@ -14,7 +14,6 @@
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-// Abstract base class
 class logger : private non_copyable
 {
 public:
@@ -61,6 +60,14 @@ public:
     output &get_output() { return *out; }
     const output &get_output() const { return *out; }
 
+    static __VIC_CONSTEXPR_VAR size_t min_buffer_size = 256;
+    void shrink_buffer(size_t limit)
+    {
+        // assert(cur_msg.empty());
+        if(cur_msg.capacity() > limit)
+            string_buffer(min_buffer_size).swap(cur_msg);
+    }
+
     void message(severity_t , const char * , size_t );
     void message(severity_t , const char * );
     void message(severity_t s, const std::string &msg)
@@ -98,7 +105,6 @@ private:
     output *out;
 
     // current record buffer
-    static __VIC_CONSTEXPR_VAR size_t lo_water_mark = 256, hi_water_mark = 4096;
     string_buffer cur_msg;
     severity_t cur_severity;
     size_t rec_objs_count;

@@ -59,24 +59,139 @@ constexpr int ord(char ch);
 </chapter>
 
 
+<chapter xml:id="popcount">
+<title><tt>popcount()</tt></title>
+
+<code-block lang="C++">
+unsigned popcount(unsigned v);
+unsigned popcount(unsigned long v);
+unsigned popcount(unsigned long long v);
+unsigned popcount(unsigned short v);
+unsigned popcount(unsigned char v);
+</code-block>
+
+<p>Returns the number of one bits in the given value.</p>
+
+</chapter>
+
+
+<chapter xml:id="msb_position">
+<title><tt>msb_position()</tt></title>
+
+<code-block lang="C++">
+unsigned msb_position(unsigned v)
+unsigned msb_position(unsigned long v);
+unsigned msb_position(unsigned long long v);
+unsigned msb_position(unsigned short v);
+unsigned msb_position(unsigned char v);
+</code-block>
+
+<precondition><tt>v != 0</tt></precondition>
+
+<p>Returns the position of the most significant 1-bit. The result is unspecified
+if <tt>v == 0</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="ispow2">
+<title><tt>ispow2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+bool ispow2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+
+<p>Returns <tt>true</tt> if <tt>n</tt> is an integral power of 2.</p>
+
+</chapter>
+
+
+<chapter xml:id="ceil2">
+<title><tt>ceil2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+UInt ceil2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+
+<p>Returns the minimal value <tt>m</tt> such that <tt>ispow2(m) &amp;&amp;
+m >= n</tt>. If <tt>m</tt> is not representable as a value of type
+<tt>UInt</tt>, the result is an unspecified value.</p>
+
+</chapter>
+
+
+<chapter xml:id="floor2">
+<title><tt>floor2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+UInt floor2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+
+<p>If <tt>n != 0</tt> returns the maximal value <tt>m</tt> such that
+<tt>ispow2(m) &amp;&amp; m &lt;= n</tt>. Otherwise <tt>0</tt> is returned.</p>
+
+</chapter>
+
+
+<chapter xml:id="ceil_log2">
+<title><tt>ceil_log2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+unsigned ceil_log2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+
+<p>Returns <tt>ceil(log2(n))</tt> if <tt>n != 0</tt> or 0 otherwise.</p>
+
+</chapter>
+
+
+<chapter xml:id="floor_log2">
+<title><tt>floor_log2()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class UInt>
+unsigned floor_log2(UInt n);
+]]></code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+
+<p>Returns <tt>floor(log2(n))</tt> if <tt>n != 0</tt> or 0 otherwise.</p>
+
+</chapter>
+
+
 <chapter xml:id="rotl">
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 
 <code-block lang="C++">
-uint8_t  rotl(uint8_t  v, int shift);
-uint16_t rotl(uint16_t v, int shift);
-uint32_t rotl(uint32_t v, int shift);
-uint64_t rotl(uint64_t v, int shift);
+unsigned long long rotl(unsigned long long v, int shift);
+unsigned long      rotl(unsigned long v, int shift);
+unsigned           rotl(unsigned v, int shift);
+unsigned short     rotl(unsigned short v, int shift);
+unsigned char      rotl(unsigned char v, int shift);
 
-uint8_t  rotr(uint8_t  v, int shift);
-uint16_t rotr(uint16_t v, int shift);
-uint32_t rotr(uint32_t v, int shift);
-uint64_t rotr(uint64_t v, int shift);
+unsigned long long rotr(unsigned long long v, int shift);
+unsigned long      rotr(unsigned long v, int shift);
+unsigned           rotr(unsigned v, int shift);
+unsigned short     rotr(unsigned short v, int shift);
+unsigned char      rotr(unsigned char v, int shift);
 </code-block>
 
 <p>The functions perform circular left (<tt>rotl</tt>) or right
 (<tt>rotr</tt>) bitwise shift (rotation).</p>
-<precondition>shift >= 0</precondition>
+<precondition><tt>0 &lt;= shift &amp;&amp; shift &lt; sizeof(v)*CHAR_BIT</tt></precondition>
 
 </chapter>
 

@@ -5,7 +5,7 @@
 
 
 <chapter xml:id="trim">
-<title><tt>trim</tt> functions</title>
+<title>Набор функций <tt>trim</tt></title>
 
 <code-block lang="C++"><![CDATA[
 char *trim(char *str);
