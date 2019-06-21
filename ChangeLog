@@ -4,11 +4,39 @@ Legend:
     * Changes
     ! Important
 
+2019-05-31  __vic
+    + bits.h: ceil_log2(), floor_log2()
+
+2019-05-22  __vic
+    * bits.h:
+        + ceil2(), floor2(), ispow2(), msb_position()
+        * rotl()/rotr() use language types instead of cstdint typedefs
+
+2019-05-21  __vic
+    * Renamed __VIC_NO_GCC_BUITLINS -> __VIC_NO_BUITLINS
+    + bits.h: popcount()
+
 2019-04-18  __vic
     + posix/pidfile.h:
         + posix::pidfile
     + posix/daemon_control.h:
         + posix::daemon_control
+
+2019-04-01  __vic
+    * logger:
+        + shrink_buffer()
+        ! No autoshrink
+
+2019-03-25  __vic
+    - bits.h: UB on rot{l|r}(..., 0)
+
+2019-03-13  __vic
+    + memory.h:
+        + load_unaligned()
+
+2019-03-12  __vic
+    + [[nodiscard]] support
+    + endian.h: endian::to/from_big/little()
 
 2019-02-18  __vic
     * posix/sigset.h: posix::sigset:
@@ -18,10 +46,18 @@ Legend:
         + posix::this_thread::sigwait_at_most()
         + posix::this_thread::sigwaitinfo_at_most()
 
-2019-02-05
+2019-02-13  __vic
+    + endian.h:
+        + endian
+        + swab16(), swab32(), swab64()
+
+2019-02-08  __vic
+    + tchar.h: tchar::empty(), tchar::equal()
+
+2019-02-05  __vic
     + doc: russian translation
 
-2019-01-31
+2019-01-31  __vic
     * object_pool: renamed push() -> push_allocated()
 
 2018-12-17  __vic
@@ -457,7 +493,7 @@ VERSION 0.6
 
 VERSION 0.5.1
 
-2010-09-08
+2010-09-08  __vic
     * The last released version before rework
 
 2007-08-15  __vic

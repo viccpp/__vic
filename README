@@ -5,7 +5,7 @@ __vic's C++ library
 OVERVIEW
 
 __vic library is a collection of useful lightweight C++ utilities that I use
-in my day-to-day activity. Most parts of the library have been written using
+in my everyday activity. Most parts of the library have been written using
 standard C++. Various extensions are used for optimization but for all of them
 implementation with standard facilities is supplied.
 

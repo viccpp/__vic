@@ -42,6 +42,9 @@ public:
     output &get_output();
     const output &get_output() const;
 
+    static constexpr size_t min_buffer_size = ...;
+    void shrink_buffer(size_t limit);
+
     void message(severity_t severity, const char *msg, size_t msg_len);
     void message(severity_t severity, const char *msg);
     void message(severity_t severity, const std::string &msg);
@@ -250,6 +253,18 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 <prototype>output &amp;get_output()</prototype>
 <prototype>const output &amp;get_output() const</prototype>
 <p>Возвращает ссылку на текущий вывод.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static constexpr size_t min_buffer_size</prototype>
+<p>Минимальный размер внутреннего буфера в байтах.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void shrink_buffer(size_t limit)</prototype>
+<p>Устанавливает размер внутреннего буфера в <tt>min_buffer_size</tt>, если он
+превосходит <tt>limit</tt> байтов. Позволяет предотвратить бесконрольное
+разрастание используемой памяти при выводе записей большого размера.</p>
 </synopsis>
 
 <synopsis>
