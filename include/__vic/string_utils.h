@@ -57,10 +57,8 @@ inline char *sift_if(char *st, Pred pred)
     while(*in && !pred(*in)) in++;
     if(!*in) return st; // no trash chars
     char *out = in;
-    do {
-        in++;
-        if(!pred(*in)) *out++ = *in;
-    } while(*in);
+    while(char ch = *++in)
+        if(!pred(ch)) *out++ = ch;
     *out = '\0';
     return st;
 }
@@ -72,10 +70,8 @@ std::string &sift_if(std::string &st, Pred pred)
     while(in != st.end() && !pred(*in)) ++in;
     if(in == st.end()) return st; // no trash chars
     std::string::iterator out = in;
-    do {
-        ++in;
+    while(++in != st.end())
         if(!pred(*in)) *out++ = *in;
-    } while(in != st.end());
     st.erase(out, st.end());
     return st;
 }
