@@ -8,26 +8,15 @@
 
 namespace __vic { namespace posix {
 
-namespace {
-//----------------------------------------------------------------------------
-DIR *open_dir(const char *path)
-{
-    DIR *dir = ::opendir(path);
-    if(!dir) throw_errno(__vic::msg(64) <<
-        "Cannot open directory \"" << path << '"');
-    return dir;
-}
 //----------------------------------------------------------------------------
 // True for "." and ".." entries
-inline bool is_special(const char *f)
+inline bool dir_entries::is_special(const char *f)
 {
     return *f == '.' && (f[1] == '\0' || f[1] == '.' && f[2] == '\0');
 }
 //----------------------------------------------------------------------------
-}
-//----------------------------------------------------------------------------
 dir_entries::dir_entries(const char *path)
-    : dir(open_dir(path))
+    : dir(::opendir(path))
 {
 }
 //----------------------------------------------------------------------------
@@ -45,10 +34,13 @@ dir_entries &dir_entries::operator=(dir_entries &&o) noexcept
 }
 #endif
 //----------------------------------------------------------------------------
-void dir_entries::reopen(const char *path)
+bool dir_entries::reopen(const char *path)
 {
     if(is_open()) close();
-    dir = open_dir(path);
+    DIR *d = ::opendir(path);
+    if(!d) return false;
+    dir = d;
+    return true;
 }
 //----------------------------------------------------------------------------
 void dir_entries::close()

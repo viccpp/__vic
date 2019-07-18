@@ -17,7 +17,7 @@ public:
     dir_entries &operator=(dir_entries &&o) noexcept;
     // END C++11 only
 
-    void reopen(const char *dir);
+    bool reopen(const char *dir);
     void close();
     bool is_open() const;
 
@@ -43,8 +43,9 @@ set.</p>
 
 <synopsis>
 <prototype>explicit dir_entries(const char *dir)</prototype>
-<p>Opens the directory <tt>dir</tt> for listing. Throws on errors.</p>
-<postcondition><tt>is_open() == true</tt></postcondition>
+<p>Tries to open <tt>dir</tt> directory for listing. The result should be
+checked using subsequent <tt>is_open()</tt> call!. On error <tt>errno</tt> is
+set appropriately.</p>
 </synopsis>
 
 <synopsis>
@@ -59,9 +60,9 @@ set.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void reopen(const char *dir)</prototype>
-<p>Initializes new listing. Calls <tt>close()</tt> before as needed.</p>
-<postcondition><tt>is_open() == true</tt></postcondition>
+<prototype>bool reopen(const char *dir)</prototype>
+<p>Initializes new listing. Calls <tt>close()</tt> before as needed. Returns
+<tt>true</tt> on success. On error <tt>errno</tt> is set appropriately.</p>
 </synopsis>
 
 <synopsis>
@@ -105,6 +106,8 @@ to the <tt>stat()</tt> call!</p>
 <code-block lang="C++"><![CDATA[
 // Prints the listing of the current directory
 __vic::posix::dir_entries list(".");
+if(!list.is_open())
+    throw __vic::libc_error("Can't open directory for listing");
 while(const char *entry = list.next())
     std::cout << entry << '\n';
 ]]></code-block>

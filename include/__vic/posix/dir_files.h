@@ -31,7 +31,7 @@ public:
     dir_files &operator=(dir_files && ) noexcept;
 #endif
 
-    void reopen(const char * , const char * = nullptr);
+    bool reopen(const char * , const char * = nullptr);
     void close() { de.close(); }
     bool is_open() const { return de.is_open(); }
 

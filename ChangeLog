@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2019-07-18  __vic
+    ! posix::dir_entries, posix::dir_files don't throw on open any more.
+      Explicit is_open() check is required now!
+
 2019-05-31  __vic
     + bits.h: ceil_log2(), floor_log2()
 

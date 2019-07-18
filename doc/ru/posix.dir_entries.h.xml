@@ -17,7 +17,7 @@ public:
     dir_entries &operator=(dir_entries &&o) noexcept;
     // END C++11 only
 
-    void reopen(const char *dir);
+    bool reopen(const char *dir);
     void close();
     bool is_open() const;
 
@@ -43,9 +43,9 @@ public:
 
 <synopsis>
 <prototype>explicit dir_entries(const char *dir)</prototype>
-<p>Открывает каталог <tt>dir</tt> для просмотра. Бросает исключения при
-ошибках.</p>
-<postcondition><tt>is_open() == true</tt></postcondition>
+<p>Пытается открыть каталог <tt>dir</tt> для просмотра. Необходимо проверить
+результат открытия последующим вызовом <tt>is_open()</tt>! В случае неудачи,
+ошибка сохраняется в <tt>errno</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -60,10 +60,10 @@ public:
 </synopsis>
 
 <synopsis>
-<prototype>void reopen(const char *dir)</prototype>
+<prototype>bool reopen(const char *dir)</prototype>
 <p>Инициализирует новый листинг. Предварительно вызывает <tt>close()</tt>,
-если необходимо.</p>
-<postcondition><tt>is_open() == true</tt></postcondition>
+если необходимо. Возвращает <tt>true</tt> в случае успеха. В случае неудачи,
+ошибка сохраняется в <tt>errno</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -107,6 +107,8 @@ public:
 <code-block lang="C++"><![CDATA[
 // Выводит содержимое текущего каталога
 __vic::posix::dir_entries list(".");
+if(!list.is_open())
+    throw __vic::libc_error("Can't open directory for listing");
 while(const char *entry = list.next())
     std::cout << entry << '\n';
 ]]></code-block>

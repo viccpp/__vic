@@ -24,6 +24,7 @@ class dir_entries : private non_copyable
 {
     DIR *dir;
     dirent entry;
+    static bool is_special(const char * );
 public:
     dir_entries() : dir(nullptr) {}
     explicit dir_entries(const char * );
@@ -35,7 +36,7 @@ public:
     dir_entries &operator=(dir_entries && ) noexcept;
 #endif
 
-    void reopen(const char * );
+    bool reopen(const char * );
     void close();
     bool is_open() const { return dir; }
 

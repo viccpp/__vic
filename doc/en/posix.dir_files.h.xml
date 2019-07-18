@@ -17,7 +17,7 @@ public:
     dir_files &operator=(dir_files &&o);
     // END C++11 only
 
-    void reopen(const char *dir, const char *pattern = nullptr);
+    bool reopen(const char *dir, const char *pattern = nullptr);
     void close();
     bool is_open() const;
 
@@ -34,6 +34,8 @@ mask using <tt>pattern</tt> parameter.</p>
 <code-block lang="C++"><![CDATA[
 // Prints the listing of the cpp-files in the current directory
 __vic::posix::dir_files files(".", "*.cpp");
+if(!files.is_open())
+    throw __vic::libc_error("Can't open directory for listing");
 while(const char *file = files.next())
     std::cout << file << '\n';
 ]]></code-block>

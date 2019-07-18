@@ -46,11 +46,12 @@ dir_files &dir_files::operator=(dir_files &&o) noexcept
 //----------------------------------------------------------------------------
 #endif
 //----------------------------------------------------------------------------
-void dir_files::reopen(const char *path, const char *patt)
+bool dir_files::reopen(const char *path, const char *patt)
 {
-    de.reopen(path);
+    if(!de.reopen(path)) return false;
     dir = path;
     if(patt) pattern = patt; else pattern.clear();
+    return true;
 }
 //----------------------------------------------------------------------------
 const char *dir_files::next()

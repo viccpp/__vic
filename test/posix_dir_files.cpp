@@ -7,6 +7,7 @@ namespace tests {
 
 void print(__vic::posix::dir_files &files)
 {
+    assert(files.is_open());
     while(const char *f = files.next())
         std::cout << f << '\n';
 }
