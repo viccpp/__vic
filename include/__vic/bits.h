@@ -11,7 +11,7 @@
 #include<__vic/defs.h>
 #include<__vic/stdint.h>
 #include<climits>
-#if defined(_MSC_VER) && !defined(__VIC_NO_BUITLINS)
+#if defined(_MSC_VER) && !defined(__VIC_NO_BUILTINS)
 #include<intrin.h>
 #endif
 
@@ -87,9 +87,9 @@ __VIC_CONSTEXPR14 unsigned popcount_uint(UInt v)
 //----------------------------------------------------------------------------
 inline unsigned popcount(unsigned v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcount(v);
-#elif defined(_MSC_VER) && !defined(__VIC_NO_BUITLINS)
+#elif defined(_MSC_VER) && !defined(__VIC_NO_BUILTINS)
     return __popcnt(v);
 #else
     return popcount_uint(v);
@@ -98,7 +98,7 @@ inline unsigned popcount(unsigned v)
 //----------------------------------------------------------------------------
 inline unsigned popcount(unsigned long v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcountl(v);
 #else
     return popcount_uint(v);
@@ -108,9 +108,9 @@ inline unsigned popcount(unsigned long v)
 #ifdef __VIC_LONGLONG
 inline unsigned popcount(unsigned __VIC_LONGLONG v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcountll(v);
-#elif defined(_MSC_VER) && !defined(__VIC_NO_BUITLINS)
+#elif defined(_MSC_VER) && !defined(__VIC_NO_BUILTINS)
     return static_cast<unsigned>(__popcnt64(v));
 #else
     return popcount_uint(v);
@@ -120,7 +120,7 @@ inline unsigned popcount(unsigned __VIC_LONGLONG v)
 //----------------------------------------------------------------------------
 inline unsigned popcount(unsigned short v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcount(v);
 #else
     return popcount_uint(v);
@@ -129,7 +129,7 @@ inline unsigned popcount(unsigned short v)
 //----------------------------------------------------------------------------
 inline unsigned popcount(unsigned char v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcount(v);
 #else
     return popcount_uint(v);
@@ -151,7 +151,7 @@ inline unsigned msb_position_uint(UInt v)
 //----------------------------------------------------------------------------
 inline unsigned msb_position(unsigned v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return sizeof(v) * CHAR_BIT - __builtin_clz(v) - 1U;
 #else
     return msb_position_uint(v);
@@ -160,7 +160,7 @@ inline unsigned msb_position(unsigned v)
 //----------------------------------------------------------------------------
 inline unsigned msb_position(unsigned long v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return sizeof(v) * CHAR_BIT - __builtin_clzl(v) - 1U;
 #else
     return msb_position_uint(v);
@@ -170,7 +170,7 @@ inline unsigned msb_position(unsigned long v)
 #ifdef __VIC_LONGLONG
 inline unsigned msb_position(unsigned __VIC_LONGLONG v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return sizeof(v) * CHAR_BIT - __builtin_clzll(v) - 1U;
 #else
     return msb_position_uint(v);
@@ -180,7 +180,7 @@ inline unsigned msb_position(unsigned __VIC_LONGLONG v)
 //----------------------------------------------------------------------------
 inline unsigned msb_position(unsigned short v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return msb_position(static_cast<unsigned>(v));
 #else
     return msb_position_uint(v);
@@ -189,7 +189,7 @@ inline unsigned msb_position(unsigned short v)
 //----------------------------------------------------------------------------
 inline unsigned msb_position(unsigned char v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return msb_position(static_cast<unsigned>(v));
 #else
     return msb_position_uint(v);
@@ -276,6 +276,8 @@ inline UInt floor2(UInt n)
     return n ? UInt(1) << msb_position(n) : 0;
 }
 //----------------------------------------------------------------------------
+
+#undef __VIC_ASSERT_UINT
 
 } // namespace
 
