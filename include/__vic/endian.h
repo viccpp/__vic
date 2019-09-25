@@ -16,7 +16,7 @@ namespace __vic {
 //----------------------------------------------------------------------------
 __VIC_NODISCARD __VIC_CONSTEXPR_FUNC uint16_t swab16(uint16_t v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS) && \
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS) && \
         (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 8)
     return __builtin_bswap16(v);
 #else
@@ -26,7 +26,7 @@ __VIC_NODISCARD __VIC_CONSTEXPR_FUNC uint16_t swab16(uint16_t v)
 //----------------------------------------------------------------------------
 __VIC_NODISCARD __VIC_CONSTEXPR_FUNC uint32_t swab32(uint32_t v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_bswap32(v);
 #else
     return (v >> 24) | ((v & uint32_t(0x00FF0000)) >> 8) |
@@ -36,7 +36,7 @@ __VIC_NODISCARD __VIC_CONSTEXPR_FUNC uint32_t swab32(uint32_t v)
 //----------------------------------------------------------------------------
 __VIC_NODISCARD __VIC_CONSTEXPR_FUNC uint64_t swab64(uint64_t v)
 {
-#if defined(__GNUC__) && !defined(__VIC_NO_BUITLINS)
+#if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_bswap64(v);
 #else
     return (v >> 56) |

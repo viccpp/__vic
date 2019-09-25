@@ -26,7 +26,8 @@ inline T load_unaligned(const void *p)
 #else // unaligned access is OK
     return *static_cast<const T *>(p);
 #endif
-}//----------------------------------------------------------------------------
+}
+//----------------------------------------------------------------------------
 
 } // namespace
 

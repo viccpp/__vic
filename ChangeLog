@@ -4,6 +4,18 @@ Legend:
     * Changes
     ! Important
 
+2019-07-02  __vic
+    - string_utils.h: sift_if(): redundant past the end predicate check
+
+2019-06-26  __vic
+    + Workaround for Clang 3.9+ issue - __has_cpp_attribute(nodiscard) returns
+      1 even when used mode is C++14 or less
+
+2019-06-21  __vic
+    - "__VIC_NO_BUITLINS" was used instead of __VIC_NO_BUILTINS
+    + test/bits_no_biltins.cpp
+    + test/endian_no_builtins.cpp
+
 2019-05-31  __vic
     + bits.h: ceil_log2(), floor_log2()
 
