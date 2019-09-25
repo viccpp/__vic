@@ -282,7 +282,9 @@
 #   define __has_cpp_attribute(a) 0
 #endif
 
-#if __cpp_attributes && __has_cpp_attribute(nodiscard)
+#if __cpp_attributes && __has_cpp_attribute(nodiscard) && \
+    !defined(__clang__)
+// Clang 3.9+ issue - https://bugs.llvm.org/show_bug.cgi?id=33518
 #   define __VIC_NODISCARD [[nodiscard]]
 #else
 #   define __VIC_NODISCARD
