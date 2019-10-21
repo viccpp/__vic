@@ -134,13 +134,16 @@ template<> struct decimal_parser<signed char> : impl::signed_decimal_parser<sign
 template<> struct decimal_parser<short> : impl::signed_decimal_parser<short> {};
 template<> struct decimal_parser<int> : impl::signed_decimal_parser<int> {};
 template<> struct decimal_parser<long> : impl::signed_decimal_parser<long> {};
-template<> struct decimal_parser<__VIC_LONGLONG> : impl::signed_decimal_parser<__VIC_LONGLONG> {};
 
 template<> struct decimal_parser<unsigned char> : impl::unsigned_decimal_parser<unsigned char> {};
 template<> struct decimal_parser<unsigned short> : impl::unsigned_decimal_parser<unsigned short> {};
 template<> struct decimal_parser<unsigned> : impl::unsigned_decimal_parser<unsigned> {};
 template<> struct decimal_parser<unsigned long> : impl::unsigned_decimal_parser<unsigned long> {};
+
+#ifdef __VIC_LONGLONG
+template<> struct decimal_parser<__VIC_LONGLONG> : impl::signed_decimal_parser<__VIC_LONGLONG> {};
 template<> struct decimal_parser<unsigned __VIC_LONGLONG> : impl::unsigned_decimal_parser<unsigned __VIC_LONGLONG> {};
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------

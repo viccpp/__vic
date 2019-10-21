@@ -37,9 +37,13 @@ void integer_tests()
 
     parse_and_check<int>("-", number_parse_status::invalid_number);
 
+#ifdef __VIC_LONGLONG
+{
     __VIC_LONGLONG n;
     decimal_to_number(std::string("10000"), n);
     assert(n == 10000);
+}
+#endif
 
     int min_int = std::numeric_limits<int>::min();
     char buf[64];

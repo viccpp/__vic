@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2019-10-21  __vic
+    + Support for compilers without any form of 64-bit integers (long long)
+
 2019-07-02  __vic
     - string_utils.h: sift_if(): redundant past the end predicate check
 
