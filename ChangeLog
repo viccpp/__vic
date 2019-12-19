@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2019-12-19  __vic
+    - str2num.h: signed_decimal_parser: out of buffer access if input string
+      is "+" or "-"
+
 2019-10-21  __vic
     + Support for compilers without any form of 64-bit integers (long long)
 

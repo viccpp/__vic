@@ -50,8 +50,9 @@ public:
 #endif
         UInt res = 0;
         do {
-            if(!ascii::isdigit(*begin)) return st::invalid_number;
-            UInt dig = *begin++ - '0';
+            char c = *begin++;
+            if(!ascii::isdigit(c)) return st::invalid_number;
+            UInt dig = c - '0';
             // check if the next increment will cause overflow
             if(res > decs || (res == decs && dig > ones))
                 return st::unrepresentable;
@@ -93,12 +94,13 @@ public:
                 negative = true;
                 // no break, fall through
             case '+':
-                ++begin;
+                if(++begin == end) return st::invalid_number;
         }
         Int res = 0;
         do {
-            if(!ascii::isdigit(*begin)) return st::invalid_number;
-            Int dig = *begin++ - '0';
+            char c = *begin++;
+            if(!ascii::isdigit(c)) return st::invalid_number;
+            Int dig = c - '0';
             // check if the next increment will cause overflow
             if(res > decs) return st::unrepresentable;
             else if(res == decs && dig > ones)
