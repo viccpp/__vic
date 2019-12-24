@@ -144,7 +144,7 @@ inline logger::record logger::fatal() { return record(*this, severity::fatal); }
 inline const char *to_string(logger::severity_t s)
 {
     extern const char * const logger_severity_strs[];
-    return logger_severity_strs[int(s)];
+    return logger_severity_strs[static_cast<int>(s)];
 }
 //----------------------------------------------------------------------------
 

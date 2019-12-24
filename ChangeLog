@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2019-12-24  __vic
+    * logger: severity strings moved to the own object file
+
 2019-12-19  __vic
     - str2num.h: signed_decimal_parser: out of buffer access if input string
       is "+" or "-"
