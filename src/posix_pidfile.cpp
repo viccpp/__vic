@@ -63,10 +63,11 @@ void write_pid(int fd)
 {
     std::string st;
     to_text_append(getpid(), st);
-    ftruncate(fd, 0); // !! may be not available on several UNICES
-    lseek(fd, 0, SEEK_SET);
+    // !! may be not available on several UNICES
+    if(ftruncate(fd, 0)) throw_errno("ftruncate: PID-file");
+    if(lseek(fd, 0, SEEK_SET) != 0) throw_errno("lseek: PID-file");
     posix::file::write_all(fd, st.data(), st.length());
-    fsync(fd);
+    if(fsync(fd)) throw_errno("fsync: PID-file");
 }
 //----------------------------------------------------------------------------
 } // namespace
