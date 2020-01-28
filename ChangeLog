@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2020-01-28  __vic
+    + throw_errno.h and throw_errno() are parts of the public API now
+
 2019-12-24  __vic
     * logger: severity strings moved to the own object file
 

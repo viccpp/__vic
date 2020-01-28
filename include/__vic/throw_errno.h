@@ -1,4 +1,4 @@
-// Internal implementation header
+// Throw exception with errno value
 //
 // Platform: ISO C++ 98/11
 // $Id$

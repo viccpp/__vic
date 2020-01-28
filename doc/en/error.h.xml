@@ -140,6 +140,9 @@ the message to the standard error output stream and terminates. Moreover,
 error code is now saved in the exception and cannot be rewritten by accident.
 </p>
 
+<note>Usually exceptions of this class shouldn't be thrown explicitly! Use
+<xref to="throw_errno"/> instead.</note>
+
 <section><title>Class members</title>
 
 <synopsis>

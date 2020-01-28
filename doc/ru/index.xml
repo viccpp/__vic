@@ -28,6 +28,7 @@
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
     <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
+    <!ENTITY throw_errno.h SYSTEM "throw_errno.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
     <!ENTITY type_traits.h SYSTEM "type_traits.h.xml">
     <!ENTITY unicode.h SYSTEM "unicode.h.xml">
@@ -141,6 +142,7 @@ TODO
 &string_ref.h;
 &string_utils.h;
 &tchar.h;
+&throw_errno.h;
 &to_text.h;
 &type_traits.h;
 &unicode.h;
