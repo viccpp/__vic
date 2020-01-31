@@ -3,6 +3,7 @@
 //
 
 #include<__vic/windows/error.h>
+#include<__vic/ascii.h>
 #include<windows.h>
 
 namespace __vic { namespace windows {
@@ -46,15 +47,26 @@ const char *error::what() const noexcept
                 // TODO: Use HeapFree() for Windows 10
                 ~LocalMemKeeper() { if(p) ::LocalFree(p); }
             } finalizer((HLOCAL) err_msg);
-            if(!err_msg) err_msg = "<FormatMessageA() failed>";
 
-            if(msg.empty()) msg = err_msg;
+            if(err_msg) // trim trailing whitespaces
+                while(res && ascii::isspace(err_msg[res-1])) res--;
             else
             {
-                size_t n = ::lstrlenA(msg) + ::lstrlenA(err_msg) + 3; // 3 is ": " + '\0'
+                static const char stub_msg[] = "<FormatMessageA() failed>";
+                err_msg = stub_msg;
+                res = sizeof(stub_msg) - 1;
+            }
+
+            if(msg.empty()) msg.assign(err_msg, res);
+            else
+            {
+                size_t msg_n = ::lstrlenA(msg);
                 readonly_cstring tmp;
-                ::wsprintfA(tmp.reserve(n), "%s: %s",
-                                static_cast<const char *>(msg), err_msg);
+                char *p = tmp.reserve(msg_n + res + 3); // 3 is ": " + '\0'
+                ::CopyMemory(p, msg, msg_n); p += msg_n;
+                *p++ = ':'; *p++ = ' ';
+                ::CopyMemory(p, err_msg, res); p += res;
+                *p = '\x0';
                 msg.swap(tmp);
             }
             formatted = true;

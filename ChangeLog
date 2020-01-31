@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2020-01-31  __vic
+    * windows::error::what() trims trailing whitespaces now
+
 2019-07-02  __vic
     - string_utils.h: sift_if(): redundant past the end predicate check
 
