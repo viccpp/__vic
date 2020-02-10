@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2020-02-10  __vic
+    * memory.h: load_unaligned(): fallback to std::memcpy() if no better
+      alternatives
+
 2020-01-28  __vic
     + throw_errno.h and throw_errno() are parts of the public API now
     ! defs.h: uninitialized/noinit removed
