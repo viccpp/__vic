@@ -329,8 +329,8 @@ functions like <tt>info()</tt> without parameters should be used instead.</p>
 
 <synopsis>
 <prototype>template&lt;class T> record record::operator&lt;&lt;(const T &amp;v)</prototype>
-<p>The set of inserters for various data types. Calls
-<tt>__vic::string_buffer::operator&lt;&lt;(v)</tt>.</p>
+<p>The set of inserters for various data types. Call <tt>sb &lt;&lt; v</tt>
+where type of <tt>sb</tt> is <tt>__vic::string_buffer</tt>.</p>
 </synopsis>
 
 </section>
