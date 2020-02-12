@@ -15,12 +15,12 @@ bool this_thread::sigwaitinfo_at_most(
 {
     int sig_no = ::sigtimedwait(&set, &si, &timeout);
     if(sig_no >= 0) return true;
-    switch(errno)
+    switch(int err = errno)
     {
         case EAGAIN: // timeout
         case EINTR: // interrupted by signal other than one of those in set
             return false;
-        default: throw_errno("sigtimedwait");
+        default: throw_errno("sigtimedwait", err);
     }
 }
 //----------------------------------------------------------------------------

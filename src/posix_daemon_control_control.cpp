@@ -32,11 +32,11 @@ pid_t read_pid(const char *pid_file_name)
 void send_signal(pid_t pid, int signo)
 {
     if(::kill(pid, signo))
-        switch(errno)
+        switch(int err = errno)
         {
             case EPERM: throw exception("Insufficient privileges");
             case ESRCH: throw exception("No running process found");
-            default: throw_errno("kill");
+            default: throw_errno("kill", err);
         }
 }
 //----------------------------------------------------------------------------

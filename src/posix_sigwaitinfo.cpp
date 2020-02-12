@@ -17,7 +17,8 @@ namespace __vic { namespace posix {
         ::siginfo_t si;
         int sig_no = ::sigwaitinfo(&set, &si);
         if(sig_no >= 0) return si;
-        if(errno != EINTR) throw_errno("sigwaitinfo");
+        int err = errno;
+        if(err != EINTR) throw_errno("sigwaitinfo", err);
         // Interrupted by signal. Try again
     }
 }

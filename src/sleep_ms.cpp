@@ -16,11 +16,12 @@ void this_thread::sleep_ms(unsigned msec)
     errno = 0;
     while(nanosleep(&req, &res))
     {
-        if(errno != EINTR
+        int err = errno;
+        if(err != EINTR
 #ifdef _AIX
-            && errno
+            && err
 #endif
-        ) throw_errno("nanosleep");
+        ) throw_errno("nanosleep", err);
         errno = 0;
         req = res;
     }

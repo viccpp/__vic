@@ -18,7 +18,8 @@ void writev_all(int fd, ::iovec *v, unsigned v_len, size_t total_bytes)
         ssize_t n = ::writev(fd, v, v_len);
         if(n < 0)
         {
-            if(errno != EINTR) throw_errno("writev");
+            int err = errno;
+            if(err != EINTR) throw_errno("writev", err);
             // Interrupted by signal. Nothing was written. Try againg
         }
         else // n >= 0

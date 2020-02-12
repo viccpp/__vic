@@ -26,8 +26,9 @@ bool lock_exclusively(int fd)
 #ifdef HAVE_FLOCK
     if(flock(fd, LOCK_EX | LOCK_NB))
     {
-        if(errno == EWOULDBLOCK) return false;
-        else throw_errno("flock: PID-file");
+        int err = errno;
+        if(err == EWOULDBLOCK) return false;
+        throw_errno("flock: PID-file", err);
     }
 #else
     struct flock lck;
@@ -36,8 +37,9 @@ bool lock_exclusively(int fd)
     lck.l_start = lck.l_len = 0;
     if(fcntl(fd, F_SETLK, &lck) == -1)
     {
-        if(errno == EACCES || errno == EAGAIN) return false;
-        else throw_errno("fcntl(F_SETLK): PID-file");
+        int err = errno;
+        if(err == EACCES || err == EAGAIN) return false;
+        throw_errno("fcntl(F_SETLK): PID-file", err);
     }
 #endif
     return true;
@@ -50,7 +52,8 @@ int flcreate(const char *fname)
     int fd = open(fname, O_CREAT | O_EXCL | O_WRONLY, 0644);
     if(fd == -1)
     {
-        if(errno != EEXIST) throw_errno("open: PID-file");
+        int err = errno;
+        if(err != EEXIST) throw_errno("open: PID-file", err);
         errno = 0;
         fd = open(fname, O_CREAT | O_WRONLY, 0644);
         if(fd == -1) throw_errno("open: PID-file");

@@ -15,12 +15,13 @@ void file::close_reset(int &fd)
     for(;;)
     {
         if(::close(fd) == 0) { fd = -1; return; }
-        if(errno != EINTR)
+        int err = errno;
+        if(err != EINTR)
         {
             // We can't call close() again in case of EIO because of
             // "the state of fildes is unspecified" according to POSIX
             fd = -1;
-            throw_errno("close");
+            throw_errno("close", err);
         }
         // Interrupted by signal. Try again
     }
@@ -28,7 +29,8 @@ void file::close_reset(int &fd)
     int st = ::close(fd);
     fd = -1;
     if(st == 0) return;
-    if(errno != EINTR) throw_errno("close");
+    int err = errno;
+    if(err != EINTR) throw_errno("close", err);
 #endif
 }
 //----------------------------------------------------------------------------

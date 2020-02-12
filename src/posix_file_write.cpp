@@ -22,7 +22,10 @@ void file::write_all(int fd, const void *buf, size_t count)
             count -= n;
         }
         else
-            if(errno != EINTR) throw_errno("write");
+        {
+            int err = errno;
+            if(err != EINTR) throw_errno("write", err);
+        }
     }
 }
 //----------------------------------------------------------------------------
