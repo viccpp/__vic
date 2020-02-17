@@ -29,7 +29,7 @@ class ovectors
 public:
     ovectors() : next_(v), total_(0) {}
 
-    void add(const void *p, size_t n)
+    void push_back(const void *p, size_t n)
     {
         assert(size() < max_size());
         next_->iov_base = const_cast<void *>(p);
@@ -37,10 +37,20 @@ public:
         next_++;
         total_ += n;
     }
+    void pop_back()
+    {
+        assert(!empty());
+        next_--;
+        total_ -= next_->iov_len;
+    }
 
     ::iovec *ptr() { return v; }
     const ::iovec *ptr() const { return v; }
     unsigned size() const { return next_ - v; }
+
+    bool full() const { return next_ == v + N; }
+    bool empty() const { return next_ == v; }
+    void clear() { next_ = v; total_ = 0; }
 
     static __VIC_CONSTEXPR_FUNC unsigned max_size() { return N; }
     size_t total_bytes() const { return total_; }

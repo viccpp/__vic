@@ -14,11 +14,16 @@ class posix::ovectors
 public:
     ovectors();
 
-    void add(const void *buf, size_t buf_len);
+    void push_back(const void *buf, size_t buf_len);
+    void pop_back();
 
     ::iovec *ptr();
     const ::iovec *ptr() const;
     unsigned size() const;
+
+    bool full() const;
+    bool empty() const;
+    void clear();
 
     static constexpr unsigned max_size() { return N; }
     size_t total_bytes() const;
@@ -33,15 +38,23 @@ number of the buffers.</p>
 
 <synopsis>
 <prototype>ovectors()</prototype>
-<postcondition><tt>size() == 0 &amp;&amp; total_bytes() == 0</tt></postcondition>
+<postcondition><tt>empty() &amp;&amp; total_bytes() == 0</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>void add(const void *buf, size_t buf_len)</prototype>
+<prototype>void push_back(const void *buf, size_t buf_len)</prototype>
 <p>Adds the specified buffer to the set.</p>
-<precondition><tt>size() &lt; max_size()</tt></precondition>
+<precondition><tt>!full()</tt></precondition>
 <postcondition><tt>size()</tt> is increased by <tt>1</tt>,
 <tt>total_bytes()</tt> is increased by <tt>buf_len</tt>.</postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void pop_back()</prototype>
+<p>Removes the last added buffer from the set.</p>
+<precondition><tt>!empty()</tt></precondition>
+<postcondition><tt>size()</tt> is decreased by <tt>1</tt>,
+<tt>total_bytes()</tt> is decreased by <tt>iov_len</tt> of the removed buffer.</postcondition>
 </synopsis>
 
 <synopsis>
@@ -53,6 +66,22 @@ number of the buffers.</p>
 <synopsis>
 <prototype>unsigned size() const</prototype>
 <p>Returns current number of the vectors in the array.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool full() const</prototype>
+<p>Returns <tt>size() == max_size()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool empty() const</prototype>
+<p>Returns <tt>size() == 0</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void clear()</prototype>
+<p>Removes all buffers from the set.</p>
+<postcondition><tt>empty() &amp;&amp; total_bytes() == 0</tt></postcondition>
 </synopsis>
 
 <synopsis>
@@ -70,10 +99,10 @@ number of the buffers.</p>
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 __vic::posix::ovectors<3> v;
-v.add("ovectors", 8);
-v.add(" in work", 8);
+v.push_back("ovectors", 8);
+v.push_back(" in work", 8);
 const char nl = '\n';
-v.add(&nl, 1);
+v.push_back(&nl, 1);
 
 // Prints:
 // ovectors in work

@@ -10,7 +10,7 @@ namespace tests {
 template<unsigned N>
 inline void add_str(__vic::posix::ovectors<N> &v, const char *st)
 {
-    v.add(st, std::strlen(st));
+    v.push_back(st, std::strlen(st));
 }
 void ovectors_test()
 {
@@ -18,7 +18,7 @@ void ovectors_test()
     add_str(v, "ovectors");
     add_str(v, " works!");
     const char nl = '\n';
-    v.add(&nl, 1);
+    v.push_back(&nl, 1);
     __vic::posix::writev_all(1, v);
 }
 void run()

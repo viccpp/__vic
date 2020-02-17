@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2020-02-17  __vic
+    * posix::ovectors:
+        ! Renamed add() -> push_back()
+        + pop_back(), empty(), full(), clear()
+
 2020-02-12  __vic
     * Repeated errno reads are minimized
 
