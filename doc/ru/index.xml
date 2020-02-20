@@ -14,10 +14,10 @@
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY endian.h SYSTEM "endian.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY fixed_vector.h SYSTEM "fixed_vector.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY memory.h SYSTEM "memory.h.xml">
-    <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
     <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
@@ -128,10 +128,10 @@ TODO
 &date_time.h;
 &endian.h;
 &error.h;
+&fixed_vector.h;
 &iterator.h;
 &logger.h;
 &memory.h;
-&object_pool.h;
 &readers;
 &readonly_cstring.h;
 &set_of_chars.h;
