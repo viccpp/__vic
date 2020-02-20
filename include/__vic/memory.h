@@ -9,6 +9,9 @@
 #define __VIC_MEMORY_H
 
 #include<__vic/defs.h>
+#if defined(__VIC_STRICT_RAM_ALIGNMENT__) && !defined(__GNUC__)
+#include<cstring>
+#endif
 
 namespace __vic {
 
@@ -21,7 +24,9 @@ inline T load_unaligned(const void *p)
     struct wrapper { T v; } __attribute__((packed));
     return static_cast<const wrapper *>(p)->v;
 #else
-#   error Add unaligned access implementation for your compiler/platform
+    T v;
+    std::memcpy(&v, p, sizeof v);
+    return v;
 #endif
 #else // unaligned access is OK
     return *static_cast<const T *>(p);

@@ -13,7 +13,7 @@ T load_unaligned(const void *p);
 ]]></code-block>
 
 <p>Загружает значение с потенциально невыровненного адреса не вызывая ошибку
-шины.</p>
+шины (<tt>SIGBUS</tt>).</p>
 
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[

@@ -332,8 +332,8 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 
 <synopsis>
 <prototype>template&lt;class T> record record::operator&lt;&lt;(const T &amp;v)</prototype>
-<p>Набор инсертеров для различных типов данных. Вызывают
-<tt>__vic::string_buffer::operator&lt;&lt;(v)</tt>.</p>
+<p>Набор инсертеров для различных типов данных. Вызывают <tt>sb &lt;&lt; v</tt>,
+где <tt>sb</tt> имеет тип <tt>__vic::string_buffer</tt>.</p>
 </synopsis>
 
 </section>

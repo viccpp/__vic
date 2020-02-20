@@ -1,0 +1,52 @@
+<chapter xml:id="throw_errno.h">
+<title><tt>__vic/throw_errno.h</tt></title>
+
+<chapter xml:id="throw_errno">
+<title><tt>throw_errno()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+[[noreturn]] void throw_errno(const char *prompt);
+[[noreturn]] void throw_errno(const char *prompt, int err_no);
+]]></code-block>
+
+<p>Throw an exception with global <tt>errno</tt> value or given
+<tt>err_no</tt> correspondingly. Default exception type is
+<xref to="libc_error"/> at the moment but can be changed at link time
+by overriding this functions. For example <tt>std::system_error</tt> can be
+used. Just create cpp-file with the following content in your project:</p>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/throw_errno.h>
+#include<system_error>
+#include<cerrno>
+
+namespace __vic {
+
+//----------------------------------------------------------------------------
+// Override library functions to throw std::system_error
+//----------------------------------------------------------------------------
+void throw_errno(const char *prompt, int err_no)
+{
+    throw std::system_error(err_no, std::system_category(), prompt);
+}
+//----------------------------------------------------------------------------
+void throw_errno(const char *prompt)
+{
+    throw_errno(prompt, errno);
+}
+//----------------------------------------------------------------------------
+
+} // namespace
+]]></code-block>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+ssize_t written = ::write(fd, buf, buf_size);
+if(written < 0) __vic::throw_errno("write()");
+// ...
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

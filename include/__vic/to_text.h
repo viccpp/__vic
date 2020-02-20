@@ -16,8 +16,10 @@ namespace __vic {
 void to_text_append(long , std::string & );
 void to_text_append(unsigned long , std::string & );
 
+#ifdef __VIC_LONGLONG
 void to_text_append(__VIC_LONGLONG , std::string & );
 void to_text_append(unsigned __VIC_LONGLONG , std::string & );
+#endif
 
 void to_text_append(double , std::string & );
 void to_text_append(long double , std::string & );

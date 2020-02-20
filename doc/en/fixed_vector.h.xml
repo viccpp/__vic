@@ -1,27 +1,25 @@
-<chapter xml:id="object_pool.h">
-<title><tt>__vic/object_pool.h</tt></title>
+<chapter xml:id="fixed_vector.h">
+<title><tt>__vic/fixed_vector.h</tt></title>
 
-<chapter xml:id="object_pool">
-<title><tt>object_pool</tt></title>
+<chapter xml:id="fixed_vector">
+<title><tt>fixed_vector</tt></title>
 <code-block lang="C++"><![CDATA[
 template<class T>
-class object_pool : private non_copyable
+class fixed_vector : private non_copyable
 {
 public:
-    using object_type    = T;
-    using value_type     = object_type; // standard synonym
+    using value_type     = T;
     using iterator       = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
     using const_iterator = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
-    class overflow; // : public std::exception
 
-    object_pool();
-    explicit object_pool(size_t max_size);
-    ~object_pool();
+    fixed_vector();
+    explicit fixed_vector(size_t max_size);
+    ~fixed_vector();
 
     // BEGIN C++11 only
-    object_pool(object_pool &&o) noexcept;
-    object_pool &operator=(object_pool &&o) noexcept;
-    template<class... Args> T &emplace(Args &&... args)
+    fixed_vector(fixed_vector &&o) noexcept;
+    fixed_vector &operator=(fixed_vector &&o) noexcept;
+    template<class... Args> T &emplace_back(Args &&... args)
     // END C++11 only
 
     // size in objects
@@ -32,39 +30,40 @@ public:
 
     void recreate(size_t new_max_size, bool size_exact = false);
     void *alloc(); // returns pointer to memory for object allocation
-    void push_allocated(); // adds last allocated object to the pool
-    void pop();
+    void push_allocated(); // adds last allocated object to the container
+    void pop_back();
     void clear();
-    void swap(object_pool &o) noexcept;
+    void swap(fixed_vector &o) noexcept;
 
     // element access
-    object_type &operator[](size_t i);
+    T &operator[](size_t i);
     iterator begin();
     iterator end();
-    object_type &front();
-    object_type &back();
+    T &front();
+    T &back();
 
-    const object_type &operator[](size_t i) const;
+    const T &operator[](size_t i) const;
     const_iterator begin() const;
     const_iterator end() const;
     const_iterator cbegin() const;
     const_iterator cend() const;
-    const object_type &front() const;
-    const object_type &back() const;
+    const T &front() const;
+    const T &back() const;
 };
 template<class T>
-void swap(object_pool<T> &o1, object_pool<T> &o2) noexcept;
+void swap(fixed_vector<T> &o1, fixed_vector<T> &o2) noexcept;
 ]]></code-block>
 
 <p>The standard containers in C++98 don't allow to store non-copiable elements.
 Even in C++11 elements of containers like <tt>std::vector</tt> have to be at
-least movable. This class solves the problem. It is an array for non-copyable
-objects.</p>
+least noexcept movable. This class solves the problem. It is a dynamic array
+for non-copyable objects or just <tt>std::vector</tt> without autogrowing
+<tt>capacity()</tt>.</p>
 
-<p>Without <tt>emplace()</tt> it is impossible to create arbitrary new object
-right in the container's memory. C++98 lacks forwarding references so it is
-near impossible to pass arbitrary parameters to the element's constructor.
-<tt>object_pool</tt> overcomes this problem using the following mechanism.
+<p>Without <tt>emplace_back()</tt> it is impossible to create arbitrary new
+object right in the container's memory. C++98 lacks forwarding references so it
+is ear impossible to pass arbitrary parameters to the element's constructor.
+<tt>fixed_vector</tt> overcomes this problem using the following mechanism.
 The new element is created using several phases:</p>
 <list style="numbered">
     <item>Requesting memory for the new element in the container -
@@ -76,23 +75,22 @@ The new element is created using several phases:</p>
 </list>
 <p>See the example at the end of the article.</p>
 
-<p>Maximum pool capacity is specified on creation of the container. Later it
+<p>Maximum capacity is specified on creation of the container. Later it
 can be changed but all the elements has to be destroyed before. In other words,
-the pool can be recreated.</p>
+the container can be recreated.</p>
 
-<p>When available, <tt>emplace()</tt> must be used for elements creation. If
-not, the unsafe interface described above must be used with care. It is very
+<p>When available, <tt>emplace_back()</tt> must be used for elements creation.
+If not, the unsafe interface described above must be used with care. It is very
 ugly and error-prone but solves the task. After the element is created in the
-pool, you operate with it almost as easy as with any other copyable object in
-the standard container. Anyway, it is more efficient and convenient to use in
-general than alternative approaches like creating the objects on the free
+container, you operate with it almost as easy as with any other copyable object
+in the standard container. Anyway, it is more efficient and convenient to use
+in general than alternative approaches like creating the objects on the free
 store and placing only pointers to the container, even if we have
 <tt>std::unique_ptr</tt> to manage lifetime of the objects.</p>
 
 <section><title>Class members</title>
 
 <synopsis>
-<prototype>typename object_type</prototype>
 <prototype>typename value_type</prototype>
 <p>Type of the elements.</p>
 </synopsis>
@@ -104,31 +102,25 @@ store and placing only pointers to the container, even if we have
 </synopsis>
 
 <synopsis>
-<prototype>class overflow</prototype>
-<p>Exception, thrown on attempts to add new element to the full container.
-</p>
-</synopsis>
-
-<synopsis>
-<prototype>object_pool()</prototype>
+<prototype>fixed_vector()</prototype>
 <p>Create the object without memory allocation.</p>
 <postcondition><tt>capacity() == 0</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>explicit object_pool(size_t max_size)</prototype>
+<prototype>explicit fixed_vector(size_t max_size)</prototype>
 <p>Allocates memory for <tt>max_size</tt> elements.</p>
 <postcondition><tt>capacity() == max_size</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>~object_pool()</prototype>
+<prototype>~fixed_vector()</prototype>
 <p>Calls <tt>clear()</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>object_pool(object_pool &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
-<prototype>object_pool &amp;operator=(object_pool &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>fixed_vector(fixed_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>fixed_vector &amp;operator=(fixed_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
 <p>Move operations for C++11 mode.</p>
 </synopsis>
 
@@ -160,27 +152,30 @@ empty() == true</tt>)</postcondition>
 
 <synopsis>
 <prototype>void *alloc()</prototype>
-<p>Returns the raw memory block where new instance of <tt>object_type</tt>
-can be allocated. <tt>overflow</tt> is thrown if the container is full.</p>
-<note>Use <tt>emplace()</tt> in C++11 mode.</note>
+<p>Returns the raw memory block where new instance of <tt>value_type</tt>
+can be allocated.</p>
+<precondition><tt>!full()</tt></precondition>
+<note>Use <tt>emplace_back()</tt> in C++11 mode.</note>
 </synopsis>
 
 <synopsis>
 <prototype>void push_allocated()</prototype>
 <p>This call right after <tt>alloc()</tt> adds the just created object to the
-pool.</p>
+container.</p>
 </synopsis>
 
 <synopsis>
-<prototype>template&lt;class... Args> T &amp;emplace(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
+<prototype>template&lt;class... Args> T &amp;emplace_back(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
 <p>Constructs new object and adds it to the container (<tt>alloc()</tt> +
 <tt>new</tt> + <tt>push_allocated()</tt> with a single call). A reference to
 the new object is returned.</p>
+<precondition><tt>!full()</tt></precondition>
 </synopsis>
 
 <synopsis>
-<prototype>void pop()</prototype>
-<p>Remove the last element from the container if exists.</p>
+<prototype>void pop_back()</prototype>
+<p>Remove the last element from the container.</p>
+<precondition><tt>!empty()</tt></precondition>
 </synopsis>
 
 <synopsis>
@@ -190,24 +185,25 @@ the new object is returned.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void swap(object_pool &amp;o)</prototype>
-<prototype><![CDATA[template<class T> void swap(object_pool<T> &o1, object_pool<T> &o2) noexcept]]></prototype>
+<prototype>void swap(fixed_vector &amp;o)</prototype>
+<prototype><![CDATA[template<class T> void swap(fixed_vector<T> &o1, fixed_vector<T> &o2) noexcept]]></prototype>
 <p>Swaps the value with <tt>o</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>object_type &amp;operator[](size_t i)</prototype>
-<prototype>const object_type &amp;operator[](size_t i) const</prototype>
+<prototype>T &amp;operator[](size_t i)</prototype>
+<prototype>const T &amp;operator[](size_t i) const</prototype>
 <p>Access to the elements by index.</p>
+<precondition><tt>i &lt; size()</tt></precondition>
 </synopsis>
 
 <synopsis>
-<prototype>object_type &amp;front()</prototype>
-<prototype>const object_type &amp;front() const</prototype>
-<prototype>object_type &amp;back()</prototype>
-<prototype>const object_type &amp;back() const</prototype>
+<prototype>T &amp;front()</prototype>
+<prototype>const T &amp;front() const</prototype>
+<prototype>T &amp;back()</prototype>
+<prototype>const T &amp;back() const</prototype>
 <p>Access to the first and the last elements.</p>
-<precondition>!empty()</precondition>
+<precondition><tt>!empty()</tt></precondition>
 </synopsis>
 
 <synopsis>
@@ -224,15 +220,15 @@ the new object is returned.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
-// Creating the pool for 2 objects of class C
-__vic::object_pool<C> pool(2);
+// Creating vector for 2 objects of class C
+__vic::fixed_vector<C> v(2);
 
 // Creating new object in C++98 mode:
-new(pool.alloc()) C(...); // Request memory and construct the object
-pool.push_allocated(); // Fixate successfully created object in the container
+new(v.alloc()) C(...); // Request memory and construct the object
+v.push_allocated();    // Fixate successfully created object in the container
 
 // Creating new object in C++11 mode:
-pool.emplace(...);
+v.emplace_back(...);
 ]]></code-block>
 </section>
 
