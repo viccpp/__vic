@@ -12,7 +12,8 @@ template<class T>
 T load_unaligned(const void *p);
 ]]></code-block>
 
-<p>Load value from potentially unaligned address without causing bus error.</p>
+<p>Load value from potentially unaligned address without causing bus error
+(<tt>SIGBUS</tt>).</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
