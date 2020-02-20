@@ -50,6 +50,7 @@ void to_text_append(unsigned long n, std::string &s)
     append_unsigned_integer(n, s);
 }
 //----------------------------------------------------------------------------
+#ifdef __VIC_LONGLONG
 void to_text_append(__VIC_LONGLONG n, std::string &s)
 {
     append_signed_integer(n, s);
@@ -59,6 +60,7 @@ void to_text_append(unsigned __VIC_LONGLONG n, std::string &s)
 {
     append_unsigned_integer(n, s);
 }
+#endif
 //----------------------------------------------------------------------------
 
 } // namespace

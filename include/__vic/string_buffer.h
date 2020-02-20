@@ -63,8 +63,10 @@ public:
     string_buffer &operator<<(unsigned short n) { to_text_append(n, *this); return *this; }
     string_buffer &operator<<(unsigned char n) { to_text_append(n, *this); return *this; }
 
+#ifdef __VIC_LONGLONG
     string_buffer &operator<<(__VIC_LONGLONG n) { to_text_append(n, *this); return *this; }
     string_buffer &operator<<(unsigned __VIC_LONGLONG n) { to_text_append(n, *this); return *this; }
+#endif
 
     string_buffer &operator<<(long double n) { to_text_append(n, *this); return *this; }
     string_buffer &operator<<(double n) { to_text_append(n, *this); return *this; }

@@ -20,6 +20,7 @@ void integer_tests()
 
     assert(decimal_to_number<int>("4587") == 4587);
     assert(decimal_to_number<long>("-125") == -125L);
+    assert(decimal_to_number<int>("+1") == 1);
 
     // Integer overflow
     parse_and_check<int8_t>("1000", number_parse_status::unrepresentable);
@@ -37,9 +38,14 @@ void integer_tests()
 
     parse_and_check<int>("-", number_parse_status::invalid_number);
 
+    parse_and_check<int>("+", number_parse_status::invalid_number);
+#ifdef __VIC_LONGLONG
+{
     __VIC_LONGLONG n;
     decimal_to_number(std::string("10000"), n);
     assert(n == 10000);
+}
+#endif
 
     int min_int = std::numeric_limits<int>::min();
     char buf[64];

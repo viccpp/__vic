@@ -14,6 +14,7 @@
     <!ENTITY date_time.h SYSTEM "date_time.h.xml">
     <!ENTITY endian.h SYSTEM "endian.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
+    <!ENTITY fixed_vector.h SYSTEM "fixed_vector.h.xml">
     <!ENTITY fs.h SYSTEM "fs.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
@@ -32,6 +33,7 @@
     <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY thread.h SYSTEM "thread.h.xml">
+    <!ENTITY throw_errno.h SYSTEM "throw_errno.h.xml">
     <!ENTITY to_text.h SYSTEM "to_text.h.xml">
     <!ENTITY type_traits.h SYSTEM "type_traits.h.xml">
     <!ENTITY unicode.h SYSTEM "unicode.h.xml">
@@ -146,6 +148,7 @@ TODO
 &date_time.h;
 &endian.h;
 &error.h;
+&fixed_vector.h;
 &fs.h;
 &iterator.h;
 &logger.h;
@@ -164,6 +167,7 @@ TODO
 &string_utils.h;
 &tchar.h;
 &thread.h;
+&throw_errno.h;
 &to_text.h;
 &type_traits.h;
 &unicode.h;

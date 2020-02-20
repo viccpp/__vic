@@ -1,0 +1,53 @@
+<chapter xml:id="throw_errno.h">
+<title><tt>__vic/throw_errno.h</tt></title>
+
+<chapter xml:id="throw_errno">
+<title><tt>throw_errno()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+[[noreturn]] void throw_errno(const char *prompt);
+[[noreturn]] void throw_errno(const char *prompt, int err_no);
+]]></code-block>
+
+<p>Бросает исключение, содержащее глобальное значение <tt>errno</tt> или
+данное <tt>err_no</tt>, соответственно. По умолчанию в данный момент типом
+исключения будет <xref to="libc_error"/>, однако это можно изменить во время
+компоновки переопределением данных функций. Например, можно использовать
+<tt>std::system_error</tt>. Для этого просто создайте cpp-файл со следующим
+содержимым в своём проекте:</p>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/throw_errno.h>
+#include<system_error>
+#include<cerrno>
+
+namespace __vic {
+
+//----------------------------------------------------------------------------
+// Override library functions to throw std::system_error
+//----------------------------------------------------------------------------
+void throw_errno(const char *prompt, int err_no)
+{
+    throw std::system_error(err_no, std::system_category(), prompt);
+}
+//----------------------------------------------------------------------------
+void throw_errno(const char *prompt)
+{
+    throw_errno(prompt, errno);
+}
+//----------------------------------------------------------------------------
+
+} // namespace
+]]></code-block>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+ssize_t written = ::write(fd, buf, buf_size);
+if(written < 0) __vic::throw_errno("write()");
+// ...
+]]></code-block>
+</section>
+
+</chapter>
+
+</chapter>

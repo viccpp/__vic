@@ -12,8 +12,27 @@ Legend:
 2020-02-12  __vic
     * Repeated errno reads are minimized
 
+2020-02-10  __vic
+    * memory.h: load_unaligned(): fallback to std::memcpy() if no better
+      alternatives
+    ! Renamed object_pool -> fixed_vector
+
+2020-01-28  __vic
+    + throw_errno.h and throw_errno() are parts of the public API now
+    ! defs.h: uninitialized/noinit removed
+
 2020-01-14  __vic
     - posix_pidfile.cpp: write_pid(): results of all syscalls are checked now
+
+2019-12-24  __vic
+    * logger: severity strings moved to the own object file
+
+2019-12-19  __vic
+    - str2num.h: signed_decimal_parser: out of buffer access if input string
+      is "+" or "-"
+
+2019-10-21  __vic
+    + Support for compilers without any form of 64-bit integers (long long)
 
 2019-07-18  __vic
     ! posix::dir_entries, posix::dir_files don't throw on open any more.
