@@ -20,7 +20,6 @@
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY memory.h SYSTEM "memory.h.xml">
     <!ENTITY mutex.h SYSTEM "mutex.h.xml">
-    <!ENTITY object_pool.h SYSTEM "object_pool.h.xml">
     <!ENTITY packon.h SYSTEM "packon.h.xml">
     <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
@@ -154,7 +153,6 @@ TODO
 &logger.h;
 &memory.h;
 &mutex.h;
-&object_pool.h;
 &packon.h;
 &readers;
 &readonly_cstring.h;
