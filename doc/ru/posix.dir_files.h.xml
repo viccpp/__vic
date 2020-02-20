@@ -35,7 +35,7 @@ public:
 // Выводит список cpp-файлов в текущем каталоге
 __vic::posix::dir_files files(".", "*.cpp");
 if(!files.is_open())
-    throw __vic::libc_error("Can't open directory for listing");
+    __vic::throw_errno("Can't open directory for listing");
 while(const char *file = files.next())
     std::cout << file << '\n';
 ]]></code-block>

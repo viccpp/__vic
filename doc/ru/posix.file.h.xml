@@ -142,7 +142,7 @@ public:
 <p>Пытается прочитать <tt>n</tt> байт в указанный буфер. Возвращает количество
 прочитанных байтов. Возвращённое значение может быть меньше запрошенного только
 в случае достижения конца файла. Набирает вычитанные фрагменты, пока буфер не
-заполнится. Не прерывается сигналами. Бросает <tt>libc_error</tt> в случае
+заполнится. Не прерывается сигналами. Вызывает <xref to="throw_errno"/> в случае
 ошибок.</p>
 </synopsis>
 
@@ -152,14 +152,14 @@ public:
 <p>Читает не более <tt>n</tt> байтов в указанный буфер. Возвращает количество
 прочитанных байтов или <tt>0</tt> при достижении конца файла. Функция сразу
 возвращает управление, как только считан первый фрагмент данных. Не прерывается
-сигналами. Бросает <tt>libc_error</tt> в случае ошибок.</p>
+сигналами. Вызывает <xref to="throw_errno"/> в случае ошибок.</p>
 </synopsis>
 
 <synopsis>
 <prototype>static void write_all(int fd, const void *buf, size_t n);</prototype>
 <prototype>void write_all(const void *buf, size_t n) { write_all(handle(), buf, n); }</prototype>
 <p>Записывает весь буфер в указанный дескриптор. Не прерывается сигналами.
-Бросает <tt>libc_error</tt> в случае ошибок.</p>
+Вызывает <xref to="throw_errno"/> в случае ошибок.</p>
 </synopsis>
 
 <synopsis>
@@ -174,7 +174,7 @@ public:
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 __vic::posix::file file("path/file", O_WRONLY | O_CREAT);
-if(!file.is_open()) throw __vic::libc_error("Cannot create file");
+if(!file.is_open()) __vic::throw_errno("Cannot create file");
 const char msg[] = "Hello";
 file.write_all(msg, sizeof msg - 1); // write without null-terminator
 file.close();

@@ -107,7 +107,7 @@ to the <tt>stat()</tt> call!</p>
 // Prints the listing of the current directory
 __vic::posix::dir_entries list(".");
 if(!list.is_open())
-    throw __vic::libc_error("Can't open directory for listing");
+    __vic::throw_errno("Can't open directory for listing");
 while(const char *entry = list.next())
     std::cout << entry << '\n';
 ]]></code-block>

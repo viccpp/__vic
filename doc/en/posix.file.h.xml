@@ -143,7 +143,7 @@ in case of error, and <tt>errno</tt> contains error code.</p>
 <p>Tries to read <tt>n</tt> bytes to the specified buffer. Returns number of
 bytes read. Returned value can be less than requested only when end of file
 was reached. Accumulates received chunks until the buffer becomes full. Is not
-interrupted by signals. Throws <tt>libc_error</tt> on error.</p>
+interrupted by signals. Calls <xref to="throw_errno"/> on error.</p>
 </synopsis>
 
 <synopsis>
@@ -152,14 +152,14 @@ interrupted by signals. Throws <tt>libc_error</tt> on error.</p>
 <p>Reads no more than <tt>n</tt> bytes to the specified buffer. Returns number
 of bytes read or <tt>0</tt> in case of end-of-file. The function returns after
 first chunk of any size was successfully received. Is not interrupted by
-signals. Throws <tt>libc_error</tt> on error.</p>
+signals. Calls <xref to="throw_errno"/> on error.</p>
 </synopsis>
 
 <synopsis>
 <prototype>static void write_all(int fd, const void *buf, size_t n);</prototype>
 <prototype>void write_all(const void *buf, size_t n) { write_all(handle(), buf, n); }</prototype>
 <p>Writes the whole buffer to the descriptor. Is not interrupted by signals.
-Throws <tt>libc_error</tt> on error.</p>
+Calls <xref to="throw_errno"/> on error.</p>
 </synopsis>
 
 <synopsis>
@@ -174,7 +174,7 @@ than <tt>n</tt> instead and <tt>errno</tt> contains error code.</p>
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 __vic::posix::file file("path/file", O_WRONLY | O_CREAT);
-if(!file.is_open()) throw __vic::libc_error("Cannot create file");
+if(!file.is_open()) __vic::throw_errno("Cannot create file");
 const char msg[] = "Hello";
 file.write_all(msg, sizeof msg - 1); // write without null-terminator
 file.close();

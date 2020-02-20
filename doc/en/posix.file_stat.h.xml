@@ -68,7 +68,7 @@ bool is_same_file(const struct ::stat &s1, const struct ::stat &s2);
 ]]></code-block>
 
 <p>C++ wrapper for the system structure <tt>stat</tt>. Constructors and
-functions <tt>get()</tt> throw <tt>__vic::libc_error</tt> in case of error.
+functions <tt>get()</tt> call <xref to="throw_errno"/> in case of error.
 Functions <tt>try_get()</tt> return <tt>false</tt> instead in such cases,
 error code is placed to <tt>errno</tt>.</p>
 

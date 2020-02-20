@@ -68,7 +68,7 @@ bool is_same_file(const struct ::stat &s1, const struct ::stat &s2);
 ]]></code-block>
 
 <p>C++ обёртка для системной структуры <tt>stat</tt>. Конструкторы и функции
-<tt>get()</tt> бросают <tt>__vic::libc_error</tt> в случае ошибок. Функции
+<tt>get()</tt> вызывают <xref to="throw_errno"/> в случае ошибок. Функции
 <tt>try_get()</tt> вместо этого возвращают <tt>false</tt>, код ошибки содержится
 в <tt>errno</tt>.</p>
 
