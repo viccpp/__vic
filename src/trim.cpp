@@ -13,7 +13,7 @@ const char spaces[] = " \t\n\r\f\v";
 
 //----------------------------------------------------------------------------
 template<class charT>
-inline charT *_rtrim(charT *st, charT space)
+inline charT *trim_b(charT *st, charT space)
 {
     charT *p = tchar::end(st) - 1;
     while(p >= st && *p == space) p--;
@@ -22,7 +22,7 @@ inline charT *_rtrim(charT *st, charT space)
 }
 //----------------------------------------------------------------------------
 template<class charT>
-inline charT *_ltrim(charT *st, charT space)
+inline charT *trim_f(charT *st, charT space)
 {
     charT *p = st;
     while(*p == space) p++;
@@ -31,7 +31,7 @@ inline charT *_ltrim(charT *st, charT space)
 }
 //----------------------------------------------------------------------------
 template<class charT>
-inline charT *_rtrim(charT *st, const charT *set)
+inline charT *trim_b(charT *st, const charT *set)
 {
     charT *p = tchar::find_last_not_of(st, set);
     if(p) *(p+1) = charT(); else *st = charT();
@@ -39,7 +39,7 @@ inline charT *_rtrim(charT *st, const charT *set)
 }
 //----------------------------------------------------------------------------
 template<class charT>
-inline charT *_ltrim(charT *st, const charT *set)
+inline charT *trim_f(charT *st, const charT *set)
 {
     charT *p = tchar::find_first_not_of(st, set);
     if(p)
@@ -51,7 +51,7 @@ inline charT *_ltrim(charT *st, const charT *set)
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc>
-inline std::basic_string<charT,Traits,Alloc> &_rtrim(
+inline std::basic_string<charT,Traits,Alloc> &trim_b(
     std::basic_string<charT,Traits,Alloc> &st, charT space)
 {
     typedef std::basic_string<charT,Traits,Alloc> str_t;
@@ -61,7 +61,7 @@ inline std::basic_string<charT,Traits,Alloc> &_rtrim(
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc>
-inline std::basic_string<charT,Traits,Alloc> &_ltrim(
+inline std::basic_string<charT,Traits,Alloc> &trim_f(
     std::basic_string<charT,Traits,Alloc> &st, charT space)
 {
     typedef std::basic_string<charT,Traits,Alloc> str_t;
@@ -71,7 +71,7 @@ inline std::basic_string<charT,Traits,Alloc> &_ltrim(
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc>
-inline std::basic_string<charT,Traits,Alloc> &_rtrim(
+inline std::basic_string<charT,Traits,Alloc> &trim_b(
     std::basic_string<charT,Traits,Alloc> &st, const charT *set)
 {
     typedef std::basic_string<charT,Traits,Alloc> str_t;
@@ -81,7 +81,7 @@ inline std::basic_string<charT,Traits,Alloc> &_rtrim(
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc>
-inline std::basic_string<charT,Traits,Alloc> &_ltrim(
+inline std::basic_string<charT,Traits,Alloc> &trim_f(
     std::basic_string<charT,Traits,Alloc> &st, const charT *set)
 {
     typedef std::basic_string<charT,Traits,Alloc> str_t;
@@ -132,92 +132,92 @@ inline typename std::basic_string<charT,Traits,Alloc>::const_iterator
 //----------------------------------------------------------------------------
 char *trim(char *st) noexcept
 {
-    return st ? _ltrim(_rtrim(st, spaces), spaces) : st;
+    return st ? trim_f(trim_b(st, spaces), spaces) : st;
 }
 //----------------------------------------------------------------------------
-char *trim_right(char *st) noexcept
+char *trim_back(char *st) noexcept
 {
-    return st ? _rtrim(st, spaces) : st;
+    return st ? trim_b(st, spaces) : st;
 }
 //----------------------------------------------------------------------------
-char *trim_left(char *st) noexcept
+char *trim_front(char *st) noexcept
 {
-    return st ? _ltrim(st, spaces) : st;
+    return st ? trim_f(st, spaces) : st;
 }
 //----------------------------------------------------------------------------
 char *trim(char *st, char space) noexcept
 {
-    return st ? _ltrim(_rtrim(st, space), space) : st;
+    return st ? trim_f(trim_b(st, space), space) : st;
 }
 //----------------------------------------------------------------------------
-char *trim_right(char *st, char space) noexcept
+char *trim_back(char *st, char space) noexcept
 {
-    return st ? _rtrim(st, space) : st;
+    return st ? trim_b(st, space) : st;
 }
 //----------------------------------------------------------------------------
-char *trim_left(char *st, char space) noexcept
+char *trim_front(char *st, char space) noexcept
 {
-    return st ? _ltrim(st, space) : st;
+    return st ? trim_f(st, space) : st;
 }
 //----------------------------------------------------------------------------
 char *trim(char *st, const char *set) noexcept
 {
-    return st && set ? _ltrim(_rtrim(st, set), set) : st;
+    return st && set ? trim_f(trim_b(st, set), set) : st;
 }
 //----------------------------------------------------------------------------
-char *trim_right(char *st, const char *set) noexcept
+char *trim_back(char *st, const char *set) noexcept
 {
-    return st && set ? _rtrim(st, set) : st;
+    return st && set ? trim_b(st, set) : st;
 }
 //----------------------------------------------------------------------------
-char *trim_left(char *st, const char *set) noexcept
+char *trim_front(char *st, const char *set) noexcept
 {
-    return st && set ? _ltrim(st, set) : st;
+    return st && set ? trim_f(st, set) : st;
 }
 //----------------------------------------------------------------------------
 std::string &trim(std::string &st)
 {
-    return _ltrim(_rtrim(st, spaces), spaces);
+    return trim_f(trim_b(st, spaces), spaces);
 }
 //----------------------------------------------------------------------------
-std::string &trim_right(std::string &st)
+std::string &trim_back(std::string &st)
 {
-    return _rtrim(st, spaces);
+    return trim_b(st, spaces);
 }
 //----------------------------------------------------------------------------
-std::string &trim_left(std::string &st)
+std::string &trim_front(std::string &st)
 {
-    return _ltrim(st, spaces);
+    return trim_f(st, spaces);
 }
 //----------------------------------------------------------------------------
 std::string &trim(std::string &st, char space)
 {
-    return _ltrim(_rtrim(st, space), space);
+    return trim_f(trim_b(st, space), space);
 }
 //----------------------------------------------------------------------------
-std::string &trim_right(std::string &st, char space)
+std::string &trim_back(std::string &st, char space)
 {
-    return _rtrim(st, space);
+    return trim_b(st, space);
 }
 //----------------------------------------------------------------------------
-std::string &trim_left(std::string &st, char space)
+std::string &trim_front(std::string &st, char space)
 {
-    return _ltrim(st, space);
+    return trim_f(st, space);
 }
 //----------------------------------------------------------------------------
 std::string &trim(std::string &st, const char *set)
 {
-    return set ? _ltrim(_rtrim(st, set), set) : st;
+    return set ? trim_f(trim_b(st, set), set) : st;
 }
 //----------------------------------------------------------------------------
-std::string &trim_right(std::string &st, const char *set)
+std::string &trim_back(std::string &st, const char *set)
 {
-    return set ? _rtrim(st, set) : st;
+    return set ? trim_b(st, set) : st;
 }
 //----------------------------------------------------------------------------
-std::string &trim_left(std::string &st, const char *set)
+std::string &trim_front(std::string &st, const char *set)
 {
-    return set ? _ltrim(st, set) : st;
+    return set ? trim_f(st, set) : st;
 }
 //----------------------------------------------------------------------------
 std::string trimmed(const std::string &st)
@@ -225,12 +225,12 @@ std::string trimmed(const std::string &st)
     return std::string(trimmed_begin(st, spaces), trimmed_end(st, spaces));
 }
 //----------------------------------------------------------------------------
-std::string trimmed_right(const std::string &st)
+std::string trimmed_back(const std::string &st)
 {
     return std::string(st.begin(), trimmed_end(st, spaces));
 }
 //----------------------------------------------------------------------------
-std::string trimmed_left(const std::string &st)
+std::string trimmed_front(const std::string &st)
 {
     return std::string(trimmed_begin(st, spaces), st.end());
 }
@@ -240,12 +240,12 @@ std::string trimmed(const std::string &st, char space)
     return std::string(trimmed_begin(st, space), trimmed_end(st, space));
 }
 //----------------------------------------------------------------------------
-std::string trimmed_right(const std::string &st, char space)
+std::string trimmed_back(const std::string &st, char space)
 {
     return std::string(st.begin(), trimmed_end(st, space));
 }
 //----------------------------------------------------------------------------
-std::string trimmed_left(const std::string &st, char space)
+std::string trimmed_front(const std::string &st, char space)
 {
     return std::string(trimmed_begin(st, space), st.end());
 }
@@ -256,12 +256,12 @@ std::string trimmed(const std::string &st, const char *set)
         std::string(trimmed_begin(st, set), trimmed_end(st, set)) : st;
 }
 //----------------------------------------------------------------------------
-std::string trimmed_right(const std::string &st, const char *set)
+std::string trimmed_back(const std::string &st, const char *set)
 {
     return set ? std::string(st.begin(), trimmed_end(st, set)) : st;
 }
 //----------------------------------------------------------------------------
-std::string trimmed_left(const std::string &st, const char *set)
+std::string trimmed_front(const std::string &st, const char *set)
 {
     return set ? std::string(trimmed_begin(st, set), st.end()) : st;
 }

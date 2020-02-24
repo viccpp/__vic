@@ -52,11 +52,11 @@ void trim_default_test(const char *src)
     assert(!std::isspace(*st) && !std::isspace(last(st)));
 
     std::strcpy(st, src);
-    std::cout << trim_left(st) << "|\n";
+    std::cout << trim_front(st) << "|\n";
     assert(!std::isspace(*st));
 
     std::strcpy(st, src);
-    std::cout << trim_right(st) << "|\n";
+    std::cout << trim_back(st) << "|\n";
     assert(!std::isspace(last(st)));
 
     std::string sst;
@@ -66,11 +66,11 @@ void trim_default_test(const char *src)
     assert(!std::isspace(*sst.begin()) && !std::isspace(last(sst)));
 
     sst = src;
-    std::cout << trim_left(sst) << "|\n";
+    std::cout << trim_front(sst) << "|\n";
     assert(!std::isspace(*sst.begin()));
 
     sst = src;
-    std::cout << trim_right(sst) << "|\n";
+    std::cout << trim_back(sst) << "|\n";
     assert(!std::isspace(last(sst)));
 }
 void trim_char_test(const char *src, char ch)
@@ -86,11 +86,11 @@ void trim_char_test(const char *src, char ch)
     assert(*st != ch && last(st) != ch);
 
     std::strcpy(st, src);
-    std::cout << trim_left(st, ch) << "|\n";
+    std::cout << trim_front(st, ch) << "|\n";
     assert(*st != ch);
 
     std::strcpy(st, src);
-    std::cout << trim_right(st, ch) << "|\n";
+    std::cout << trim_back(st, ch) << "|\n";
     assert(last(st) != ch);
 
     std::string sst;
@@ -100,11 +100,11 @@ void trim_char_test(const char *src, char ch)
     assert(*sst.begin() != ch && last(sst) != ch);
 
     sst = src;
-    std::cout << trim_left(sst, ch) << "|\n";
+    std::cout << trim_front(sst, ch) << "|\n";
     assert(*sst.begin() != ch);
 
     sst = src;
-    std::cout << trim_right(sst, ch) << "|\n";
+    std::cout << trim_back(sst, ch) << "|\n";
     assert(last(sst) != ch);
 }
 void trim_set_test(const char *src, const char *set)
@@ -120,11 +120,11 @@ void trim_set_test(const char *src, const char *set)
     assert(not_in_set(*st, set) && not_in_set(last(st), set));
 
     std::strcpy(st, src);
-    std::cout << trim_left(st, set) << "|\n";
+    std::cout << trim_front(st, set) << "|\n";
     assert(not_in_set(*st, set));
 
     std::strcpy(st, src);
-    std::cout << trim_right(st, set) << "|\n";
+    std::cout << trim_back(st, set) << "|\n";
     assert(not_in_set(last(st), set));
 
     std::string sst;
@@ -134,11 +134,11 @@ void trim_set_test(const char *src, const char *set)
     assert(not_in_set(*sst.begin(), set) && not_in_set(last(sst), set));
 
     sst = src;
-    std::cout << trim_left(sst, set) << "|\n";
+    std::cout << trim_front(sst, set) << "|\n";
     assert(not_in_set(*sst.begin(), set));
 
     sst = src;
-    std::cout << trim_right(sst, set) << "|\n";
+    std::cout << trim_back(sst, set) << "|\n";
     assert(not_in_set(last(sst), set));
 }
 void trimmed_default_test(const char *src)
@@ -151,11 +151,11 @@ void trimmed_default_test(const char *src)
     assert(!std::isspace(*st.begin()) && !std::isspace(last(st)));
     std::cout << st << "|\n";
 
-    st = trimmed_left(src);
+    st = trimmed_front(src);
     assert(!std::isspace(*st.begin()));
     std::cout << st << "|\n";
 
-    st = trimmed_right(src);
+    st = trimmed_back(src);
     assert(!std::isspace(last(st)));
     std::cout << st << "|\n";
 }
@@ -169,11 +169,11 @@ void trimmed_char_test(const char *src, char ch)
     assert(*st.begin() != ch && last(st) != ch);
     std::cout << st << "|\n";
 
-    st = trimmed_left(src, ch);
+    st = trimmed_front(src, ch);
     assert(*st.begin() != ch);
     std::cout << st << "|\n";
 
-    st = trimmed_right(src, ch);
+    st = trimmed_back(src, ch);
     assert(last(st) != ch);
     std::cout << st << "|\n";
 }
@@ -187,11 +187,11 @@ void trimmed_set_test(const char *src, const char *set)
     assert(not_in_set(*st.begin(), set) && not_in_set(last(st), set));
     std::cout << st << "|\n";
 
-    st = trimmed_left(src, set);
+    st = trimmed_front(src, set);
     assert(not_in_set(*st.begin(), set));
     std::cout << st << "|\n";
 
-    st = trimmed_right(src, set);
+    st = trimmed_back(src, set);
     assert(not_in_set(last(st), set));
     std::cout << st << "|\n";
 }

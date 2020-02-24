@@ -8,7 +8,7 @@
 namespace __vic {
 
 //----------------------------------------------------------------------------
-char *pad_right(char *st, size_t size, char pad_ch)
+char *pad_back(char *st, size_t size, char pad_ch)
 {
     if(!st) return st;
     size_t sz = std::strlen(st);
