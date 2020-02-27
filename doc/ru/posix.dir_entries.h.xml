@@ -12,10 +12,10 @@ public:
     explicit dir_entries(const char *dir);
     ~dir_entries();
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     dir_entries(dir_entries &&o) noexcept;
     dir_entries &operator=(dir_entries &&o) noexcept;
-    // END C++11 only
+    // END C++11
 
     bool reopen(const char *dir);
     void close();

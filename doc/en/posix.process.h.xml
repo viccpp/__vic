@@ -26,9 +26,9 @@ namespace posix {
 
 void ignore_signals(const int sigs[], size_t sigs_len);
 template<size_t Size> void ignore_signals(const int (&sigs)[Size]);
-// BEGIN C++11 only
+// BEGIN C++11
 void ignore_signals(std::initializer_list<int> sigs);
-// END C++11 only
+// END C++11
 
 }
 ]]></code-block>
@@ -40,7 +40,7 @@ void ignore_signals(std::initializer_list<int> sigs);
 int sigs[] = { SIGINT, SIGQUIT, SIGTERM };
 __vic::posix::ignore_signals(sigs);
 
-// or in C++11 just
+// or since C++11 just
 __vic::posix::ignore_signals({SIGINT, SIGQUIT, SIGTERM});
 ]]></code-block>
 </section>

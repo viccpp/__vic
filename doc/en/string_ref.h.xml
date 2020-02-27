@@ -24,9 +24,9 @@ public:
     basic_string_ref(
         typename std::basic_string<charT>::const_iterator begin,
         typename std::basic_string<charT>::const_iterator end);
-    // BEGIN C++11 only
+    // BEGIN C++11
     basic_string_ref(std::initializer_list<charT> );
-    // END C++11 only
+    // END C++11
 
     // Accessors
     iterator begin() const;

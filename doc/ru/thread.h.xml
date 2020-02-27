@@ -17,10 +17,10 @@ public:
     thread();
     virtual ~thread();
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     thread(thread &&o) noexcept;
     thread &operator=(thread &&o) noexcept;
-    // END C++11 only
+    // END C++11
 
     void start();
     void cancel();

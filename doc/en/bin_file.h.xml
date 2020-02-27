@@ -18,10 +18,10 @@ public:
     bin_file(const char *fname, append_t);
     ~bin_file();
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     bin_file(bin_file &&o) noexcept;
     bin_file &operator=(bin_file &&o) noexcept;
-    // END C++11 only
+    // END C++11
 
     bool open_in(const char *fname);
     bool open_out(const char *fname);

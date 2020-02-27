@@ -17,34 +17,34 @@ namespace __vic {
 
 //----------------------------------------------------------------------------
 char *trim(char * ) noexcept;
-char *trim_left(char * ) noexcept;
-char *trim_right(char * ) noexcept;
+char *trim_front(char * ) noexcept;
+char *trim_back(char * ) noexcept;
 char *trim(char * , char ) noexcept;
-char *trim_left(char * , char ) noexcept;
-char *trim_right(char * , char ) noexcept;
+char *trim_front(char * , char ) noexcept;
+char *trim_back(char * , char ) noexcept;
 char *trim(char * , const char * ) noexcept;
-char *trim_left(char * , const char * ) noexcept;
-char *trim_right(char * , const char * ) noexcept;
+char *trim_front(char * , const char * ) noexcept;
+char *trim_back(char * , const char * ) noexcept;
 //----------------------------------------------------------------------------
 std::string &trim(std::string & );
-std::string &trim_left(std::string & );
-std::string &trim_right(std::string & );
+std::string &trim_front(std::string & );
+std::string &trim_back(std::string & );
 std::string &trim(std::string & , char );
-std::string &trim_left(std::string & , char );
-std::string &trim_right(std::string & , char );
+std::string &trim_front(std::string & , char );
+std::string &trim_back(std::string & , char );
 std::string &trim(std::string & , const char * );
-std::string &trim_left(std::string & , const char * );
-std::string &trim_right(std::string & , const char * );
+std::string &trim_front(std::string & , const char * );
+std::string &trim_back(std::string & , const char * );
 //----------------------------------------------------------------------------
 std::string trimmed(const std::string & );
-std::string trimmed_left(const std::string & );
-std::string trimmed_right(const std::string & );
+std::string trimmed_front(const std::string & );
+std::string trimmed_back(const std::string & );
 std::string trimmed(const std::string & , char );
-std::string trimmed_left(const std::string & , char );
-std::string trimmed_right(const std::string & , char );
+std::string trimmed_front(const std::string & , char );
+std::string trimmed_back(const std::string & , char );
 std::string trimmed(const std::string & , const char * );
-std::string trimmed_left(const std::string & , const char * );
-std::string trimmed_right(const std::string & , const char * );
+std::string trimmed_front(const std::string & , const char * );
+std::string trimmed_back(const std::string & , const char * );
 //----------------------------------------------------------------------------
 
 namespace impl {
@@ -90,10 +90,10 @@ std::string &sift_if(std::string &s, Pred pred) { return impl::sift_if(s, pred);
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-std::string &pad_left(std::string & , size_t , char = ' ');
-std::string &pad_right(std::string & , size_t , char = ' ');
-char *pad_left(char * , size_t , char = ' ');
-char *pad_right(char * , size_t , char = ' ');
+std::string &pad_front(std::string & , size_t , char = ' ');
+std::string &pad_back(std::string & , size_t , char = ' ');
+char *pad_front(char * , size_t , char = ' ');
+char *pad_back(char * , size_t , char = ' ');
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------

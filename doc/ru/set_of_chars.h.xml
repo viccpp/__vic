@@ -10,7 +10,7 @@ class set_of_chars
 public:
     constexpr set_of_chars();
     template<class Iter> constexpr set_of_chars(Iter begin, Iter end);
-    constexpr set_of_chars(std::initializer_list<char> set); // C++11 only
+    constexpr set_of_chars(std::initializer_list<char> set); // C++11
     constexpr set_of_chars(const char *c_str);
 
     constexpr bool contains(char ch) const;
@@ -20,11 +20,11 @@ public:
 
     template<class Iter> constexpr void add(Iter begin, Iter end);
     constexpr void add(const char *c_str);
-    constexpr void add(std::initializer_list<char> set); // C++11 only
+    constexpr void add(std::initializer_list<char> set); // C++11
 
     template<class Iter> void assign(Iter begin, Iter end);
     void assign(const char *c_str)
-    void assign(std::initializer_list<char> set); // C++11 only
+    void assign(std::initializer_list<char> set); // C++11
 
     void clear();
 };

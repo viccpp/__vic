@@ -27,9 +27,9 @@ namespace posix {
 
 void ignore_signals(const int sigs[], size_t sigs_len);
 template<size_t Size> void ignore_signals(const int (&sigs)[Size]);
-// BEGIN C++11 only
+// BEGIN C++11
 void ignore_signals(std::initializer_list<int> sigs);
-// END C++11 only
+// END C++11
 
 }
 ]]></code-block>

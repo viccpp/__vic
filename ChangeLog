@@ -4,6 +4,15 @@ Legend:
     * Changes
     ! Important
 
+2020-02-24  __vic
+    ! string_utils.h: Renamed:
+        ! trim_left() -> trim_front()
+        ! trim_right() -> trim_back()
+        ! trimmed_left() -> trimmed_front()
+        ! trimmed_right() -> trimmed_back()
+        ! pad_left() -> pad_front()
+        ! pad_right() -> pad_back()
+
 2020-02-17  __vic
     * posix::ovectors:
         ! Renamed add() -> push_back()

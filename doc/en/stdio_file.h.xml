@@ -15,10 +15,10 @@ public:
     stdio_file(const char *name, const char *mode);
     ~stdio_file();
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     stdio_file(stdio_file &&o) noexcept;
     stdio_file &operator=(stdio_file &&o) noexcept;
-    // END C++11 only
+    // END C++11
 
     bool open(const char *name, const char *mode);
     bool is_open() const;

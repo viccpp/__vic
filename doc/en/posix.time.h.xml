@@ -24,7 +24,7 @@ struct posix::time_spec : ::timespec
     time_spec(time_t usecs, usec_units);
     time_spec(time_t nsecs, nsec_units);
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     template<class Rep, class Period>
     time_spec(std::chrono::duration<Rep,Period> d);
 
@@ -34,7 +34,7 @@ struct posix::time_spec : ::timespec
     time_spec &operator+=(std::chrono::duration<Rep,Period> t2);
     template<class Rep, class Period>
     time_spec &operator-=(std::chrono::duration<Rep,Period> t2);
-    // END C++11 only
+    // END C++11
 
     time_spec &operator+=(time_spec t2);
     time_spec &operator-=(time_spec t2);
@@ -159,14 +159,14 @@ class posix::realtime_clock
 public:
     static constexpr clockid_t id = CLOCK_REALTIME;
     static constexpr bool is_steady = false;
-    // BEGIN C++11 only
+    // BEGIN C++11
     using duration   = std::chrono::nanoseconds;
     using period     = duration::period;
     using rep        = duration::rep;
     using time_point = std::chrono::time_point<realtime_clock, duration>;
 
     static time_point now();
-    // END C++11 only
+    // END C++11
 
     static posix::time_spec get_time();
 };
@@ -176,14 +176,14 @@ class posix::monotonic_clock
 public:
     static constexpr clockid_t id = CLOCK_MONOTONIC;
     static constexpr bool is_steady = true;
-    // BEGIN C++11 only
+    // BEGIN C++11
     using duration   = std::chrono::nanoseconds;
     using period     = duration::period;
     using rep        = duration::rep;
     using time_point = std::chrono::time_point<monotonic_clock, duration>;
 
     static time_point now();
-    // END C++11 only
+    // END C++11
 
     static posix::time_spec get_time();
 };

@@ -12,10 +12,10 @@ public:
     explicit dir_files(const char *dir, const char *pattern = nullptr);
     ~dir_files();
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     dir_files(dir_files &&o);
     dir_files &operator=(dir_files &&o);
-    // END C++11 only
+    // END C++11
 
     bool reopen(const char *dir, const char *pattern = nullptr);
     void close();

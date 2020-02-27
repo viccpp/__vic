@@ -11,10 +11,10 @@ public:
     sigset() = default;
     sigset(const ::sigset_t &set);
     template<size_t Size> sigset(const int (&sigs)[Size]);
-    // BEGIN C++11 only
+    // BEGIN C++11
     sigset(std::initializer_list<int> sigs);
     sigset &operator=(std::initializer_list<int> sigs)
-    // END C++11 only
+    // END C++11
 
     sigset &assign(const int *sigs, size_t n);
     template<size_t Size>

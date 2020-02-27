@@ -12,10 +12,10 @@ public:
     file(const char *name, int flags, ::mode_t mode = 0666);
     ~file();
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     file(file &&o) noexcept;
     file &operator=(file &&o) noexcept;
-    // END C++11 only
+    // END C++11
 
     bool open(const char *name, int flags, ::mode_t mode = 0666);
     bool is_open() const;
