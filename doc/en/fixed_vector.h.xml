@@ -16,11 +16,11 @@ public:
     explicit fixed_vector(size_t max_size);
     ~fixed_vector();
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     fixed_vector(fixed_vector &&o) noexcept;
     fixed_vector &operator=(fixed_vector &&o) noexcept;
     template<class... Args> T &emplace_back(Args &&... args)
-    // END C++11 only
+    // END C++11
 
     // size in objects
     size_t size() const;

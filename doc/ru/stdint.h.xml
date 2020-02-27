@@ -106,17 +106,17 @@ struct uint_exactly_bytes
     using type = ]]><nt>&lt;unsigned-integer-type-of-the-corresponding-size></nt><![CDATA[;
 };
 
-// BEGIN C++11 only
+// BEGIN C++11
 template<unsigned N>
 using int_exact_bytes = typename int_exactly_bytes<N>::type;
 
 template<unsigned N>
 using uint_exact_bytes = typename uint_exactly_bytes<N>::type;
-// END C++11 only
+// END C++11
 ]]></code-block>
 
 <p>Метафункции, возвращающие знаковый/беззнаковый целый тип для указанного
-размера в байтах. Более короткие псевдонимы доступны в режиме C++11.
+размера в байтах. Более короткие псевдонимы доступны в режиме C++11 и выше.
 Допустимые значения для <tt>SizeInBytes</tt>: <tt>1</tt>, <tt>2</tt>,
 <tt>4</tt>, <tt>8</tt>.</p>
 

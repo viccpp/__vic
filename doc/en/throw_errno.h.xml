@@ -42,7 +42,7 @@ void throw_errno(const char *prompt)
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 ssize_t written = ::write(fd, buf, buf_size);
-if(written < 0) __vic::throw_errno("write()");
+if(written < 0) __vic::throw_errno("write");
 // ...
 ]]></code-block>
 </section>

@@ -8,7 +8,7 @@
 namespace __vic {
 
 //----------------------------------------------------------------------------
-std::string &pad_right(std::string &st, size_t size, char pad_ch)
+std::string &pad_back(std::string &st, size_t size, char pad_ch)
 {
     if(st.length() < size) st.append(size - st.length(), pad_ch);
     return st;

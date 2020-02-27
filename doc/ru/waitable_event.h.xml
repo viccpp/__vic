@@ -18,12 +18,12 @@ public:
     void wait();
     bool wait_ms(unsigned msec);
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     template<class Rep, class Period>
     bool wait_for(const std::chrono::duration<Rep,Period> &d);
     template<class Clock, class Duration>
     bool wait_until(const std::chrono::time_point<Clock,Duration> &t);
-    // END C++11 only
+    // END C++11
 };
 ]]>
 </code-block>

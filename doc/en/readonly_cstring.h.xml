@@ -15,10 +15,10 @@ public:
     readonly_cstring(const readonly_cstring &str);
     ~readonly_cstring() noexcept;
 
-    // BEGIN C++11 only
+    // BEGIN C++11
     readonly_cstring(readonly_cstring &&str) noexcept;
     readonly_cstring &operator=(readonly_cstring &&str) noexcept;
-    // END C++11 only
+    // END C++11
 
     readonly_cstring &operator=(const char *str);
     readonly_cstring &operator=(const readonly_cstring &str);
