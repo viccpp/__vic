@@ -9,24 +9,24 @@
 
 <code-block lang="C++"><![CDATA[
 char *trim(char *str);
-char *trim_left(char *str);
-char *trim_right(char *str);
+char *trim_front(char *str);
+char *trim_back(char *str);
 char *trim(char *str, char ch);
-char *trim_left(char *str, char ch);
-char *trim_right(char *str, char ch);
+char *trim_front(char *str, char ch);
+char *trim_back(char *str, char ch);
 char *trim(char *str, const char *set);
-char *trim_left(char *str, const char *set);
-char *trim_right(char *str, const char *set);
+char *trim_front(char *str, const char *set);
+char *trim_back(char *str, const char *set);
 
 std::string &trim(std::string &str);
-std::string &trim_left(std::string &str);
-std::string &trim_right(std::string &str);
+std::string &trim_front(std::string &str);
+std::string &trim_back(std::string &str);
 std::string &trim(std::string &str, char ch);
-std::string &trim_left(std::string &str, char ch);
-std::string &trim_right(std::string &str, char ch);
+std::string &trim_front(std::string &str, char ch);
+std::string &trim_back(std::string &str, char ch);
 std::string &trim(std::string &str, const char *set);
-std::string &trim_left(std::string &str, const char *set);
-std::string &trim_right(std::string &str, const char *set);
+std::string &trim_front(std::string &str, const char *set);
+std::string &trim_back(std::string &str, const char *set);
 
 std::string trimmed(const std::string &str);
 std::string trimmed_left(const std::string &str);
@@ -46,8 +46,8 @@ is specified, all ASCII-whitespaces are implied. Following naming rules for
 the functions are used:</p>
 <list style="bulleted">
     <item><tt>trim</tt> - strips from both edges,</item>
-    <item><tt>trim_left</tt> - strips from the beginning,</item>
-    <item><tt>trim_right</tt> - strips from the end.</item>
+    <item><tt>trim_front</tt> - strips from the beginning,</item>
+    <item><tt>trim_back</tt> - strips from the end.</item>
 </list>
 
 <p>Functions <tt>trim</tt> modify the string in-situ and return the pointer or
@@ -71,16 +71,16 @@ char st1[] = "\t value    \n";
 
 // CHOICE:
 __vic::trim(st1);       // result: "value"
-__vic::trim_left(st1);  // result: "value    \n"
-__vic::trim_right(st1); // result: "\t value"
+__vic::trim_front(st1); // result: "value    \n"
+__vic::trim_back(st1);  // result: "\t value"
 
 std::string st2("...value123");
 
 // CHOICE:
 // trim dot chars
-__vic::trim_left(st1, '.');          // result: "value123"
+__vic::trim_front(st1, '.');        // result: "value123"
 // trim all digits
-__vic::trim_right(st1, "123456789"); // result: "...value"
+__vic::trim_back(st1, "123456789"); // result: "...value"
 </code-block>
 </section>
 
@@ -125,32 +125,32 @@ std::string &sift(std::string &str, Pred pred);
 </chapter>
 
 
-<chapter xml:id="pad_left">
-<title><tt>pad_left()</tt></title>
+<chapter xml:id="pad_front">
+<title><tt>pad_front()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-std::string &pad_left(std::string &str, size_t size, char pad_ch = ' ');
-char *pad_left(char *str, size_t size, char pad_ch = ' ');
+std::string &pad_front(std::string &str, size_t size, char pad_ch = ' ');
+char *pad_front(char *str, size_t size, char pad_ch = ' ');
 ]]></code-block>
 
 <p>Complements the string up to length <tt>size</tt> by adding the required
-number of <tt>pad_ch</tt> chars to the left (beginning). Nothing happens if
+number of <tt>pad_ch</tt> chars to the beginning. Nothing happens if
 <tt>str</tt> length is equal or greather than <tt>size</tt> or the pointer is
 null. Returns <tt>str</tt>.</p>
 
 </chapter>
 
 
-<chapter xml:id="pad_right">
-<title><tt>pad_right()</tt></title>
+<chapter xml:id="pad_back">
+<title><tt>pad_back()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-std::string &pad_right(std::string &str, size_t size, char pad_ch = ' ');
-char *pad_right(char *str, size_t size, char pad_ch = ' ');
+std::string &pad_back(std::string &str, size_t size, char pad_ch = ' ');
+char *pad_back(char *str, size_t size, char pad_ch = ' ');
 ]]></code-block>
 
 <p>Complements the string up to length <tt>size</tt> by adding the required
-number of <tt>pad_ch</tt> chars to the right (end). Nothing happens if
+number of <tt>pad_ch</tt> chars to the end. Nothing happens if
 <tt>str</tt> length is equal or greather than <tt>size</tt> or the pointer is
 null. Returns
 <tt>str</tt>.</p>

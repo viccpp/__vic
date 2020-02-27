@@ -9,34 +9,34 @@
 
 <code-block lang="C++"><![CDATA[
 char *trim(char *str);
-char *trim_left(char *str);
-char *trim_right(char *str);
+char *trim_front(char *str);
+char *trim_back(char *str);
 char *trim(char *str, char ch);
-char *trim_left(char *str, char ch);
-char *trim_right(char *str, char ch);
+char *trim_front(char *str, char ch);
+char *trim_back(char *str, char ch);
 char *trim(char *str, const char *set);
-char *trim_left(char *str, const char *set);
-char *trim_right(char *str, const char *set);
+char *trim_front(char *str, const char *set);
+char *trim_back(char *str, const char *set);
 
 std::string &trim(std::string &str);
-std::string &trim_left(std::string &str);
-std::string &trim_right(std::string &str);
+std::string &trim_front(std::string &str);
+std::string &trim_back(std::string &str);
 std::string &trim(std::string &str, char ch);
-std::string &trim_left(std::string &str, char ch);
-std::string &trim_right(std::string &str, char ch);
+std::string &trim_front(std::string &str, char ch);
+std::string &trim_back(std::string &str, char ch);
 std::string &trim(std::string &str, const char *set);
-std::string &trim_left(std::string &str, const char *set);
-std::string &trim_right(std::string &str, const char *set);
+std::string &trim_front(std::string &str, const char *set);
+std::string &trim_back(std::string &str, const char *set);
 
 std::string trimmed(const std::string &str);
-std::string trimmed_left(const std::string &str);
-std::string trimmed_right(const std::string &str);
+std::string trimmed_front(const std::string &str);
+std::string trimmed_back(const std::string &str);
 std::string trimmed(const std::string &str, char ch);
-std::string trimmed_left(const std::string &str, char ch);
-std::string trimmed_right(const std::string &str, char ch);
+std::string trimmed_front(const std::string &str, char ch);
+std::string trimmed_back(const std::string &str, char ch);
 std::string trimmed(const std::string &str, const char *set);
-std::string trimmed_left(const std::string &str, const char *set);
-std::string trimmed_right(const std::string &str, const char *set);
+std::string trimmed_front(const std::string &str, const char *set);
+std::string trimmed_back(const std::string &str, const char *set);
 ]]></code-block>
 
 <p>Набор функций, обрезающих нежелательные символы по краям строки. Обрезаемые
@@ -45,8 +45,8 @@ std::string trimmed_right(const std::string &str, const char *set);
 ASCII-символы. Используются следующие правила именования:</p>
 <list style="bulleted">
     <item><tt>trim</tt> – обрезает строку с обоих концов,</item>
-    <item><tt>trim_left</tt> – обрезает строку слева,</item>
-    <item><tt>trim_right</tt> – обрезает строку справа.</item>
+    <item><tt>trim_front</tt> – обрезает строку в начале,</item>
+    <item><tt>trim_back</tt> – обрезает строку в конце.</item>
 </list>
 
 <p>Функции <tt>trim</tt> модифицируют переданную строку и возвращают указатель
@@ -70,16 +70,16 @@ char st1[] = "\t value    \n";
 
 // CHOICE:
 __vic::trim(st1);       // result: "value"
-__vic::trim_left(st1);  // result: "value    \n"
-__vic::trim_right(st1); // result: "\t value"
+__vic::trim_front(st1); // result: "value    \n"
+__vic::trim_back(st1);  // result: "\t value"
 
 std::string st2("...value123");
 
 // CHOICE:
 // trim dot chars
-__vic::trim_left(st1, '.');          // result: "value123"
+__vic::trim_front(st1, '.');        // result: "value123"
 // trim all digits
-__vic::trim_right(st1, "123456789"); // result: "...value"
+__vic::trim_back(st1, "123456789"); // result: "...value"
 </code-block>
 </section>
 
@@ -124,30 +124,30 @@ std::string &sift(std::string &str, Pred pred);
 </chapter>
 
 
-<chapter xml:id="pad_left">
-<title><tt>pad_left()</tt></title>
+<chapter xml:id="pad_front">
+<title><tt>pad_front()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-std::string &pad_left(std::string &str, size_t size, char pad_ch = ' ');
-char *pad_left(char *str, size_t size, char pad_ch = ' ');
+std::string &pad_front(std::string &str, size_t size, char pad_ch = ' ');
+char *pad_front(char *str, size_t size, char pad_ch = ' ');
 ]]></code-block>
 
-<p>Дополняет строку до длины <tt>size</tt> слева (в начале) символами
+<p>Дополняет строку до длины <tt>size</tt> в начале символами
 <tt>pad_ch</tt>. Ничего не происходит, если строка уже имеет длину
 <tt>size</tt> или большую, либо указатель - null. Возвращает <tt>str</tt>.</p>
 
 </chapter>
 
 
-<chapter xml:id="pad_right">
-<title><tt>pad_right()</tt></title>
+<chapter xml:id="pad_back">
+<title><tt>pad_back()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-std::string &pad_right(std::string &str, size_t size, char pad_ch = ' ');
-char *pad_right(char *str, size_t size, char pad_ch = ' ');
+std::string &pad_back(std::string &str, size_t size, char pad_ch = ' ');
+char *pad_back(char *str, size_t size, char pad_ch = ' ');
 ]]></code-block>
 
-<p>Дополняет строку до длины <tt>size</tt> справа (в конце) символами
+<p>Дополняет строку до длины <tt>size</tt> в конце символами
 <tt>pad_ch</tt>. Ничего не происходит, если строка уже имеет длину
 <tt>size</tt> или большую, либо указатель - null. Возвращает <tt>str</tt>.</p>
 
