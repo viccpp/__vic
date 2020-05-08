@@ -77,7 +77,7 @@ The new element is created using several phases:</p>
 
 <p>Maximum capacity is specified on creation of the container. Later it
 can be changed but all the elements has to be destroyed before. In other words,
-the container can be recreated.</p>
+the container can be recreated (<tt>recreate()</tt> function).</p>
 
 <p>When available, <tt>emplace_back()</tt> must be used for elements creation.
 If not, the unsafe interface described above must be used with care. It is very
@@ -87,6 +87,14 @@ in the standard container. Anyway, it is more efficient and convenient to use
 in general than alternative approaches like creating the objects on the free
 store and placing only pointers to the container, even if we have
 <tt>std::unique_ptr</tt> to manage lifetime of the objects.</p>
+
+<p>Fundamental differences from <tt>std::vector</tt>:</p>
+<list style="numbered">
+    <item>Elements don't have to be copyable or movable (<tt>std::vector</tt>
+        requires at least noexcept-movability);</item>
+    <item>Elements have stable addresses after addition of new element;</item>
+    <item><tt>emplace_back()</tt> has precondition (<tt>!full()</tt>).</item>
+</list>
 
 <section><title>Class members</title>
 
