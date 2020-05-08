@@ -2,7 +2,7 @@
 # NMAKE Makefile for Visual C++ & LLVM clang-cl
 #
 # Usage:
-#   $ nmake -f Makefile.nmake [compiler={msvc|clang-cl}] [std={14|17|latest}]
+#   $ nmake -f Makefile.nmake [compiler={msvc|clang-cl}] [std={14|17|20|latest}]
 
 !include ../src/defs.mk
 std = 14
