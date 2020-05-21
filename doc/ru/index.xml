@@ -52,6 +52,7 @@
     <!ENTITY windows.event.h SYSTEM "windows.event.h.xml">
     <!ENTITY windows.find_file.h SYSTEM "windows.find_file.h.xml">
     <!ENTITY windows.handle.h SYSTEM "windows.handle.h.xml">
+    <!ENTITY windows.throw_last_error.h SYSTEM "windows.throw_last_error.h.xml">
 ]>
 <document xml:lang="ru" version="1.0" status="Draft">
 <title>__vic's C++ library (Windows)</title>
@@ -175,6 +176,7 @@ TODO
 &windows.event.h;
 &windows.find_file.h;
 &windows.handle.h;
+&windows.throw_last_error.h;
 </chapter>
 
 <chapter xml:id="build">

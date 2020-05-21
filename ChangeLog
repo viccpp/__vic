@@ -6,6 +6,8 @@ Legend:
 
 2020-05-21  __vic
     + windows/critical_section.h: CriticalSection(DWORD dwSpinCount)
+    + windows/throw_last_error.h and windows::throw_last_error() are parts of
+      the public API now
 
 2020-02-24  __vic
     ! string_utils.h: Renamed:
