@@ -9,6 +9,7 @@
 #define __VIC_WINDOWS_CRITICAL_SECTION_H
 
 #include<__vic/defs.h>
+#include<__vic/windows/throw_last_error.h>
 #include<windows.h>
 
 namespace __vic { namespace windows {
@@ -19,6 +20,14 @@ class CriticalSection : private non_copyable
     CRITICAL_SECTION cs;
 public:
     CriticalSection() { ::InitializeCriticalSection(&cs); }
+#if defined(_WIN32_WINNT) && _WIN32_WINNT >= 0x0403
+    explicit CriticalSection(DWORD dwSpinCount)
+    {
+        // Raises an exception on Win9x
+        if(!::InitializeCriticalSectionAndSpinCount(&cs, dwSpinCount))
+            throw_last_error("InitializeCriticalSectionAndSpinCount");
+    }
+#endif
     ~CriticalSection() { ::DeleteCriticalSection(&cs); }
 
     void Enter() { ::EnterCriticalSection(&cs); }

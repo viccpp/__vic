@@ -10,6 +10,7 @@ class windows::CriticalSection : private non_copyable
 {
 public:
     CriticalSection();
+    explicit CriticalSection(DWORD dwSpinCount); // _WIN32_WINNT >= 0x0403
     ~CriticalSection();
 
     void Enter();
@@ -28,6 +29,11 @@ public:
 <synopsis>
 <prototype>CriticalSection()</prototype>
 <p>Вызывает <tt>::InitializeCriticalSection()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit CriticalSection(DWORD dwSpinCount) <sign>_WIN32_WINNT >= 0x0403</sign></prototype>
+<p>Вызывает <tt>::InitializeCriticalSectionAndSpinCount()</tt>.</p>
 </synopsis>
 
 <synopsis>

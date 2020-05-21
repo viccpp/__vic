@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2020-05-21  __vic
+    + windows/critical_section.h: CriticalSection(DWORD dwSpinCount)
+
 2020-02-24  __vic
     ! string_utils.h: Renamed:
         ! trim_left() -> trim_front()
