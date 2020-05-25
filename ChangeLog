@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2020-05-25  __vic
+    * bits.h: MSVC++ __popcnt() can cause crash if not supported by CPU so
+      isn't used by default. Define __VIC_POPCNT to use it
+
 2020-02-24  __vic
     ! string_utils.h: Renamed:
         ! trim_left() -> trim_front()
