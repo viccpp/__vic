@@ -11,7 +11,8 @@
 #include<__vic/defs.h>
 #include<__vic/stdint.h>
 #include<climits>
-#if defined(_MSC_VER) && !defined(__VIC_NO_BUILTINS)
+#if defined(_MSC_VER) && defined(__VIC_POPCNT)
+// __popcnt() call causes app crash if not supported by CPU
 #include<intrin.h>
 #endif
 
@@ -89,7 +90,7 @@ inline unsigned popcount(unsigned v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcount(v);
-#elif defined(_MSC_VER) && !defined(__VIC_NO_BUILTINS)
+#elif defined(_MSC_VER) && defined(__VIC_POPCNT)
     return __popcnt(v);
 #else
     return popcount_uint(v);
@@ -100,6 +101,8 @@ inline unsigned popcount(unsigned long v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcountl(v);
+#elif defined(_MSC_VER) && defined(__VIC_POPCNT)
+    return __popcnt(v); // sizeof(unsigned long) == sizeof(unsigned) on Windows
 #else
     return popcount_uint(v);
 #endif
@@ -110,8 +113,12 @@ inline unsigned popcount(unsigned __VIC_LONGLONG v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcountll(v);
-#elif defined(_MSC_VER) && !defined(__VIC_NO_BUILTINS)
+#elif defined(_MSC_VER) && defined(__VIC_POPCNT)
+#ifdef _WIN64
     return static_cast<unsigned>(__popcnt64(v));
+#else // __popcnt64() is not available on 32-bit MSVC++
+    return __popcnt(static_cast<unsigned>(v)) + __popcnt(v >> 32);
+#endif
 #else
     return popcount_uint(v);
 #endif
@@ -122,6 +129,8 @@ inline unsigned popcount(unsigned short v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcount(v);
+#elif defined(_MSC_VER) && defined(__VIC_POPCNT)
+    return __popcnt16(v);
 #else
     return popcount_uint(v);
 #endif
@@ -131,6 +140,8 @@ inline unsigned popcount(unsigned char v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcount(v);
+#elif defined(_MSC_VER) && defined(__VIC_POPCNT)
+    return __popcnt(v);
 #else
     return popcount_uint(v);
 #endif
@@ -241,7 +252,11 @@ template<class UInt>
 inline bool ispow2(UInt n)
 {
     __VIC_ASSERT_UINT(UInt);
+#if 1
     return popcount(n) == 1;
+#else // universal implementation w/o popcount()
+    return n != 0 && (n & (n - 1)) == 0;
+#endif
 }
 //----------------------------------------------------------------------------
 template<class UInt>
