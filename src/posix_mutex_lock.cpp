@@ -18,7 +18,13 @@ void mutex_lock::lock()
 mutex_lock::~mutex_lock() __VIC_THROWS
 {
     int res = ::pthread_mutex_unlock(&mtx);
-    if(res && !std::uncaught_exception())
+    if(res &&
+#if __cpp_lib_uncaught_exceptions
+        std::uncaught_exceptions() == 0
+#else
+        !std::uncaught_exception()
+#endif
+    )
         throw_errno("pthread_mutex_unlock", res);
 }
 //----------------------------------------------------------------------------

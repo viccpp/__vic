@@ -12,7 +12,7 @@ namespace __vic { namespace posix {
 // True for "." and ".." entries
 inline bool dir_entries::is_special(const char *f)
 {
-    return *f == '.' && (f[1] == '\0' || f[1] == '.' && f[2] == '\0');
+    return *f == '.' && (f[1] == '\0' || (f[1] == '.' && f[2] == '\0'));
 }
 //----------------------------------------------------------------------------
 dir_entries::dir_entries(const char *path)
