@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2020-12-16  __vic
+    + base16.h: base16::encode_byte_{lower|upper}()
+
 2020-05-25  __vic
     * bits.h: MSVC++ __popcnt() can cause crash if not supported by CPU so
       isn't used by default. Define __VIC_POPCNT to use it

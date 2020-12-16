@@ -131,6 +131,36 @@ void base16::encode_lower(ByteReader reader, CharWriter writer);
 </chapter>
 
 
+<chapter xml:id="base16--encode_byte_lower">
+<title><tt>base16::encode_byte_lower()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Byte -> Text
+template<class CharWriter>
+void base16::encode_byte_lower(unsigned char byte, CharWriter writer);
+]]></code-block>
+
+<p>То же самое, что <xref to="base16--encode_lower"/>, но кодирует
+единственный байт.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--encode_byte_upper">
+<title><tt>base16::encode_byte_upper()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Byte -> Text
+template<class CharWriter>
+void base16::encode_byte_upper(unsigned char byte, CharWriter writer);
+]]></code-block>
+
+<p>То же самое, что <xref to="base16--encode_upper"/>, но кодирует
+единственный байт.</p>
+
+</chapter>
+
+
 <chapter xml:id="base16--decode">
 <title><tt>base16::decode()</tt></title>
 

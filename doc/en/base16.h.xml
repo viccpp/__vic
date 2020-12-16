@@ -131,6 +131,34 @@ hexadecimal digits.</p>
 </chapter>
 
 
+<chapter xml:id="base16--encode_byte_lower">
+<title><tt>base16::encode_byte_lower()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Byte -> Text
+template<class CharWriter>
+void base16::encode_byte_lower(unsigned char byte, CharWriter writer);
+]]></code-block>
+
+<p>Same as <xref to="base16--encode_lower"/> but encodes only single byte.</p>
+
+</chapter>
+
+
+<chapter xml:id="base16--encode_byte_upper">
+<title><tt>base16::encode_byte_upper()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+// Byte -> Text
+template<class CharWriter>
+void base16::encode_byte_upper(unsigned char byte, CharWriter writer);
+]]></code-block>
+
+<p>Same as <xref to="base16--encode_upper"/> but encodes only single byte.</p>
+
+</chapter>
+
+
 <chapter xml:id="base16--decode">
 <title><tt>base16::decode()</tt></title>
 
