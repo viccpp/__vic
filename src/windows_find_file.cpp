@@ -11,7 +11,7 @@ namespace __vic { namespace windows {
 inline bool is_special(LPCTSTR f)
 {
     return *f == TEXT('.') &&
-        (f[1] == TEXT('\0') || f[1] == TEXT('.') && f[2] == TEXT('\0'));
+        (f[1] == TEXT('\0') || (f[1] == TEXT('.') && f[2] == TEXT('\0')));
 }
 //----------------------------------------------------------------------------
 bool FindFile::FindFirst(LPCTSTR filename)
