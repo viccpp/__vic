@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2020-12-22  __vic
+    + ascii.h: isblank(), isprint(), isgraph(), ispunct(), iscntrl()
+
 2020-12-16  __vic
     + base16.h: base16::encode_byte_{lower|upper}()
 
