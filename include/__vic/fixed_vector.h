@@ -1,4 +1,4 @@
-// A vector without autogrowing capacity() can hold non-copyable/movable objects
+// A vector without autogrowing capacity(). Can hold non-copyable/movable objects
 //
 // Platform: ISO C++ 98/11
 // $Id$
