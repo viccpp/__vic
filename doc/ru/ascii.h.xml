@@ -19,6 +19,11 @@ constexpr bool isupper(char c);
 constexpr bool isalpha(char c);
 constexpr bool isalnum(char c);
 constexpr bool isspace(char c);
+constexpr bool isblank(char c);
+constexpr bool isprint(char c);
+constexpr bool isgraph(char c);
+constexpr bool ispunct(char c);
+constexpr bool iscntrl(char c);
 constexpr bool isascii(char c);
 
 }

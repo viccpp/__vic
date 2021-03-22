@@ -25,7 +25,7 @@ __VIC_CONSTEXPR_FUNC bool isdigit(char c)
 //----------------------------------------------------------------------------
 __VIC_CONSTEXPR_FUNC bool isxdigit(char c)
 {
-    return isdigit(c) || ('A' <= c  && c <= 'F') || ('a' <= c && c <= 'f');
+    return isdigit(c) || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
 }
 //----------------------------------------------------------------------------
 __VIC_CONSTEXPR_FUNC bool islower(char c)
@@ -51,6 +51,34 @@ __VIC_CONSTEXPR_FUNC bool isalnum(char c)
 __VIC_CONSTEXPR_FUNC bool isspace(char c)
 {
     return c == ' ' || ('\t' <= c && c <= '\r');
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool isblank(char c)
+{
+    return c == ' ' || c == '\t';
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool isprint(char c)
+{
+    return ' ' <= c && c <= '~'; // isgraph(c) || c == ' '
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool isgraph(char c)
+{
+    return '!' <= c && c <= '~';
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool ispunct(char c)
+{
+    return ('!' <= c && c <= '/') ||
+           (':' <= c && c <= '@') ||
+           ('[' <= c && c <= '`') ||
+           ('{' <= c && c <= '~') ;
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool iscntrl(char c)
+{
+    return (0 <= c && c <= '\x1F') || c == '\x7F';
 }
 //----------------------------------------------------------------------------
 __VIC_CONSTEXPR_FUNC bool isascii(char c)

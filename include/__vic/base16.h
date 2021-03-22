@@ -18,6 +18,8 @@ namespace __vic {
 //////////////////////////////////////////////////////////////////////////////
 class base16
 {
+    template<class CharWriter, class Func>
+    static void encode_byte_(unsigned char , CharWriter & , Func );
     template<class ByteReader, class CharWriter, class Func>
     static void encode_(ByteReader & , CharWriter & , Func );
     struct to_hex_digit_lower
@@ -49,6 +51,12 @@ public:
         const char *what() const noexcept;
     };
 
+    // Byte -> Text
+    template<class CharWriter>
+    static void encode_byte_lower(unsigned char , CharWriter );
+    template<class CharWriter>
+    static void encode_byte_upper(unsigned char , CharWriter );
+
     // Bytes -> Text
     template<class ByteReader, class CharWriter>
     static void encode_lower(ByteReader , CharWriter );
@@ -63,15 +71,32 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
+template<class CharWriter, class Func>
+inline void base16::encode_byte_(
+    unsigned char byte, CharWriter &w, Func to_hex_digit)
+{
+    w.write(to_hex_digit(hi_nibble(byte)));
+    w.write(to_hex_digit(lo_nibble(byte)));
+}
+//----------------------------------------------------------------------------
 template<class ByteReader, class CharWriter, class Func>
 inline void base16::encode_(ByteReader &r, CharWriter &w, Func to_hex_digit)
 {
     unsigned char byte;
     while(r.read(byte))
-    {
-        w.write(to_hex_digit(hi_nibble(byte)));
-        w.write(to_hex_digit(lo_nibble(byte)));
-    }
+        encode_byte_(byte, w, to_hex_digit);
+}
+//----------------------------------------------------------------------------
+template<class CharWriter>
+void base16::encode_byte_lower(unsigned char byte, CharWriter w)
+{
+    encode_byte_(byte, w, to_hex_digit_lower());
+}
+//----------------------------------------------------------------------------
+template<class CharWriter>
+void base16::encode_byte_upper(unsigned char byte, CharWriter w)
+{
+    encode_byte_(byte, w, to_hex_digit_upper());
 }
 //----------------------------------------------------------------------------
 template<class ByteReader, class CharWriter>
