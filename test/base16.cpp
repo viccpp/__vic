@@ -12,6 +12,18 @@ typedef std::string bytes;
 typedef __vic::string_reader bytes_reader;
 typedef __vic::string_writer bytes_writer;
 
+std::string encode_byte_lower(unsigned char byte)
+{
+    std::string res;
+    __vic::base16::encode_byte_lower(byte, __vic::string_writer(res));
+    return res;
+}
+std::string encode_byte_upper(unsigned char byte)
+{
+    std::string res;
+    __vic::base16::encode_byte_upper(byte, __vic::string_writer(res));
+    return res;
+}
 std::string encode_lower(const bytes &s)
 {
     std::string res;
@@ -35,6 +47,8 @@ bytes decode(const std::string &s)
 }
 void run()
 {
+    assert(encode_byte_lower(0xAB) == "ab");
+    assert(encode_byte_upper(0xCD) == "CD");
     assert(encode_lower("\x12\x34\xAB") == "1234ab");
     assert(encode_upper("\x12\x34\xAB") == "1234AB");
     assert(decode("1234ab") == "\x12\x34\xAB");
