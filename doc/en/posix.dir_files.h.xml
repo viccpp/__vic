@@ -13,8 +13,8 @@ public:
     ~dir_files();
 
     // BEGIN C++11
-    dir_files(dir_files &&o);
-    dir_files &operator=(dir_files &&o);
+    dir_files(dir_files &&o) noexcept;
+    dir_files &operator=(dir_files &&o) noexcept;
     // END C++11
 
     bool reopen(const char *dir, const char *pattern = nullptr);
