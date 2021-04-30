@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2021-04-30  __vic
+    * sift() uses set_of_chars
+
 2020-12-22  __vic
     + ascii.h: isblank(), isprint(), isgraph(), ispunct(), iscntrl()
 
