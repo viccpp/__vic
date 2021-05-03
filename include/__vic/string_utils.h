@@ -9,7 +9,6 @@
 #define __VIC_STRING_UTILS_H
 
 #include<__vic/defs.h>
-#include<algorithm>
 #include<cstring>
 #include<string>
 

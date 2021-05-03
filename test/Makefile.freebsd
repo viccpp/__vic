@@ -16,7 +16,7 @@ TESTS := $(SOURCES:.cpp=.$(TESTSUFF))
 # Override included values
 CFLAGS = -pedantic-errors
 CFLAGS_TEST = -MMD -o $@
-WARNS = -Wall
+WARNS = -Wall -Wno-unused-local-typedefs
 .if $(std) == 98
 WARNS += -Wno-long-long
 .if $(compiler) == gcc

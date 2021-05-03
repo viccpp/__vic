@@ -3,7 +3,7 @@
 //
 
 #include<__vic/string_utils.h>
-#include<cstring>
+#include<__vic/set_of_chars.h>
 
 namespace __vic {
 
@@ -11,10 +11,10 @@ namespace {
 //----------------------------------------------------------------------------
 class is_trash
 {
-    const char *trash_chars;
+    set_of_chars trash_chars;
 public:
     explicit is_trash(const char *trash) : trash_chars(trash) {}
-    bool operator()(char ch) const { return std::strchr(trash_chars, ch); }
+    bool operator()(char ch) const { return trash_chars.contains(ch); }
 };
 //----------------------------------------------------------------------------
 } // namespace

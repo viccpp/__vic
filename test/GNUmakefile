@@ -16,7 +16,7 @@ include ../src/$(Makefile)
 # Override included values
 CFLAGS = -pedantic-errors
 CFLAGS_TEST = -MMD -o $@
-WARNS = -Wall
+WARNS = -Wall -Wno-unused-local-typedefs
 ifeq ($(std),98)
 WARNS += -Wno-long-long
 ifeq ($(compiler),gcc)

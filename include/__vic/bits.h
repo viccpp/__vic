@@ -21,7 +21,7 @@
     static_assert(T(-1) > 0, "Unsigned type is required")
 #else
 #define __VIC_ASSERT_UINT(T) \
-    typedef char assert_argument_is_unsigned[T(-1) > 0 : 1 : -1]
+    typedef char assert_argument_is_unsigned[T(-1) > 0 ? 1 : -1]
 #endif
 
 namespace __vic {
