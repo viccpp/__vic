@@ -22,7 +22,7 @@ LIBS += user32.lib notelemetry.obj
 else
 CFLAGS = -pedantic-errors
 CFLAGS_TEST = -MMD -o $@
-WARNS = -Wall
+WARNS = -Wall -Wno-unused-local-typedefs
 ifeq ($(std),98)
 WARNS += -Wno-long-long
 ifeq ($(compiler),gcc)

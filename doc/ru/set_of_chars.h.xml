@@ -95,7 +95,7 @@ public:
 <prototype>template&lt;class Iter> void assign(Iter begin, Iter end)</prototype>
 <prototype>void assign(const char *c_str)</prototype>
 <prototype>void assign(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
-<p>Вызывает <tt>clear()</tt>, затемn <tt>add()</tt> с указанными параметрами.
+<p>Вызывает <tt>clear()</tt>, затем <tt>add()</tt> с указанными параметрами.
 </p>
 </synopsis>
 
