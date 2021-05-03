@@ -12,7 +12,7 @@ namespace {
 
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
-inline std::string trimmed_if_back(
+inline std::basic_string<charT,Traits,Alloc> trimmed_if_back(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     const charT *begin = st.data();
@@ -21,7 +21,7 @@ inline std::string trimmed_if_back(
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
-inline std::string trimmed_if_front(
+inline std::basic_string<charT,Traits,Alloc> trimmed_if_front(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     const charT *end = &*st.end();
@@ -30,7 +30,7 @@ inline std::string trimmed_if_front(
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
-inline std::string trimmed_if(
+inline std::basic_string<charT,Traits,Alloc> trimmed_if(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     const charT *begin = st.data();

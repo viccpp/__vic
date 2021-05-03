@@ -3,6 +3,7 @@
 //
 
 #include<__vic/string_utils.h>
+#include<__vic/algorithm.h>
 #include<__vic/tchar.h>
 #include<__vic/char_predicates.h>
 #include<cstring>
@@ -15,10 +16,9 @@ namespace {
 template<class charT, class Pred>
 inline void trim_if_back(charT *st, Pred pred)
 {
-    charT *last = tchar::end(st) - 1;
-    charT *p = last;
-    while(p >= st && pred(*p)) p--;
-    if(p != last) *(++p) = charT();
+    charT *end = tchar::end(st);
+    charT *p = skip_if_back(st, end, pred);
+    if(p != end) *p = charT();
 }
 //----------------------------------------------------------------------------
 template<class charT, class Pred>
@@ -32,19 +32,13 @@ inline void trim_if_front(charT *st, Pred pred)
 template<class charT, class Pred>
 inline void trim_if(charT *st, Pred pred)
 {
-    charT *last = tchar::end(st) - 1;
+    charT *end = tchar::end(st);
     // trim back
-    charT *p = last;
-    while(p >= st && pred(*p)) p--;
-    if(p != last)
-    {
-        last = p;
-        *(++p) = charT();
-    }
+    charT *e = skip_if_back(st, end, pred);
+    if(e != end) *e = charT();
     // trim front
-    p = st;
-    while(p <= last && pred(*p)) p++;
-    if(p != st) std::memmove(st, p, (last - p + 2) * sizeof(charT));
+    charT *b = skip_if_front(st, e, pred);
+    if(b != st) std::memmove(st, b, (e - b + 1) * sizeof(charT));
 }
 //----------------------------------------------------------------------------
 
