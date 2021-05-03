@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2021-05-03  __vic
+    - bits.h: __VIC_ASSERT_UINT() in C++98 mode
+
 2021-04-30  __vic
     * sift() uses set_of_chars
 
