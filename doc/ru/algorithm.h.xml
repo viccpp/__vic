@@ -1,0 +1,41 @@
+<chapter xml:id="algorithm.h">
+<title><tt>__vic/algorithm.h</tt></title>
+
+<p>Обобщённые алгоритмы.</p>
+
+
+<chapter xml:id="skip_if_front">
+<title><tt>skip_if_front()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<
+    std::forward_iterator Iter,
+    std::predicate<std::iter_value_t<Iter>> Pred
+>
+Iter skip_if_front(Iter begin, Iter end, Pred pred);
+]]></code-block>
+
+<p>Пропускает все элементы в начале последовательности, удовлетворяющие данному
+предикату, и возвращает начало получившейся последовательности.</p>
+
+</chapter>
+
+
+<chapter xml:id="skip_if_back">
+<title><tt>skip_if_back()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<
+    std::bidirectional_iterator Iter,
+    std::predicate<std::iter_value_t<Iter>> Pred
+>
+Iter skip_if_back(Iter begin, Iter end, Pred pred);
+]]></code-block>
+
+<p>Пропускает все элементы в конце последовательности, удовлетворяющие данному
+предикату, и возвращает конец получившейся последовательности.</p>
+
+</chapter>
+
+
+</chapter>

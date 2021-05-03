@@ -6,6 +6,8 @@ Legend:
 
 2021-05-03  __vic
     - bits.h: __VIC_ASSERT_UINT() in C++98 mode
+    + algorithm.h:
+        + skip_if_front(), skip_if_back()
 
 2021-04-30  __vic
     * sift() uses set_of_chars
