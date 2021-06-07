@@ -19,21 +19,37 @@
 namespace __vic { namespace posix {
 
 //////////////////////////////////////////////////////////////////////////////
-// Directory entries observer
-class dir_entries : private non_copyable
+// Implementation base class
+class dir_entries_base : private non_copyable
 {
+protected:
     DIR *dir;
-    dirent entry;
+    dir_entries_base(DIR *h = nullptr) : dir(h) {}
+    ~dir_entries_base() { if(dir) ::closedir(dir); }
+};
+//////////////////////////////////////////////////////////////////////////////
+// Directory entries observer
+//////////////////////////////////////////////////////////////////////////////
+class dir_entries : private dir_entries_base
+{
+    dirent *entry;
     static bool is_special(const char * );
+    static dirent *alloc_dirent(const char * );
 public:
-    dir_entries() : dir(nullptr) {}
+    dir_entries() : entry(nullptr) {}
     explicit dir_entries(const char * );
     ~dir_entries();
 
 #if __cpp_rvalue_references
-    dir_entries(dir_entries &&o) noexcept :
-        dir(o.dir), entry(std::move(o.entry)) { o.dir = nullptr; }
-    dir_entries &operator=(dir_entries && ) noexcept;
+    dir_entries(dir_entries &&o) noexcept
+        : dir_entries_base(o.dir), entry(o.entry)
+        { o.dir = nullptr; o.entry = nullptr; }
+    dir_entries &operator=(dir_entries &&o) noexcept
+    {
+        std::swap(dir, o.dir);
+        std::swap(entry, o.entry);
+        return *this;
+    }
 #endif
 
     bool reopen(const char * );
@@ -42,7 +58,7 @@ public:
 
     const char *next(); // returns entry name without path
 #ifdef _DIRENT_HAVE_D_TYPE
-    unsigned char type() const { return entry.d_type; }
+    unsigned char type() const { return entry->d_type; }
 #endif
     void rewind();
 };
