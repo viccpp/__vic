@@ -16,6 +16,12 @@
 #define _DIRENT_HAVE_D_TYPE 1
 #endif
 
+// Don't use readdir_r() since glibc-2.24 (Linux) and FreeBSD 12
+#if (defined(__GLIBC__) && (__GLIBC__ == 2 && __GLIBC_MINOR >= 24) || __GLIBC__ > 2) || \
+    (defined(__FreeBSD__) && __FreeBSD__ >= 12)
+#define __VIC_USE_READDIR 1
+#endif
+
 namespace __vic { namespace posix {
 
 //////////////////////////////////////////////////////////////////////////////
@@ -23,7 +29,11 @@ namespace __vic { namespace posix {
 class dir_entries : private non_copyable
 {
     DIR *dir;
+#ifdef __VIC_USE_READDIR
+    dirent *entry;
+#else
     dirent entry;
+#endif
     static bool is_special(const char * );
 public:
     dir_entries() : dir(nullptr) {}
@@ -32,8 +42,13 @@ public:
 
 #if __cpp_rvalue_references
     dir_entries(dir_entries &&o) noexcept :
-        dir(o.dir), entry(std::move(o.entry)) { o.dir = nullptr; }
-    dir_entries &operator=(dir_entries && ) noexcept;
+        dir(o.dir), entry(o.entry) { o.dir = nullptr; }
+    dir_entries &operator=(dir_entries &&o) noexcept
+    {
+        std::swap(dir, o.dir);
+        entry = o.entry;
+        return *this;
+    }
 #endif
 
     bool reopen(const char * );
@@ -42,7 +57,14 @@ public:
 
     const char *next(); // returns entry name without path
 #ifdef _DIRENT_HAVE_D_TYPE
-    unsigned char type() const { return entry.d_type; }
+    unsigned char type() const
+    {
+#ifdef __VIC_USE_READDIR
+        return entry->d_type;
+#else
+        return entry.d_type;
+#endif
+    }
 #endif
     void rewind();
 };

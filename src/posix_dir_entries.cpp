@@ -4,7 +4,7 @@
 
 #include<__vic/posix/dir_entries.h>
 #include<__vic/throw_errno.h>
-#include<__vic/string_buffer.h>
+#include<cerrno>
 
 namespace __vic { namespace posix {
 
@@ -25,15 +25,6 @@ dir_entries::~dir_entries()
     if(is_open()) ::closedir(dir);
 }
 //----------------------------------------------------------------------------
-#if __cpp_rvalue_references
-dir_entries &dir_entries::operator=(dir_entries &&o) noexcept
-{
-    std::swap(dir, o.dir);
-    entry = std::move(o.entry);
-    return *this;
-}
-#endif
-//----------------------------------------------------------------------------
 bool dir_entries::reopen(const char *path)
 {
     if(is_open()) close();
@@ -53,6 +44,22 @@ const char *dir_entries::next()
 {
     for(;;)
     {
+#ifdef __VIC_USE_READDIR
+        errno = 0;
+        if(dirent *p = ::readdir(dir))
+        {
+            if(!is_special(p->d_name))
+            {
+                entry = p;
+                return p->d_name;
+            }
+        }
+        else // no more entries or error
+        {
+            if(int err = errno) throw_errno("readdir", err);
+            return nullptr; // the end is reached
+        }
+#else // use readdir_r()
         dirent *p;
         int err = ::readdir_r(dir, &entry, &p);
         if(err
@@ -60,8 +67,9 @@ const char *dir_entries::next()
             && err != 9 // no entries
 #endif
         ) throw_errno("readdir_r", err);
-        if(!p) return 0; // the end is reached
+        if(!p) return nullptr; // the end is reached
         if(!is_special(entry.d_name)) return entry.d_name;
+#endif
     }
 }
 //----------------------------------------------------------------------------
