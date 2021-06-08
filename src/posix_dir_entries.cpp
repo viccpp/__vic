@@ -52,14 +52,9 @@ bool dir_entries::reopen(const char *path)
     if(is_open()) close();
     DIR *d = ::opendir(path);
     if(!d) return false;
-    try
-    {
-        dirent *ent = alloc_dirent(path);
-        ::operator delete(entry);
-        entry = ent;
-    }
-    catch(...)
-    {
+    try {
+        entry = alloc_dirent(path);
+    } catch(...) {
         ::closedir(d);
         throw;
     }
@@ -71,6 +66,8 @@ void dir_entries::close()
 {
     if(::closedir(dir)) throw_errno("closedir");
     dir = nullptr;
+    ::operator delete(entry);
+    entry = nullptr;
 }
 //----------------------------------------------------------------------------
 const char *dir_entries::next()
