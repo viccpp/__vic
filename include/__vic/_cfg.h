@@ -278,6 +278,10 @@
 #   define __VIC_CONSTEXPR14 inline
 #endif
 
+#ifndef __has_include
+#   define __has_include(f) 0
+#endif
+
 #ifndef __has_cpp_attribute
 #   define __has_cpp_attribute(a) 0
 #endif
