@@ -13,6 +13,7 @@ public:
         trace,
         debug,
         info,
+        notice,
         warning,
         error,
         fatal
@@ -52,6 +53,7 @@ public:
     void trace(const char *msg);
     void debug(const char *msg);
     void info(const char *msg);
+    void notice(const char *msg);
     void warning(const char *msg);
     void error(const char *msg);
     void fatal(const char *msg);
@@ -59,6 +61,7 @@ public:
     void trace(const std::string &msg);
     void debug(const std::string &msg);
     void info(const std::string &msg);
+    void notice(const std::string &msg);
     void warning(const std::string &msg);
     void error(const std::string &msg);
     void fatal(const std::string &msg);
@@ -66,6 +69,7 @@ public:
     record trace();
     record debug();
     record info();
+    record notice();
     record warning();
     record error();
     record fatal();
@@ -73,6 +77,7 @@ public:
     bool trace_visible() const;
     bool debug_visible() const;
     bool info_visible() const;
+    bool notice_visible() const;
     bool warning_visible() const;
     bool error_visible() const;
     bool fatal_visible() const;
@@ -99,6 +104,7 @@ const char *to_string(logger::severity_t s);
     <item>TRACE - подробная отладка,</item>
     <item>DEBUG - отладка,</item>
     <item>INFO - информационное сообщение,</item>
+    <item>NOTICE - нормальное, но важное событие,</item>
     <item>WARNING - незначительная ошибка или подозрительная ситуация,</item>
     <item>ERROR - серьёзная ошибка, но приложение может продолжать
         работу,</item>
@@ -120,7 +126,8 @@ const char *to_string(logger::severity_t s);
 log.trace("Trace message");
 log.debug("Debug message");
 log.info("Info message");
-log.warning("Warning message");
+log.notice("Notice");
+log.warning("Warning");
 log.error("Recoverable error");
 log.fatal("Fatal error");
 </code-block>
@@ -183,6 +190,7 @@ if(log.debug_visible())
 <prototype>severity::trace</prototype>
 <prototype>severity::debug</prototype>
 <prototype>severity::info</prototype>
+<prototype>severity::notice</prototype>
 <prototype>severity::warning</prototype>
 <prototype>severity::error</prototype>
 <prototype>severity::fatal</prototype>
@@ -281,6 +289,8 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 <prototype>void debug(const std::string &amp;msg)</prototype>
 <prototype>void info(const char *msg)</prototype>
 <prototype>void info(const std::string &amp;msg)</prototype>
+<prototype>void notice(const char *msg)</prototype>
+<prototype>void notice(const std::string &amp;msg)</prototype>
 <prototype>void warning(const char *msg)</prototype>
 <prototype>void warning(const std::string &amp;msg)</prototype>
 <prototype>void error(const char *msg)</prototype>
@@ -294,6 +304,7 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 <prototype>logger::record trace()</prototype>
 <prototype>logger::record debug()</prototype>
 <prototype>logger::record info()</prototype>
+<prototype>logger::record notice()</prototype>
 <prototype>logger::record warning()</prototype>
 <prototype>logger::record error()</prototype>
 <prototype>logger::record fatal()</prototype>
@@ -305,6 +316,7 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 <prototype>bool trace_visible() const</prototype>
 <prototype>bool debug_visible() const</prototype>
 <prototype>bool info_visible() const</prototype>
+<prototype>bool notice_visible() const</prototype>
 <prototype>bool warning_visible() const</prototype>
 <prototype>bool error_visible() const</prototype>
 <prototype>bool fatal_visible() const</prototype>

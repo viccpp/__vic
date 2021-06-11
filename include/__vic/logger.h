@@ -22,6 +22,7 @@ public:
         trace,
         debug,
         info,       // Default severity
+        notice,     // Normal but significant event
         warning,    // Insignificant error
         error,      // Severe error. Application can continue running
         fatal       // Critical unrecoverable error. Application can't
@@ -76,6 +77,7 @@ public:
     void trace(const char *msg) { message(severity::trace, msg); }
     void debug(const char *msg) { message(severity::debug, msg); }
     void info(const char *msg) { message(severity::info, msg); }
+    void notice(const char *msg) { message(severity::notice, msg); }
     void warning(const char *msg) { message(severity::warning, msg); }
     void error(const char *msg) { message(severity::error, msg); }
     void fatal(const char *msg) { message(severity::fatal, msg); }
@@ -83,6 +85,7 @@ public:
     void trace(const std::string &msg) { message(severity::trace, msg); }
     void debug(const std::string &msg) { message(severity::debug, msg); }
     void info(const std::string &msg) { message(severity::info, msg); }
+    void notice(const std::string &msg) { message(severity::notice, msg); }
     void warning(const std::string &msg) { message(severity::warning, msg); }
     void error(const std::string &msg) { message(severity::error, msg); }
     void fatal(const std::string &msg) { message(severity::fatal, msg); }
@@ -90,6 +93,7 @@ public:
     record trace();
     record debug();
     record info();
+    record notice();
     record warning();
     record error();
     record fatal();
@@ -97,6 +101,7 @@ public:
     bool trace_visible() const { return level() <= severity::trace; }
     bool debug_visible() const { return level() <= severity::debug; }
     bool info_visible() const { return level() <= severity::info; }
+    bool notice_visible() const { return level() <= severity::notice; }
     bool warning_visible() const { return level() <= severity::warning; }
     bool error_visible() const { return level() <= severity::error; }
     bool fatal_visible() const { return level() <= severity::fatal; }
@@ -137,6 +142,7 @@ public:
 inline logger::record logger::trace() { return record(*this, severity::trace); }
 inline logger::record logger::debug() { return record(*this, severity::debug); }
 inline logger::record logger::info() { return record(*this, severity::info); }
+inline logger::record logger::notice() { return record(*this, severity::notice); }
 inline logger::record logger::warning() { return record(*this, severity::warning); }
 inline logger::record logger::error() { return record(*this, severity::error); }
 inline logger::record logger::fatal() { return record(*this, severity::fatal); }

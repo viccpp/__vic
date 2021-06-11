@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2021-06-11  __vic
+    + logger: notice level
+
 2021-05-03  __vic
     - bits.h: __VIC_ASSERT_UINT() in C++98 mode
     + algorithm.h:

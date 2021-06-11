@@ -13,6 +13,7 @@ public:
         trace,
         debug,
         info,
+        notice,
         warning,
         error,
         fatal
@@ -52,6 +53,7 @@ public:
     void trace(const char *msg);
     void debug(const char *msg);
     void info(const char *msg);
+    void notice(const char *msg);
     void warning(const char *msg);
     void error(const char *msg);
     void fatal(const char *msg);
@@ -59,6 +61,7 @@ public:
     void trace(const std::string &msg);
     void debug(const std::string &msg);
     void info(const std::string &msg);
+    void notice(const std::string &msg);
     void warning(const std::string &msg);
     void error(const std::string &msg);
     void fatal(const std::string &msg);
@@ -66,6 +69,7 @@ public:
     record trace();
     record debug();
     record info();
+    record notice();
     record warning();
     record error();
     record fatal();
@@ -73,6 +77,7 @@ public:
     bool trace_visible() const;
     bool debug_visible() const;
     bool info_visible() const;
+    bool notice_visible() const;
     bool warning_visible() const;
     bool error_visible() const;
     bool fatal_visible() const;
@@ -93,12 +98,13 @@ const char *to_string(logger::severity_t s);
 <p>Logging front-end. Provides building of the
 log records using operator <tt>&lt;&lt;</tt>, like <tt>iostream</tt>. Each log
 record has the associated severity. The logger itself can filter out the
-records by severity. There are 6 predefined levels of the severity (in
+records by severity. There are 7 predefined levels of the severity (in
 ascending order):</p>
 <list style="numbered">
     <item>TRACE - detailed debug,</item>
     <item>DEBUG - debug,</item>
     <item>INFO - informational,</item>
+    <item>NOTICE - normal but significant event,</item>
     <item>WARNING - insignificant error or suspicious situation,</item>
     <item>ERROR - severe error but the application can continue,</item>
     <item>FATAL - critical unrecoverable error, the application can't
@@ -120,7 +126,8 @@ functions should be used.</p>
 log.trace("Trace message");
 log.debug("Debug message");
 log.info("Info message");
-log.warning("Warning message");
+log.notice("Notice");
+log.warning("Warning");
 log.error("Recoverable error");
 log.fatal("Fatal error");
 </code-block>
@@ -182,6 +189,7 @@ using <tt>reset_output()</tt>.</p>
 <prototype>severity::trace</prototype>
 <prototype>severity::debug</prototype>
 <prototype>severity::info</prototype>
+<prototype>severity::notice</prototype>
 <prototype>severity::warning</prototype>
 <prototype>severity::error</prototype>
 <prototype>severity::fatal</prototype>
@@ -279,6 +287,8 @@ are formed.</p>
 <prototype>void debug(const std::string &amp;msg)</prototype>
 <prototype>void info(const char *msg)</prototype>
 <prototype>void info(const std::string &amp;msg)</prototype>
+<prototype>void notice(const char *msg)</prototype>
+<prototype>void notice(const std::string &amp;msg)</prototype>
 <prototype>void warning(const char *msg)</prototype>
 <prototype>void warning(const std::string &amp;msg)</prototype>
 <prototype>void error(const char *msg)</prototype>
@@ -292,6 +302,7 @@ are formed.</p>
 <prototype>logger::record trace()</prototype>
 <prototype>logger::record debug()</prototype>
 <prototype>logger::record info()</prototype>
+<prototype>logger::record notice()</prototype>
 <prototype>logger::record warning()</prototype>
 <prototype>logger::record error()</prototype>
 <prototype>logger::record fatal()</prototype>
@@ -303,6 +314,7 @@ added using operators <tt>&lt;&lt;</tt>.</p>
 <prototype>bool trace_visible() const</prototype>
 <prototype>bool debug_visible() const</prototype>
 <prototype>bool info_visible() const</prototype>
+<prototype>bool notice_visible() const</prototype>
 <prototype>bool warning_visible() const</prototype>
 <prototype>bool error_visible() const</prototype>
 <prototype>bool fatal_visible() const</prototype>
