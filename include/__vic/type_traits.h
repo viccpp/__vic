@@ -16,6 +16,7 @@
 #include<type_traits>
 #include<utility> // for std::index_sequence
 #endif
+#include<cstddef> // for std::byte
 
 namespace __vic {
 
@@ -159,6 +160,31 @@ template<> struct is_unsigned_integer<unsigned char> : true_type {};
 template<> struct is_signed_integer<__VIC_LONGLONG> : true_type {};
 template<> struct is_unsigned_integer<unsigned __VIC_LONGLONG> : true_type {};
 #endif
+
+//----------------------------------------------------------------------------
+
+template<class T> struct is_byte : false_type {};
+template<> struct is_byte<char> : true_type {};
+template<> struct is_byte<unsigned char> : true_type {};
+#if __cpp_lib_byte // C++17
+template<> struct is_byte<std::byte> : true_type {};
+#endif
+#if __cpp_char8_t // C++20
+template<> struct is_byte<char8_t> : true_type {};
+#endif
+
+template<class To, class From>
+__VIC_CONSTEXPR_FUNC To byte_cast(From v)
+{
+#if __cpp_static_assert
+    static_assert(is_byte<From>::value, "Source type must be a byte type");
+    static_assert(is_byte<To>::value, "Target type must be a byte type");
+#else
+    typedef char assert_From_is_byte[is_byte<From>::value ? 1 : -1];
+    typedef char assert_To_is_byte[is_byte<To>::value ? 1 : -1];
+#endif
+    return static_cast<To>(v);
+}
 
 //----------------------------------------------------------------------------
 
