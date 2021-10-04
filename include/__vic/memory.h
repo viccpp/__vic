@@ -33,6 +33,21 @@ inline T load_unaligned(const void *p)
 #endif
 }
 //----------------------------------------------------------------------------
+template<class T>
+inline void store_unaligned(void *p, T v)
+{
+#ifdef __VIC_STRICT_RAM_ALIGNMENT__
+#ifdef __GNUC__
+    struct wrapper { T v; } __attribute__((packed));
+    static_cast<wrapper *>(p)->v = v;
+#else
+    std::memcpy(p, &v, sizeof v);
+#endif
+#else // unaligned access is OK
+    *static_cast<T *>(p) = v;
+#endif
+}
+//----------------------------------------------------------------------------
 
 } // namespace
 
