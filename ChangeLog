@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2021-11-19  __vic
+    * type_traits.h: using std::remove_cvref in C++20 mode
+
 2021-10-13  __vic
     * bits.h: msb_ones(), lsb_ones(), get_lsbs() are constexpr now
 
