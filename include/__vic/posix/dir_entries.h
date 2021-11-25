@@ -16,6 +16,12 @@
 #define _DIRENT_HAVE_D_TYPE 1
 #endif
 
+// Don't use readdir_r() since glibc-2.24 (Linux) and FreeBSD 12
+#if (defined(__GLIBC__) && (__GLIBC__ == 2 && __GLIBC_MINOR >= 24) || __GLIBC__ > 2) || \
+    (defined(__FreeBSD__) && __FreeBSD__ >= 12)
+#define __VIC_USE_READDIR 1
+#endif
+
 namespace __vic { namespace posix {
 
 //////////////////////////////////////////////////////////////////////////////
@@ -34,20 +40,35 @@ class dir_entries : private dir_entries_base
 {
     dirent *entry;
     static bool is_special(const char * );
+#ifndef __VIC_USE_READDIR
     static dirent *alloc_dirent(const char * );
+#endif
 public:
-    dir_entries() : entry(nullptr) {}
+    dir_entries()
+#ifndef __VIC_USE_READDIR
+        : entry(nullptr)
+#endif
+    {}
     explicit dir_entries(const char * );
     ~dir_entries();
 
 #if __cpp_rvalue_references
     dir_entries(dir_entries &&o) noexcept
         : dir_entries_base(o.dir), entry(o.entry)
-        { o.dir = nullptr; o.entry = nullptr; }
+    {
+        o.dir = nullptr;
+#ifndef __VIC_USE_READDIR
+        o.entry = nullptr;
+#endif
+    }
     dir_entries &operator=(dir_entries &&o) noexcept
     {
         std::swap(dir, o.dir);
+#ifdef __VIC_USE_READDIR
+        entry = o.entry;
+#else
         std::swap(entry, o.entry);
+#endif
         return *this;
     }
 #endif
