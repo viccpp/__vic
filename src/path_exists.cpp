@@ -25,7 +25,7 @@ bool get_file_attr(const char *path, DWORD &attr, const char *what)
             return false;
     }
     windows::throw_last_error(__vic::msg(256) <<
-        "Can't get attributes of " << what << " \"" << path << '"');
+        "Can't get attributes of " << what << " \"" << path << '"', err);
 }
 //----------------------------------------------------------------------------
 } // namespace
@@ -33,11 +33,23 @@ bool get_file_attr(const char *path, DWORD &attr, const char *what)
 bool path_exists(const char *path)
 {
 #if 0
-    return ::PathFileExistsW(windows::utf8to16(path)); // depends on Shlwapi.dll
+    if(::PathFileExistsW(windows::utf8to16(path))) // depends on Shlwapi.dll
+        return true;
 #else
-    DWORD attr;
-    return get_file_attr(path,attr,"path");
+    if(::GetFileAttributesW(windows::utf8to16(path)) != INVALID_FILE_ATTRIBUTES)
+        return true;
 #endif
+    DWORD err = ::GetLastError();
+    switch(err)
+    {
+        case ERROR_FILE_NOT_FOUND:
+            return false;
+        case ERROR_SHARING_VIOLATION:
+        case ERROR_LOCK_VIOLATION:
+            return true;
+    }
+    windows::throw_last_error(__vic::msg(256) <<
+        "Can't get attributes of path  \"" << path << '"', err);
 }
 //----------------------------------------------------------------------------
 bool file_exists(const char *path)
