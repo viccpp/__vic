@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2021-11-30  __vic
+    - fs.h: {path|file|dir}_exists() use ::FindFirstFile() API.
+      ::GetFileAttributes() returns spurious errors like
+      ERROR_SHARING_VIOLATION instead of file attributes
+
 2021-05-03  __vic
     - bits.h: __VIC_ASSERT_UINT() in C++98 mode
 
