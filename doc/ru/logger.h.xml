@@ -47,6 +47,17 @@ public:
     void shrink_buffer(size_t limit);
 
     void message(severity_t severity, const char *msg, size_t msg_len);
+#if __cpp_lib_string_view // C++17
+    void message(severity s, std::string_view msg);
+
+    void trace(std::string_view msg);
+    void debug(std::string_view msg);
+    void info(std::string_view msg);
+    void notice(std::string_view msg);
+    void warning(std::string_view msg);
+    void error(std::string_view msg);
+    void fatal(std::string_view msg);
+#else // until C++17
     void message(severity_t severity, const char *msg);
     void message(severity_t severity, const std::string &msg);
 
@@ -65,7 +76,7 @@ public:
     void warning(const std::string &msg);
     void error(const std::string &msg);
     void fatal(const std::string &msg);
-
+#endif
     record trace();
     record debug();
     record info();
@@ -93,6 +104,9 @@ public:
     template<class T> record operator<<(const T &v);
 };
 const char *to_string(logger::severity_t s);
+#if __cpp_lib_string_view // C++17
+constexpr std::string_view to_string_view(logger::severity s);
+#endif
 ]]></code-block>
 
 <p>Front-end логгера. Реализует построение записей с помощью оператора
@@ -277,26 +291,34 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 
 <synopsis>
 <prototype>void message(severity_t severity, const char *msg, size_t msg_len)</prototype>
-<prototype>void message(severity_t severity, const char *msg)</prototype>
-<prototype>void message(severity_t severity, const std::string &amp;msg)</prototype>
+<prototype>void message(severity sev, std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void message(severity sev, const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void message(severity sev, const std::string &amp;msg) <sign>until C++17</sign></prototype>
 <p>Выводит сообщение с заданным приоритетом.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void trace(const char *msg)</prototype>
-<prototype>void trace(const std::string &amp;msg)</prototype>
-<prototype>void debug(const char *msg)</prototype>
-<prototype>void debug(const std::string &amp;msg)</prototype>
-<prototype>void info(const char *msg)</prototype>
-<prototype>void info(const std::string &amp;msg)</prototype>
-<prototype>void notice(const char *msg)</prototype>
-<prototype>void notice(const std::string &amp;msg)</prototype>
-<prototype>void warning(const char *msg)</prototype>
-<prototype>void warning(const std::string &amp;msg)</prototype>
-<prototype>void error(const char *msg)</prototype>
-<prototype>void error(const std::string &amp;msg)</prototype>
-<prototype>void fatal(const char *msg)</prototype>
-<prototype>void fatal(const std::string &amp;msg)</prototype>
+<prototype>void trace(std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void trace(const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void trace(const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void debug(std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void debug(const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void debug(const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void info(std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void info(const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void info(const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void notice(std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void notice(const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void notice(const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void warning(std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void warning(const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void warning(const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void error(std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void error(const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void error(const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void fatal(std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void fatal(const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void fatal(const std::string &amp;msg) <sign>until C++17</sign></prototype>
 <p>Выводит сообщение с соответствующим приоритетом.</p>
 </synopsis>
 
@@ -354,6 +376,7 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 
 <synopsis>
 <prototype>const char *to_string(logger::severity_t s)</prototype>
+<prototype>constexpr std::string_view to_string_view(logger::severity s) <sign>C++17</sign></prototype>
 <p>Преобразует приоритет записи лога в текстовое представление, которое можно,
 например, вывести в лог. Пример: для <tt>severity::debug</tt> возвращается
 "<tt>DEBUG</tt>" и т.п.</p>

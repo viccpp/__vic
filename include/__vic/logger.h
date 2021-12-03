@@ -1,6 +1,6 @@
 // Logger front-end
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11/17
 // $Id$
 //
 // (c) __vic 2011
@@ -10,6 +10,9 @@
 
 #include<__vic/defs.h>
 #include<__vic/string_buffer.h>
+#if __has_include(<string_view>)
+#include<string_view>
+#endif
 
 namespace __vic {
 
@@ -70,6 +73,18 @@ public:
     }
 
     void message(severity_t , const char * , size_t );
+#if __cpp_lib_string_view
+    void message(severity s, std::string_view msg)
+        { message(s, msg.data(), msg.length()); }
+
+    void trace(std::string_view msg) { message(severity::trace, msg); }
+    void debug(std::string_view msg) { message(severity::debug, msg); }
+    void info(std::string_view msg) { message(severity::info, msg); }
+    void notice(std::string_view msg) { message(severity::notice, msg); }
+    void warning(std::string_view msg) { message(severity::warning, msg); }
+    void error(std::string_view msg) { message(severity::error, msg); }
+    void fatal(std::string_view msg) { message(severity::fatal, msg); }
+#else
     void message(severity_t , const char * );
     void message(severity_t s, const std::string &msg)
         { message(s, msg.data(), msg.length()); }
@@ -89,7 +104,7 @@ public:
     void warning(const std::string &msg) { message(severity::warning, msg); }
     void error(const std::string &msg) { message(severity::error, msg); }
     void fatal(const std::string &msg) { message(severity::fatal, msg); }
-
+#endif
     record trace();
     record debug();
     record info();
@@ -152,6 +167,15 @@ inline const char *to_string(logger::severity_t s)
     extern const char * const logger_severity_strs[];
     return logger_severity_strs[static_cast<int>(s)];
 }
+//----------------------------------------------------------------------------
+#if __cpp_lib_string_view
+constexpr std::string_view to_string_view(logger::severity s)
+{
+    constexpr std::string_view strs[] =
+        { "TRACE", "DEBUG", "INFO", "NOTICE", "WARNING", "ERROR", "FATAL" };
+    return strs[static_cast<int>(s)];
+}
+#endif
 //----------------------------------------------------------------------------
 
 } // namespace

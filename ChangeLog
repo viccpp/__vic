@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2021-12-03  __vic
+    * logger:
+        * use std::string_view if available
+        + to_string_view(logger::severity)
+
 2021-11-19  __vic
     * type_traits.h: using std::remove_cvref in C++20 mode
 
