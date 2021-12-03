@@ -6,6 +6,25 @@
 <title><tt>decimal_to_number()</tt></title>
 
 <code-block lang="C++"><![CDATA[
+#if __cpp_lib_string_view // since C++17
+
+void decimal_to_number(std::string_view s, long long &res);
+void decimal_to_number(std::string_view s, long &res);
+void decimal_to_number(std::string_view s, int &res);
+void decimal_to_number(std::string_view s, short &res);
+void decimal_to_number(std::string_view s, signed char &res);
+
+void decimal_to_number(std::string_view s, unsigned long long &res);
+void decimal_to_number(std::string_view s, unsigned long &res);
+void decimal_to_number(std::string_view s, unsigned &res);
+void decimal_to_number(std::string_view s, unsigned short &res);
+void decimal_to_number(std::string_view s, unsigned char &res);
+
+template<class Integer>
+[[nodiscard]] Integer decimal_to_number(std::string_view s);
+
+#else // until C++17
+
 void decimal_to_number(const std::string &s, long long &res);
 void decimal_to_number(const std::string &s, long &res);
 void decimal_to_number(const std::string &s, int &res);
@@ -30,11 +49,13 @@ void decimal_to_number(const char *s, unsigned &res);
 void decimal_to_number(const char *s, unsigned short &res);
 void decimal_to_number(const char *s, unsigned char &res);
 
-template<class TInteger>
-TInteger decimal_to_number(const std::string &s);
+template<class Integer>
+[[nodiscard]] Integer decimal_to_number(const std::string &s);
 
-template<class TInteger>
-TInteger decimal_to_number(const char *s);
+template<class Integer>
+[[nodiscard]] Integer decimal_to_number(const char *s);
+
+#endif
 ]]></code-block>
 
 <p>Набор функций, преобразующих строки, содержащие десятичное представление
@@ -74,7 +95,7 @@ template<class T, class InputIterator>
 void decimal_to_number_range(InputIterator begin, InputIterator end, T &res);
 
 template<class T, class InputIterator>
-T decimal_to_number_range(InputIterator begin, InputIterator end);
+[[nodiscard]] T decimal_to_number_range(InputIterator begin, InputIterator end);
 ]]></code-block>
 
 <p>Функции являются полным аналогом функций <tt>decimal_to_number()</tt> за
@@ -93,10 +114,14 @@ class decimal_parser
     using status = number_parse_status; // только для краткости
 public:
     template<class InputIterator>
-    status parse(InputIterator begin, InputIterator end);
-    status parse(const std::string &str);
-    status parse(const char *str);
-    T result() const;
+    [[nodiscard]] status parse(InputIterator begin, InputIterator end);
+#if __cpp_lib_string_view // since C++17
+    [[nodiscard]] status parse(std::string_view str);
+#else // until C++17
+    [[nodiscard]] status parse(const std::string &str);
+    [[nodiscard]] status parse(const char *str);
+#endif
+    [[nodiscard]] T result() const;
 };
 ]]></code-block>
 
@@ -124,9 +149,10 @@ public:
 
 <synopsis>
 <prototype>template&lt;class InputIterator>
-status parse(InputIterator begin, InputIterator end)</prototype>
-<prototype>status parse(const std::string &amp;str)</prototype>
-<prototype>status parse(const char *str)</prototype>
+[[nodiscard]] status parse(InputIterator begin, InputIterator end)</prototype>
+<prototype>[[nodiscard]] status parse(std::string_view str) <sign>C++17</sign></prototype>
+<prototype>[[nodiscard]] status parse(const std::string &amp;str) <sign>until C++17</sign></prototype>
+<prototype>[[nodiscard]] status parse(const char *str) <sign>until C++17</sign></prototype>
 <p>Преобразует диапазон символов или строку в число.</p>
 <postcondition>Результат преобразования может быть получен вызовом
 <tt>result()</tt>, если возвращён <tt>number_parse_status::ok</tt>.
@@ -134,7 +160,7 @@ status parse(InputIterator begin, InputIterator end)</prototype>
 </synopsis>
 
 <synopsis>
-<prototype>T result() const</prototype>
+<prototype>[[nodiscard]] T result() const</prototype>
 <p>Возвращает результат преобразования последнего вызова <tt>parse()</tt>.</p>
 <precondition>Последний вызов <tt>parse()</tt> вернул
 <tt>number_parse_status::ok</tt>.</precondition>

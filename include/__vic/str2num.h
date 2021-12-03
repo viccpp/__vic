@@ -1,6 +1,6 @@
 // String to number conversion utilities
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11/17
 // $Id$
 //
 // (c) __vic 2010
@@ -10,9 +10,14 @@
 
 #include<__vic/defs.h>
 #include<__vic/ascii.h>
-#include<__vic/tchar.h>
 #include<string>
 #include<limits>
+#if __has_include(<string_view>)
+#include<string_view>
+#endif
+#if !__cpp_lib_string_view
+#include<__vic/tchar.h>
+#endif
 
 namespace __vic {
 
@@ -41,7 +46,7 @@ class unsigned_decimal_parser
     typedef number_parse_status st;
 public:
     template<class InputIterator>
-    status parse(InputIterator begin, InputIterator end)
+    __VIC_NODISCARD status parse(InputIterator begin, InputIterator end)
     {
         if(begin == end) return st::invalid_number;
 #if !__cpp_constexpr
@@ -62,9 +67,16 @@ public:
         this->res = res;
         return st::ok;
     }
-    status parse(const std::string &s) { return parse(&*s.begin(), &*s.end()); }
-    status parse(const char *s) { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
-    UInt result() const { return res; }
+#if __cpp_lib_string_view // C++17
+    __VIC_NODISCARD status parse(std::string_view s)
+        { return parse(s.data(), s.data() + s.length()); }
+#else
+    __VIC_NODISCARD status parse(const std::string &s)
+        { return parse(s.data(), &*s.end()); }
+    __VIC_NODISCARD status parse(const char *s)
+        { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
+#endif
+    __VIC_NODISCARD UInt result() const { return res; }
 };
 //////////////////////////////////////////////////////////////////////////////
 template<class Int>
@@ -80,7 +92,7 @@ class signed_decimal_parser
     typedef number_parse_status st;
 public:
     template<class InputIterator>
-    status parse(InputIterator begin, InputIterator end)
+    __VIC_NODISCARD status parse(InputIterator begin, InputIterator end)
     {
         if(begin == end) return st::invalid_number;
 #if !__cpp_constexpr
@@ -116,9 +128,16 @@ public:
         this->res = negative ? -res : res;
         return st::ok;
     }
-    status parse(const std::string &s) { return parse(&*s.begin(), &*s.end()); }
-    status parse(const char *s) { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
-    Int result() const { return res; }
+#if __cpp_lib_string_view // C++17
+    __VIC_NODISCARD status parse(std::string_view s)
+        { return parse(s.data(), s.data() + s.length()); }
+#else
+    __VIC_NODISCARD status parse(const std::string &s)
+        { return parse(s.data(), &*s.end()); }
+    __VIC_NODISCARD status parse(const char *s)
+        { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
+#endif
+    __VIC_NODISCARD Int result() const { return res; }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
@@ -152,7 +171,13 @@ template<> struct decimal_parser<unsigned __VIC_LONGLONG> : impl::unsigned_decim
 // String to number conversion with strict format control
 //----------------------------------------------------------------------------
 template<class T>
-T decimal_to_number(const std::string &s)
+__VIC_NODISCARD T decimal_to_number(
+#if __cpp_lib_string_view // C++17
+    std::string_view
+#else
+    const std::string &
+#endif
+    s)
 {
     decimal_parser<T> p;
     switch(p.parse(s))
@@ -168,26 +193,8 @@ T decimal_to_number(const std::string &s)
     return T(); // UNREACHABLE! Only to suppress spurious warning
 }
 //----------------------------------------------------------------------------
-template<class T>
-T decimal_to_number(const char *s)
-{
-    if(!s) impl::throw_null_integer();
-    decimal_parser<T> p;
-    switch(p.parse(s))
-    {
-        case number_parse_status::ok:
-            return p.result();
-        case number_parse_status::invalid_number:
-            if(!*s) impl::throw_empty_integer();
-            else impl::throw_non_digit_char();
-        case number_parse_status::unrepresentable:
-            impl::throw_integer_too_long();
-    }
-    return T(); // UNREACHABLE! Only to suppress spurious warning
-}
-//----------------------------------------------------------------------------
 template<class T, class InputIterator>
-T decimal_to_number_range(InputIterator begin, InputIterator end)
+__VIC_NODISCARD T decimal_to_number_range(InputIterator begin, InputIterator end)
 {
     decimal_parser<T> p;
     switch(p.parse(begin, end))
@@ -208,13 +215,13 @@ T decimal_to_number_range(InputIterator begin, InputIterator end)
 // The same functions with the result as 2nd out argument
 //----------------------------------------------------------------------------
 template<class T>
-inline void decimal_to_number(const std::string &s, T &n)
-{
-    n = decimal_to_number<T>(s);
-}
-//----------------------------------------------------------------------------
-template<class T>
-inline void decimal_to_number(const char *s, T &n)
+inline void decimal_to_number(
+#if __cpp_lib_string_view // C++17
+    std::string_view
+#else
+    const std::string &
+#endif
+    s, T &n)
 {
     n = decimal_to_number<T>(s);
 }
@@ -226,6 +233,34 @@ inline void decimal_to_number_range(
     n = decimal_to_number_range<T>(begin, end);
 }
 //----------------------------------------------------------------------------
+
+#if !__cpp_lib_string_view
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD T decimal_to_number(const char *s)
+{
+    if(!s) impl::throw_null_integer();
+    decimal_parser<T> p;
+    switch(p.parse(s))
+    {
+        case number_parse_status::ok:
+            return p.result();
+        case number_parse_status::invalid_number:
+            if(!*s) impl::throw_empty_integer();
+            else impl::throw_non_digit_char();
+        case number_parse_status::unrepresentable:
+            impl::throw_integer_too_long();
+    }
+    return T(); // UNREACHABLE! Only to suppress spurious warning
+}
+//----------------------------------------------------------------------------
+template<class T>
+inline void decimal_to_number(const char *s, T &n)
+{
+    n = decimal_to_number<T>(s);
+}
+//----------------------------------------------------------------------------
+#endif
 
 } // namespace
 
