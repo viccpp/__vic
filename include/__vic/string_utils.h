@@ -38,6 +38,17 @@ std::string &trim(std::string & , const char * );
 std::string &trim_front(std::string & , const char * );
 std::string &trim_back(std::string & , const char * );
 //----------------------------------------------------------------------------
+#if __cpp_lib_string_view // C++17
+std::string_view trimmed(std::string_view );
+std::string_view trimmed_front(std::string_view );
+std::string_view trimmed_back(std::string_view );
+std::string_view trimmed(std::string_view , char );
+std::string_view trimmed_front(std::string_view , char );
+std::string_view trimmed_back(std::string_view , char );
+std::string_view trimmed(std::string_view , const char * );
+std::string_view trimmed_front(std::string_view , const char * );
+std::string_view trimmed_back(std::string_view , const char * );
+#else // until C++17
 std::string trimmed(const std::string & );
 std::string trimmed_front(const std::string & );
 std::string trimmed_back(const std::string & );
@@ -47,6 +58,7 @@ std::string trimmed_back(const std::string & , char );
 std::string trimmed(const std::string & , const char * );
 std::string trimmed_front(const std::string & , const char * );
 std::string trimmed_back(const std::string & , const char * );
+#endif
 //----------------------------------------------------------------------------
 
 namespace impl {

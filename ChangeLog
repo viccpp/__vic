@@ -7,6 +7,7 @@ Legend:
 2021-12-06  __vic
     * string_utils.h:
         * starts_with(), ends_with() use std::string_view if available
+        * trimmed()-functions use std::string_view if available
 
 2021-12-03  __vic
     * logger:

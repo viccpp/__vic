@@ -28,6 +28,17 @@ std::string &trim(std::string &str, const char *set);
 std::string &trim_front(std::string &str, const char *set);
 std::string &trim_back(std::string &str, const char *set);
 
+#if __cpp_lib_string_view // C++17
+std::string_view trimmed(std::string_view str);
+std::string_view trimmed_front(std::string_view str);
+std::string_view trimmed_back(std::string_view str);
+std::string_view trimmed(std::string_view str, char ch);
+std::string_view trimmed_front(std::string_view str, char ch);
+std::string_view trimmed_back(std::string_view str, char ch);
+std::string_view trimmed(std::string_view str, const char *set);
+std::string_view trimmed_front(std::string_view str, const char *set);
+std::string_view trimmed_back(std::string_view str, const char *set);
+#else // until C++17
 std::string trimmed(const std::string &str);
 std::string trimmed_left(const std::string &str);
 std::string trimmed_right(const std::string &str);
@@ -37,6 +48,7 @@ std::string trimmed_right(const std::string &str, char ch);
 std::string trimmed(const std::string &str, const char *set);
 std::string trimmed_left(const std::string &str, const char *set);
 std::string trimmed_right(const std::string &str, const char *set);
+#endif
 ]]></code-block>
 
 <p>The set of functions stripping unwanted characters from the string edges.
