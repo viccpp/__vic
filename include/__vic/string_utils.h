@@ -1,6 +1,6 @@
 // String utilities
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11/17
 // $Id$
 //
 // (c) __vic 2007
@@ -11,6 +11,9 @@
 #include<__vic/defs.h>
 #include<cstring>
 #include<string>
+#if __has_include(<string_view>)
+#include<string_view>
+#endif
 
 namespace __vic {
 
@@ -110,6 +113,23 @@ inline bool starts_with(const char *s, char pref)
 bool starts_with(const char * , const char * );
 bool starts_with(const char * , const char * , size_t );
 //----------------------------------------------------------------------------
+#if __cpp_lib_string_view // C++17
+//----------------------------------------------------------------------------
+inline bool starts_with(std::string_view s, char pref)
+{
+    return !s.empty() && s.front() == pref;
+}
+inline bool starts_with(std::string_view s, std::string_view pref)
+{
+    return starts_with(s.data(), s.length(), pref.data(), pref.length());
+}
+inline bool starts_with(std::string_view s, const char *pref)
+{
+    return starts_with(s.data(), s.length(), pref);
+}
+//----------------------------------------------------------------------------
+#else // until C++17
+//----------------------------------------------------------------------------
 inline bool starts_with(const std::string &s, char pref)
 {
     return !s.empty() && *s.begin() == pref;
@@ -127,6 +147,7 @@ inline bool starts_with(const std::string &s, const std::string &pref)
     return starts_with(s, pref.data(), pref.length());
 }
 //----------------------------------------------------------------------------
+#endif
 
 //----------------------------------------------------------------------------
 inline bool ends_with(const char *s, size_t s_len, char suff)
@@ -134,14 +155,27 @@ inline bool ends_with(const char *s, size_t s_len, char suff)
     return s_len && s[s_len - 1] == suff;
 }
 bool ends_with(const char * , size_t , const char * , size_t );
-inline bool ends_with(const char *s, size_t s_len, const char *suff)
+//----------------------------------------------------------------------------
+#if __cpp_lib_string_view // C++17
+//----------------------------------------------------------------------------
+inline bool ends_with(std::string_view s, char suff)
 {
-    return ends_with(s, s_len, suff, std::strlen(suff));
+    return ends_with(s.data(), s.length(), suff);
 }
+inline bool ends_with(std::string_view s, std::string_view suff)
+{
+    return ends_with(s.data(), s.length(), suff.data(), suff.length());
+}
+//----------------------------------------------------------------------------
+#else // until C++17
 //----------------------------------------------------------------------------
 inline bool ends_with(const char *s, char suff)
 {
     return ends_with(s, std::strlen(s), suff);
+}
+inline bool ends_with(const char *s, size_t s_len, const char *suff)
+{
+    return ends_with(s, s_len, suff, std::strlen(suff));
 }
 inline bool ends_with(const char *s, const char *suff, size_t suff_len)
 {
@@ -169,6 +203,7 @@ inline bool ends_with(const std::string &s, const std::string &suff)
     return ends_with(s, suff.data(), suff.length());
 }
 //----------------------------------------------------------------------------
+#endif
 
 } // namespace
 

@@ -166,10 +166,16 @@ bool starts_with(const char *s, char pref);
 bool starts_with(const char *s, const char *pref);
 bool starts_with(const char *s, const char *pref, size_t pref_len);
 
+#if __cpp_lib_string_view // C++17
+bool starts_with(std::string_view s, char pref);
+bool starts_with(std::string_view s, std::string_view pref);
+bool starts_with(std::string_view s, const char *pref);
+#else // until C++17
 bool starts_with(const std::string &s, char pref);
 bool starts_with(const std::string &s, const char *pref);
 bool starts_with(const std::string &s, const std::string &pref);
 bool starts_with(const std::string &s, const char *pref, size_t pref_len);
+#endif
 
 bool starts_with(const char *s, size_t s_len, char pref);
 bool starts_with(const char *s, size_t s_len, const char *pref);
@@ -186,17 +192,22 @@ prefix.</p>
 <title><tt>ends_with()</tt></title>
 
 <code-block lang="C++"><![CDATA[
+#if __cpp_lib_string_view // C++17
+bool ends_with(std::string_view s, char suff);
+bool ends_with(std::string_view s, std::string_view suff);
+#else // until C++17
 bool ends_with(const char *s, char suff);
 bool ends_with(const char *s, const char *suff);
 bool ends_with(const char *s, const char *suff, size_t suff_len);
+bool ends_with(const char *s, size_t s_len, const char *suff);
 
 bool ends_with(const std::string &s, char suff);
 bool ends_with(const std::string &s, const char *suff);
 bool ends_with(const std::string &s, const std::string &suff);
 bool ends_with(const std::string &s, const char *suff, size_t suff_len);
+#endif
 
 bool ends_with(const char *s, size_t s_len, char suff);
-bool ends_with(const char *s, size_t s_len, const char *suff);
 bool ends_with(const char *s, size_t s_len, const char *suff, size_t suff_len);
 ]]></code-block>
 
