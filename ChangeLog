@@ -7,6 +7,7 @@ Legend:
 2021-12-07  __vic
     + string_ref: conversion from/to std::string_view
     + string_buffer supports std::string_view (via string_ref)
+    * ascii::equal_icase() uses std::string_view if available
 
 2021-12-06  __vic
     * string_utils.h:
