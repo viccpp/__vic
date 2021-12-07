@@ -28,6 +28,12 @@ public:
     basic_string_ref(std::initializer_list<charT> );
     // END C++11
 
+#if __cpp_lib_string_view // since C++17
+    template<class Traits>
+    basic_string_ref(std::basic_string_view<charT,Traits> s);
+    operator std::basic_string_view<charT>() const;
+#endif
+
     // Accessors
     iterator begin() const;
     iterator end() const;
@@ -159,6 +165,13 @@ basic_string_ref(const std::basic_string&lt;charT,Traits,Alloc> &amp;str)</proto
     typename std::basic_string&lt;charT>::const_iterator end)</prototype>
 <prototype>basic_string_ref(std::initializer_list&lt;charT> ) <sign>C++11</sign></prototype>
 <p>Create reference to the range of the characters.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Traits>
+basic_string_ref(std::basic_string_view&lt;charT,Traits> s) <sign>C++17</sign></prototype>
+<prototype>operator std::basic_string_view&lt;charT>() const <sign>C++17</sign></prototype>
+<p>Converters from/to <tt>std::basic_string_view</tt>.</p>
 </synopsis>
 
 <synopsis>
