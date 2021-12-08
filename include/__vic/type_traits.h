@@ -132,13 +132,23 @@ template<bool Test, class T = void>
 struct disable_if : enable_if<!Test, T> {};
 
 //----------------------------------------------------------------------------
+#if __cpp_lib_remove_cvref
+
+using std::remove_cvref;
+using std::remove_cvref_t;
+
+#else
 
 template<class T> struct remove_cvref
 {
     typedef typename remove_cv<
         typename remove_reference<T>::type>::type type;
 };
+#if __cpp_alias_templates
+template<class T> using remove_cvref_t = typename remove_cvref<T>::type;
+#endif
 
+#endif
 //----------------------------------------------------------------------------
 
 #if __cpp_alias_templates
@@ -146,7 +156,6 @@ template<class T> using remove_const_t = typename remove_const<T>::type;
 template<class T> using remove_volatile_t = typename remove_volatile<T>::type;
 template<class T> using remove_cv_t = typename remove_cv<T>::type;
 template<class T> using remove_reference_t = typename remove_reference<T>::type;
-template<class T> using remove_cvref_t = typename remove_cvref<T>::type;
 template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
 // No alias for enable_if because in C++11 SFINAE is not guaranteed
 #endif

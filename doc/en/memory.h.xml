@@ -26,4 +26,26 @@ int data = __vic::load_unaligned<int>(p);
 </chapter>
 
 
+<chapter xml:id="store_unaligned">
+<title><tt>store_unaligned()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+void store_unaligned(void *p, T v);
+]]></code-block>
+
+<p>Store value to potentially unaligned address without causing bus error
+(<tt>SIGBUS</tt>).</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+void *p = ...;
+// *static_cast<int *>(p) = 123; // potential bus error
+__vic::store_unaligned<int>(p, 123);
+]]></code-block>
+</section>
+
+</chapter>
+
+
 </chapter>

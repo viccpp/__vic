@@ -42,7 +42,7 @@ __VIC_CONSTEXPR_FUNC uint8_t hi_nibble(uint8_t b)
 // Returns value with all most significant bits are 1 (others - 0)
 // Parameter specifies the number of "ones"
 template<class T>
-inline T msb_ones(unsigned bits_num)
+__VIC_CONSTEXPR_FUNC T msb_ones(unsigned bits_num)
 {
     return ~T(0) << (sizeof(T) * CHAR_BIT - bits_num);
 }
@@ -50,14 +50,14 @@ inline T msb_ones(unsigned bits_num)
 // Returns value with all least significant bits are 1 (others - 0)
 // Parameter specifies the number of "ones"
 template<class T>
-inline T lsb_ones(unsigned bits_num)
+__VIC_CONSTEXPR_FUNC T lsb_ones(unsigned bits_num)
 {
     return ~(~T(0) << bits_num);
 }
 //------------------------------------------------------------------------------
 // Clears all but bits_num least significant bits
 template<class T>
-inline T get_lsbs(T v, unsigned bits_num)
+__VIC_CONSTEXPR_FUNC T get_lsbs(T v, unsigned bits_num)
 {
     return v & lsb_ones<T>(bits_num);
 }

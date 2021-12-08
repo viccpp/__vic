@@ -36,7 +36,7 @@ available otherwise. Such features are marked with <sign>C++98 only</sign>
 sign.</p>
 
 <p>Detailed description of the library components is provided in the subsequent
-chapters. Descriptions are grouped by headers. C++14 language syntax is mainly
+chapters. Descriptions are grouped by headers. C++20 language syntax is mainly
 used as a more complete and expressive one.</p>
 
 </chapter>

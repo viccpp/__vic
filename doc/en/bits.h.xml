@@ -22,8 +22,8 @@ respectively.</p>
 <title><tt>msb_ones()</tt>, <tt>lsb_ones()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-template<class T> T lsb_ones(unsigned bits_num);
-template<class T> T msb_ones(unsigned bits_num);
+template<class T> constexpr T lsb_ones(unsigned bits_num);
+template<class T> constexpr T msb_ones(unsigned bits_num);
 ]]></code-block>
 
 <p>Return the value of the type <tt>T</tt> with all least/most significant
@@ -37,7 +37,7 @@ are set to <tt>0</tt>.</p>
 <title><tt>get_lsbs()</tt></title>
 
 <code-block lang="C++">
-template&lt;class T> T get_lsbs(T v, unsigned bits_num);
+template&lt;class T> constexpr T get_lsbs(T v, unsigned bits_num);
 </code-block>
 
 <p>Returns <tt>bits_num</tt> least significant bits of <tt>v</tt>. In other
