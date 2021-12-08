@@ -31,10 +31,12 @@ void logger::message(severity_t s, const char *msg, size_t msg_len)
     if(s >= level()) out->publish_record(s, msg, msg_len);
 }
 //----------------------------------------------------------------------------
+#if !__cpp_lib_string_view
 void logger::message(severity_t s, const char *msg)
 {
     if(s >= level()) out->publish_record(s, msg, std::strlen(msg));
 }
+#endif
 //----------------------------------------------------------------------------
 void logger::_flush()
 {

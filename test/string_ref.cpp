@@ -33,6 +33,12 @@ void run()
     std::string std_str(str);
     sr = std_str;
     assert(sr == std_str);
+
+#if __cpp_lib_string_view
+    sr = std::string_view();
+    std::string_view sv = sr;
+    (void) sv;
+#endif
 }
 
 } // namespace

@@ -4,8 +4,41 @@ Legend:
     * Changes
     ! Important
 
+2021-12-07  __vic
+    + string_ref: conversion from/to std::string_view
+    + string_buffer supports std::string_view (via string_ref)
+    * ascii::equal_icase() uses std::string_view if available
+
+2021-12-06  __vic
+    * string_utils.h:
+        * starts_with(), ends_with() use std::string_view if available
+        * trimmed()-functions use std::string_view if available
+
+2021-12-03  __vic
+    * logger:
+        * use std::string_view if available
+        + to_string_view(logger::severity)
+    * str2num.h:
+        + use [[nodiscard]]
+        * use std::string_view if available
+
+2021-11-19  __vic
+    * type_traits.h: using std::remove_cvref in C++20 mode
+
+2021-10-13  __vic
+    * bits.h: msb_ones(), lsb_ones(), get_lsbs() are constexpr now
+
+2021-10-04  __vic
+    + memory.h: store_unaligned()
+
+2021-06-11  __vic
+    + logger: notice level
+
 2021-05-03  __vic
     - bits.h: __VIC_ASSERT_UINT() in C++98 mode
+    + algorithm.h:
+        + skip_if_front(), skip_if_back()
+    * skip_if_{front,back}() are used inside trim-functions
 
 2021-04-30  __vic
     * sift() uses set_of_chars

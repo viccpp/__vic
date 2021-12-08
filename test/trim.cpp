@@ -14,7 +14,13 @@ char last(const char *st)
     assert(st && *st != '\0');
     return *(std::strchr(st, '\0') - 1);
 }
-char last(const std::string &st)
+char last(
+#if __cpp_lib_string_view
+    std::string_view
+#else
+    const std::string &
+#endif
+        st)
 {
     assert(!st.empty());
     return *(st.end() - 1);
@@ -145,7 +151,12 @@ void trimmed_default_test(const char *src)
 {
     assert(src);
     std::cout << "Default trimmed. Source: |" << src << "|\n";
-    std::string st;
+#if __cpp_lib_string_view
+    std::string_view
+#else
+    std::string
+#endif
+        st;
 
     st = trimmed(src);
     assert(!std::isspace(*st.begin()) && !std::isspace(last(st)));
@@ -163,7 +174,12 @@ void trimmed_char_test(const char *src, char ch)
 {
     assert(src);
     std::cout << "Trimmed char. Source: |" << src << "|\n";
-    std::string st;
+#if __cpp_lib_string_view
+    std::string_view
+#else
+    std::string
+#endif
+        st;
 
     st = trimmed(src, ch);
     assert(*st.begin() != ch && last(st) != ch);
@@ -181,7 +197,12 @@ void trimmed_set_test(const char *src, const char *set)
 {
     assert(src);
     std::cout << "Trimmed set. Source: |" << src << "|\n";
-    std::string st;
+#if __cpp_lib_string_view
+    std::string_view
+#else
+    std::string
+#endif
+        st;
 
     st = trimmed(src, set);
     assert(not_in_set(*st.begin(), set) && not_in_set(last(st), set));
