@@ -12,7 +12,7 @@ template<class T>
 T load_unaligned(const void *p);
 ]]></code-block>
 
-<p>Загружает значение с потенциально невыровненного адреса не вызывая ошибку
+<p>Загружает значение с потенциально невыровненного адреса, не вызывая ошибку
 шины (<tt>SIGBUS</tt>).</p>
 
 <section><title>Пример</title>
@@ -20,6 +20,28 @@ T load_unaligned(const void *p);
 const void *p = ...;
 // int data = *static_cast<const int *>(p); // потенциальная ошибка шины
 int data = __vic::load_unaligned<int>(p);
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="store_unaligned">
+<title><tt>store_unaligned()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+void store_unaligned(void *p, T v);
+]]></code-block>
+
+<p>Записывает значение по потенциально невыровненному адресу, не вызывая ошибку
+шины (<tt>SIGBUS</tt>).</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+void *p = ...;
+// *static_cast<int *>(p) = 123; // потенциальная ошибка шины
+__vic::store_unaligned<int>(p, 123);
 ]]></code-block>
 </section>
 

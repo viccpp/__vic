@@ -17,6 +17,10 @@ void run_tests()
     s = std_str;
     const char *c_str = s;
     s.clear() << static_cast<const void *>(c_str);
+
+#if __cpp_lib_string_view
+    s << std::string_view("string_view");
+#endif
 }
 
 int main()

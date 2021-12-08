@@ -47,12 +47,20 @@ std::string &toupper(std::string &str);
 namespace ascii {
 
 bool equal_icase(const char *s1, const char *s2);
-bool equal_icase(const std::string &s1, const std::string &s2);
-bool equal_icase(const std::string &s1, const char *s2);
-bool equal_icase(const char *s1, const std::string &s2);
 bool equal_icase(const char *s1, size_t s1_len,
                  const char *s2, size_t s2_len);
 
+#if __cpp_lib_string_view // C++17
+
+bool equal_icase(std::string_view s1, std::string_view s2);
+
+#else // until C++17
+
+bool equal_icase(const std::string &s1, const std::string &s2);
+bool equal_icase(const std::string &s1, const char *s2);
+bool equal_icase(const char *s1, const std::string &s2);
+
+#endif
 }
 ]]></code-block>
 

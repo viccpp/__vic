@@ -5,6 +5,7 @@
     <!ENTITY general SYSTEM "general.xml">
     <!ENTITY build SYSTEM "build.xml">
     <!ENTITY defs.h SYSTEM "defs.h.xml">
+    <!ENTITY algorithm.h SYSTEM "algorithm.h.xml">
     <!ENTITY ascii.h SYSTEM "ascii.h.xml">
     <!ENTITY ascii_string.h SYSTEM "ascii_string.h.xml">
     <!ENTITY base16.h SYSTEM "base16.h.xml">
@@ -129,6 +130,7 @@ TODO
 <chapter xml:id="components-reference">
 <title>Описание компонентов библиотеки</title>
 &defs.h;
+&algorithm.h;
 &ascii.h;
 &ascii_string.h;
 &base16.h;

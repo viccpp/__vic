@@ -1,6 +1,6 @@
 // Reference to the range of chars
 //
-// Platform: ISO C++ 98/11
+// Platform: ISO C++ 98/11/17
 // $Id$
 //
 // (c) __vic 2009
@@ -11,6 +11,9 @@
 #include<__vic/defs.h>
 #include<__vic/tchar.h>
 #include<string>
+#if __has_include(<string_view>)
+#include<string_view>
+#endif
 
 namespace __vic {
 
@@ -42,6 +45,14 @@ public:
 #if __cpp_initializer_lists
     basic_string_ref(std::initializer_list<charT> il)
         : begin_(&*il.begin()), end_(&*il.end()) {}
+#endif
+
+#if __cpp_lib_string_view
+    template<class Traits>
+    basic_string_ref(std::basic_string_view<charT,Traits> s)
+        : begin_(s.data()), end_(s.data() + s.length()) {}
+    operator std::basic_string_view<charT>() const
+        { return std::basic_string_view<charT>(data(), length()); }
 #endif
 
     // Accessors
