@@ -74,7 +74,7 @@ public:
 
     void message(severity_t , const char * , size_t );
 #if __cpp_lib_string_view
-    void message(severity s, std::string_view msg)
+    void message(severity_t s, std::string_view msg)
         { message(s, msg.data(), msg.length()); }
 
     void trace(std::string_view msg) { message(severity::trace, msg); }
