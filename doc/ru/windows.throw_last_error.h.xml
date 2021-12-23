@@ -14,7 +14,7 @@
 
 </chapter>
 
-<section><title>Example</title>
+<section><title>Пример</title>
 <code-block lang="C++">
 if(!CloseHandle(h)) __vic::windows::throw_last_error("CloseHandle");
 </code-block>

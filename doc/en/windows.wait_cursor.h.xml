@@ -1,0 +1,54 @@
+<chapter xml:id="windows.wait_cursor.h">
+<title><tt>__vic/windows/wait_cursor.h</tt></title>
+
+<chapter xml:id="windows--WaitCursor">
+<title><tt>windows::WaitCursor</tt></title>
+
+<code-block lang="C++">
+class windows::WaitCursor : private non_copyable
+{
+public:
+    explicit WaitCursor(HCURSOR h);
+    ~WaitCursor();
+
+    static HCURSOR GetDefault();
+};
+</code-block>
+
+<p>A RAII-wrapper. Temporarily replaces the mouse cursor with the one given in
+the constructor. The destructor restores the previous cursor.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit WaitCursor(HCURSOR h)</prototype>
+<p>Replaces current cursor with <tt>h</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~WaitCursor()</prototype>
+<p>Restores the cursor.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static HCURSOR GetDefault()</prototype>
+<p>Returns the default wait-cursor handle (<tt>IDC_WAIT</tt>).</p>
+</synopsis>
+
+</section>
+
+<section><title>Example</title>
+<code-block lang="C++">
+using __vic::windows::WaitCursor;
+static HCURSOR hWaitCursor = WaitCursor::GetDefault();
+{
+    WaitCursor _(hWaitCursor); // the cursor is replaced here by hWaitCursor
+    some_long_processing();
+    // here the destructor restores the cursor
+}
+</code-block>
+</section>
+
+</chapter>
+
+</chapter>

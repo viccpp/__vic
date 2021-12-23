@@ -1,0 +1,54 @@
+<chapter xml:id="windows.wait_cursor.h">
+<title><tt>__vic/windows/wait_cursor.h</tt></title>
+
+<chapter xml:id="windows--WaitCursor">
+<title><tt>windows::WaitCursor</tt></title>
+
+<code-block lang="C++">
+class windows::WaitCursor : private non_copyable
+{
+public:
+    explicit WaitCursor(HCURSOR h);
+    ~WaitCursor();
+
+    static HCURSOR GetDefault();
+};
+</code-block>
+
+<p>RAII-обёртка. Временно заменяет курсор мыши на курсор, переданный в
+конструкторе. Деструктор восстанавливает предыдущий курсор.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit WaitCursor(HCURSOR h)</prototype>
+<p>Меняет текущий курсор на <tt>h</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~WaitCursor()</prototype>
+<p>Восстанавливает курсор.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static HCURSOR GetDefault()</prototype>
+<p>Возвращает wait-cursor, используемый по умолчанию (<tt>IDC_WAIT</tt>).</p>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+using __vic::windows::WaitCursor;
+static HCURSOR hWaitCursor = WaitCursor::GetDefault();
+{
+    WaitCursor _(hWaitCursor); // здесь курсор заменяется на hWaitCursor
+    some_long_processing();
+    // здесь предыдущий курсор восстанавливается
+}
+</code-block>
+</section>
+
+</chapter>
+
+</chapter>
