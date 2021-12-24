@@ -1,0 +1,58 @@
+<chapter xml:id="windows.shadow_dc.h">
+<title><tt>__vic/windows/shadow_dc.h</tt></title>
+
+<chapter xml:id="windows--ShadowDC">
+<title><tt>windows::ShadowDC</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::ShadowDC : public windows::DC, private non_copyable
+{
+public:
+    ShadowDC();
+    ~ShadowDC();
+
+    void Create(HWND hwnd);
+    void Destroy();
+    bool IsCreated() const;
+};
+]]></code-block>
+
+<p>Virtual in-memory DC.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>ShadowDC()</prototype>
+<postcondition><tt>!IsCreated()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~ShadowDC()</prototype>
+<p>Calls <tt>Destroy()</tt> is <tt>IsCreated() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Create(HWND hwnd)</prototype>
+<p>Creates shadow DC compatible with the specified window of the same size.
+Throws on errors.</p>
+<precondition><tt>!IsCreated()</tt></precondition>
+<postcondition><tt>IsCreated() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void Destroy()</prototype>
+<p>Destroys the DC.</p>
+<precondition><tt>IsCreated() == true</tt></precondition>
+<postcondition><tt>!IsCreated()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool IsCreated() const</prototype>
+<p>Returns <tt>true</tt> if the object has an associated shadow DC.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

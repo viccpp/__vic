@@ -1,0 +1,58 @@
+<chapter xml:id="windows.shadow_dc.h">
+<title><tt>__vic/windows/shadow_dc.h</tt></title>
+
+<chapter xml:id="windows--ShadowDC">
+<title><tt>windows::ShadowDC</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::ShadowDC : public windows::DC, private non_copyable
+{
+public:
+    ShadowDC();
+    ~ShadowDC();
+
+    void Create(HWND hwnd);
+    void Destroy();
+    bool IsCreated() const;
+};
+]]></code-block>
+
+<p>Виртуальный DC, расположенный в памяти.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>ShadowDC()</prototype>
+<postcondition><tt>!IsCreated()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~ShadowDC()</prototype>
+<p>Вызывает <tt>Destroy()</tt>, если <tt>IsCreated() == true</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Create(HWND hwnd)</prototype>
+<p>Создаёт теневой DC, совместимый с указанным окном и того же размера.
+Бросает исключения в случае ошибок.</p>
+<precondition><tt>!IsCreated()</tt></precondition>
+<postcondition><tt>IsCreated() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void Destroy()</prototype>
+<p>Уничтожает теневой DC.</p>
+<precondition><tt>IsCreated() == true</tt></precondition>
+<postcondition><tt>!IsCreated()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>bool IsCreated() const</prototype>
+<p>Возвращает <tt>true</tt>, если объект имеет ассоциированный теневой DC.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

@@ -55,6 +55,7 @@
     <!ENTITY windows.event.h SYSTEM "windows.event.h.xml">
     <!ENTITY windows.find_file.h SYSTEM "windows.find_file.h.xml">
     <!ENTITY windows.handle.h SYSTEM "windows.handle.h.xml">
+    <!ENTITY windows.shadow_dc.h SYSTEM "windows.shadow_dc.h.xml">
     <!ENTITY windows.throw_last_error.h SYSTEM "windows.throw_last_error.h.xml">
     <!ENTITY windows.wait_cursor.h SYSTEM "windows.wait_cursor.h.xml">
 ]>
@@ -184,6 +185,7 @@ TODO
 &windows.event.h;
 &windows.find_file.h;
 &windows.handle.h;
+&windows.shadow_dc.h;
 &windows.throw_last_error.h;
 &windows.wait_cursor.h;
 </chapter>

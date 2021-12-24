@@ -9,6 +9,8 @@ Legend:
         + windows::DC, windows::ClientDC, windows::PaintDC
     + windows/bitmap.h:
         + windows::Bitmap
+    + windows/shadow_dc.h:
+        + windows::ShadowDC
 
 2021-12-23  __vic
     + windows/wait_cursor.h:
