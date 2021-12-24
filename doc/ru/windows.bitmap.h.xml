@@ -1,0 +1,71 @@
+<chapter xml:id="windows.bitmap.h">
+<title><tt>__vic/windows/bitmap.h</tt></title>
+
+<chapter xml:id="windows--Bitmap">
+<title><tt>windows::Bitmap</tt></title>
+
+<code-block lang="C++">
+class windows::Bitmap
+{
+public:
+    Bitmap() = default;
+    explicit Bitmap(HBITMAP h);
+
+    static Bitmap CreateCompatible(HDC hdc, int w, int h);
+
+    bool DeleteNT() noexcept;
+    void Delete();
+
+    void ClearHandle();
+    HBITMAP Handle() const;
+    void Handle(HBITMAP h);
+    operator HBITMAP() const;
+};
+</code-block>
+
+<p>C++-обёртка для <tt>HBITMAP</tt>.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit Bitmap(HBITMAP h)</prototype>
+<postcondition><tt>Handle() == h</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>static Bitmap CreateCompatible(HDC hdc, int w, int h)</prototype>
+<p>Вызывает <tt>::CreateCompatibleBitmap()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool DeleteNT() noexcept</prototype>
+<p>Вызывает <tt>::DeleteObject()</tt> и возвращает <tt>false</tt> в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Delete()</prototype>
+<p>Вызывает <tt>::DeleteObject()</tt> и бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void ClearHandle()</prototype>
+<postcondition><tt>!Handle()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>HBITMAP Handle() const</prototype>
+<prototype>operator HBITMAP() const</prototype>
+<p>Возвращает обёрнутое значение HBITMAP.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Handle(HBITMAP h)</prototype>
+<postcondition><tt>Handle() == h</tt></postcondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>

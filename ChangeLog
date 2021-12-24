@@ -7,6 +7,8 @@ Legend:
 2021-12-24  __vic
     + windows/dc.h:
         + windows::DC, windows::ClientDC, windows::PaintDC
+    + windows/bitmap.h:
+        + windows::Bitmap
 
 2021-12-23  __vic
     + windows/wait_cursor.h:
