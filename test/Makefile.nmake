@@ -17,6 +17,6 @@ GARBAGE = $(GARBAGE) *.$(TESTSUFF)
 CFLAGS = -D_CRT_SECURE_NO_DEPRECATE
 CFLAGS_TEST = -MT
 WARNS = -W3 -wd4290 -wd4800 -D_CRT_SECURE_NO_WARNINGS
-LIBS = $(LIBS) user32.lib notelemetry.obj
+LIBS = $(LIBS) user32.lib gdi32.lib notelemetry.obj
 
 !include suff.mk

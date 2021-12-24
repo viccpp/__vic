@@ -1,8 +1,8 @@
 ﻿<chapter xml:id="windows.find_file.h">
 <title><tt>__vic/windows/find_file.h</tt></title>
 
-<chapter xml:id="windows--find_file">
-<title><tt>windows::find_file</tt></title>
+<chapter xml:id="windows--FindFile">
+<title><tt>windows::FindFile</tt></title>
 
 <code-block lang="C++">
 class windows::FindFile : public WIN32_FIND_DATA, private non_copyable

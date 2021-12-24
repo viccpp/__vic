@@ -1,8 +1,8 @@
 <chapter xml:id="windows.event.h">
 <title><tt>__vic/windows/event.h</tt></title>
 
-<chapter xml:id="windows--event">
-<title><tt>windows::event</tt></title>
+<chapter xml:id="windows--Event">
+<title><tt>windows::Event</tt></title>
 
 <code-block lang="C++">
 class windows::Event : private non_copyable

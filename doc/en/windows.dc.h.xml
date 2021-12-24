@@ -1,0 +1,259 @@
+<chapter xml:id="windows.dc.h">
+<title><tt>__vic/windows/dc.h</tt></title>
+
+<p>C++ wrappers for Win32 GDI device context (DC).</p>
+
+
+<chapter xml:id="windows--DC">
+<title><tt>windows::DC</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::DC
+{
+public:
+    DC() = default;
+    explicit DC(HDC hdc);
+
+    static DC CreateCompatible(HDC hdc);
+
+    bool ReleaseNT(HWND hwnd) noexcept;
+    void Release(HWND hwnd);
+    bool DeleteNT() noexcept;
+    void Delete();
+
+    int GetHorzRes() const;
+    int GetVertRes() const;
+    HWND GetWindow() const;
+    HGDIOBJ GetCurrentObject(UINT uObjType) const;
+    HBRUSH GetCurrentBrush() const;
+    HPEN GetCurrentPen() const;
+    HFONT GetCurrentFont() const;
+    HBITMAP GetCurrentBitmap() const;
+
+    void Select(HGDIOBJ hObj); // not a region object
+    void Select(HRGN hReg);
+
+    COLORREF SetPixel(int x, int y, COLORREF c);
+    bool MoveTo(int x, int y, POINT *p = 0);
+    bool LineTo(int x, int y);
+    bool PolyBezier(const POINT *lppt, DWORD cPoints);
+    bool FillRect(const RECT &rect, HBRUSH hbr);
+
+    bool BlitTo(HDC dcDest, int x, int y,
+                            int w, int h, DWORD dwRop = SRCCOPY) const;
+    bool BlitTo(HDC dcDest, const RECT &r, DWORD dwRop = SRCCOPY) const;
+
+    void ClearHandle();
+    HDC Handle() const;
+    void Handle(HDC hdc);
+    operator HDC() const;
+};
+]]></code-block>
+
+<p>General purpose <tt>HDC</tt> wrapper. Use <xref to="windows--ClientDC"/>
+instead of <tt>::ReleaseDC()</tt>. Use <xref to="windows--PaintDC"/> instead of
+<tt>::BeginPaint()</tt>/<tt>::EndPaint()</tt>.</p>
+
+<note>For the most functions returning <tt>false</tt> on error no any addition
+information can be obtained using <tt>::GetLastError()</tt>.</note>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit DC(HDC hdc)</prototype>
+<postcondition><tt>Handle() == hdc</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>static DC CreateCompatible(HDC hdc)</prototype>
+<p>Calls <tt>::CreateCompatibleDC()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool ReleaseNT(HWND hwnd) noexcept</prototype>
+<p>Calls <tt>::ReleaseDC()</tt> and returns <tt>false</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Release(HWND hwnd)</prototype>
+<p>Calls <tt>::ReleaseDC()</tt> and throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool DeleteNT() noexcept</prototype>
+<p>Calls <tt>::DeleteDC()</tt> and returns <tt>false</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Delete()</prototype>
+<p>Calls <tt>::DeleteDC()</tt> and throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int GetHorzRes() const</prototype>
+<p>Returns a horizontal resolution of the DC.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int GetVertRes() const</prototype>
+<p>Returns a vertical resolution of the DC.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HWND GetWindow() const</prototype>
+<p>Calls <tt>::WindowFromDC()</tt> and returns its result.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HGDIOBJ GetCurrentObject(UINT uObjType) const</prototype>
+<p>Calls <tt>::GetCurrentObject()</tt> with the specified <tt>uObjType</tt>
+and returns its result.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HBRUSH GetCurrentBrush() const</prototype>
+<prototype>HPEN GetCurrentPen() const</prototype>
+<prototype>HFONT GetCurrentFont() const</prototype>
+<prototype>HBITMAP GetCurrentBitmap() const</prototype>
+<p>Calls <tt>::GetCurrentObject()</tt> for the corresponding object type
+and returns its result.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Select(HGDIOBJ hObj)</prototype>
+<p>Calls <tt>::SelectObject()</tt> for object that is not a region and
+throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Select(HRGN hReg)</prototype>
+<p>Calls <tt>::SelectObject()</tt> for region object and throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>COLORREF SetPixel(int x, int y, COLORREF c)</prototype>
+<p>Calls <tt>::SetPixel()</tt> and returns its result.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool MoveTo(int x, int y, POINT *p = 0)</prototype>
+<p>Calls <tt>::MoveToEx()</tt> and returns <tt>false</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool LineTo(int x, int y)</prototype>
+<p>Calls <tt>::LineTo()</tt> and returns <tt>false</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool PolyBezier(const POINT *lppt, DWORD cPoints)</prototype>
+<p>Calls <tt>::PolyBezier()</tt> and returns <tt>false</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool FillRect(const RECT &amp;rect, HBRUSH hbr)</prototype>
+<p>Calls <tt>::PolyBezier()</tt> and returns <tt>false</tt> on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool BlitTo(HDC dcDest, int x, int y, int w, int h, DWORD dwRop = SRCCOPY) const</prototype>
+<prototype>bool BlitTo(HDC dcDest, const RECT &amp;r, DWORD dwRop = SRCCOPY) const</prototype>
+<p>Calls <tt>::BitBlt()</tt> and returns <tt>false</tt> on error.</p>
+<note><tt>::GetLastError()</tt> can be used to get extended error information.</note>
+</synopsis>
+
+<synopsis>
+<prototype>void ClearHandle()</prototype>
+<postcondition><tt>!Handle()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>HDC Handle() const</prototype>
+<prototype>operator HDC() const</prototype>
+<p>Returns the wrapped HDC value.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Handle(HDC hdc)</prototype>
+<postcondition><tt>Handle() == hdc</tt></postcondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--ClientDC">
+<title><tt>windows::ClientDC</tt></title>
+
+<code-block lang="C++">
+class windows::ClientDC : public windows::DC, private non_copyable
+{
+public:
+    explicit ClientDC(HWND hwnd);
+    ClientDC(HDC hdc, HWND hwnd);
+    ~ClientDC();
+};
+</code-block>
+
+<p>RAII-wrapper. Calls <tt>::ReleaseDC()</tt> in destructor.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit ClientDC(HWND hwnd)</prototype>
+<p>Calls <tt>::GetDC(hwnd)</tt>. Throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>ClientDC(HDC hdc, HWND hwnd)</prototype>
+<p>Adopts <tt>hdc</tt> for the subsequent release in the destructor.</p>
+<precondition><tt>hdc</tt> is a valid handler returned by
+<tt>::GetDC(hwnd)</tt> call.</precondition>
+<postcondition><tt>Handle() == hdc</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~ClientDC()</prototype>
+<p>Calls <tt>::ReleaseDC()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--PaintDC">
+<title><tt>windows::PaintDC</tt></title>
+
+<code-block lang="C++">
+class windows::PaintDC :
+    public windows::DC, public PAINTSTRUCT, private non_copyable
+{
+public:
+    explicit PaintDC(HWND hwnd);
+    ~PaintDC();
+};
+</code-block>
+
+<p>Wrapper for <tt>PAINTSTRUCT</tt> and
+<tt>::BeginPaint()</tt>/<tt>::EndPaint()</tt> calls.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>explicit PaintDC(HWND hwnd)</prototype>
+<p>Calls <tt>::BeginPaint(hwnd, this)</tt>. Throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~PaintDC()</prototype>
+<p>Calls <tt>::EndPaint()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+</chapter>

@@ -22,7 +22,7 @@ public:
 };
 ]]></code-block>
 
-<p>C++ обёртка для <tt>CRITICAL_SECTION</tt> из Win32 API.</p>
+<p>C++-обёртка для <tt>CRITICAL_SECTION</tt> из Win32 API.</p>
 
 <section><title>Члены класса</title>
 

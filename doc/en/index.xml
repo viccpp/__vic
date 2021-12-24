@@ -49,6 +49,7 @@
     <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
     <!ENTITY writers SYSTEM "writers.xml">
     <!ENTITY windows.critical_section.h SYSTEM "windows.critical_section.h.xml">
+    <!ENTITY windows.dc.h SYSTEM "windows.dc.h.xml">
     <!ENTITY windows.error.h SYSTEM "windows.error.h.xml">
     <!ENTITY windows.event.h SYSTEM "windows.event.h.xml">
     <!ENTITY windows.find_file.h SYSTEM "windows.find_file.h.xml">
@@ -176,6 +177,7 @@ TODO
 &waitable_event.h;
 &writers;
 &windows.critical_section.h;
+&windows.dc.h;
 &windows.error.h;
 &windows.event.h;
 &windows.find_file.h;

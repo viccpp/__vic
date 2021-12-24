@@ -16,6 +16,7 @@ namespace __vic { namespace windows {
 // but including big header only for one typedef is an overkill
 __VIC_NORETURN void throw_last_error(const char * );
 __VIC_NORETURN void throw_last_error(const char * , unsigned );
+__VIC_NORETURN void throw_failed(const char * );
 
 }} // namespace
 

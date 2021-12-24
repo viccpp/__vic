@@ -26,7 +26,7 @@ public:
 };
 ]]></code-block>
 
-<p>C++ обёртка для Win32 API <tt>HANDLE</tt>.</p>
+<p>C++-обёртка для Win32 API <tt>HANDLE</tt>.</p>
 
 <section><title>Члены класса</title>
 

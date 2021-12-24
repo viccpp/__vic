@@ -18,7 +18,7 @@ ifneq ($(filter $(compiler),msvc clang-cl),) # msvc or clang-cl
 CFLAGS = -D_CRT_SECURE_NO_DEPRECATE
 CFLAGS_TEST = -MT
 WARNS = -W3 -wd4290 -wd4800 -D_CRT_SECURE_NO_WARNINGS
-LIBS += user32.lib notelemetry.obj
+LIBS += user32.lib gdi32.lib notelemetry.obj
 else
 CFLAGS = -pedantic-errors
 CFLAGS_TEST = -MMD -o $@
@@ -31,6 +31,7 @@ else ifeq ($(compiler),clang)
 WARNS += -Wno-non-literal-null-conversion
 endif
 endif
+LIBS += -lgdi32
 GARBAGE += *.d
 endif
 GARBAGE += *.$(TESTSUFF)

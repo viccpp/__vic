@@ -1,0 +1,270 @@
+<chapter xml:id="windows.dc.h">
+<title><tt>__vic/windows/dc.h</tt></title>
+
+<p>C++-обёртка для Win32 GDI device context (DC).</p>
+
+
+<chapter xml:id="windows--DC">
+<title><tt>windows::DC</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::DC
+{
+public:
+    DC() = default;
+    explicit DC(HDC hdc);
+
+    static DC CreateCompatible(HDC hdc);
+
+    bool ReleaseNT(HWND hwnd) noexcept;
+    void Release(HWND hwnd);
+    bool DeleteNT() noexcept;
+    void Delete();
+
+    int GetHorzRes() const;
+    int GetVertRes() const;
+    HWND GetWindow() const;
+    HGDIOBJ GetCurrentObject(UINT uObjType) const;
+    HBRUSH GetCurrentBrush() const;
+    HPEN GetCurrentPen() const;
+    HFONT GetCurrentFont() const;
+    HBITMAP GetCurrentBitmap() const;
+
+    void Select(HGDIOBJ hObj); // not a region object
+    void Select(HRGN hReg);
+
+    COLORREF SetPixel(int x, int y, COLORREF c);
+    bool MoveTo(int x, int y, POINT *p = 0);
+    bool LineTo(int x, int y);
+    bool PolyBezier(const POINT *lppt, DWORD cPoints);
+    bool FillRect(const RECT &rect, HBRUSH hbr);
+
+    bool BlitTo(HDC dcDest, int x, int y,
+                            int w, int h, DWORD dwRop = SRCCOPY) const;
+    bool BlitTo(HDC dcDest, const RECT &r, DWORD dwRop = SRCCOPY) const;
+
+    void ClearHandle();
+    HDC Handle() const;
+    void Handle(HDC hdc);
+    operator HDC() const;
+};
+]]></code-block>
+
+<p>Обёртка общего назначения для <tt>HDC</tt>.
+Используйте <xref to="windows--ClientDC"/> вместо <tt>::ReleaseDC()</tt>.
+Используйте <xref to="windows--PaintDC"/> вместо
+<tt>::BeginPaint()</tt>/<tt>::EndPaint()</tt>.</p>
+
+<note>Для большинства функций, возвращающих <tt>false</tt> в случае ошибки,
+нет возможности получить дополнительную информацию вызовом
+<tt>::GetLastError()</tt>.</note>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit DC(HDC hdc)</prototype>
+<postcondition><tt>Handle() == hdc</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>static DC CreateCompatible(HDC hdc)</prototype>
+<p>Вызывает <tt>::CreateCompatibleDC()</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool ReleaseNT(HWND hwnd) noexcept</prototype>
+<p>Вызывает <tt>::ReleaseDC()</tt> и возвращает <tt>false</tt> в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Release(HWND hwnd)</prototype>
+<p>Вызывает <tt>::ReleaseDC()</tt> и бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool DeleteNT() noexcept</prototype>
+<p>Вызывает <tt>::DeleteDC()</tt> и возвращает <tt>false</tt> в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Delete()</prototype>
+<p>Вызывает <tt>::DeleteDC()</tt> и бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int GetHorzRes() const</prototype>
+<p>Возвращает горизонтальное разрешение данного DC.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int GetVertRes() const</prototype>
+<p>Возвращает вертикальное разрешение данного DC.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HWND GetWindow() const</prototype>
+<p>Вызывает <tt>::WindowFromDC()</tt> и возвращает его результат.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HGDIOBJ GetCurrentObject(UINT uObjType) const</prototype>
+<p>Вызывает <tt>::GetCurrentObject()</tt> с указанным <tt>uObjType</tt>
+и возвращает его результат.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HBRUSH GetCurrentBrush() const</prototype>
+<prototype>HPEN GetCurrentPen() const</prototype>
+<prototype>HFONT GetCurrentFont() const</prototype>
+<prototype>HBITMAP GetCurrentBitmap() const</prototype>
+<p>Вызывает <tt>::GetCurrentObject()</tt> для соответсвующего типа объекта
+и возвращает его результат.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Select(HGDIOBJ hObj)</prototype>
+<p>Вызывает <tt>::SelectObject()</tt> для объекта, не являющегося регионом,
+и бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Select(HRGN hReg)</prototype>
+<p>Вызывает <tt>::SelectObject()</tt> для объекта, являющегося регионом,
+и бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>COLORREF SetPixel(int x, int y, COLORREF c)</prototype>
+<p>Вызывает <tt>::SetPixel()</tt> и возвращает его результат.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool MoveTo(int x, int y, POINT *p = 0)</prototype>
+<p>Вызывает <tt>::MoveToEx()</tt> и возвращает <tt>false</tt> в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool LineTo(int x, int y)</prototype>
+<p>Вызывает <tt>::LineTo()</tt> и возвращает <tt>false</tt> в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool PolyBezier(const POINT *lppt, DWORD cPoints)</prototype>
+<p>Вызывает <tt>::PolyBezier()</tt> и возвращает <tt>false</tt> в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool FillRect(const RECT &amp;rect, HBRUSH hbr)</prototype>
+<p>Вызывает <tt>::PolyBezier()</tt> и возвращает <tt>false</tt> в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool BlitTo(HDC dcDest, int x, int y, int w, int h, DWORD dwRop = SRCCOPY) const</prototype>
+<prototype>bool BlitTo(HDC dcDest, const RECT &amp;r, DWORD dwRop = SRCCOPY) const</prototype>
+<p>Вызывает <tt>::BitBlt()</tt> и возвращает <tt>false</tt> в случае ошибки.</p>
+<note><tt>::GetLastError()</tt> может быть использована для получения
+расширенной информации об ошибке.</note>
+</synopsis>
+
+<synopsis>
+<prototype>void ClearHandle()</prototype>
+<postcondition><tt>!Handle()</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>HDC Handle() const</prototype>
+<prototype>operator HDC() const</prototype>
+<p>Возвращает обёрнутое значение HDC.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Handle(HDC hdc)</prototype>
+<postcondition><tt>Handle() == hdc</tt></postcondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--ClientDC">
+<title><tt>windows::ClientDC</tt></title>
+
+<code-block lang="C++">
+class windows::ClientDC : public windows::DC, private non_copyable
+{
+public:
+    explicit ClientDC(HWND hwnd);
+    ClientDC(HDC hdc, HWND hwnd);
+    ~ClientDC();
+};
+</code-block>
+
+<p>RAII-обёртка. Вызывает <tt>::ReleaseDC()</tt> в деструкторе.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit ClientDC(HWND hwnd)</prototype>
+<p>Вызывает <tt>::GetDC(hwnd)</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>ClientDC(HDC hdc, HWND hwnd)</prototype>
+<p>Заворачивает <tt>hdc</tt> для последующего освобождения в деструкторе.</p>
+<precondition><tt>hdc</tt> - валидный дескриптор, возвращённый вызовом
+<tt>::GetDC(hwnd)</tt>.</precondition>
+<postcondition><tt>Handle() == hdc</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>~ClientDC()</prototype>
+<p>Вызывает <tt>::ReleaseDC()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--PaintDC">
+<title><tt>windows::PaintDC</tt></title>
+
+<code-block lang="C++">
+class windows::PaintDC :
+    public windows::DC, public PAINTSTRUCT, private non_copyable
+{
+public:
+    explicit PaintDC(HWND hwnd);
+    ~PaintDC();
+};
+</code-block>
+
+<p>Обёртка для <tt>PAINTSTRUCT</tt> и вызовов
+<tt>::BeginPaint()</tt>/<tt>::EndPaint()</tt>.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>explicit PaintDC(HWND hwnd)</prototype>
+<p>Вызывает <tt>::BeginPaint(hwnd, this)</tt>. Бросает исключение в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>~PaintDC()</prototype>
+<p>Вызывает <tt>::EndPaint()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+</chapter>
