@@ -23,9 +23,14 @@ public:
 };
 </code-block>
 
-<p>C++-обёртка для <tt>HBITMAP</tt>.</p>
+<p>C++-обёртка для Win32 API <tt>HBITMAP</tt>.</p>
 
 <section><title>Члены класса</title>
+
+<synopsis>
+<prototype>Bitmap() = default</prototype>
+<p>Создаёт неинициализированное значение.</p>
+</synopsis>
 
 <synopsis>
 <prototype>explicit Bitmap(HBITMAP h)</prototype>

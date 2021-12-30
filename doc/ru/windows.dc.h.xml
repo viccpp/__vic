@@ -62,6 +62,11 @@ public:
 <section><title>Члены класса</title>
 
 <synopsis>
+<prototype>DC() = default</prototype>
+<p>Создаёт неинициализированное значение.</p>
+</synopsis>
+
+<synopsis>
 <prototype>explicit DC(HDC hdc)</prototype>
 <postcondition><tt>Handle() == hdc</tt></postcondition>
 </synopsis>

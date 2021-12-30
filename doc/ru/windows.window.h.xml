@@ -1,0 +1,382 @@
+<chapter xml:id="windows.window.h">
+<title><tt>__vic/windows/window.h</tt></title>
+
+
+<chapter xml:id="windows--Window">
+<title><tt>windows::Window</tt></title>
+
+<code-block lang="C++"><![CDATA[
+class windows::Window
+{
+public:
+    struct Class;
+    struct CreateParams;
+
+    Window() = default;
+    explicit Window(HWND hwnd);
+
+    static void Register(WNDCLASSEXW wcl);
+    void Create(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR lpWndName,
+        DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent,
+        HMENU hMenu, HINSTANCE hInstance, void *lpParam = nullptr);
+    void Create(const CREATESTRUCTW &cs);
+
+    LRESULT SendMessage(UINT msg, WPARAM w = 0, LPARAM l = 0);
+
+    void Update();
+    bool Show(int nWinMode);
+    void Redraw(const RECT *rect = 0, HRGN hrgn = 0,
+                        UINT flags = RDW_INVALIDATE | RDW_UPDATENOW);
+
+    void GetRect(RECT &r) const;
+    RECT GetRect() const;
+    void GetClientRect(RECT &r) const
+    RECT GetClientRect() const;
+
+    void SetText(LPCWSTR st);
+    void SetText(const char *st);
+    int GetText(LPWSTR st, int nMax) const;
+
+    void SetPos(HWND hWndAfter, int x, int y, int w, int h, UINT uFlags);
+    void SetPos(int x, int y, int w, int h);
+    void SetSize(int w, int h);
+    void SetClientAreaSize(int w, int h);
+    void MoveTo(int x, int y);
+    void MoveToCenter();
+
+    HWND Handle() const;
+    void Handle(HWND hwnd);
+    operator HWND() const;
+};
+]]></code-block>
+
+<p>Тонкая обёртка для Win32 API <tt>HWND</tt>.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>Window() = default</prototype>
+<p>Создаёт неинициализированное значение.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit Window(HWND hwnd)</prototype>
+<postcondition><tt>Handle() == hwnd</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>static void Register(WNDCLASSEXW wcl)</prototype>
+<p>Вызывает <tt>::RegisterClassExW()</tt>. Бросает исключение в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Create(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR lpWndName,
+    DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent,
+    HMENU hMenu, HINSTANCE hInstance, void *lpParam = nullptr)</prototype>
+<p>Вызывает <tt>::CreateWindowExW()</tt> и обновляет завёрнутое значение
+<tt>HWND</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Create(const CREATESTRUCTW &amp;cs)</prototype>
+<p>Вызывает <tt>Create()</tt> со значениями, указанными в in <tt>cs</tt>.
+Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>LRESULT SendMessage(UINT msg, WPARAM w = 0, LPARAM l = 0)</prototype>
+<p>Вызывает <tt>::SendMessage()</tt> и возвращает возвращённое значение.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Update()</prototype>
+<p>Вызывает <tt>::UpdateWindow()</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool Show(int nWinMode)</prototype>
+<p>Вызывает <tt>::ShowWindow()</tt> и возвращает возвращённое значение.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Redraw(const RECT *rect = 0, HRGN hrgn = 0,
+        UINT flags = RDW_INVALIDATE | RDW_UPDATENOW)</prototype>
+<p>Вызывает <tt>::RedrawWindow()</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void GetRect(RECT &amp;r) const</prototype>
+<prototype>RECT GetRect() const</prototype>
+<p>Вызывает <tt>::GetWindowRect()</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void GetClientRect(RECT &amp;r) const</prototype>
+<prototype>RECT GetClientRect() const</prototype>
+<p>Вызывает <tt>::GetClientRect()</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetText(LPCWSTR st)</prototype>
+<p>Вызывает <tt>::SetWindowTextW()</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetText(const char *st)</prototype>
+<p>Конвертирует указанную строку из UTF-8 в UTF-16, затем вызывает
+<tt>SetText()</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>int GetText(LPWSTR st, int nMax) const</prototype>
+<p>Вызывает <tt>::GetWindowTextW()</tt> и возвращает возвращённое значение.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetPos(HWND hWndAfter, int x, int y, int w, int h, UINT uFlags)</prototype>
+<p>Вызывает <tt>::SetWindowPos()</tt>. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetPos(int x, int y, int w, int h)</prototype>
+<p>Устанавливает положение и размер окна. Бросает исключение в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetSize(int w, int h)</prototype>
+<p>Устанавливает размер окна. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void SetClientAreaSize(int w, int h)</prototype>
+<p>Устанавливает размер клиентской зоны окна. Бросает исключение в случае
+ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void MoveTo(int x, int y)</prototype>
+<p>Перемещает окно в указанную позицию. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void MoveToCenter()</prototype>
+<p>Перемещает окно в центр экрана. Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>HWND Handle() const</prototype>
+<prototype>operator HWND() const</prototype>
+<p>Возвращает обёрнутое значение HWND.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void Handle(HWND hwnd)</prototype>
+<postcondition><tt>Handle() == hwnd</tt></postcondition>
+</synopsis>
+
+</section>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+// Каркас Win32-API-приложения
+#include<__vic/windows/window.h>
+#include<windows.h>
+#include<exception>
+
+extern "C" LRESULT CALLBACK WindowFunc(
+    HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch(msg)
+    {
+        case WM_DESTROY:
+            PostQuitMessage(0); break;
+        default:
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+WPARAM skeleton_win32_app(int nWinMode)
+{
+    using __vic::windows::Window;
+    static wchar_t szWinClassName[] = L"TestAppClass";
+
+     Window wnd;
+     HINSTANCE hInstance = ::GetModuleHandle(0);
+     HICON hIcon = LoadIcon(NULL, IDI_APPLICATION);
+     Window::Register(Window::Class(hInstance, szWinClassName, WindowFunc)
+        .Icon(hIcon)
+        .SmallIcon(hIcon)
+        .Cursor(LoadCursor(0, IDC_ARROW))
+        .Background((HBRUSH) GetStockObject(GRAY_BRUSH))
+    );
+    wnd.Create(Window::CreateParams(hInstance,
+        szWinClassName, L"Skeleton Win32 application"));
+    wnd.Show(nWinMode);
+    wnd.Update();
+    return __vic::windows::MessageLoop();
+}
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR lpszArgs, int nWinMode)
+{
+    try
+    {
+        return skeleton_win32_app(nWinMode);
+    }
+    catch(const std::exception &ex)
+    {
+        __vic::windows::MsgBox(ex.what(),
+            "Application error", MB_OK | MB_ICONERROR);
+    }
+    return 1;
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--Window--Class">
+<title><tt>windows::Window::Class</tt></title>
+
+<code-block lang="C++"><![CDATA[
+struct windows::Window::Class : WNDCLASSEXW
+{
+    Class(HMODULE hInst, LPCWSTR name, WNDPROC wndProc)
+    {
+        cbSize = sizeof(WNDCLASSEXW);
+        style = 0;
+        lpfnWndProc = wndProc;
+        cbClsExtra = cbWndExtra = 0;
+        hInstance = hInst;
+        hIcon = 0;
+        hCursor = ::LoadCursorW(0, IDC_ARROW);
+        hbrBackground = 0;
+        lpszMenuName = 0;
+        lpszClassName = name;
+        hIconSm = 0;
+    }
+    Class &Style(UINT v) { style = v; return *this; }
+    Class &ClsExtra(int v) { cbClsExtra = v; return *this; }
+    Class &WndExtra(int v) { cbWndExtra = v; return *this; }
+    Class &Instance(HINSTANCE v) { hInstance = v; return *this; }
+    Class &Icon(HICON v) { hIcon = v; return *this; }
+    Class &Cursor(HCURSOR v) { hCursor = v; return *this; }
+    Class &Background(HBRUSH v) { hbrBackground = v; return *this; }
+    Class &MenuName(LPCWSTR v) { lpszMenuName = v; return *this; }
+    Class &SmallIcon(HICON v) { hIconSm = v; return *this; }
+};
+]]></code-block>
+
+<p>Обёртка для <tt>WNDCLASSEXW</tt>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+using __vic::windows::Windows;
+
+Window::Register(Window::Class(hInstance, WndClassName, wndProc)
+    .Icon(hIcon)
+    .SmallIcon(hIcon)
+    .Cursor(::LoadCursor(nullptr, IDC_ARROW))
+    .Background((HBRUSH) ::GetStockObject(LTGRAY_BRUSH))
+);
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--Window--CreateParams">
+<title><tt>windows::Window::CreateParams</tt></title>
+
+<code-block lang="C++"><![CDATA[
+struct windows::Window::CreateParams : CREATESTRUCTW
+{
+    CreateParams(HMODULE hInst, LPCWSTR lpClsName, LPCWSTR lpWndName = nullptr)
+    {
+        lpCreateParams = 0;
+        hInstance = hInst;
+        hMenu = 0;
+        hwndParent = HWND_DESKTOP;
+        cy = cx = y = x = CW_USEDEFAULT;
+        style = WS_OVERLAPPEDWINDOW;
+        lpszName = lpWndName;
+        lpszClass = lpClsName;
+        dwExStyle = 0;
+    }
+    CreateParams &ExtraParam(void *v) { lpCreateParams = v; return *this; }
+    CreateParams &Instance(HINSTANCE v) { hInstance = v; return *this; }
+    CreateParams &Menu(HMENU v) { hMenu = v; return *this; }
+    CreateParams &Parent(HWND v) { hwndParent = v; return *this; }
+    CreateParams &Position(int X, int Y) { x = X; y = Y; return *this; }
+    CreateParams &Dimension(int w, int h) { cx = w; cy = h; return *this; }
+    CreateParams &Style(DWORD v) { style = v; return *this; }
+    CreateParams &ExStyle(DWORD v) { dwExStyle = v; return *this; }
+};
+]]></code-block>
+
+<p>Обёртка для <tt>CREATESTRUCTW</tt>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++">
+using __vic::windows::Windows;
+
+Windows wnd;
+wnd.Create(Window::CreateParams(hInstance, className, title).Position(x, y));
+</code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="windows--MsgBox">
+<title><tt>windows::MsgBox()</tt></title>
+
+<code-block lang="C++">
+int windows::MsgBox(HWND hwnd,
+    const wchar_t *msg, const wchar_t *title = L"", int t = MB_OK);
+int windows::MsgBox(
+    const wchar_t *msg, const wchar_t *title = L"", int t = MB_OK);
+int windows::MsgBox(HWND hwnd,
+    const char *msg, const char *title = "", int t = MB_OK);
+int windows::MsgBox(
+    const char *msg, const char *title = "", int t = MB_OK)
+</code-block>
+
+<p>Вызывает <tt>::MessageBoxW()</tt> и возвращает возвращённое значение.
+Параметр <tt>hwnd</tt> равен <tt>NULL</tt> (<tt>HWND_DESKTOP</tt>), если не
+указан. Функции <tt>char</tt> конвертируют строки из UTF-8 в UTF-16.</p>
+
+</chapter>
+
+
+<chapter xml:id="windows--MessageLoop">
+<title><tt>windows::MessageLoop()</tt></title>
+
+<code-block lang="C++">
+WPARAM windows::MessageLoop(HWND hwnd = NULL);
+</code-block>
+
+<p>Вызывает <tt>::GetMessage()</tt> в цикле пока она возвращает ненулевое
+значение (пока не вычитано <tt>WM_QUIT</tt>). Затем вызывает
+<tt>::TranslateMessage()</tt> и <tt>::DispatchMessage()</tt> с вычитанным
+сообщением. Возвращает <tt>MSG::wParam</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="windows--ProcessMessages">
+<title><tt>windows::ProcessMessages()</tt></title>
+
+<code-block lang="C++">
+bool windows::ProcessMessages(HWND hwnd = NULL);
+</code-block>
+
+<p>Аналог <xref to="windows--MessageLoop"/>, но возвращает управление при
+опустении очереди. Возвращает <tt>true</tt>, если может быть вызвана ещё раз,
+и <tt>false</tt>, если вычитано сообщение <tt>WM_QUIT</tt>.</p>
+
+</chapter>
+
+
+</chapter>

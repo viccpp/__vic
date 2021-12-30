@@ -60,6 +60,11 @@ information can be obtained using <tt>::GetLastError()</tt>.</note>
 <section><title>Class members</title>
 
 <synopsis>
+<prototype>DC() = default</prototype>
+<p>Creates an uninitialized value.</p>
+</synopsis>
+
+<synopsis>
 <prototype>explicit DC(HDC hdc)</prototype>
 <postcondition><tt>Handle() == hdc</tt></postcondition>
 </synopsis>

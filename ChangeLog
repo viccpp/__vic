@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2021-12-30  __vic
+    + windows/window.h:
+        + windows::Window
+        + windows::MsgBox()
+        + windows::MessageLoop(), windows::ProcessMessages()
+
 2021-12-24  __vic
     + windows/dc.h:
         + windows::DC, windows::ClientDC, windows::PaintDC

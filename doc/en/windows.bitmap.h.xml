@@ -23,9 +23,14 @@ public:
 };
 </code-block>
 
-<p>C++ wrapper for <tt>HBITMAP</tt>.</p>
+<p>C++ wrapper for Win32 API <tt>HBITMAP</tt>.</p>
 
 <section><title>Class members</title>
+
+<synopsis>
+<prototype>Bitmap() = default</prototype>
+<p>Creates an uninitialized value.</p>
+</synopsis>
 
 <synopsis>
 <prototype>explicit Bitmap(HBITMAP h)</prototype>
