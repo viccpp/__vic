@@ -58,6 +58,7 @@
     <!ENTITY windows.shadow_dc.h SYSTEM "windows.shadow_dc.h.xml">
     <!ENTITY windows.throw_last_error.h SYSTEM "windows.throw_last_error.h.xml">
     <!ENTITY windows.wait_cursor.h SYSTEM "windows.wait_cursor.h.xml">
+    <!ENTITY windows.wchar.h SYSTEM "windows.wchar.h.xml">
     <!ENTITY windows.window.h SYSTEM "windows.window.h.xml">
 ]>
 <document xml:lang="ru" version="1.0" status="Draft">
@@ -188,6 +189,7 @@ TODO
 &windows.shadow_dc.h;
 &windows.throw_last_error.h;
 &windows.wait_cursor.h;
+&windows.wchar.h;
 &windows.window.h;
 </chapter>
 

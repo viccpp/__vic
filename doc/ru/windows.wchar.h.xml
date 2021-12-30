@@ -1,0 +1,55 @@
+<chapter xml:id="windows.wchar.h">
+<title><tt>__vic/windows/wchar.h</tt></title>
+
+<p>Конвертеры UTF-8 &lt;-> UTF-16.</p>
+
+
+<chapter xml:id="windows--wstring">
+<title><tt>windows::wstring</tt></title>
+
+<code-block lang="C++">
+class windows::wstring : public std::wstring
+{
+public:
+    wstring() = default;
+    explicit wstring(size_type n) { reserve(n); }
+    wstring(const wchar_t *st);
+    wstring(std::wstring st);
+
+    operator const wchar_t *() const { return c_str(); }
+};
+</code-block>
+
+<p><tt>std::wstring</tt> с автоматическим преобразованием в
+<tt>const wchar_t *</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="windows--utf8to16">
+<title><tt>windows::utf8to16()</tt></title>
+
+<code-block lang="C++">
+windows::wstring windows::utf8to16(const char *s, size_t len);
+windows::wstring windows::utf8to16(const char *s);
+</code-block>
+
+<p>Конвертер UTF-8 -> UTF-16.</p>
+
+</chapter>
+
+
+<chapter xml:id="windows--utf16to8">
+<title><tt>windows::utf16to8()</tt></title>
+
+<code-block lang="C++">
+std::string windows::utf16to8(const wchar_t *s, size_t len);
+std::string windows::utf16to8(const wchar_t *s);
+</code-block>
+
+<p>Конвертер UTF-16 -> UTF-8.</p>
+
+</chapter>
+
+
+</chapter>
