@@ -18,7 +18,7 @@ class Event : public SyncObject
 {
 public:
     explicit Event(bool bManualReset,
-         bool bInitialSignaled = false, LPCSTR lpName = nullptr);
+         bool bInitialSignaled = false, LPCWSTR lpName = nullptr);
 
     void Set();
     void Reset();

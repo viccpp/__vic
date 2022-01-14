@@ -9,9 +9,9 @@
 namespace __vic { namespace windows {
 
 //----------------------------------------------------------------------------
-Event::Event(bool bManualReset, bool bInitialSignaled, LPCSTR lpName)
+Event::Event(bool bManualReset, bool bInitialSignaled, LPCWSTR lpName)
 :
-    SyncObject("CreateEvent", ::CreateEventA(
+    SyncObject("CreateEvent", ::CreateEventW(
         nullptr, bManualReset, bInitialSignaled, lpName))
 {
 }

@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2022-01-14  __vic
+    * windows::Event: constructor uses wide chars
+
 2021-12-30  __vic
     + windows/window.h:
         + windows::Window

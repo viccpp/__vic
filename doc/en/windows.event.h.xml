@@ -9,7 +9,7 @@ class windows::Event : private non_copyable
 {
 public:
     explicit Event(bool bManualReset,
-         bool bInitialSignaled = false, LPCSTR lpName = nullptr);
+         bool bInitialSignaled = false, LPCWSTR lpName = nullptr);
     ~Event();
 
     void Set();
@@ -26,7 +26,7 @@ public:
 <section><title>Class members</title>
 
 <synopsis>
-<prototype>explicit Event(bool bManualReset, bool bInitialSignaled = false, LPCSTR lpName = nullptr)</prototype>
+<prototype>explicit Event(bool bManualReset, bool bInitialSignaled = false, LPCWSTR lpName = nullptr)</prototype>
 <p>Creates the object using <tt>::CreateEvent()</tt>. Throws on error.</p>
 </synopsis>
 
