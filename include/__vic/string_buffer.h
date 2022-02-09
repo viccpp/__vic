@@ -209,8 +209,15 @@ inline string_buffer operator+(char ch, string_buffer &&s)
 {
     return std::move(s.insert(0, 1, ch));
 }
-#endif
 //----------------------------------------------------------------------------
+template<class T>
+inline string_buffer &operator<<(string_buffer &&s, const T &v)
+{
+    s << v;
+    return s;
+}
+//----------------------------------------------------------------------------
+#endif
 
 // Used primarly for creating messages with single expression
 typedef string_buffer msg;
