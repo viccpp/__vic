@@ -121,18 +121,19 @@ public:
     bool error_visible() const { return level() <= severity::error; }
     bool fatal_visible() const { return level() <= severity::fatal; }
 private:
-    severity_t log_level;
     output *out;
+    //severity log_level; // moved to make the struct more compact
 
     // current record buffer
     string_buffer cur_msg;
-    severity_t cur_severity;
     size_t rec_objs_count;
-    template<class T> void _put(const T &v) { cur_msg << v; }
-    void _append(const char *s, size_t len) { cur_msg.append(s, len); }
-    void _flush();
-    void _inc_count() { rec_objs_count++; }
-    void _dec_count() { if(--rec_objs_count == 0) _flush(); }
+    severity_t cur_severity;
+
+    severity_t log_level;
+
+    void flush_();
+    void inc_count_() { rec_objs_count++; }
+    void dec_count_() { if(--rec_objs_count == 0) flush_(); }
 };
 //////////////////////////////////////////////////////////////////////////////
 class logger::record
@@ -142,15 +143,16 @@ public:
     record(logger &log, severity_t severity) : log(log)
     {
         log.cur_severity = severity;
-        log._inc_count();
+        log.inc_count_();
     }
-    record(const record &o) : log(o.log) { log._inc_count(); }
-    ~record() { log._dec_count(); }
+    record(const record &o) : log(o.log) { log.inc_count_(); }
+    ~record() { log.dec_count_(); }
 
-    record append(const char *s, size_t n) { log._append(s,n); return *this; }
+    record append(const char *s, size_t n)
+        { log.cur_msg.append(s, n); return *this; }
 
     template<class T>
-    record operator<<(const T &v) { log._put(v); return *this; }
+    record operator<<(const T &v) { log.cur_msg << v; return *this; }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

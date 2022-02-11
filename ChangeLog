@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2022-02-11  __vic
+    * logger: fields layout reorganized to be more compact
+
 2022-02-09  __vic
     + string_buffer: operator<<(string_buffer &&, T)
 
