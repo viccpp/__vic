@@ -18,26 +18,19 @@ used. Just create cpp-file with the following content in your project:</p>
 <code-block lang="C++"><![CDATA[
 #include<__vic/throw_errno.h>
 #include<system_error>
-#include<cerrno>
-
-namespace __vic {
 
 //----------------------------------------------------------------------------
 // Override library functions to throw std::system_error
 //----------------------------------------------------------------------------
-void throw_errno(const char *prompt, int err_no)
+void __vic::throw_errno(const char *prompt, int err_no)
 {
     throw std::system_error(err_no, std::system_category(), prompt);
 }
 //----------------------------------------------------------------------------
-void throw_errno(const char *prompt)
-{
-    throw_errno(prompt, errno);
-}
-//----------------------------------------------------------------------------
-
-} // namespace
 ]]></code-block>
+
+<p>It's enough to override only one functions because the second one just calls
+<tt>throw_errno(prompt, errno)</tt>.</p>
 
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[

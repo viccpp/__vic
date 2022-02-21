@@ -19,26 +19,19 @@
 <code-block lang="C++"><![CDATA[
 #include<__vic/throw_errno.h>
 #include<system_error>
-#include<cerrno>
-
-namespace __vic {
 
 //----------------------------------------------------------------------------
 // Override library functions to throw std::system_error
 //----------------------------------------------------------------------------
-void throw_errno(const char *prompt, int err_no)
+void __vic::throw_errno(const char *prompt, int err_no)
 {
     throw std::system_error(err_no, std::system_category(), prompt);
 }
 //----------------------------------------------------------------------------
-void throw_errno(const char *prompt)
-{
-    throw_errno(prompt, errno);
-}
-//----------------------------------------------------------------------------
-
-} // namespace
 ]]></code-block>
+
+<p>Переопределения одной функции достаточно, так как вторая просто вызывает
+<tt>throw_errno(prompt, errno)</tt>.</p>
 
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[

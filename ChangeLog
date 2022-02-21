@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2022-02-21  __vic
+    * throw_errno: it's enough to override only one function
+
 2022-02-11  __vic
     * logger: fields layout reorganized to be more compact
 
