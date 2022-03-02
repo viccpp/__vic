@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2022-03-02  __vic
+    - readonly_cstring: compare(const char *,readonly_cstring)
+
 2022-02-21  __vic
     * throw_errno: it's enough to override only one function
 

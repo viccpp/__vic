@@ -19,6 +19,8 @@ namespace __vic {
 class readonly_cstring
 {
     const char *st;
+    static const char empty_str[1];
+    static const char *nonnull(const char *s) { return s ? s : empty_str; }
     static const char *dup(const char * , size_t = size_t(-1));
 public:
     __VIC_CONSTEXPR_FUNC readonly_cstring() : st(nullptr) {}
@@ -43,9 +45,21 @@ public:
     // specified size must include space for '\0' terminator!
     char *reserve(size_t );
 
-    int compare(const char *s) const { return std::strcmp(*this, s ? s : ""); }
+    friend int compare(const readonly_cstring &s1, const readonly_cstring &s2)
+    {
+        return std::strcmp(s1, s2);
+    }
+    friend int compare(const readonly_cstring &s1, const char *s2)
+    {
+        return std::strcmp(s1, nonnull(s2));
+    }
+    friend int compare(const char *s1, const readonly_cstring &s2)
+    {
+        return std::strcmp(nonnull(s1), s2);
+    }
+
     bool empty() const { return !st || *st == '\0'; }
-    const char *c_str() const { return st ? st : ""; }
+    const char *c_str() const { return nonnull(st); }
     operator const char*() const { return c_str(); }
 
     void swap(readonly_cstring &s) noexcept { std::swap(st, s.st); }
@@ -53,20 +67,7 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------
-// readonly_cstring compare function and operators
-//----------------------------------------------------------------------------
-inline int compare(const readonly_cstring &s1, const readonly_cstring &s2)
-{
-    return std::strcmp(s1, s2);
-}
-inline int compare(const readonly_cstring &s1, const char *s2)
-{
-    return s1.compare(s2);
-}
-inline int compare(const char *s1, const readonly_cstring &s2)
-{
-    return s2.compare(s1);
-}
+// readonly_cstring compare operators
 //----------------------------------------------------------------------------
 #define __VIC_DEFINE_OP(OP,T1,T2) \
     inline bool operator OP(T1 s1, T2 s2) { return compare(s1, s2) OP 0; }
