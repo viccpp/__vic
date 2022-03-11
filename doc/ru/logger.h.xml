@@ -48,7 +48,7 @@ public:
 
     void message(severity_t severity, const char *msg, size_t msg_len);
 #if __cpp_lib_string_view // C++17
-    void message(severity s, std::string_view msg);
+    void message(severity_t severity, std::string_view msg);
 
     void trace(std::string_view msg);
     void debug(std::string_view msg);
@@ -291,9 +291,9 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 
 <synopsis>
 <prototype>void message(severity_t severity, const char *msg, size_t msg_len)</prototype>
-<prototype>void message(severity sev, std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void message(severity sev, const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void message(severity sev, const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void message(severity_t severity, std::string_view msg) <sign>C++17</sign></prototype>
+<prototype>void message(severity_t severity, const char *msg) <sign>until C++17</sign></prototype>
+<prototype>void message(severity_t severity, const std::string &amp;msg) <sign>until C++17</sign></prototype>
 <p>Выводит сообщение с заданным приоритетом.</p>
 </synopsis>
 

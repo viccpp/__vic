@@ -25,13 +25,11 @@ public:
     readonly_cstring &assign(const char *begin, const char *end);
     readonly_cstring &assign(const char *chars, size_t n);
 
-    char *reserve(size_t n);
-
-    int compare(const char *str) const;
     bool empty() const;
     const char *c_str() const;
     operator const char*() const;
 
+    char *reserve(size_t n);
     void swap(readonly_cstring &str) noexcept;
 };
 
@@ -131,20 +129,6 @@ void swap(readonly_cstring &s1, readonly_cstring &s2) noexcept;
 </synopsis>
 
 <synopsis>
-<prototype>char *reserve(size_t n)</prototype>
-<p>Резервирует внутренний буфер в <tt>n</tt> символов и возвращает указатель на
-него. Бывает полезно для использования с функциями вроде <tt>std::sprintf()</tt>.
-</p>
-<note>Используйте как можно реже данную опасную функцию!</note>
-</synopsis>
-
-<synopsis>
-<prototype>int compare(const char *str) const</prototype>
-<p>Сравнивает строку с <tt>str</tt>. Возвращаемые значения аналогичны
-<tt>std::strcmp</tt>.</p>
-</synopsis>
-
-<synopsis>
 <prototype>bool empty() const</prototype>
 <p>Возвращает <tt>true</tt>, если строка пустая.</p>
 </synopsis>
@@ -154,6 +138,14 @@ void swap(readonly_cstring &s1, readonly_cstring &s2) noexcept;
 <prototype>operator const char*() const</prototype>
 <p>Возвращает указатель на хранимую строку. Возвращаемый указатель никогда не
 бывает пустым.</p>
+</synopsis>
+
+<synopsis>
+<prototype>char *reserve(size_t n)</prototype>
+<p>Резервирует внутренний буфер в <tt>n</tt> символов и возвращает указатель на
+него. Бывает полезно для использования с функциями вроде <tt>std::sprintf()</tt>.
+</p>
+<note>Используйте как можно реже данную опасную функцию!</note>
 </synopsis>
 
 <synopsis>

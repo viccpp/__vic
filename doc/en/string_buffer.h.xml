@@ -79,6 +79,9 @@ string_buffer operator+(const char *s1, const string_buffer &s2);
 string_buffer operator+(const string_buffer &s, char ch);
 string_buffer operator+(char ch, const string_buffer &s);
 
+template<class T>
+string_buffer &operator<<(string_buffer &&s, const T &v); // C++11
+
 using msg = string_buffer;
 ]]></code-block>
 
@@ -278,6 +281,12 @@ C++98.</p>
 <prototype>string_buffer operator+(const string_buffer &amp;s, char ch)</prototype>
 <prototype>string_buffer operator+(char ch, const string_buffer &amp;s)</prototype>
 <p>Concatenation of strings and characters.</p>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class T>
+string_buffer &operator<<(string_buffer &&s, const T &v)]]> <sign>C++11</sign></prototype>
+<p>Calls <tt>operator&lt;&lt;(string_buffer &amp;s, const T &amp;v)</tt>.</p>
 </synopsis>
 
 </section>

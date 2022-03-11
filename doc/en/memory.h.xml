@@ -41,7 +41,7 @@ void store_unaligned(void *p, T v);
 <code-block lang="C++"><![CDATA[
 void *p = ...;
 // *static_cast<int *>(p) = 123; // potential bus error
-__vic::store_unaligned<int>(p, 123);
+__vic::store_unaligned(p, 123);
 ]]></code-block>
 </section>
 
