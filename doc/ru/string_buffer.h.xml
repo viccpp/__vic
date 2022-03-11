@@ -79,6 +79,9 @@ string_buffer operator+(const char *s1, const string_buffer &s2);
 string_buffer operator+(const string_buffer &s, char ch);
 string_buffer operator+(char ch, const string_buffer &s);
 
+template<class T>
+string_buffer &operator<<(string_buffer &&s, const T &v); // C++11
+
 using msg = string_buffer;
 ]]></code-block>
 
@@ -281,6 +284,12 @@ string_buffer(InputIterator begin, InputIterator end)</prototype>
 <prototype>string_buffer operator+(const string_buffer &amp;s, char ch)</prototype>
 <prototype>string_buffer operator+(char ch, const string_buffer &amp;s)</prototype>
 <p>Конкатенация строк и символов.</p>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class T>
+string_buffer &operator<<(string_buffer &&s, const T &v)]]> <sign>C++11</sign></prototype>
+<p>Вызывает <tt>operator&lt;&lt;(string_buffer &amp;s, const T &amp;v)</tt>.</p>
 </synopsis>
 
 </section>

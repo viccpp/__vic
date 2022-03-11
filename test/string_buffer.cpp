@@ -5,10 +5,10 @@
 
 void run_tests()
 {
-    const size_t intial_capacity = 64;
-    __vic::string_buffer s(intial_capacity);
+    const size_t initial_capacity = 64;
+    __vic::string_buffer s(initial_capacity);
     assert(s.empty());
-    assert(s.capacity() >= intial_capacity);
+    assert(s.capacity() >= initial_capacity);
 
     s << 1;
     assert(s == "1");
