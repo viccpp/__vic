@@ -4,6 +4,18 @@ Legend:
     * Changes
     ! Important
 
+2022-03-02  __vic
+    - readonly_cstring: compare(const char *,readonly_cstring)
+
+2022-02-21  __vic
+    * throw_errno: it's enough to override only one function
+
+2022-02-11  __vic
+    * logger: fields layout reorganized to be more compact
+
+2022-02-09  __vic
+    + string_buffer: operator<<(string_buffer &&, T)
+
 2021-12-07  __vic
     + string_ref: conversion from/to std::string_view
     + string_buffer supports std::string_view (via string_ref)

@@ -82,7 +82,7 @@ __VIC_CONSTEXPR14 unsigned popcount_uint(UInt v)
 {
     __VIC_ASSERT_UINT(UInt);
     unsigned c = 0;
-    for(; v; v >>= 1) c += v & 1;
+    for(; v; v >>= 1) c += v & 1U;
     return c;
 }
 //----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ inline unsigned popcount(unsigned char v)
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_popcount(v);
 #elif defined(_MSC_VER) && defined(__VIC_POPCNT)
-    return __popcnt(v);
+    return __popcnt16(v);
 #else
     return popcount_uint(v);
 #endif
@@ -163,7 +163,7 @@ inline unsigned msb_position_uint(UInt v)
 inline unsigned msb_position(unsigned v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
-    return sizeof(v) * CHAR_BIT - __builtin_clz(v) - 1U;
+    return unsigned(sizeof(v) * CHAR_BIT) - __builtin_clz(v) - 1U;
 #else
     return msb_position_uint(v);
 #endif
@@ -172,7 +172,7 @@ inline unsigned msb_position(unsigned v)
 inline unsigned msb_position(unsigned long v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
-    return sizeof(v) * CHAR_BIT - __builtin_clzl(v) - 1U;
+    return unsigned(sizeof(v) * CHAR_BIT) - __builtin_clzl(v) - 1U;
 #else
     return msb_position_uint(v);
 #endif
@@ -182,7 +182,7 @@ inline unsigned msb_position(unsigned long v)
 inline unsigned msb_position(unsigned __VIC_LONGLONG v)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
-    return sizeof(v) * CHAR_BIT - __builtin_clzll(v) - 1U;
+    return unsigned(sizeof(v) * CHAR_BIT) - __builtin_clzll(v) - 1U;
 #else
     return msb_position_uint(v);
 #endif
@@ -253,9 +253,9 @@ inline bool ispow2(UInt n)
 {
     __VIC_ASSERT_UINT(UInt);
 #if 1
-    return popcount(n) == 1;
+    return popcount(n) == 1U;
 #else // universal implementation w/o popcount()
-    return n != 0 && (n & (n - 1)) == 0;
+    return n != 0U && (n & (n - 1U)) == 0U;
 #endif
 }
 //----------------------------------------------------------------------------
@@ -263,14 +263,14 @@ template<class UInt>
 inline unsigned ceil_log2(UInt n)
 {
     __VIC_ASSERT_UINT(UInt);
-    return n >> 1 ? msb_position(UInt(n - 1)) + 1 : 0;
+    return n >> 1 ? msb_position(UInt(n - 1U)) + 1U : 0U;
 }
 //----------------------------------------------------------------------------
 template<class UInt>
 inline unsigned floor_log2(UInt n)
 {
     __VIC_ASSERT_UINT(UInt);
-    return n ? msb_position(n) : 0;
+    return n ? msb_position(n) : 0U;
 }
 //----------------------------------------------------------------------------
 // Returns the number x: ispow2(x) && x >= n
@@ -278,8 +278,8 @@ template<class UInt>
 inline UInt ceil2(UInt n)
 {
     __VIC_ASSERT_UINT(UInt);
-    if(n == 0 || n == 1) return 1;
-    return UInt(1) << (msb_position(UInt(n - 1)) + 1);
+    if(n == 0U || n == 1U) return 1U;
+    return UInt(1) << (msb_position(UInt(n - 1U)) + 1U);
 }
 //----------------------------------------------------------------------------
 // If n != 0 returns the number x: ispow2(x) && x <= n
@@ -288,7 +288,7 @@ template<class UInt>
 inline UInt floor2(UInt n)
 {
     __VIC_ASSERT_UINT(UInt);
-    return n ? UInt(1) << msb_position(n) : 0;
+    return n ? UInt(1) << msb_position(n) : 0U;
 }
 //----------------------------------------------------------------------------
 

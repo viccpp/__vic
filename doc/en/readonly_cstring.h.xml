@@ -25,13 +25,11 @@ public:
     readonly_cstring &assign(const char *begin, const char *end);
     readonly_cstring &assign(const char *chars, size_t n);
 
-    char *reserve(size_t n);
-
-    int compare(const char *str) const;
     bool empty() const;
     const char *c_str() const;
     operator const char*() const;
 
+    char *reserve(size_t n);
     void swap(readonly_cstring &str) noexcept;
 };
 
@@ -129,19 +127,6 @@ for such purposes.</p>
 </synopsis>
 
 <synopsis>
-<prototype>char *reserve(size_t n)</prototype>
-<p>Allocates internal buffer for <tt>n</tt> chars and returns the pointer to
-it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p>
-<note>Try to avoid this unsafe function!</note>
-</synopsis>
-
-<synopsis>
-<prototype>int compare(const char *str) const</prototype>
-<p>Compares the string with <tt>str</tt>. Return values are similar to
-<tt>std::strcmp</tt>.</p>
-</synopsis>
-
-<synopsis>
 <prototype>bool empty() const</prototype>
 <p>Returns <tt>true</tt> if string is empty.</p>
 </synopsis>
@@ -150,6 +135,13 @@ it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p
 <prototype>const char *c_str() const</prototype>
 <prototype>operator const char*() const</prototype>
 <p>Returns a pointer to the stored string. The pointer is never null.</p>
+</synopsis>
+
+<synopsis>
+<prototype>char *reserve(size_t n)</prototype>
+<p>Allocates internal buffer for <tt>n</tt> chars and returns the pointer to
+it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p>
+<note>Try to avoid this unsafe function!</note>
 </synopsis>
 
 <synopsis>

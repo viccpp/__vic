@@ -14,6 +14,7 @@
 #endif
 #ifdef __VIC_HAVE_TYPE_TRAITS
 #include<type_traits>
+#include<utility> // for std::index_sequence
 #endif
 
 namespace __vic {
@@ -162,7 +163,7 @@ template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
 
 //----------------------------------------------------------------------------
 
-#if __cplusplus >= 201402L // C++14
+#if __cpp_lib_integer_sequence
 using std::index_sequence;
 using std::make_index_sequence;
 #elif __cpp_variadic_templates && __cpp_alias_templates

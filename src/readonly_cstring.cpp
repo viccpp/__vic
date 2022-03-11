@@ -7,6 +7,7 @@
 
 namespace __vic {
 
+const char readonly_cstring::empty_str[1] = { '\x0' };
 //----------------------------------------------------------------------------
 readonly_cstring::~readonly_cstring() noexcept
 {

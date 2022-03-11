@@ -9,6 +9,7 @@ void run_tests()
     __vic::readonly_cstring st(cstr);
     assert(!st.empty());
     assert(st == cstr);
+    assert(compare("a",  st) < 0);
 
     assert(__vic::readonly_cstring().empty());
 }

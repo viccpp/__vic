@@ -10,15 +10,15 @@ namespace __vic {
 //----------------------------------------------------------------------------
 logger::logger(output &out, severity_t level)
 :
-    log_level(level), out(&out),
-    cur_msg(min_buffer_size), rec_objs_count(0)
+    out(&out), cur_msg(min_buffer_size),
+    rec_objs_count(0), log_level(level)
 {
 }
 //----------------------------------------------------------------------------
 logger::logger(settings_t s)
 :
-    log_level(s.level()), out(&s.output()),
-    cur_msg(min_buffer_size), rec_objs_count(0)
+    out(&s.output()), cur_msg(min_buffer_size),
+    rec_objs_count(0), log_level(s.level())
 {
 }
 //----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ void logger::message(severity_t s, const char *msg)
 }
 #endif
 //----------------------------------------------------------------------------
-void logger::_flush()
+void logger::flush_()
 {
     // Micro-optimization: Avoiding message() fuction call
     //message(cur_severity, cur_msg.data(), cur_msg.length());
