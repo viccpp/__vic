@@ -9,7 +9,7 @@ std = 14
 compiler = msvc
 
 !if "$(compiler)" == "msvc"
-CC = cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive-
+CC = cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive- /EHsc
 !elseif "$(compiler)" == "clang-cl"
 CC = clang-cl /std:c++$(std)
 !else

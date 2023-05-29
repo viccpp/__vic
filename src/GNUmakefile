@@ -29,7 +29,7 @@ CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 -GF
 WARNS  :=
 ##############################################################################
 else ifeq ($(compiler),msvc)
-CC     := cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive-
+CC     := cl /nologo /std:c++$(std) /Zc:__cplusplus /permissive- /EHsc
 CFLAGS := -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -O2 -Ob1 -GF
 WARNS  :=
 endif
