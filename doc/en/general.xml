@@ -24,8 +24,8 @@ $ g++ -std=c++14 prog.cpp -l__vic14
 </tty>
 
 <p>The library can be built using one of the ISO C++ standards: C++98, C++11,
-C++14, C++17 or C++20. The standard suffix is used as a suffix for the library
-file (archive).</p>
+C++14, C++17, C++20 or C++23. The standard suffix is used as a suffix for the
+library file (archive).</p>
 
 <p>Some features require a specific minimal standard version to be available,
 e.g. many of them require at least C++11. These features are marked with
@@ -36,7 +36,7 @@ available otherwise. Such features are marked with <sign>C++98 only</sign>
 sign.</p>
 
 <p>Detailed description of the library components is provided in the subsequent
-chapters. Descriptions are grouped by headers. C++20 language syntax is mainly
+chapters. Descriptions are grouped by headers. C++23 language syntax is mainly
 used as a more complete and expressive one.</p>
 
 </chapter>

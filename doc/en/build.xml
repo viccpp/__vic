@@ -21,7 +21,7 @@ write:</p>
 $ gmake std=98
 </tty>
 
-<p>Available values include: 98, 11, 14, 17 and 20.</p>
+<p>Available values include: 98, 11, 14, 17, 20 and 23.</p>
 
 <p>Also you can choose the used compiler manually:</p>
 <tty>
