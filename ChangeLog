@@ -4,6 +4,13 @@ Legend:
     * Changes
     ! Important
 
+2023-10-06  __vic
+    + C++23 mode support
+    * C++17 is used by default
+
+2023-04-07  __vic
+    + __VIC_IF_CONSTEVAL
+
 2022-03-02  __vic
     - readonly_cstring: compare(const char *,readonly_cstring)
 
