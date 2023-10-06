@@ -5,7 +5,7 @@
 #   $ nmake -f Makefile.nmake [compiler={msvc|clang-cl}] [std={14|17|20|latest}]
 
 !include ../src/defs.mk
-std = 14
+std = 17
 compiler = msvc
 
 !if "$(compiler)" == "msvc"
