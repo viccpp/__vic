@@ -5,11 +5,11 @@ LANGS = en ru
 CHECKS := $(addprefix check-,$(LANGS))
 
 # Oracle tools
-XSLTPROC = xsl
-XMLVALIDATOR = xml
+#XSLTPROC = xsl
+#XMLVALIDATOR = xml
 # libxml2/libxslt
-#XSLTPROC = xsltproc
-#XMLVALIDATOR = xmllint --valid -noout
+XSLTPROC = xsltproc
+XMLVALIDATOR = xmllint --valid -noout
 
 .PHONY: all check $(LANGS) $(CHECKS) clean
 
