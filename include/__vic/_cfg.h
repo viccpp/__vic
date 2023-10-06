@@ -278,6 +278,14 @@
 #   define __VIC_CONSTEXPR14 inline
 #endif
 
+#if __cpp_if_consteval
+#   define __VIC_IF_CONSTEVAL if consteval
+#   define __VIC_IF_NOT_CONSTEVAL if !consteval
+#else
+#   define __VIC_IF_CONSTEVAL if(std::is_constant_evaluated())
+#   define __VIC_IF_NOT_CONSTEVAL if(!std::is_constant_evaluated())
+#endif
+
 #ifndef __has_include
 #   define __has_include(f) 0
 #endif

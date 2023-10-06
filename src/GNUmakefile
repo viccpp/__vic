@@ -2,12 +2,12 @@
 # GNU Make 3.82+ Makefile
 #
 # Usage:
-#   $ gmake [compiler={gcc|clang|intel}] [std={98|11|14|17|20}] [pic=1]
+#   $ gmake [compiler={gcc|clang|intel}] [std={98|11|14|17|20|23}] [pic=1]
 
 include ../src/defs.mk
 OBJSUFF = o
 ARSUFF = a
-std = 14
+std = 17
 
 ifndef compiler
 OS := $(shell uname)
