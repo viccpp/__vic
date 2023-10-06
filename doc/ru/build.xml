@@ -6,7 +6,6 @@
 <list style="bulleted">
     <item>GNU C++ v 4.7+ [<tt>gcc</tt>]</item>
     <item>Clang v 3.4+ [<tt>clang</tt>]</item>
-    <item>Intel C++ 17.0+ [<tt>intel</tt>]</item>
 </list>
 
 <p>Перейдите в подкаталог <tt>src</tt> и наберите:</p>

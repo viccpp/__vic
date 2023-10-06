@@ -7,6 +7,7 @@ Legend:
 2023-10-06  __vic
     + C++23 mode support
     * C++17 is used by default
+    * Intel C++ compiler support removed
 
 2023-04-07  __vic
     + __VIC_IF_CONSTEVAL

@@ -2,7 +2,7 @@
 # GNU Make 3.82+ Makefile
 #
 # Usage:
-#   $ gmake [compiler={gcc|clang|intel}] [std={98|11|14|17|20|23}] [pic=1]
+#   $ gmake [compiler={gcc|clang}] [std={98|11|14|17|20|23}] [pic=1]
 
 include ../src/defs.mk
 OBJSUFF = o
@@ -29,15 +29,6 @@ else ifeq ($(compiler),clang)
 CC     := clang++ -std=c++$(std) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3
 WARNS  := $(if $(filter 98,$(std)),-Wno-long-long )-Wno-non-literal-null-conversion
-CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
-##############################################################################
-else ifeq ($(compiler),intel)
-ifeq ($(std),98)
-$(error C++98 mode is not supported by Intel compiler)
-endif
-CC     := icpc -std=c++$(std) -pthread
-CFLAGS := -pedantic-errors -DNDEBUG -O3 -ffunction-sections -fdata-sections
-WARNS  :=
 CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 endif
 ##############################################################################
