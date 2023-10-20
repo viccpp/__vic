@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2023-10-20  __vic
+    + __VIC_INLINE_CONSTEXPR_VAR
+
 2023-10-06  __vic
     + C++23 mode support
     * C++17 is used by default

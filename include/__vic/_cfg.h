@@ -223,7 +223,7 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
-// C++14/C++11/C++98 compatibility macros
+// C++23/20/17/14/11/98 compatibility macros
 //////////////////////////////////////////////////////////////////////////////
 #if __cplusplus < 201103L && !defined(__VIC_NO_NOEXCEPT_DEF)
 #define noexcept throw()
@@ -271,6 +271,12 @@
 #   define __VIC_CONSTEXPR14 constexpr
 #else
 #   define __VIC_CONSTEXPR14 inline
+#endif
+
+#if __cpp_inline_variables
+#   define __VIC_INLINE_CONSTEXPR_VAR inline __VIC_CONSTEXPR_VAR
+#else
+#   define __VIC_INLINE_CONSTEXPR_VAR __VIC_CONSTEXPR_VAR
 #endif
 
 #if __cpp_if_consteval
