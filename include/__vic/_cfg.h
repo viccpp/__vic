@@ -254,7 +254,7 @@
 #if __cpp_rvalue_references
 #   define __VIC_STD_MOVE(v) std::move(v)
 #else
-#   define __VIC_STD_MOVE(v) v
+#   define __VIC_STD_MOVE(v) (v)
 #endif
 
 #if __cpp_constexpr
