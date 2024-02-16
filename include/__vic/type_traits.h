@@ -33,7 +33,32 @@ using std::remove_volatile;
 using std::remove_cv;
 using std::remove_reference;
 using std::remove_pointer;
+using std::conditional;
 using std::enable_if;
+
+//----------------------------------------------------------------------------
+
+#if __cpp_lib_logical_traits
+using std::conjunction;
+using std::disjunction;
+using std::negation;
+#elif __cpp_variadic_templates
+//----------------------------------------------------------------------------
+
+template<class...> struct conjunction : true_type {};
+template<class B1> struct conjunction<B1> : B1 {};
+template<class B1, class... Bn> struct conjunction<B1, Bn...> :
+    conditional<bool(B1::value), conjunction<Bn...>, B1>::type {};
+
+//----------------------------------------------------------------------------
+
+template<class...> struct disjunction : false_type {};
+template<class B1> struct disjunction<B1> : B1 {};
+template<class B1, class... Bn> struct disjunction<B1, Bn...> :
+    conditional<bool(B1::value), B1, disjunction<Bn...>>::type {};
+
+//----------------------------------------------------------------------------
+#endif
 
 //----------------------------------------------------------------------------
 
@@ -93,6 +118,14 @@ template<class T> struct remove_reference<T &&> { typedef T type; };
 
 template<class T> struct remove_pointer      { typedef T type; };
 template<class T> struct remove_pointer<T *> { typedef T type; };
+
+//----------------------------------------------------------------------------
+
+template<bool Cond, class Then, class Else>
+struct conditional { typedef Then type; };
+
+template<class Then, class Else>
+struct conditional<false, Then, Else> { typedef Else type; };
 
 //----------------------------------------------------------------------------
 
@@ -158,7 +191,16 @@ template<class T> using remove_volatile_t = typename remove_volatile<T>::type;
 template<class T> using remove_cv_t = typename remove_cv<T>::type;
 template<class T> using remove_reference_t = typename remove_reference<T>::type;
 template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
+template<bool Cond, class Then, class Else>
+using conditional_t = typename conditional<Cond, Then, Else>::type;
 // No alias for enable_if because in C++11 SFINAE is not guaranteed
+#endif
+
+//----------------------------------------------------------------------------
+
+#if !__cpp_lib_logical_traits
+template<class B> struct negation :
+    integral_constant<bool, !bool(B::value)> {};
 #endif
 
 //----------------------------------------------------------------------------

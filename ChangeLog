@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2024-02-16  __vic
+    * type_traits.h:
+        + conditional
+        + conjunction, disjunction, negation
+
 2023-10-20  __vic
     + __VIC_INLINE_CONSTEXPR_VAR
     - __VIC_SWAP_HEADER definition was invalid
