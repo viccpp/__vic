@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2024-02-27  __vic
+    * ascii.h: protection from isascii() macro
+
 2024-02-16  __vic
     * type_traits.h:
         + conditional
