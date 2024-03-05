@@ -48,5 +48,16 @@ void logger::flush_()
     //shrink_buffer(hi_water_mark); // prevent uncontrolled buffer growth
 }
 //----------------------------------------------------------------------------
+#if __cpp_lib_format >= 202106L
+void logger::vformat_(
+    severity_t s, std::string_view fmt, std::format_args args)
+{
+    std::vformat_to(
+        std::back_insert_iterator<std::string>{cur_msg}, fmt, args);
+    out->publish_record(s, cur_msg.data(), cur_msg.length());
+    cur_msg.clear();
+}
+#endif
+//----------------------------------------------------------------------------
 
 } // namespace

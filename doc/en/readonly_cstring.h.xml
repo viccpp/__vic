@@ -22,8 +22,9 @@ public:
 
     readonly_cstring &operator=(const char *str);
     readonly_cstring &operator=(const readonly_cstring &str);
-    readonly_cstring &assign(const char *begin, const char *end);
+    readonly_cstring &assign(const char *str);
     readonly_cstring &assign(const char *chars, size_t n);
+    readonly_cstring &assign(const char *begin, const char *end);
 
     bool empty() const;
     const char *c_str() const;
@@ -103,14 +104,15 @@ for such purposes.</p>
 </synopsis>
 
 <synopsis>
-<prototype>readonly_cstring(const char *begin, const char *end)</prototype>
 <prototype>readonly_cstring(const char *chars, size_t n)</prototype>
+<prototype>readonly_cstring(const char *begin, const char *end)</prototype>
 <p>Creates a string from characters range.</p>
 </synopsis>
 
 <synopsis>
 <prototype>readonly_cstring &amp;operator=(const char *str)</prototype>
 <prototype>readonly_cstring &amp;operator=(const readonly_cstring &amp;str)</prototype>
+<prototype>readonly_cstring &amp;assign(const char *str)</prototype>
 <p>Assigns <tt>str</tt>.</p>
 </synopsis>
 

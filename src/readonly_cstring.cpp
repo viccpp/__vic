@@ -23,30 +23,6 @@ char *readonly_cstring::reserve(size_t n)
     return p;
 }
 //----------------------------------------------------------------------------
-readonly_cstring &readonly_cstring::operator=(const char *s)
-{
-    const char *p = dup(s);
-    delete [] st;
-    st = p;
-    return *this;
-}
-//----------------------------------------------------------------------------
-readonly_cstring &readonly_cstring::operator=(const readonly_cstring &s)
-{
-    const char *p = dup(s.st);
-    delete [] st;
-    st = p;
-    return *this;
-}
-//----------------------------------------------------------------------------
-readonly_cstring &readonly_cstring::assign(const char *begin, const char *end)
-{
-    const char *p = dup(begin, end - begin);
-    delete [] st;
-    st = p;
-    return *this;
-}
-//----------------------------------------------------------------------------
 readonly_cstring &readonly_cstring::assign(const char *s, size_t n)
 {
     const char *p = dup(s, n);

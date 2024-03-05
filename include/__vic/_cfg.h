@@ -223,7 +223,7 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
-// C++14/C++11/C++98 compatibility macros
+// C++23/20/17/14/11/98 compatibility macros
 //////////////////////////////////////////////////////////////////////////////
 #if __cplusplus < 201103L && !defined(__VIC_NO_NOEXCEPT_DEF)
 #define noexcept throw()
@@ -239,13 +239,13 @@
 
 #if __cplusplus >= 201103L // C++11
 #   define __VIC_THROWS noexcept(false)
-#   define __VIC_SWAP_HEADER <algorithm>
+#   define __VIC_SWAP_HEADER <utility>
 #   define __VIC_SCOPED_ENUM_UT_BEGIN(name,type) enum class name : type
 #   define __VIC_SCOPED_ENUM_BEGIN(name) enum class name
 #   define __VIC_SCOPED_ENUM_END(name) ; using name##_t = name;
 #else // C++98
 #   define __VIC_THROWS
-#   define __VIC_SWAP_HEADER <utility>
+#   define __VIC_SWAP_HEADER <algorithm>
 #   define __VIC_SCOPED_ENUM_UT_BEGIN(name,type) struct name { enum type_
 #   define __VIC_SCOPED_ENUM_BEGIN(name) struct name { enum type_
 #   define __VIC_SCOPED_ENUM_END(name) ; }; typedef name::type_ name##_t;
@@ -254,7 +254,7 @@
 #if __cpp_rvalue_references
 #   define __VIC_STD_MOVE(v) std::move(v)
 #else
-#   define __VIC_STD_MOVE(v) v
+#   define __VIC_STD_MOVE(v) (v)
 #endif
 
 #if __cpp_constexpr
@@ -271,6 +271,12 @@
 #   define __VIC_CONSTEXPR14 constexpr
 #else
 #   define __VIC_CONSTEXPR14 inline
+#endif
+
+#if __cpp_inline_variables
+#   define __VIC_INLINE_CONSTEXPR_VAR inline __VIC_CONSTEXPR_VAR
+#else
+#   define __VIC_INLINE_CONSTEXPR_VAR __VIC_CONSTEXPR_VAR
 #endif
 
 #if __cpp_if_consteval

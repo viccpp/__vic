@@ -103,6 +103,44 @@ types" (see the Standard).</p>
 </chapter>
 
 
+<chapter xml:id="conjunction">
+<title><tt>conjunction</tt> <sign>C++11</sign></title>
+
+<code-block lang="C++"><![CDATA[
+template<class... B> struct conjunction;
+]]></code-block>
+
+<p>A predicate. The logical conjunction of the predicates <tt>B...</tt>.
+False iff one of the <tt>B...</tt> is false.</p>
+
+</chapter>
+
+
+<chapter xml:id="disjunction">
+<title><tt>disjunction</tt> <sign>C++11</sign></title>
+
+<code-block lang="C++"><![CDATA[
+template<class... B> struct disjunction;
+]]></code-block>
+
+<p>A predicate. The logical disjunction of the predicates <tt>B...</tt>.
+True iff one of the <tt>B...</tt> is true.</p>
+
+</chapter>
+
+
+<chapter xml:id="negation">
+<title><tt>negation</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class B> struct negation;
+]]></code-block>
+
+<p>A predicate. The logical negation of the predicate <tt>B</tt>.</p>
+
+</chapter>
+
+
 <chapter xml:id="remove_const">
 <title><tt>remove_const</tt></title>
 
@@ -183,6 +221,22 @@ template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
 
 <p>A type transformer. Returns the type pointed by <tt>T</tt> or just
 <tt>T</tt> if it isn't a pointer type.</p>
+
+</chapter>
+
+
+<chapter xml:id="conditional">
+<title><tt>conditional</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<bool Cond, class Then, class Else> struct conditional;
+
+template<bool Cond, class Then, class Else>
+using conditional_t = typename conditional<Cond, Then, Else>;
+]]></code-block>
+
+<p>A type transformer. Returns <tt>Then</tt> if <tt>Cond == true</tt>.
+<tt>Else</tt> is returned otherwise.</p>
 
 </chapter>
 

@@ -22,9 +22,9 @@ typedef char32_t unicode_t;
 typedef uint_least32_t unicode_t;
 #endif
 
-__VIC_CONSTEXPR_VAR unicode_t unicode_max = 0x10FFFF;
-__VIC_CONSTEXPR_VAR unicode_t unicode_bom = 0xFEFF;
-__VIC_CONSTEXPR_VAR unicode_t unicode_replacement_char = 0xFFFD;
+__VIC_INLINE_CONSTEXPR_VAR unicode_t unicode_max = 0x10FFFF;
+__VIC_INLINE_CONSTEXPR_VAR unicode_t unicode_bom = 0xFEFF;
+__VIC_INLINE_CONSTEXPR_VAR unicode_t unicode_replacement_char = 0xFFFD;
 
 //----------------------------------------------------------------------------
 template<class UTFReader, class UTFWriter>

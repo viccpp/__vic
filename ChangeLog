@@ -4,6 +4,22 @@ Legend:
     * Changes
     ! Important
 
+2024-02-05  __vic
+    + logger: std::format support
+
+2024-02-27  __vic
+    * ascii.h: protection from isascii() macro
+    * readonly_cstring: duplicated code removed
+
+2024-02-16  __vic
+    * type_traits.h:
+        + conditional
+        + conjunction, disjunction, negation
+
+2023-10-20  __vic
+    + __VIC_INLINE_CONSTEXPR_VAR
+    - __VIC_SWAP_HEADER definition was invalid
+
 2023-10-06  __vic
     + C++23 mode support
     * C++17 is used by default

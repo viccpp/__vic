@@ -30,10 +30,12 @@ public:
     readonly_cstring(const readonly_cstring &s) : st(dup(s.st)) {}
     ~readonly_cstring() noexcept; // for error.h
 
-    readonly_cstring &operator=(const char * );
-    readonly_cstring &operator=(const readonly_cstring & );
-    readonly_cstring &assign(const char * , const char * );
+    readonly_cstring &operator=(const char *s) { return assign(s); }
+    readonly_cstring &operator=(const readonly_cstring &s) { return assign(s.st); }
+    readonly_cstring &assign(const char *s) { return assign(s, size_t(-1)); }
     readonly_cstring &assign(const char * , size_t );
+    readonly_cstring &assign(const char *begin, const char *end)
+        { return assign(begin, end - begin); }
 
 #if __cpp_rvalue_references
     readonly_cstring(readonly_cstring &&s) noexcept : st(s.st) { s.st = nullptr; }
