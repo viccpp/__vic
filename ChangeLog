@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2024-02-05  __vic
+    + logger: std::format support
+
 2024-02-27  __vic
     * ascii.h: protection from isascii() macro
     * readonly_cstring: duplicated code removed
