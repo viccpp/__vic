@@ -77,6 +77,35 @@ public:
     void error(const std::string &msg);
     void fatal(const std::string &msg);
 #endif
+
+#if __cpp_lib_format >= 202106L // C++20 + P2508
+    template<class... Args>
+    void format(severity_t s,
+        std::format_string<Args...> fmt, Args&&... args);
+
+    template<class Arg1, class... Args>
+    void trace(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    template<class Arg1, class... Args>
+    void debug(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    template<class Arg1, class... Args>
+    void info(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    template<class Arg1, class... Args>
+    void notice(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    template<class Arg1, class... Args>
+    void warning(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    template<class Arg1, class... Args>
+    void error(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    template<class Arg1, class... Args>
+    void fatal(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+#endif
+
     record trace();
     record debug();
     record info();
@@ -318,6 +347,33 @@ are formed.</p>
 <prototype>void fatal(const char *msg) <sign>until C++17</sign></prototype>
 <prototype>void fatal(const std::string &amp;msg) <sign>until C++17</sign></prototype>
 <p>Writes the message with the corresponding severity.</p>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class... Args>
+void format(severity_t s,
+    std::format_string<Args...> fmt, Args&&... args)]]> <sign>C++20</sign></prototype>
+<p>Formats the message using the specified format string and arguments (like
+<tt>std::format</tt> does) then writes it with the specified severity.</p>
+</synopsis>
+
+<synopsis>
+<prototype><![CDATA[template<class Arg1, class... Args>
+void trace(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+<prototype><![CDATA[template<class Arg1, class... Args>
+void debug(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+<prototype><![CDATA[template<class Arg1, class... Args>
+void info(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+<prototype><![CDATA[template<class Arg1, class... Args>
+void notice(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+<prototype><![CDATA[template<class Arg1, class... Args>
+void warning(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+<prototype><![CDATA[template<class Arg1, class... Args>
+void error(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+<prototype><![CDATA[template<class Arg1, class... Args>
+void fatal(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+<p>Formats the message using the specified format string and arguments (like
+<tt>std::format</tt> does) then writes it with the corresponding severity.</p>
 </synopsis>
 
 <synopsis>

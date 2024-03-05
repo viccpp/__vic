@@ -23,11 +23,11 @@ typedef uint_least16_t code_unit_t;
 #endif
 
 // Leading (high) surrogates
-__VIC_CONSTEXPR_VAR code_unit_t hi_surrogate_min = 0xD800,
-                                hi_surrogate_max = 0xDBFF;
+__VIC_INLINE_CONSTEXPR_VAR code_unit_t hi_surrogate_min = 0xD800,
+                                       hi_surrogate_max = 0xDBFF;
 // Trailing (low) surrogates
-__VIC_CONSTEXPR_VAR code_unit_t lo_surrogate_min = 0xDC00,
-                                lo_surrogate_max = 0xDFFF;
+__VIC_INLINE_CONSTEXPR_VAR code_unit_t lo_surrogate_min = 0xDC00,
+                                       lo_surrogate_max = 0xDFFF;
 
 }} // namespace
 
