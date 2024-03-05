@@ -104,6 +104,44 @@ template<class T> struct is_unsigned_integer;
 </chapter>
 
 
+<chapter xml:id="conjunction">
+<title><tt>conjunction</tt> <sign>C++11</sign></title>
+
+<code-block lang="C++"><![CDATA[
+template<class... B> struct conjunction;
+]]></code-block>
+
+<p>Предикат. Конъюнкция предикатов <tt>B...</tt>. Ложен тогда и только тогда,
+когда ложен один из <tt>B...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="disjunction">
+<title><tt>disjunction</tt> <sign>C++11</sign></title>
+
+<code-block lang="C++"><![CDATA[
+template<class... B> struct disjunction;
+]]></code-block>
+
+<p>Предикат. Дизъюнкция предикатов <tt>B...</tt>. Истинен тогда и только тогда,
+когда истинен один из <tt>B...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="negation">
+<title><tt>negation</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class B> struct negation;
+]]></code-block>
+
+<p>Предикат. Логическое отрицание предиката <tt>B</tt>.</p>
+
+</chapter>
+
+
 <chapter xml:id="remove_const">
 <title><tt>remove_const</tt></title>
 
@@ -187,6 +225,22 @@ template<class T> using remove_pointer_t = typename remove_pointer<T>::type;
 
 <p>Преобразователь типа. Возвращает тип, на который указывает <tt>T</tt>, либо
 просто возвращает <tt>T</tt>, если он не является указателем.</p>
+
+</chapter>
+
+
+<chapter xml:id="conditional">
+<title><tt>conditional</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<bool Cond, class Then, class Else> struct conditional;
+
+template<bool Cond, class Then, class Else>
+using conditional_t = typename conditional<Cond, Then, Else>;
+]]></code-block>
+
+<p>Преобразователь типа. Возвращает <tt>Then</tt>, если <tt>Cond == true</tt>.
+В противном случае - <tt>Else</tt>.</p>
 
 </chapter>
 

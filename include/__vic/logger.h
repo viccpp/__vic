@@ -1,6 +1,6 @@
 // Logger front-end
 //
-// Platform: ISO C++ 98/11/17
+// Platform: ISO C++ 98/11/17/20
 // $Id$
 //
 // (c) __vic 2011
@@ -12,6 +12,9 @@
 #include<__vic/string_buffer.h>
 #if __has_include(<string_view>)
 #include<string_view>
+#endif
+#if __has_include(<format>)
+#include<format>
 #endif
 
 namespace __vic {
@@ -112,6 +115,68 @@ public:
     record warning();
     record error();
     record fatal();
+
+#if __cpp_lib_format >= 202106L // C++20 + P2508
+private:
+    void vformat_(severity_t , std::string_view , std::format_args );
+public:
+    template<class... Args>
+    void format(severity_t s, std::format_string<Args...> fmt, Args&&... args)
+    {
+        if(s >= level())
+            vformat_(s, fmt.get(), std::make_format_args(args...));
+    }
+
+    template<class Arg1, class... Args>
+    void trace(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    {
+        format(severity::trace, fmt,
+                std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+    template<class Arg1, class... Args>
+    void debug(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    {
+        format(severity::debug, fmt,
+                std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+    template<class Arg1, class... Args>
+    void info(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    {
+        format(severity::info, fmt,
+                std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+    template<class Arg1, class... Args>
+    void notice(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    {
+        format(severity::notice, fmt,
+                std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+    template<class Arg1, class... Args>
+    void warning(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    {
+        format(severity::warning, fmt,
+                std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+    template<class Arg1, class... Args>
+    void error(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    {
+        format(severity::error, fmt,
+                std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+    template<class Arg1, class... Args>
+    void fatal(
+        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    {
+        format(severity::fatal, fmt,
+                std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+#endif
 
     bool trace_visible() const { return level() <= severity::trace; }
     bool debug_visible() const { return level() <= severity::debug; }

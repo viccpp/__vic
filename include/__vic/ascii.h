@@ -10,11 +10,6 @@
 
 #include<__vic/defs.h>
 
-// FreeBSD 10 defines this
-#ifdef isascii
-#undef isascii
-#endif
-
 namespace __vic { namespace ascii {
 
 //----------------------------------------------------------------------------
@@ -81,7 +76,7 @@ __VIC_CONSTEXPR_FUNC bool iscntrl(char c)
     return (0 <= c && c <= '\x1F') || c == '\x7F';
 }
 //----------------------------------------------------------------------------
-__VIC_CONSTEXPR_FUNC bool isascii(char c)
+__VIC_CONSTEXPR_FUNC bool (isascii)(char c)
 {
     return static_cast<unsigned char>(c) < 0x7FU;
 }

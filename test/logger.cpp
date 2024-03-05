@@ -32,6 +32,13 @@ void run_tests()
         rec << "c";
     }
 
+#if __cpp_lib_format >= 202106L
+    log.info("{} std::format! {} {}", "Hi", static_cast<signed char>(-1), 123);
+    log.info("One arg: {}", 123);
+    log.info("Curly braces: {}");
+    log.format(__vic::logger::severity::warning, "format w/o args");
+#endif
+
     log.warning("Application end");
 }
 
