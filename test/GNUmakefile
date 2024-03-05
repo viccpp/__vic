@@ -21,7 +21,7 @@ WARNS = -W3 -wd4290 -wd4800 -D_CRT_SECURE_NO_WARNINGS
 LIBS += user32.lib gdi32.lib notelemetry.obj
 else
 CFLAGS = -pedantic-errors
-CFLAGS_TEST = -MMD -o $@
+CFLAGS_TEST = -static -MMD -o $@
 WARNS = -Wall -Wno-unused-local-typedefs
 ifeq ($(std),98)
 WARNS += -Wno-long-long
