@@ -55,7 +55,7 @@ inline void to_text_append(signed char n, std::string &s)
 {
     to_text_append(static_cast<int>(n), s);
 }
-inline void to_text(unsigned char n, std::string &s)
+inline void to_text_append(unsigned char n, std::string &s)
 {
     to_text_append(static_cast<unsigned>(n), s);
 }
