@@ -1,5 +1,5 @@
 #include<__vic/defs.h>
-#include<__vic/fixed_vector.h>
+#include<__vic/bounded_vector.h>
 #include<iostream>
 #include<exception>
 #include<string>
@@ -17,7 +17,7 @@ public:
 
 void run()
 {
-    __vic::fixed_vector<C> v(2);
+    __vic::bounded_vector<C> v(2);
     std::cout << "Vector size: " << v.size() << '\n';
 
     new(v.alloc()) C("C1");
@@ -39,7 +39,7 @@ void run()
         std::cout << v[i].name() << ' ';
     std::cout << '\n';
     std::cout << "Access by iterator:\n";
-    for(__vic::fixed_vector<C>::const_iterator it =
+    for(__vic::bounded_vector<C>::const_iterator it =
             v.cbegin(); it != v.cend(); ++it)
         std::cout << it->name() << ' ';
     std::cout << '\n';
