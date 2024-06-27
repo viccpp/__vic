@@ -1,7 +1,7 @@
 <chapter xml:id="to_text.h">
 <title><tt>__vic/to_text.h</tt></title>
 
-<p>Converters of types to text representation.</p>
+<p>Generic converters to some text representation.</p>
 
 
 <chapter xml:id="to_text_append">
@@ -27,11 +27,29 @@ void to_text_append(float n, std::string &str);
 void to_text_append(bool f, std::string &str);
 
 void to_text_append(const void *p, std::string &str);
+
+void to_text_append(const std::string &st, std::string &s);
+void to_text_append(const char *st, std::string &s);
+void to_text_append(char ch, std::string &s);
+
+#if __cpp_lib_string_view // C++17
+void to_text_append(std::string_view sv, std::string &s);
+#endif
 ]]></code-block>
 
-<p>Converters of non-character C++ fundamental types to some text
-representation. Second parameter <tt>str</tt> is an output parameter, result
-is appended to it.</p>
+<p>Converts the specified first argument to some text representation and
+appends it to the second argument.</p>
+
+<p>This function is a customization point (like <tt>std::swap</tt>) for the
+library. Users can define additional overloads for own types (in the same
+namespace where the type is defined) in order to "teach" the library how to
+create a text from the value of the specified type.</p>
+
+<note>This is not a replacement for such feature-rich formatting facilities
+as <tt>std::format</tt> or <tt>std::sprintf</tt>. For example, there is no
+way to represent an integer value in HEX or right-align it to the specified
+width. The main purpose is the ability to represent the value in debug/log/error
+messages in some human-readable form.</note>
 
 <note><tt>signed char</tt> and <tt>unsigned char</tt> types are treated as
 integers not characters!</note>
@@ -61,6 +79,16 @@ integers not characters!</note>
 <synopsis>
 <prototype>void to_text_append(const void *p, std::string &amp;str)</prototype>
 <p>Converts a pointer to some platform-specific representation.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void to_text_append(const std::string &amp;st, std::string &amp;s)</prototype>
+<prototype>void to_text_append(const char *st, std::string &amp;s)</prototype>
+<prototype>void to_text_append(char ch, std::string &amp;s)</prototype>
+<prototype>void to_text_append(std::string_view sv, std::string &amp;s) <sign>C++17</sign></prototype>
+<p>Appends the specified string or character to the output string.</p>
+<note><tt>nullptr</tt> value in the <tt>const char *</tt> overload is threated
+as an empty string.</note>
 </synopsis>
 
 <section><title>Example</title>

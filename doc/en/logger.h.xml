@@ -132,6 +132,10 @@ public:
 
     template<class T> record operator<<(const T &v);
 };
+template<class T> struct log_value
+{
+    static void to_text(const T &v, std::string &s);
+};
 const char *to_string(logger::severity_t s);
 #if __cpp_lib_string_view // C++17
 constexpr std::string_view to_string_view(logger::severity s);
@@ -419,8 +423,21 @@ functions like <tt>info()</tt> without parameters should be used instead.</p>
 
 <synopsis>
 <prototype>template&lt;class T> record record::operator&lt;&lt;(const T &amp;v)</prototype>
-<p>The set of inserters for various data types. Call <tt>sb &lt;&lt; v</tt>
-where type of <tt>sb</tt> is <tt>__vic::string_buffer</tt>.</p>
+<p>The set of inserters for various data types. The specified value is
+converted to text using <tt>log_value&lt;T>::to_text()</tt> call.</p>
+</synopsis>
+
+</section>
+
+<section><title>Value-to-text converter</title>
+
+<synopsis>
+<prototype>template&lt;class T> void log_value&lt;T>::to_text(const T &amp;v, std::string &amp;s)</prototype>
+<p>Converts a value of type <tt>T</tt> to text using unqualified
+<xref to="to_text_append"/> call.</p>
+<note>This function (class with static function, to be precise) can be
+specialized for your <tt>T</tt>. But usually you just define
+<tt>to_text_append(const T &amp;, std::string &amp;)</tt>.</note>
 </synopsis>
 
 </section>
