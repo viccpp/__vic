@@ -128,50 +128,50 @@ public:
     }
 
     template<class Arg1, class... Args>
-    void trace(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void trace(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::trace, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void debug(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void debug(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::debug, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void info(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void info(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::info, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void notice(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void notice(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::notice, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void warning(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void warning(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::warning, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void error(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void error(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::error, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void fatal(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void fatal(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::fatal, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
