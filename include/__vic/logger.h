@@ -9,7 +9,8 @@
 #define __VIC_LOGGER_H
 
 #include<__vic/defs.h>
-#include<__vic/string_buffer.h>
+#include<__vic/to_text.h>
+#include<string>
 #if __has_include(<string_view>)
 #include<string_view>
 #endif
@@ -72,7 +73,11 @@ public:
     {
         // assert(cur_msg.empty());
         if(cur_msg.capacity() > limit)
-            string_buffer(min_buffer_size).swap(cur_msg);
+        {
+            std::string tmp;
+            tmp.reserve(min_buffer_size);
+            tmp.swap(cur_msg);
+        }
     }
 
     void message(severity_t , const char * , size_t );
@@ -128,50 +133,50 @@ public:
     }
 
     template<class Arg1, class... Args>
-    void trace(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void trace(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::trace, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void debug(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void debug(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::debug, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void info(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void info(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::info, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void notice(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void notice(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::notice, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void warning(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void warning(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::warning, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void error(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void error(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::error, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
     }
     template<class Arg1, class... Args>
-    void fatal(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)
+    void fatal(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args)
     {
         format(severity::fatal, fmt,
                 std::forward<Arg1>(arg1), std::forward<Args>(args)...);
@@ -190,7 +195,7 @@ private:
     //severity log_level; // moved to make the struct more compact
 
     // current record buffer
-    string_buffer cur_msg;
+    std::string cur_msg;
     size_t rec_objs_count;
     severity_t cur_severity;
 
@@ -199,6 +204,11 @@ private:
     void flush_();
     void inc_count_() { rec_objs_count++; }
     void dec_count_() { if(--rec_objs_count == 0) flush_(); }
+};
+//////////////////////////////////////////////////////////////////////////////
+template<class T> struct log_value
+{
+    static void to_text(const T &v, std::string &s) { to_text_append(v, s); }
 };
 //////////////////////////////////////////////////////////////////////////////
 class logger::record
@@ -216,8 +226,11 @@ public:
     record append(const char *s, size_t n)
         { log.cur_msg.append(s, n); return *this; }
 
-    template<class T>
-    record operator<<(const T &v) { log.cur_msg << v; return *this; }
+    template<class T> record operator<<(const T &v)
+    {
+        log_value<T>::to_text(v, log.cur_msg);
+        return *this;
+    }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

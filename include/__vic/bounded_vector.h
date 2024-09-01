@@ -5,8 +5,8 @@
 //
 // (c) __vic 2007
 
-#ifndef __VIC_FIXED_VECTOR_H
-#define __VIC_FIXED_VECTOR_H
+#ifndef __VIC_BOUNDED_VECTOR_H
+#define __VIC_BOUNDED_VECTOR_H
 
 #include<__vic/defs.h>
 #include<new>
@@ -16,7 +16,7 @@ namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
 template<class T>
-class fixed_vector : private non_copyable
+class bounded_vector : private non_copyable
 {
     T *mem, *next, *limit;
 
@@ -29,17 +29,18 @@ public:
     typedef value_type *iterator;
     typedef const value_type *const_iterator;
 
-    fixed_vector() : mem(0), next(0), limit(0) {}
-    explicit fixed_vector(size_t );
-    ~fixed_vector();
+    bounded_vector() : mem(0), next(0), limit(0) {}
+    explicit bounded_vector(size_t );
+    ~bounded_vector();
 
 #if __cpp_rvalue_references
-    fixed_vector(fixed_vector &&o) noexcept
+    bounded_vector(bounded_vector &&o) noexcept
         : mem(o.mem), next(o.next), limit(o.limit)
     {
         o.mem = o.next = o.limit = nullptr;
     }
-    fixed_vector &operator=(fixed_vector &&o) noexcept { swap(o); return *this; }
+    bounded_vector &operator=(bounded_vector &&o) noexcept
+        { swap(o); return *this; }
 #if __cpp_variadic_templates
     template<class... Args> T &emplace_back(Args &&... );
 #endif
@@ -58,7 +59,7 @@ public:
         // destruct all objects
         while(next != mem) destroy(--next);
     }
-    void swap(fixed_vector &o) noexcept
+    void swap(bounded_vector &o) noexcept
     {
         std::swap(mem, o.mem);
         std::swap(next, o.next);
@@ -89,21 +90,21 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
 template<class T>
-fixed_vector<T>::fixed_vector(size_t max_size)
+bounded_vector<T>::bounded_vector(size_t max_size)
 {
     mem = next = this->allocate(max_size);
     limit = mem + max_size;
 }
 //----------------------------------------------------------------------------
 template<class T>
-fixed_vector<T>::~fixed_vector()
+bounded_vector<T>::~bounded_vector()
 {
     clear();
     deallocate(mem);
 }
 //----------------------------------------------------------------------------
 template<class T>
-void fixed_vector<T>::recreate(size_t max_size, bool exact)
+void bounded_vector<T>::recreate(size_t max_size, bool exact)
 {
     clear();
     if(max_size > capacity() || (exact && max_size != capacity()))
@@ -117,7 +118,7 @@ void fixed_vector<T>::recreate(size_t max_size, bool exact)
 #if __cpp_rvalue_references && __cpp_variadic_templates
 template<class T>
 template<class... Args>
-T &fixed_vector<T>::emplace_back(Args &&... args)
+T &bounded_vector<T>::emplace_back(Args &&... args)
 {
     T *obj = ::new(static_cast<void*>(next)) T(std::forward<Args>(args)...);
     next++;
@@ -126,7 +127,8 @@ T &fixed_vector<T>::emplace_back(Args &&... args)
 #endif
 //----------------------------------------------------------------------------
 template<class T>
-inline void swap(fixed_vector<T> &o1, fixed_vector<T> &o2) noexcept { o1.swap(o2); }
+inline void swap(bounded_vector<T> &o1, bounded_vector<T> &o2) noexcept
+    { o1.swap(o2); }
 //----------------------------------------------------------------------------
 
 } // namespace

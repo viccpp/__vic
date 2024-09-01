@@ -19,29 +19,7 @@ public:
     template<class InputIterator>
     string_buffer(InputIterator begin, InputIterator end);
 
-    string_buffer &operator<<(const char *str);
-    string_buffer &operator<<(const std::string &str);
-    string_buffer &operator<<(string_ref sr);
-    string_buffer &operator<<(char ch);
-
-    string_buffer &operator<<(long long n);
-    string_buffer &operator<<(long n);
-    string_buffer &operator<<(int n);
-    string_buffer &operator<<(short n);
-    string_buffer &operator<<(signed char ch);
-
-    string_buffer &operator<<(unsigned long long n);
-    string_buffer &operator<<(unsigned long n);
-    string_buffer &operator<<(unsigned n);
-    string_buffer &operator<<(unsigned short n);
-    string_buffer &operator<<(unsigned char ch);
-
-    string_buffer &operator<<(long double n);
-    string_buffer &operator<<(double n);
-    string_buffer &operator<<(float n);
-
-    string_buffer &operator<<(bool flag);
-    string_buffer &operator<<(const void *p);
+    template<class T> string_buffer &operator<<(const T &v);
 
     string_buffer &operator=(string_ref sr);
     string_buffer &operator+=(string_ref sr);
@@ -79,9 +57,6 @@ string_buffer operator+(const char *s1, const string_buffer &s2);
 string_buffer operator+(const string_buffer &s, char ch);
 string_buffer operator+(char ch, const string_buffer &s);
 
-template<class T>
-string_buffer &operator<<(string_buffer &&s, const T &v); // C++11
-
 using msg = string_buffer;
 ]]></code-block>
 
@@ -108,7 +83,8 @@ st.reserve(4096);
 </code-block></item>
 
 <item>Operator <tt>&lt;&lt;</tt> accepts all fundamental types: numbers, chars,
-pointers, <tt>bool</tt>:
+pointers, <tt>bool</tt>, and other types for which <xref to="to_text_append"/>
+is applicable:
 <code-block lang="C++"><![CDATA[
 for(int i=0; i<10; i++)
     str << "i = " << i << '\n';
@@ -206,47 +182,8 @@ string_buffer(InputIterator begin, InputIterator end)</prototype>
 </synopsis>
 
 <synopsis>
-<prototype>string_buffer &amp;operator&lt;&lt;(const char *str)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(const std::string &amp;str)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(string_ref sr)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(char ch)</prototype>
-<p>Calls <tt>std::string::append()</tt>.</p>
-</synopsis>
-
-<synopsis>
-<prototype>string_buffer &amp;operator&lt;&lt;(long long n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(long n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(int n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(short n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(signed char ch)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(unsigned long long n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(unsigned long n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(unsigned n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(unsigned short n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(unsigned char ch)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(long double n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(double n)</prototype>
-<prototype>string_buffer &amp;operator&lt;&lt;(float n)</prototype>
-<p>Appends decimal representaion of <tt>n</tt> to the string.</p>
-</synopsis>
-
-<synopsis>
-<prototype>string_buffer &amp;operator&lt;&lt;(const void *p)</prototype>
-<p>Appends pointers value in <tt>%p</tt> format of <tt>std::printf</tt>.</p>
-</synopsis>
-
-<synopsis>
-<prototype>string_buffer &amp;operator&lt;&lt;(bool flag)</prototype>
-<p>Appends <tt>1</tt> (for <tt>true</tt>) or <tt>0</tt> (for <tt>false</tt>)
-to the string.</p>
-</synopsis>
-
-<synopsis>
-<prototype>string_buffer &amp;operator=(string_ref sr)</prototype>
-<prototype>string_buffer &amp;operator+=(string_ref sr)</prototype>
-<prototype>string_buffer &amp;assign(string_ref sr)</prototype>
-<prototype>string_buffer &amp;append(string_ref sr)</prototype>
-<p>Operations for <tt>string_ref</tt>.</p>
+<prototype>template&lt;class T> string_buffer &amp;operator&lt;&lt;(const T &amp;v)</prototype>
+<p>Calls <tt>to_text_append(v, *this)</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -281,12 +218,6 @@ C++98.</p>
 <prototype>string_buffer operator+(const string_buffer &amp;s, char ch)</prototype>
 <prototype>string_buffer operator+(char ch, const string_buffer &amp;s)</prototype>
 <p>Concatenation of strings and characters.</p>
-</synopsis>
-
-<synopsis>
-<prototype><![CDATA[template<class T>
-string_buffer &operator<<(string_buffer &&s, const T &v)]]> <sign>C++11</sign></prototype>
-<p>Calls <tt>operator&lt;&lt;(string_buffer &amp;s, const T &amp;v)</tt>.</p>
 </synopsis>
 
 </section>

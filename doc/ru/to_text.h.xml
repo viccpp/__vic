@@ -1,7 +1,7 @@
 <chapter xml:id="to_text.h">
 <title><tt>__vic/to_text.h</tt></title>
 
-<p>Преобразователи типов в текстовое представление.</p>
+<p>Generic преобразователи в текстовое представление.</p>
 
 
 <chapter xml:id="to_text_append">
@@ -27,11 +27,30 @@ void to_text_append(float n, std::string &str);
 void to_text_append(bool f, std::string &str);
 
 void to_text_append(const void *p, std::string &str);
+
+void to_text_append(const std::string &st, std::string &s);
+void to_text_append(const char *st, std::string &s);
+void to_text_append(char ch, std::string &s);
+
+#if __cpp_lib_string_view // C++17
+void to_text_append(std::string_view sv, std::string &s);
+#endif
 ]]></code-block>
 
-<p>Преобразователи несимвольных типов C++ в некоторое текстовое представление.
-Второй параметр <tt>str</tt> - выходной параметр, к нему добавляется результат.
-</p>
+<p>Преобразует первый аргумент в некоторое текстовое представление и добавляет
+его ко второму аргументу.</p>
+
+<p>Данная функция являет собой customization point (подобно <tt>std::swap</tt>)
+для библиотеки. Пользователи могут определять перегрузки для своих типов (в том
+же самом namespace, где определён тип), чтобы "научить" библиотеку как создавать
+текст из значения указанного типа.</p>
+
+<note>Это не замена таким имеющим богатые возможности инструментам, как
+<tt>std::format</tt> или <tt>std::sprintf</tt>. К примеру, нет возможности
+представить целочисленное значение в HEX или выровнять его по правому краю при
+указанной ширине. Главное назначение - это возможность представить значение в
+виде текста в понятной человеку форме в отладочных сообщениях, логах, сообщениях
+об ошибках.</note>
 
 <note>Типы <tt>signed char</tt> и <tt>unsigned char</tt> воспринимаются как
 целые, а не символы!</note>
@@ -61,6 +80,16 @@ void to_text_append(const void *p, std::string &str);
 <synopsis>
 <prototype>void to_text_append(const void *p, std::string &amp;str)</prototype>
 <p>Преобразует указатель в некоторое платформо-специфичное представление.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void to_text_append(const std::string &amp;st, std::string &amp;s)</prototype>
+<prototype>void to_text_append(const char *st, std::string &amp;s)</prototype>
+<prototype>void to_text_append(char ch, std::string &amp;s)</prototype>
+<prototype>void to_text_append(std::string_view sv, std::string &amp;s) <sign>C++17</sign></prototype>
+<p>Добавляет указанную строку или символ к выходной строке.</p>
+<note>Значение <tt>nullptr</tt> в перегрузке, принимающей <tt>const char *</tt>,
+считается пустой строкой.</note>
 </synopsis>
 
 <section><title>Пример</title>

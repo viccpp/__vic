@@ -1,24 +1,24 @@
-<chapter xml:id="fixed_vector.h">
-<title><tt>__vic/fixed_vector.h</tt></title>
+<chapter xml:id="bounded_vector.h">
+<title><tt>__vic/bounded_vector.h</tt></title>
 
-<chapter xml:id="fixed_vector">
-<title><tt>fixed_vector</tt></title>
+<chapter xml:id="bounded_vector">
+<title><tt>bounded_vector</tt></title>
 <code-block lang="C++"><![CDATA[
 template<class T>
-class fixed_vector : private non_copyable
+class bounded_vector : private non_copyable
 {
 public:
     using value_type     = T;
     using iterator       = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
     using const_iterator = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
 
-    fixed_vector();
-    explicit fixed_vector(size_t max_size);
-    ~fixed_vector();
+    bounded_vector();
+    explicit bounded_vector(size_t max_size);
+    ~bounded_vector();
 
     // BEGIN C++11
-    fixed_vector(fixed_vector &&o) noexcept;
-    fixed_vector &operator=(fixed_vector &&o) noexcept;
+    bounded_vector(bounded_vector &&o) noexcept;
+    bounded_vector &operator=(bounded_vector &&o) noexcept;
     template<class... Args> T &emplace_back(Args &&... args)
     // END C++11
 
@@ -33,7 +33,7 @@ public:
     void push_allocated(); // adds last allocated object to the container
     void pop_back();
     void clear();
-    void swap(fixed_vector &o) noexcept;
+    void swap(bounded_vector &o) noexcept;
 
     // element access
     T &operator[](size_t i);
@@ -51,7 +51,7 @@ public:
     const T &back() const;
 };
 template<class T>
-void swap(fixed_vector<T> &o1, fixed_vector<T> &o2) noexcept;
+void swap(bounded_vector<T> &o1, bounded_vector<T> &o2) noexcept;
 ]]></code-block>
 
 <p>Стандартные контейнеры в C++98 не позволяют хранить в себе объекты, которые
@@ -64,7 +64,7 @@ void swap(fixed_vector<T> &o1, fixed_vector<T> &o2) noexcept;
 <p>Без использования <tt>emplace_back()</tt> невозможно создать произвольный
 новый объект непосредственно в памяти контейнера. В C++98 forwarding ссылки
 вообще отсутствуют, делая почти невозможным передачу произвольных параметров в
-конструктор элемента. В <tt>fixed_vector</tt> это ограничение обходится с
+конструктор элемента. В <tt>bounded_vector</tt> это ограничение обходится с
 использованием следующего механизма. Создание элемента происходит в несколько
 фаз:</p>
 <list style="numbered">
@@ -114,25 +114,25 @@ void swap(fixed_vector<T> &o1, fixed_vector<T> &o2) noexcept;
 </synopsis>
 
 <synopsis>
-<prototype>fixed_vector()</prototype>
+<prototype>bounded_vector()</prototype>
 <p>Создаёт объект без выделения памяти под элементы.</p>
 <postcondition><tt>capacity() == 0</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>explicit fixed_vector(size_t max_size)</prototype>
+<prototype>explicit bounded_vector(size_t max_size)</prototype>
 <p>Создаёт контейнер ёмкости <tt>max_size</tt> элементов.</p>
 <postcondition><tt>capacity() == max_size</tt></postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>~fixed_vector()</prototype>
+<prototype>~bounded_vector()</prototype>
 <p>Вызывает <tt>clear()</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>fixed_vector(fixed_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
-<prototype>fixed_vector &amp;operator=(fixed_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>bounded_vector(bounded_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>bounded_vector &amp;operator=(bounded_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
 <p>Операции перемещения для режима C++11.</p>
 </synopsis>
 
@@ -199,8 +199,8 @@ empty() == true</tt>)</postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>void swap(fixed_vector &amp;o)</prototype>
-<prototype><![CDATA[template<class T> void swap(fixed_vector<T> &o1, fixed_vector<T> &o2) noexcept]]></prototype>
+<prototype>void swap(bounded_vector &amp;o)</prototype>
+<prototype><![CDATA[template<class T> void swap(bounded_vector<T> &o1, bounded_vector<T> &o2) noexcept]]></prototype>
 <p>Обменивается значением с <tt>o</tt>.</p>
 </synopsis>
 
@@ -235,7 +235,7 @@ empty() == true</tt>)</postcondition>
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 // Создаём вектор на два объекта класса C
-__vic::fixed_vector<C> v(2);
+__vic::bounded_vector<C> v(2);
 
 // Создание элемента в режиме C++98:
 new(v.alloc()) C(...); // Запрашиваем блок памяти и создаём в нём объект
