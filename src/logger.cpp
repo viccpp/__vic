@@ -9,17 +9,15 @@ namespace __vic {
 
 //----------------------------------------------------------------------------
 logger::logger(output &out, severity_t level)
-:
-    out(&out), cur_msg(min_buffer_size),
-    rec_objs_count(0), log_level(level)
+    : out(&out), rec_objs_count(0), log_level(level)
 {
+    cur_msg.reserve(min_buffer_size);
 }
 //----------------------------------------------------------------------------
 logger::logger(settings_t s)
-:
-    out(&s.output()), cur_msg(min_buffer_size),
-    rec_objs_count(0), log_level(s.level())
+    : out(&s.output()), rec_objs_count(0), log_level(s.level())
 {
+    cur_msg.reserve(min_buffer_size);
 }
 //----------------------------------------------------------------------------
 logger::~logger()

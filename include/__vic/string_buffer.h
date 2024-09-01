@@ -48,32 +48,11 @@ public:
     template<class InputIterator>
     string_buffer(InputIterator b, InputIterator e) : base(b, e) {}
 
-    string_buffer &operator<<(const char *st) { return append(st); }
-    string_buffer &operator<<(const std::string &st) { return append(st); }
-    string_buffer &operator<<(string_ref sr) { return append(sr); }
-    string_buffer &operator<<(char ch) { return *this += ch; }
-
-    string_buffer &operator<<(long n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(int n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(short n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(signed char n) { to_text_append(n, *this); return *this; }
-
-    string_buffer &operator<<(unsigned long n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(unsigned n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(unsigned short n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(unsigned char n) { to_text_append(n, *this); return *this; }
-
-#ifdef __VIC_LONGLONG
-    string_buffer &operator<<(__VIC_LONGLONG n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(unsigned __VIC_LONGLONG n) { to_text_append(n, *this); return *this; }
-#endif
-
-    string_buffer &operator<<(long double n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(double n) { to_text_append(n, *this); return *this; }
-    string_buffer &operator<<(float n) { to_text_append(n, *this); return *this; }
-
-    string_buffer &operator<<(bool f) { to_text_append(f, *this); return *this; }
-    string_buffer &operator<<(const void *p) { to_text_append(p, *this); return *this; }
+    template<class T> string_buffer &operator<<(const T &v)
+    {
+        to_text_append(v, *this);
+        return *this;
+    }
 
     operator const char *() const { return c_str(); }
 
@@ -209,14 +188,6 @@ inline string_buffer operator+(char ch, string_buffer &&s)
 {
     return std::move(s.insert(0, 1, ch));
 }
-//----------------------------------------------------------------------------
-template<class T>
-inline string_buffer &operator<<(string_buffer &&s, const T &v)
-{
-    s << v;
-    return s;
-}
-//----------------------------------------------------------------------------
 #endif
 
 // Used primarly for creating messages with single expression
