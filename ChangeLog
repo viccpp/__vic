@@ -4,7 +4,22 @@ Legend:
     * Changes
     ! Important
 
-2024-02-05  __vic
+2024-06-27  __vic
+    * to_text_append() is a generic value to text converter.
+    * logger:
+        ! to_text_append() is used by default instead of
+          operator<<(string_buffer)
+        + log_value::to_text()
+    ! string_buffer: to_text_append() is to be overloaded instead of
+      operator<<(string_buffer)
+
+2024-06-06  __vic
+    ! Renamed fixed_vector -> bounded_vector
+
+2024-05-31  __vic
+    - to_text.h: Renamed to_text(unsigned char, ...) -> to_text_append
+
+2024-03-05  __vic
     + logger: std::format support
 
 2024-02-27  __vic

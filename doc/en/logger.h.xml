@@ -84,26 +84,26 @@ public:
         std::format_string<Args...> fmt, Args&&... args);
 
     template<class Arg1, class... Args>
-    void trace(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    void trace(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args);
     template<class Arg1, class... Args>
-    void debug(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    void debug(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args);
     template<class Arg1, class... Args>
-    void info(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    void info(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args);
     template<class Arg1, class... Args>
-    void notice(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    void notice(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args);
     template<class Arg1, class... Args>
-    void warning(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    void warning(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args);
     template<class Arg1, class... Args>
-    void error(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    void error(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args);
     template<class Arg1, class... Args>
-    void fatal(
-        std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args);
+    void fatal(std::format_string<Arg1,Args...> fmt,
+                                        Arg1 &&arg1, Args&&... args);
 #endif
 
     record trace();
@@ -131,6 +131,10 @@ public:
     record append(const char *str, size_t str_len);
 
     template<class T> record operator<<(const T &v);
+};
+template<class T> struct log_value
+{
+    static void to_text(const T &v, std::string &s);
 };
 const char *to_string(logger::severity_t s);
 #if __cpp_lib_string_view // C++17
@@ -419,8 +423,21 @@ functions like <tt>info()</tt> without parameters should be used instead.</p>
 
 <synopsis>
 <prototype>template&lt;class T> record record::operator&lt;&lt;(const T &amp;v)</prototype>
-<p>The set of inserters for various data types. Call <tt>sb &lt;&lt; v</tt>
-where type of <tt>sb</tt> is <tt>__vic::string_buffer</tt>.</p>
+<p>The set of inserters for various data types. The specified value is
+converted to text using <tt>log_value&lt;T>::to_text()</tt> call.</p>
+</synopsis>
+
+</section>
+
+<section><title>Value-to-text converter</title>
+
+<synopsis>
+<prototype>template&lt;class T> void log_value&lt;T>::to_text(const T &amp;v, std::string &amp;s)</prototype>
+<p>Converts a value of type <tt>T</tt> to text using unqualified
+<xref to="to_text_append"/> call.</p>
+<note>This function (class with static function, to be precise) can be
+specialized for your <tt>T</tt>. But usually you just define
+<tt>to_text_append(const T &amp;, std::string &amp;)</tt>.</note>
 </synopsis>
 
 </section>
