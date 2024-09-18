@@ -85,18 +85,19 @@ a.self-link::before {
 h1:hover>a.self-link, h2:hover>a.self-link, h3:hover>a.self-link, h4:hover>a.self-link {
 	visibility: visible;
 }
+tt { font-family: consolas, monospace; }
 pre.code {
 	background-color: #EEE;
 	border: 1px solid #CCCCCC;
 	padding-top: 6pt;
 	padding-bottom: 6pt;
 	padding-left: 2pt;
-	font-family: monospace;
+	font-family: consolas, monospace;
 	font-size: 10pt;
 	width: 17.3cm; /* 80ch */
 }
 pre.prototype {
-	font-family: monospace;
+	font-family: consolas, monospace;
 	margin-top: 0;
 	margin-bottom: 0;
 }
@@ -112,12 +113,12 @@ span.ver {
 	color: #C0C0C0;
 }
 span.nonterminal {
-	font-family: monospace;
+	font-family: consolas, monospace;
 	font-style: italic;
 }
 span.sign {
 	color: #C0C0C0;
-	font-family: monospace;
+	font-family: consolas, monospace;
 	font-size: 9pt;
 	font-weight: bold;
 }
