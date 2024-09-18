@@ -4,7 +4,7 @@
 
 
 <chapter xml:id="nullptr">
-<title><tt>nullptr</tt> <sign>C++98 only</sign></title>
+<title><tt>nullptr</tt> <badge>C++98 only</badge></title>
 
 <p>Литерал для пустого указателя. Может использоваться вместо <tt>NULL</tt> или
 <tt>0</tt>. В режиме ISO C++ 98 определён как</p>
@@ -31,7 +31,7 @@ pthread_create(&tid, nullptr, thread_func, nullptr);
 
 
 <chapter xml:id="noexcept">
-<title><tt>noexcept</tt> <sign>C++98 only</sign></title>
+<title><tt>noexcept</tt> <badge>C++98 only</badge></title>
 
 <p>В режиме C++98 - макроопределение, синоним <tt>throw()</tt>. В режимах
 остальных стандартов данное определение отсутсвует.</p>
@@ -127,7 +127,7 @@ C *p = new C; // Error! Attempt to allocate on heap
 
 <chapter xml:id="std--move">
 <title><tt>std::move()</tt>, <tt>std::forward()</tt>, <tt>std::swap()</tt>
-<sign>C++11</sign></title>
+<badge>C++11</badge></title>
 
 <p>Данный заголовочный файл всегда включает эти утилиты в режиме C++11.</p>
 

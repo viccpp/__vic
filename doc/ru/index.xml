@@ -109,7 +109,7 @@ postcondition
     Постусловие. Часть <synopsis>.
 invariant
     Инвариант. Часть <synopsis>.
-sign
+badge
     Небольшой значёк-пометка на слове или строке.
 TODO
     Пометка TODO для редактора документа.

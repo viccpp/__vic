@@ -131,8 +131,8 @@ void swap(bounded_vector<T> &o1, bounded_vector<T> &o2) noexcept;
 </synopsis>
 
 <synopsis>
-<prototype>bounded_vector(bounded_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
-<prototype>bounded_vector &amp;operator=(bounded_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>bounded_vector(bounded_vector &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
+<prototype>bounded_vector &amp;operator=(bounded_vector &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Операции перемещения для режима C++11.</p>
 </synopsis>
 
@@ -178,7 +178,7 @@ empty() == true</tt>)</postcondition>
 </synopsis>
 
 <synopsis>
-<prototype>template&lt;class... Args> T &amp;emplace_back(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
+<prototype>template&lt;class... Args> T &amp;emplace_back(Args &amp;&amp;... args) <badge>C++11</badge></prototype>
 <p>Конструирует новый объект в контейнере с помощью переданных аргументов и
 увеличивает <tt>size()</tt> на единицу (<tt>alloc()</tt> + <tt>new</tt> +
 <tt>push_allocated()</tt> одним вызовом). Возвращает ссылку на новый элемент.

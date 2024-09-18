@@ -5,7 +5,7 @@
     status  (Release | Draft) #IMPLIED>
 
 <!ENTITY % section-content "p | list | code-block | tty | note | precondition | postcondition | invariant | synopsis | TODO">
-<!ENTITY % text-with-markup "#PCDATA | tt | u | b | nt | link | xref | sign">
+<!ENTITY % text-with-markup "#PCDATA | tt | u | b | nt | link | xref | badge">
 
 <!ELEMENT chapter (title, (chapter | section | %section-content;)*)>
 <!ATTLIST chapter
@@ -24,7 +24,7 @@
 
 <!ELEMENT synopsis (prototype+, (p | precondition | postcondition | invariant | note | list)*)>
 
-<!ELEMENT prototype (#PCDATA | nt | sign)*>
+<!ELEMENT prototype (#PCDATA | nt | badge)*>
 
 <!ELEMENT tt (#PCDATA | nt)*>
 
@@ -56,6 +56,6 @@
 <!ELEMENT annotation (documentation*)>
 <!ELEMENT documentation (#PCDATA)> <!-- ANY ? -->
 
-<!ELEMENT sign (#PCDATA)>
+<!ELEMENT badge (#PCDATA)>
 
 <!ELEMENT TODO (#PCDATA)>
