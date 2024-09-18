@@ -104,7 +104,7 @@ types" (see the Standard).</p>
 
 
 <chapter xml:id="conjunction">
-<title><tt>conjunction</tt> <sign>C++11</sign></title>
+<title><tt>conjunction</tt> <badge>C++11</badge></title>
 
 <code-block lang="C++"><![CDATA[
 template<class... B> struct conjunction;
@@ -117,7 +117,7 @@ False iff one of the <tt>B...</tt> is false.</p>
 
 
 <chapter xml:id="disjunction">
-<title><tt>disjunction</tt> <sign>C++11</sign></title>
+<title><tt>disjunction</tt> <badge>C++11</badge></title>
 
 <code-block lang="C++"><![CDATA[
 template<class... B> struct disjunction;
@@ -263,7 +263,7 @@ struct disable_if : enable_if<!Test, T> {};
 
 
 <chapter xml:id="index_sequence">
-<title><tt>index_sequence</tt>, <tt>make_index_sequence</tt> <sign>C++11</sign></title>
+<title><tt>index_sequence</tt>, <tt>make_index_sequence</tt> <badge>C++11</badge></title>
 
 <code-block lang="C++"><![CDATA[
 template<size_t... I>

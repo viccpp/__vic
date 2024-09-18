@@ -40,13 +40,13 @@ utf8::writer<ByteWriter> utf8::make_writer(ByteWriter w);
 
 <synopsis>
 <prototype>template&lt;class... Args>
-explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <p>Передаёт все параметры в используемый byte writer.</p>
 </synopsis>
 
 <synopsis>
-<prototype>writer() <sign>C++98 only</sign></prototype>
-<prototype>explicit writer(ByteWriter r) <sign>C++98 only</sign></prototype>
+<prototype>writer() <badge>C++98 only</badge></prototype>
+<prototype>explicit writer(ByteWriter r) <badge>C++98 only</badge></prototype>
 <p>Конструкторы для режима C++98.</p>
 </synopsis>
 

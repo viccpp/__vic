@@ -149,9 +149,9 @@ used type (integer overflow).</p>
 <synopsis>
 <prototype>template&lt;class InputIterator>
 [[nodiscard]] status parse(InputIterator begin, InputIterator end)</prototype>
-<prototype>[[nodiscard]] status parse(std::string_view str) <sign>C++17</sign></prototype>
-<prototype>[[nodiscard]] status parse(const std::string &amp;str) <sign>until C++17</sign></prototype>
-<prototype>[[nodiscard]] status parse(const char *str) <sign>until C++17</sign></prototype>
+<prototype>[[nodiscard]] status parse(std::string_view str) <badge>C++17</badge></prototype>
+<prototype>[[nodiscard]] status parse(const std::string &amp;str) <badge>until C++17</badge></prototype>
+<prototype>[[nodiscard]] status parse(const char *str) <badge>until C++17</badge></prototype>
 <p>Converts a range of characters or a string to a number.</p>
 <postcondition>The result of conversion can be obtained by <tt>result()</tt>
 call if <tt>number_parse_status::ok</tt> is returned.

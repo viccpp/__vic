@@ -85,7 +85,7 @@ integers not characters!</note>
 <prototype>void to_text_append(const std::string &amp;st, std::string &amp;s)</prototype>
 <prototype>void to_text_append(const char *st, std::string &amp;s)</prototype>
 <prototype>void to_text_append(char ch, std::string &amp;s)</prototype>
-<prototype>void to_text_append(std::string_view sv, std::string &amp;s) <sign>C++17</sign></prototype>
+<prototype>void to_text_append(std::string_view sv, std::string &amp;s) <badge>C++17</badge></prototype>
 <p>Appends the specified string or character to the output string.</p>
 <note><tt>nullptr</tt> value in the <tt>const char *</tt> overload is threated
 as an empty string.</note>

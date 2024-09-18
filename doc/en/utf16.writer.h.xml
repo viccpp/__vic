@@ -40,13 +40,13 @@ utf16::writer<CodeUnitWriter> utf16::make_writer(CodeUnitWriter w);
 
 <synopsis>
 <prototype>template&lt;class... Args>
-explicit writer(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <p>Forwards all parameters to the used code unit writer.</p>
 </synopsis>
 
 <synopsis>
-<prototype>writer() <sign>C++98 only</sign></prototype>
-<prototype>explicit writer(CodeUnitWriter r) <sign>C++98 only</sign></prototype>
+<prototype>writer() <badge>C++98 only</badge></prototype>
+<prototype>explicit writer(CodeUnitWriter r) <badge>C++98 only</badge></prototype>
 <p>Constructors for C++98 mode.</p>
 </synopsis>
 

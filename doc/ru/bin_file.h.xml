@@ -84,8 +84,8 @@ public:
 </synopsis>
 
 <synopsis>
-<prototype>bin_file(bin_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
-<prototype>bin_file &amp;operator=(bin_file &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>bin_file(bin_file &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
+<prototype>bin_file &amp;operator=(bin_file &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Операции перемещения для режима C++11.</p>
 </synopsis>
 

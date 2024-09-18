@@ -150,9 +150,9 @@ public:
 <synopsis>
 <prototype>template&lt;class InputIterator>
 [[nodiscard]] status parse(InputIterator begin, InputIterator end)</prototype>
-<prototype>[[nodiscard]] status parse(std::string_view str) <sign>C++17</sign></prototype>
-<prototype>[[nodiscard]] status parse(const std::string &amp;str) <sign>until C++17</sign></prototype>
-<prototype>[[nodiscard]] status parse(const char *str) <sign>until C++17</sign></prototype>
+<prototype>[[nodiscard]] status parse(std::string_view str) <badge>C++17</badge></prototype>
+<prototype>[[nodiscard]] status parse(const std::string &amp;str) <badge>until C++17</badge></prototype>
+<prototype>[[nodiscard]] status parse(const char *str) <badge>until C++17</badge></prototype>
 <p>Преобразует диапазон символов или строку в число.</p>
 <postcondition>Результат преобразования может быть получен вызовом
 <tt>result()</tt>, если возвращён <tt>number_parse_status::ok</tt>.

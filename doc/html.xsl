@@ -116,7 +116,7 @@ span.nonterminal {
 	font-family: consolas, monospace;
 	font-style: italic;
 }
-span.sign {
+span.badge {
 	color: #C0C0C0;
 	font-family: consolas, monospace;
 	font-size: 9pt;
@@ -384,8 +384,8 @@ blockquote * {
 	<pre class="prototype"><xsl:apply-templates/></pre>
 </xsl:template>
 
-<xsl:template match="sign">
-	<span class="sign">[<xsl:apply-templates/>]</span>
+<xsl:template match="badge">
+	<span class="badge">[<xsl:apply-templates/>]</span>
 </xsl:template>
 
 <xsl:template match="TODO">

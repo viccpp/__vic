@@ -1,5 +1,5 @@
 <chapter xml:id="waitable_event.h">
-<title><tt>__vic/waitable_event.h</tt> <sign>C++11</sign></title>
+<title><tt>__vic/waitable_event.h</tt> <badge>C++11</badge></title>
 
 <chapter xml:id="waitable_event">
 <title><tt>waitable_event</tt></title>
