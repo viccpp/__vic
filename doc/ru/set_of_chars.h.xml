@@ -45,7 +45,7 @@ public:
 
 <synopsis>
 <prototype>template&lt;class Iter> constexpr set_of_chars(Iter begin, Iter end)</prototype>
-<prototype>constexpr set_of_chars(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<prototype>constexpr set_of_chars(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
 <p>Создаёт множество, заполненное символами из указанного диапазона значений.
 </p>
 <note><tt>constexpr</tt> только начиная с C++14!</note>
@@ -79,7 +79,7 @@ public:
 
 <synopsis>
 <prototype>template&lt;class Iter> constexpr void add(Iter begin, Iter end)</prototype>
-<prototype>constexpr void add(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<prototype>constexpr void add(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
 <p>Вызывает <tt>add(ch)</tt> для каждого значения из диапазона.</p>
 <note><tt>constexpr</tt> только начиная с C++14!</note>
 </synopsis>
@@ -94,7 +94,7 @@ public:
 <synopsis>
 <prototype>template&lt;class Iter> void assign(Iter begin, Iter end)</prototype>
 <prototype>void assign(const char *c_str)</prototype>
-<prototype>void assign(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<prototype>void assign(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
 <p>Вызывает <tt>clear()</tt>, затем <tt>add()</tt> с указанными параметрами.
 </p>
 </synopsis>

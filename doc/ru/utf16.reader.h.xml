@@ -57,13 +57,13 @@ code unit.</p>
 
 <synopsis>
 <prototype>template&lt;class... Args>
-explicit reader(Args&amp;&amp;... args) <sign>C++11</sign></prototype>
+explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <p>Передаёт все параметры в используемый code unit reader.</p>
 </synopsis>
 
 <synopsis>
-<prototype>reader() <sign>C++98 only</sign></prototype>
-<prototype>explicit reader(CodeUnitReader r) <sign>C++98 only</sign></prototype>
+<prototype>reader() <badge>C++98 only</badge></prototype>
+<prototype>explicit reader(CodeUnitReader r) <badge>C++98 only</badge></prototype>
 <p>Конструкторы для режима C++98.</p>
 </synopsis>
 

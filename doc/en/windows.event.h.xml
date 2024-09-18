@@ -51,7 +51,7 @@ public:
 </synopsis>
 
 <synopsis>
-<prototype>bool wait_for(std::chrono::milliseconds ms) const <sign>C++11</sign></prototype>
+<prototype>bool wait_for(std::chrono::milliseconds ms) const <badge>C++11</badge></prototype>
 <p>chrono-friendly wrapper for <tt>Wait()</tt>.</p>
 </synopsis>
 

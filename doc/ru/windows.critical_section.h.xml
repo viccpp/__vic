@@ -32,7 +32,7 @@ public:
 </synopsis>
 
 <synopsis>
-<prototype>explicit CriticalSection(DWORD dwSpinCount) <sign>_WIN32_WINNT >= 0x0403</sign></prototype>
+<prototype>explicit CriticalSection(DWORD dwSpinCount) <badge>_WIN32_WINNT >= 0x0403</badge></prototype>
 <p>Вызывает <tt>::InitializeCriticalSectionAndSpinCount()</tt>.</p>
 </synopsis>
 

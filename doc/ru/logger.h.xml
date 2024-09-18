@@ -324,60 +324,60 @@ C++98. Начиная с C++11 это просто синоним <tt>severity</
 
 <synopsis>
 <prototype>void message(severity_t severity, const char *msg, size_t msg_len)</prototype>
-<prototype>void message(severity_t severity, std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void message(severity_t severity, const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void message(severity_t severity, const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void message(severity_t severity, std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void message(severity_t severity, const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void message(severity_t severity, const std::string &amp;msg) <badge>until C++17</badge></prototype>
 <p>Выводит сообщение с заданным приоритетом.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void trace(std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void trace(const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void trace(const std::string &amp;msg) <sign>until C++17</sign></prototype>
-<prototype>void debug(std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void debug(const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void debug(const std::string &amp;msg) <sign>until C++17</sign></prototype>
-<prototype>void info(std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void info(const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void info(const std::string &amp;msg) <sign>until C++17</sign></prototype>
-<prototype>void notice(std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void notice(const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void notice(const std::string &amp;msg) <sign>until C++17</sign></prototype>
-<prototype>void warning(std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void warning(const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void warning(const std::string &amp;msg) <sign>until C++17</sign></prototype>
-<prototype>void error(std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void error(const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void error(const std::string &amp;msg) <sign>until C++17</sign></prototype>
-<prototype>void fatal(std::string_view msg) <sign>C++17</sign></prototype>
-<prototype>void fatal(const char *msg) <sign>until C++17</sign></prototype>
-<prototype>void fatal(const std::string &amp;msg) <sign>until C++17</sign></prototype>
+<prototype>void trace(std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void trace(const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void trace(const std::string &amp;msg) <badge>until C++17</badge></prototype>
+<prototype>void debug(std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void debug(const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void debug(const std::string &amp;msg) <badge>until C++17</badge></prototype>
+<prototype>void info(std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void info(const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void info(const std::string &amp;msg) <badge>until C++17</badge></prototype>
+<prototype>void notice(std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void notice(const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void notice(const std::string &amp;msg) <badge>until C++17</badge></prototype>
+<prototype>void warning(std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void warning(const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void warning(const std::string &amp;msg) <badge>until C++17</badge></prototype>
+<prototype>void error(std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void error(const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void error(const std::string &amp;msg) <badge>until C++17</badge></prototype>
+<prototype>void fatal(std::string_view msg) <badge>C++17</badge></prototype>
+<prototype>void fatal(const char *msg) <badge>until C++17</badge></prototype>
+<prototype>void fatal(const std::string &amp;msg) <badge>until C++17</badge></prototype>
 <p>Выводит сообщение с соответствующим приоритетом.</p>
 </synopsis>
 
 <synopsis>
 <prototype><![CDATA[template<class... Args>
 void format(severity_t s,
-    std::format_string<Args...> fmt, Args&&... args)]]> <sign>C++20</sign></prototype>
+    std::format_string<Args...> fmt, Args&&... args)]]> <badge>C++20</badge></prototype>
 <p>Форматирует сообщение используя указанную строку формата и аргументы
 (подобно <tt>std::format</tt>), затем выводит его с заданным приоритетом.</p>
 </synopsis>
 
 <synopsis>
 <prototype><![CDATA[template<class Arg1, class... Args>
-void trace(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+void trace(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <badge>C++20</badge></prototype>
 <prototype><![CDATA[template<class Arg1, class... Args>
-void debug(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+void debug(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <badge>C++20</badge></prototype>
 <prototype><![CDATA[template<class Arg1, class... Args>
-void info(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+void info(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <badge>C++20</badge></prototype>
 <prototype><![CDATA[template<class Arg1, class... Args>
-void notice(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+void notice(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <badge>C++20</badge></prototype>
 <prototype><![CDATA[template<class Arg1, class... Args>
-void warning(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+void warning(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <badge>C++20</badge></prototype>
 <prototype><![CDATA[template<class Arg1, class... Args>
-void error(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+void error(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <badge>C++20</badge></prototype>
 <prototype><![CDATA[template<class Arg1, class... Args>
-void fatal(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <sign>C++20</sign></prototype>
+void fatal(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]> <badge>C++20</badge></prototype>
 <p>Форматирует сообщение используя указанную строку формата и аргументы
 (подобно <tt>std::format</tt>), затем выводит его с соответствующим
 приоритетом.</p>
@@ -450,7 +450,7 @@ void fatal(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]>
 
 <synopsis>
 <prototype>const char *to_string(logger::severity_t s)</prototype>
-<prototype>constexpr std::string_view to_string_view(logger::severity s) <sign>C++17</sign></prototype>
+<prototype>constexpr std::string_view to_string_view(logger::severity s) <badge>C++17</badge></prototype>
 <p>Преобразует приоритет записи лога в текстовое представление, которое можно,
 например, вывести в лог. Пример: для <tt>severity::debug</tt> возвращается
 "<tt>DEBUG</tt>" и т.п.</p>

@@ -72,9 +72,9 @@ Returns <tt>signaled()</tt>.</p>
 
 <synopsis>
 <prototype><![CDATA[template<class Rep, class Period>
-bool wait_for(const std::chrono::duration<Rep,Period> &d)]]> <sign>C++11</sign></prototype>
+bool wait_for(const std::chrono::duration<Rep,Period> &d)]]> <badge>C++11</badge></prototype>
 <prototype><![CDATA[template<class Clock, class Duration>
-bool wait_until(const std::chrono::time_point<Clock,Duration> &t)]]> <sign>C++11</sign></prototype>
+bool wait_until(const std::chrono::time_point<Clock,Duration> &t)]]> <badge>C++11</badge></prototype>
 <p>Ждёт сигнального состояния не дольше указанного таймаута. Возвращает
 <tt>signaled()</tt>.</p>
 </synopsis>

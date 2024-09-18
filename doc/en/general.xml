@@ -29,11 +29,11 @@ library file (archive).</p>
 
 <p>Some features require a specific minimal standard version to be available,
 e.g. many of them require at least C++11. These features are marked with
-<sign>C++11</sign> sign that means "C++11 or later".</p>
+<badge>C++11</badge> badge that means "C++11 or later".</p>
 
 <p>Some features are available only in particular standard mode and not
-available otherwise. Such features are marked with <sign>C++98 only</sign>
-sign.</p>
+available otherwise. Such features are marked with <badge>C++98 only</badge>
+badge.</p>
 
 <p>Detailed description of the library components is provided in the subsequent
 chapters. Descriptions are grouped by headers. C++23 language syntax is mainly
