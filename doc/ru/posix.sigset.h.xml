@@ -61,13 +61,13 @@ public:
 </synopsis>
 
 <synopsis>
-<prototype>sigset(std::initializer_list&lt;int> sigs) <sign>C++11</sign></prototype>
+<prototype>sigset(std::initializer_list&lt;int> sigs) <badge>C++11</badge></prototype>
 <prototype><![CDATA[template<size_t Size> sigset(const int (&sigs)[Size])]]></prototype>
 <p>Создаёт набор, заполненный сигналами из <tt>sigs</tt>.</p>
 </synopsis>
 
 <synopsis>
-<prototype>sigset &amp;operator=(std::initializer_list&lt;int> sigs) <sign>C++11</sign></prototype>
+<prototype>sigset &amp;operator=(std::initializer_list&lt;int> sigs) <badge>C++11</badge></prototype>
 <prototype><![CDATA[template<size_t Size> sigset &operator=(const int (&sigs)[Size])]]></prototype>
 <prototype>sigset &amp;assign(const int *sigs, size_t n)</prototype>
 <p>Вызывает <tt>clear()</tt> и заполняет набор сигналами из <tt>sigs</tt>.</p>

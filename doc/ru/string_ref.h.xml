@@ -166,14 +166,14 @@ basic_string_ref(const std::basic_string&lt;charT,Traits,Alloc> &amp;str)</proto
 <prototype>basic_string_ref(
     typename std::basic_string&lt;charT>::const_iterator begin,
     typename std::basic_string&lt;charT>::const_iterator end)</prototype>
-<prototype>basic_string_ref(std::initializer_list&lt;charT> ) <sign>C++11</sign></prototype>
+<prototype>basic_string_ref(std::initializer_list&lt;charT> ) <badge>C++11</badge></prototype>
 <p>Создают ссылку на диапазон символов.</p>
 </synopsis>
 
 <synopsis>
 <prototype>template&lt;class Traits>
-basic_string_ref(std::basic_string_view&lt;charT,Traits> s) <sign>C++17</sign></prototype>
-<prototype>operator std::basic_string_view&lt;charT>() const <sign>C++17</sign></prototype>
+basic_string_ref(std::basic_string_view&lt;charT,Traits> s) <badge>C++17</badge></prototype>
+<prototype>operator std::basic_string_view&lt;charT>() const <badge>C++17</badge></prototype>
 <p>Преобразователи из/в <tt>std::basic_string_view</tt>.</p>
 </synopsis>
 

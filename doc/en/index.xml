@@ -125,7 +125,7 @@ postcondition
     Postcondition. Part of <synopsis>.
 invariant
     Invariant. Part of <synopsis>.
-sign
+badge
     Tiny marker on a word or on a line.
 TODO
     TODO-marker for the editor of this document.

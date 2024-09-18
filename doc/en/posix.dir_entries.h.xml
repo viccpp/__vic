@@ -54,8 +54,8 @@ set appropriately.</p>
 </synopsis>
 
 <synopsis>
-<prototype>dir_entries(dir_entries &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
-<prototype>dir_entries &amp;operator=(dir_entries &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>dir_entries(dir_entries &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
+<prototype>dir_entries &amp;operator=(dir_entries &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Move operations for C++11 mode.</p>
 </synopsis>
 

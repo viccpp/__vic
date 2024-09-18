@@ -45,7 +45,7 @@ argument and number of elements in the set.</p>
 
 <synopsis>
 <prototype>template&lt;class Iter> constexpr set_of_chars(Iter begin, Iter end)</prototype>
-<prototype>constexpr set_of_chars(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<prototype>constexpr set_of_chars(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
 <p>Creates a set filled with characters from the specified range of values.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
@@ -78,7 +78,7 @@ NULL-terminator.</p>
 
 <synopsis>
 <prototype>template&lt;class Iter> constexpr void add(Iter begin, Iter end)</prototype>
-<prototype>constexpr void add(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<prototype>constexpr void add(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
 <p>Calls <tt>add(ch)</tt> for each value in the range.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
@@ -93,7 +93,7 @@ NULL-terminator.</p>
 <synopsis>
 <prototype>template&lt;class Iter> void assign(Iter begin, Iter end)</prototype>
 <prototype>void assign(const char *c_str)</prototype>
-<prototype>void assign(std::initializer_list&lt;char> set) <sign>C++11</sign></prototype>
+<prototype>void assign(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
 <p>Calls <tt>clear()</tt> then <tt>add()</tt> with the specified parameters.
 </p>
 </synopsis>

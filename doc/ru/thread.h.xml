@@ -61,12 +61,12 @@ protected:
 </synopsis>
 
 <synopsis>
-<prototype>thread(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>thread(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Перемещающий конструктор для режима C++11.</p>
 </synopsis>
 
 <synopsis>
-<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Перемещающее присваивание для режима C++11. Вызывает
 <tt>std::terminate()</tt>, если нарушено предусловие.</p>
 <precondition><tt>joinable() == false || alive() == false</tt></precondition>
@@ -109,7 +109,7 @@ protected:
 </synopsis>
 
 <synopsis>
-<prototype>void kill(int signo) <sign>POSIX</sign></prototype>
+<prototype>void kill(int signo) <badge>POSIX</badge></prototype>
 <p>Посылает сигнал потоку сигнал <tt>signo</tt>.</p>
 <precondition><tt>joinable() == true</tt></precondition>
 </synopsis>

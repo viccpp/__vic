@@ -70,20 +70,34 @@ td.toc-chapter-no {
 	padding-right: 1ex;
 	vertical-align: top;
 }
-a { text-decoration: none; }
+a { color: #0000EE; text-decoration: none; }
 a:hover { text-decoration: underline; }
+a.self-link {
+	font-weight: normal;
+	margin-left: -1.5ex;
+	width: 2em;
+	text-align: center;
+	visibility: hidden;
+}
+a.self-link::before {
+	content: "\00A7";
+}
+h1:hover>a.self-link, h2:hover>a.self-link, h3:hover>a.self-link, h4:hover>a.self-link {
+	visibility: visible;
+}
+tt { font-family: consolas, monospace; }
 pre.code {
 	background-color: #EEE;
 	border: 1px solid #CCCCCC;
 	padding-top: 6pt;
 	padding-bottom: 6pt;
 	padding-left: 2pt;
-	font-family: monospace;
+	font-family: consolas, monospace;
 	font-size: 10pt;
 	width: 17.3cm; /* 80ch */
 }
 pre.prototype {
-	font-family: monospace;
+	font-family: consolas, monospace;
 	margin-top: 0;
 	margin-bottom: 0;
 }
@@ -99,12 +113,12 @@ span.ver {
 	color: #C0C0C0;
 }
 span.nonterminal {
-	font-family: monospace;
+	font-family: consolas, monospace;
 	font-style: italic;
 }
-span.sign {
+span.badge {
 	color: #C0C0C0;
-	font-family: monospace;
+	font-family: consolas, monospace;
 	font-size: 9pt;
 	font-weight: bold;
 }
@@ -220,10 +234,12 @@ blockquote * {
 	<xsl:param name="level"/>
 	<xsl:param name="no"/>
 
+	<xsl:variable name="chapter_id" select="string(../@xml:id)"/>
 	<xsl:element name="h{$level}">
 		<xsl:attribute name="id">
-			<xsl:value-of select="../@xml:id"/>
+			<xsl:value-of select="$chapter_id"/>
 		</xsl:attribute>
+		<a class="self-link" href="#{$chapter_id}"/>
 		<span class="h{$level}_num">
 			<xsl:value-of select="$no"/>
 		</span>
@@ -368,8 +384,8 @@ blockquote * {
 	<pre class="prototype"><xsl:apply-templates/></pre>
 </xsl:template>
 
-<xsl:template match="sign">
-	<span class="sign">[<xsl:apply-templates/>]</span>
+<xsl:template match="badge">
+	<span class="badge">[<xsl:apply-templates/>]</span>
 </xsl:template>
 
 <xsl:template match="TODO">

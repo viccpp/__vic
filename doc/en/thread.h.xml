@@ -61,12 +61,12 @@ is violated.</note>
 </synopsis>
 
 <synopsis>
-<prototype>thread(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>thread(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Move constructor for C++11 mode.</p>
 </synopsis>
 
 <synopsis>
-<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Move assignment for C++11 mode. Calls <tt>std::terminate()</tt> if
 precondition is not satisfied.</p>
 <precondition><tt>joinable() == false || alive() == false</tt></precondition>
@@ -109,7 +109,7 @@ precondition is not satisfied.</p>
 </synopsis>
 
 <synopsis>
-<prototype>void kill(int signo) <sign>POSIX</sign></prototype>
+<prototype>void kill(int signo) <badge>POSIX</badge></prototype>
 <p>Sends the signal <tt>signo</tt> the thread.</p>
 <precondition><tt>joinable() == true</tt></precondition>
 </synopsis>

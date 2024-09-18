@@ -117,8 +117,8 @@ for such purposes.</p>
 </synopsis>
 
 <synopsis>
-<prototype>readonly_cstring(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
-<prototype>readonly_cstring &amp;operator=(readonly_cstring &amp;&amp;str) noexcept <sign>C++11</sign></prototype>
+<prototype>readonly_cstring(readonly_cstring &amp;&amp;str) noexcept <badge>C++11</badge></prototype>
+<prototype>readonly_cstring &amp;operator=(readonly_cstring &amp;&amp;str) noexcept <badge>C++11</badge></prototype>
 <p>Move operations for C++11 mode.</p>
 </synopsis>
 

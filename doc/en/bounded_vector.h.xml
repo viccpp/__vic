@@ -127,8 +127,8 @@ store and placing only pointers to the container, even if we have
 </synopsis>
 
 <synopsis>
-<prototype>bounded_vector(bounded_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
-<prototype>bounded_vector &amp;operator=(bounded_vector &amp;&amp;o) noexcept <sign>C++11</sign></prototype>
+<prototype>bounded_vector(bounded_vector &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
+<prototype>bounded_vector &amp;operator=(bounded_vector &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
 <p>Move operations for C++11 mode.</p>
 </synopsis>
 
@@ -173,7 +173,7 @@ container.</p>
 </synopsis>
 
 <synopsis>
-<prototype>template&lt;class... Args> T &amp;emplace_back(Args &amp;&amp;... args) <sign>C++11</sign></prototype>
+<prototype>template&lt;class... Args> T &amp;emplace_back(Args &amp;&amp;... args) <badge>C++11</badge></prototype>
 <p>Constructs new object and adds it to the container (<tt>alloc()</tt> +
 <tt>new</tt> + <tt>push_allocated()</tt> with a single call). A reference to
 the new object is returned.</p>
