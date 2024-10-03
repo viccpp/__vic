@@ -1,23 +1,23 @@
-// Generic utility for elementwise reading
+// Generic utility for sequential one by one elements reading (input)
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2011
 
-#ifndef __VIC_READERS_CONCEPT_H
-#define __VIC_READERS_CONCEPT_H
+#ifndef __VIC_SREADERS_CONCEPT_H
+#define __VIC_SREADERS_CONCEPT_H
 
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-// Expected reader's interface (concept)
+// Expected s-reader interface (concept)
 //////////////////////////////////////////////////////////////////////////////
-// template<class ElementT>
-// interface Reader
+// template<class T>
+// interface sreader
 // {
-//     Reader(Reader && ); or Reader(const Reader & );
-//     bool read(ElementT & ); // throws on errors
+//     sreader(sreader && ); or sreader(const sreader & );
+//     bool read(T & ); // throws on errors
 // };
 //////////////////////////////////////////////////////////////////////////////
 

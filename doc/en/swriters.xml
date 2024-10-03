@@ -1,38 +1,40 @@
-<chapter xml:id="writers">
-<title><tt>__vic/writers/</tt></title>
+<chapter xml:id="swriters">
+<title><tt>__vic/swriters/</tt></title>
 
 
-<chapter xml:id="writer-concept">
-<title><tt>Writer</tt> concept</title>
+<chapter xml:id="swriter-concept">
+<title><tt>swriter</tt> concept</title>
 
 <code-block lang="C++"><![CDATA[
-template<class ElementT>
-class ]]><nt>Writer</nt><![CDATA[
+template<class T>
+class ]]><nt>swriter</nt><![CDATA[
 {
 public:
-    Writer(Writer &&o); or Writer(const Writer &o);
-    void write(ElementT v); // throws on errors
+    swriter(swriter &&o); or swriter(const swriter &o);
+    void write(T v); // throws on errors
 };
 ]]></code-block>
 
 <p>A concept used by the library algorithms to write logical sequence of elements
-of type <tt>ElementT</tt> element by element. It is a generalization and rework
+of type <tt>T</tt> element by element. It is a generalization and rework
 of the <tt>OutputIterator</tt> concept. In particular it handles streams
 and other output sequences where <tt>end</tt>-iterator is meaningless or
 expensive to obtain better. At the same time, a traditional output iterators
 are just a particular case and fully and well handled by
-<tt>__vic::iterator_writer</tt> adapter.</p>
+<tt>__vic::iterator_swriter</tt> adapter.</p>
+
+<p>"swriter" is pronounced as "<b>S</b>-write" where <b>S</b> stands for
+"Sequential", "Sequence" or "Stream".</p>
 
 <p>When the particular class meets the requirements of this concept for some
-<tt>ElementT = T</tt> it is said <b>to model</b> the <tt>Writer&lt;T></tt>
-concept.</p>
+<tt>T</tt> it is said <b>to model</b> the <tt>swriter&lt;T></tt> concept.</p>
 
 <p>Each instance of the class has to be move- or copy-constructible.</p>
 
 <section><title>Class members</title>
 
 <synopsis>
-<prototype>void write(ElementT v)</prototype>
+<prototype>void write(T v)</prototype>
 <p>Writes the element or throws an exception on error.</p>
 </synopsis>
 
@@ -41,19 +43,19 @@ concept.</p>
 </chapter>
 
 
-<chapter xml:id="null_writer">
-<title><tt>null_writer</tt></title>
+<chapter xml:id="null_swriter">
+<title><tt>null_swriter</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/writers/null.h>
+#include<__vic/swriters/null.h>
 
-class null_writer
+class null_swriter
 {
 public:
     template<class T> void write(T v) {}
 };
 
-null_writer make_null_writer();
+null_swriter make_null_swriter();
 ]]></code-block>
 
 <p>Fake writer that accepts any value and does nothing with it (like UNIX
@@ -62,25 +64,25 @@ null_writer make_null_writer();
 </chapter>
 
 
-<chapter xml:id="push_back_writer">
-<title><tt>push_back_writer</tt></title>
+<chapter xml:id="push_back_swriter">
+<title><tt>push_back_swriter</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/writers/push_back.h>
+#include<__vic/swriters/push_back.h>
 
 template<class Cont, class T = typename Cont::value_type>
-class push_back_writer
+class push_back_swriter
 {
 public:
-    explicit push_back_writer(Cont &c);
+    explicit push_back_swriter(Cont &c);
     void write(T v) { c->push_back(v); }
 };
 
 template<class Cont>
-push_back_writer<Cont> make_push_back_writer(Cont &c);
+push_back_swriter<Cont> make_push_back_swriter(Cont &c);
 
 template<class T, class Cont>
-push_back_writer<Cont,T> make_push_back_writer_for(Cont &c);
+push_back_swriter<Cont,T> make_push_back_swriter_for(Cont &c);
 ]]></code-block>
 
 <p>An adapter. Uses <tt>push_back()</tt> member function to write elements.
@@ -89,26 +91,26 @@ Can be created using constructor or one of <tt>make_...</tt> functions.</p>
 </chapter>
 
 
-<chapter xml:id="iterator_writer">
-<title><tt>iterator_writer</tt></title>
+<chapter xml:id="iterator_swriter">
+<title><tt>iterator_swriter</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/writers/iterator.h>
+#include<__vic/swriters/iterator.h>
 
 template<class OutputIterator,
          class T = typename std::iterator_traits<OutputIterator>::value_type>
-class iterator_writer
+class iterator_swriter
 {
 public:
-    explicit iterator_writer(OutputIterator it);
+    explicit iterator_swriter(OutputIterator it);
     void write(T v);
 };
 
 template<class OutputIterator>
-iterator_writer<OutputIterator> make_iterator_writer(OutputIterator it);
+iterator_swriter<OutputIterator> make_iterator_swriter(OutputIterator it);
 
 template<class T, class OutputIterator>
-iterator_writer<OutputIterator,T> make_iterator_writer_for(OutputIterator it);
+iterator_swriter<OutputIterator,T> make_iterator_swriter_for(OutputIterator it);
 ]]></code-block>
 
 <p>Output iterator writer. Can be created using constructor or one of
@@ -117,29 +119,29 @@ iterator_writer<OutputIterator,T> make_iterator_writer_for(OutputIterator it);
 </chapter>
 
 
-<chapter xml:id="string_writer">
-<title><tt>string_writer</tt></title>
+<chapter xml:id="string_swriter">
+<title><tt>string_swriter</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/writers/string.h>
+#include<__vic/swriters/string.h>
 
 template<
     class charT,
     class Tr = std::char_traits<charT>,
     class Al = std::allocator<charT>
 >
-class basic_string_writer
+class basic_string_swriter
 {
 public:
-    explicit basic_string_writer(std::basic_string<charT,Tr,Al> &s);
+    explicit basic_string_swriter(std::basic_string<charT,Tr,Al> &s);
     void write(charT ch);
 };
 
-using string_writer = basic_string_writer<char>;
+using string_swriter = basic_string_swriter<char>;
 
 template<class charT, class Tr, class Al>
-basic_string_writer<charT,Tr,Al>
-    make_string_writer(std::basic_string<charT,Tr,Al> &s);
+basic_string_swriter<charT,Tr,Al>
+    make_string_swriter(std::basic_string<charT,Tr,Al> &s);
 ]]></code-block>
 
 <p>An adapter for <tt>std::basic_string</tt>. Can be created using constructor
@@ -148,23 +150,23 @@ or <tt>make_...</tt> function.</p>
 </chapter>
 
 
-<chapter xml:id="cstream_writer">
-<title><tt>cstream_writer</tt></title>
+<chapter xml:id="cstream_swriter">
+<title><tt>cstream_swriter</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/writers/cstream.h>
+#include<__vic/swriters/cstream.h>
 
-class cstream_writer
+class cstream_swriter
 {
 public:
-    explicit cstream_writer(std::FILE *fp);
+    explicit cstream_swriter(std::FILE *fp);
     void write(char ch) { __vic::write(fp, ch); }
 };
 
-cstream_writer make_cstream_writer(std::FILE *fp);
+cstream_swriter make_cstream_swriter(std::FILE *fp);
 ]]></code-block>
 
-<p>Models <tt>Writer&lt;char></tt> for <tt>std::FILE</tt>. Can be created using
+<p>Models <tt>swriter&lt;char></tt> for <tt>std::FILE</tt>. Can be created using
 constructor or <tt>make_...</tt> function.</p>
 
 </chapter>

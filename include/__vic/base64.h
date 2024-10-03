@@ -40,14 +40,14 @@ struct base64
     static const char abc[64]; // BASE64 alphabet
 
     // Bytes -> Text
-    template<class ByteReader, class CharWriter>
-    static void encode(ByteReader , CharWriter );
+    template<class ByteSReader, class CharSWriter>
+    static void encode(ByteSReader , CharSWriter );
 
     // Text -> Bytes
-    template<class CharReader, class ByteWriter>
-    static void decode(CharReader , ByteWriter );
-    template<class CharReader, class ByteWriter>
-    static status_t try_decode(CharReader , ByteWriter );
+    template<class CharSReader, class ByteSWriter>
+    static void decode(CharSReader , ByteSWriter );
+    template<class CharSReader, class ByteSWriter>
+    static status_t try_decode(CharSReader , ByteSWriter );
 
     static __VIC_CONSTEXPR_FUNC size_t encoded_length(size_t orig_len)
     {
@@ -61,8 +61,8 @@ struct base64
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class ByteReader, class CharWriter>
-void base64::encode(ByteReader r, CharWriter w)
+template<class ByteSReader, class CharSWriter>
+void base64::encode(ByteSReader r, CharSWriter w)
 {
     unsigned char triad[3];
     int pos = 0;
@@ -95,8 +95,8 @@ void base64::encode(ByteReader r, CharWriter w)
     }
 }
 //----------------------------------------------------------------------------
-template<class CharReader, class ByteWriter>
-base64::status_t base64::try_decode(CharReader r, ByteWriter w)
+template<class CharSReader, class ByteSWriter>
+base64::status_t base64::try_decode(CharSReader r, ByteSWriter w)
 {
     char quad[4];
     unsigned char code[4];
@@ -133,8 +133,8 @@ base64::status_t base64::try_decode(CharReader r, ByteWriter w)
     return status::ok;
 }
 //----------------------------------------------------------------------------
-template<class CharReader, class ByteWriter>
-void base64::decode(CharReader r, ByteWriter w)
+template<class CharSReader, class ByteSWriter>
+void base64::decode(CharSReader r, ByteSWriter w)
 {
     switch(base64::try_decode(__VIC_STD_MOVE(r), __VIC_STD_MOVE(w)))
     {

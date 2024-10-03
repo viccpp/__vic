@@ -1,7 +1,7 @@
 #include<__vic/utf16/reader.h>
 #include<__vic/utf16/writer.h>
-#include<__vic/readers/string.h>
-#include<__vic/writers/string.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/swriters/string.h>
 #include<__vic/iterator.h>
 #include<string>
 #include<iostream>
@@ -16,7 +16,7 @@ typedef std::basic_string<__vic::utf16::code_unit_t> u16string;
 //////////////////////////////////////////////////////////////////////////////
 class u16string_code_unit_reader
 {
-    __vic::basic_string_reader<__vic::utf16::code_unit_t> r;
+    __vic::basic_string_sreader<__vic::utf16::code_unit_t> r;
 public:
     explicit u16string_code_unit_reader(const u16string &s) : r(s) {}
 
@@ -31,7 +31,7 @@ public:
 #if __cpp_variadic_templates && __cpp_rvalue_references
 typedef __vic::utf16::reader<u16string_code_unit_reader> utf16_string_reader;
 typedef __vic::utf16::writer<
-    __vic::basic_string_writer<__vic::utf16::code_unit_t>
+    __vic::basic_string_swriter<__vic::utf16::code_unit_t>
 > utf16_string_writer;
 #else
 struct utf16_string_reader : __vic::utf16::reader<u16string_code_unit_reader>
@@ -41,12 +41,12 @@ struct utf16_string_reader : __vic::utf16::reader<u16string_code_unit_reader>
             u16string_code_unit_reader(s)) {}
 };
 struct utf16_string_writer : __vic::utf16::writer<
-    __vic::basic_string_writer<__vic::utf16::code_unit_t> >
+    __vic::basic_string_swriter<__vic::utf16::code_unit_t> >
 {
     explicit utf16_string_writer(u16string &s) :
         __vic::utf16::writer<
-            __vic::basic_string_writer<__vic::utf16::code_unit_t>
-        >(__vic::basic_string_writer<__vic::utf16::code_unit_t>(s)) {}
+            __vic::basic_string_swriter<__vic::utf16::code_unit_t>
+        >(__vic::basic_string_swriter<__vic::utf16::code_unit_t>(s)) {}
 };
 #endif
 

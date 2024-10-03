@@ -1,12 +1,12 @@
-// Output iterator writer
+// Output iterator swriter
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2018
 
-#ifndef __VIC_WRITERS_ITERATOR_H
-#define __VIC_WRITERS_ITERATOR_H
+#ifndef __VIC_SWRITERS_ITERATOR_H
+#define __VIC_SWRITERS_ITERATOR_H
 
 #include<__vic/defs.h>
 #include<iterator>
@@ -15,25 +15,25 @@ namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
 template<class Iter, class T = typename std::iterator_traits<Iter>::value_type>
-class iterator_writer
+class iterator_swriter
 {
     Iter p;
 public:
-    explicit iterator_writer(Iter it) : p(it) {}
+    explicit iterator_swriter(Iter it) : p(it) {}
     void write(T v) { *p++ = v; }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
 template<class Iter>
-inline iterator_writer<Iter> make_iterator_writer(Iter it)
+inline iterator_swriter<Iter> make_iterator_swriter(Iter it)
 {
-    return iterator_writer<Iter>(it);
+    return iterator_swriter<Iter>(it);
 }
 //----------------------------------------------------------------------------
 template<class T, class Iter>
-inline iterator_writer<Iter,T> make_iterator_writer_for(Iter it)
+inline iterator_swriter<Iter,T> make_iterator_swriter_for(Iter it)
 {
-    return iterator_writer<Iter,T>(it);
+    return iterator_swriter<Iter,T>(it);
 }
 //----------------------------------------------------------------------------
 

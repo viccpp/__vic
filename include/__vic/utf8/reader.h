@@ -17,22 +17,22 @@
 namespace __vic { namespace utf8 {
 
 //////////////////////////////////////////////////////////////////////////////
-template<class ByteReader>
+template<class ByteSReader>
 class reader
 {
-    ByteReader r;
+    ByteSReader r;
     bool read_byte(unsigned char &b) { return r.read(b); }
 public:
-    typedef ByteReader byte_reader_type;
-    ByteReader &get_byte_reader() { return r; }
-    const ByteReader &get_byte_reader() const { return r; }
+    typedef ByteSReader byte_reader_type;
+    ByteSReader &get_byte_reader() { return r; }
+    const ByteSReader &get_byte_reader() const { return r; }
 
 #if __cpp_variadic_templates && __cpp_rvalue_references
     template<class... Args>
     explicit reader(Args&&... args) : r(std::forward<Args>(args)...) {}
 #else
     reader() {}
-    explicit reader(ByteReader r) : r(r) {}
+    explicit reader(ByteSReader r) : r(r) {}
 #endif
 
     status_t parse(unicode_t & );
@@ -40,8 +40,8 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class ByteReader>
-status_t reader<ByteReader>::parse(unicode_t &cp)
+template<class ByteSReader>
+status_t reader<ByteSReader>::parse(unicode_t &cp)
 {
     unsigned char b;
     if(!read_byte(b)) return status::eof;
@@ -80,10 +80,10 @@ status_t reader<ByteReader>::parse(unicode_t &cp)
     return status::ok;
 }
 //----------------------------------------------------------------------------
-template<class ByteReader>
-inline reader<ByteReader> make_reader(ByteReader r)
+template<class ByteSReader>
+inline reader<ByteSReader> make_reader(ByteSReader r)
 {
-    return reader<ByteReader>(r);
+    return reader<ByteSReader>(r);
 }
 //----------------------------------------------------------------------------
 

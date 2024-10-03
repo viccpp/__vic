@@ -81,33 +81,33 @@ using base16::status_t = base16::status; // for C++98
 
 <code-block lang="C++"><![CDATA[
 // Bytes -> Text
-template<class ByteReader, class CharWriter>
-void base16::encode_upper(ByteReader reader, CharWriter writer);
+template<class ByteSReader, class CharSWriter>
+void base16::encode_upper(ByteSReader reader, CharSWriter writer);
 ]]></code-block>
 
 <p>Кодирует байты из <tt>reader</tt> и записывает результирующие символы во
 <tt>writer</tt>. Для шестнадцатеричных цифр используется верхний регистр.</p>
 
-<p><tt>ByteReader</tt> должен моделировать concept
-<tt>Reader&lt;unsigned char></tt>. См. <xref to="readers"/>.</p>
+<p><tt>ByteSReader</tt> должен моделировать concept
+<tt>sreader&lt;unsigned char></tt>. См. <xref to="sreaders"/>.</p>
 
-<p><tt>CharWriter</tt> должен моделировать concept <tt>Writer&lt;char></tt>.
-См. <xref to="writers"/>.</p>
+<p><tt>CharSWriter</tt> должен моделировать concept <tt>swriter&lt;char></tt>.
+См. <xref to="swriters"/>.</p>
 
 
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
-#include<__vic/readers/string.h>
-#include<__vic/writers/string.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/swriters/string.h>
 
 using bytes = std::string;
-using bytes_reader = __vic::string_reader;
+using bytes_sreader = __vic::string_sreader;
 
 std::string encode_base16(const bytes &s)
 {
     std::string res;
     res.reserve(s.length() * 2);
-    __vic::base16::encode_upper(bytes_reader(s), __vic::string_writer(res));
+    __vic::base16::encode_upper(bytes_sreader(s), __vic::string_swriter(res));
     return res;
 }
 ]]></code-block>
@@ -121,8 +121,8 @@ std::string encode_base16(const bytes &s)
 
 <code-block lang="C++"><![CDATA[
 // Bytes -> Text
-template<class ByteReader, class CharWriter>
-void base16::encode_lower(ByteReader reader, CharWriter writer);
+template<class ByteSReader, class CharSWriter>
+void base16::encode_lower(ByteSReader reader, CharSWriter writer);
 ]]></code-block>
 
 <p>То же самое, что <xref to="base16--encode_upper"/>, но использует нижний
@@ -136,8 +136,8 @@ void base16::encode_lower(ByteReader reader, CharWriter writer);
 
 <code-block lang="C++"><![CDATA[
 // Byte -> Text
-template<class CharWriter>
-void base16::encode_byte_lower(unsigned char byte, CharWriter writer);
+template<class CharSWriter>
+void base16::encode_byte_lower(unsigned char byte, CharSWriter writer);
 ]]></code-block>
 
 <p>То же самое, что <xref to="base16--encode_lower"/>, но кодирует
@@ -151,8 +151,8 @@ void base16::encode_byte_lower(unsigned char byte, CharWriter writer);
 
 <code-block lang="C++"><![CDATA[
 // Byte -> Text
-template<class CharWriter>
-void base16::encode_byte_upper(unsigned char byte, CharWriter writer);
+template<class CharSWriter>
+void base16::encode_byte_upper(unsigned char byte, CharSWriter writer);
 ]]></code-block>
 
 <p>То же самое, что <xref to="base16--encode_upper"/>, но кодирует
@@ -166,33 +166,33 @@ void base16::encode_byte_upper(unsigned char byte, CharWriter writer);
 
 <code-block lang="C++"><![CDATA[
 // Text -> Bytes
-template<class CharReader, class ByteWriter>
-void base16::decode(CharReader reader, ByteWriter writer);
+template<class CharSReader, class ByteSWriter>
+void base16::decode(CharSReader reader, ByteSWriter writer);
 ]]></code-block>
 
 <p>Декодирует символы из <tt>reader</tt> и записывает результирующие байты во
 <tt>writer</tt>. Если входная последовательность имеет неправильный Base16
 формат, бросается исключение наследник <xref to="base16--bad_format"/>.</p>
 
-<p><tt>CharReader</tt> должен моделировать concept <tt>Reader&lt;char></tt>.
-См. <xref to="readers"/>.</p>
+<p><tt>CharSReader</tt> должен моделировать concept <tt>sreader&lt;char></tt>.
+См. <xref to="sreaders"/>.</p>
 
-<p><tt>ByteWriter</tt> должен моделировать concept
-<tt>Writer&lt;unsigned char></tt>. См. <xref to="writers"/>.</p>
+<p><tt>ByteSWriter</tt> должен моделировать concept
+<tt>swriter&lt;unsigned char></tt>. См. <xref to="swriters"/>.</p>
 
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
-#include<__vic/readers/string.h>
-#include<__vic/writers/string.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/swriters/string.h>
 
 using bytes = std::string;
-using bytes_writer = __vic::string_writer;
+using bytes_swriter = __vic::string_swriter;
 
 bytes decode_base16(const std::string &s)
 {
     bytes res;
     res.reserve(s.length() / 2);
-    __vic::base16::decode(__vic::string_reader(s), bytes_writer(res));
+    __vic::base16::decode(__vic::string_sreader(s), bytes_swriter(res));
     return res;
 }
 ]]></code-block>
@@ -206,8 +206,8 @@ bytes decode_base16(const std::string &s)
 
 <code-block lang="C++"><![CDATA[
 // Text -> Bytes
-template<class CharReader, class ByteWriter>
-base16::status_t base16::try_decode(CharReader reader, ByteWriter writer);
+template<class CharSReader, class ByteSWriter>
+base16::status_t base16::try_decode(CharSReader reader, ByteSWriter writer);
 ]]></code-block>
 
 <p>То же самое, что <xref to="base16--decode"/>, но возвращает

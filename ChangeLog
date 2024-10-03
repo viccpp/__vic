@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2024-10-03  __vic
+    ! Renamed reader -> sreader
+    ! Renamed writer -> swriter
+
 2024-06-27  __vic
     * to_text_append() is a generic value to text converter.
     * logger:

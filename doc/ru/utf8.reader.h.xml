@@ -5,37 +5,37 @@
 <title><tt>utf8::reader</tt></title>
 
 <code-block lang="C++"><![CDATA[
-template<class ByteReader>
+template<class ByteSReader>
 class utf8::reader
 {
 public:
-    using byte_reader_type = ByteReader;
-    ByteReader &get_byte_reader();
-    const ByteReader &get_byte_reader() const;
+    using byte_reader_type = ByteSReader;
+    ByteSReader &get_byte_reader();
+    const ByteSReader &get_byte_reader() const;
 
     template<class... Args>
     explicit reader(Args&&... args); // since C++11
 
     reader(); // C++98 only
-    explicit reader(ByteReader r); // C++98 only
+    explicit reader(ByteSReader r); // C++98 only
 
     status_t parse(unicode_t &cp);
     bool read(unicode_t &cp);
 };
 
-template<class ByteReader>
-utf8::reader<ByteReader> utf8::make_reader(ByteReader r);
+template<class ByteSReader>
+utf8::reader<ByteSReader> utf8::make_reader(ByteSReader r);
 ]]></code-block>
 
 <p>Вычитывает UTF-8 code points из последовательности байтов.
-Последовательность читается посредством <tt>ByteReader</tt>, который
-моделирует <tt>Reader&lt;unsigned char></tt> (см. <xref to="readers"/>).</p>
+Последовательность читается посредством <tt>ByteSReader</tt>, который
+моделирует <tt>sreader&lt;unsigned char></tt> (см. <xref to="sreaders"/>).</p>
 
 <section><title>Члены класса</title>
 
 <synopsis>
-<prototype>ByteReader &amp;get_byte_reader()</prototype>
-<prototype>const ByteReader &amp;get_byte_reader() const</prototype>
+<prototype>ByteSReader &amp;get_byte_reader()</prototype>
+<prototype>const ByteSReader &amp;get_byte_reader() const</prototype>
 <p>Возвращает ссылку на используемый byte reader.</p>
 </synopsis>
 
@@ -47,20 +47,20 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 
 <synopsis>
 <prototype>reader() <badge>C++98 only</badge></prototype>
-<prototype>explicit reader(ByteReader r) <badge>C++98 only</badge></prototype>
+<prototype>explicit reader(ByteSReader r) <badge>C++98 only</badge></prototype>
 <p>Конструкторы для режима C++98.</p>
 </synopsis>
 
 <synopsis>
 <prototype>status_t parse(unicode_t &amp;cp)</prototype>
 <p>Пытается извлечь следующий code point из последовательности байтов, используя
-<tt>ByteReader</tt>. В случае успеха возвращается <tt>utf8::status::ok</tt>,
+<tt>ByteSReader</tt>. В случае успеха возвращается <tt>utf8::status::ok</tt>,
 code point сохраняется в <tt>cp</tt>. Если байты кончились, возвращается
 <tt>utf8::status::eof</tt>. Другие значения возвращаются в случае ошибок,
 подробности см. в <xref to="utf8--status"/>. Для доступа к отдельным байтам
-используется <tt>ByteReader::read()</tt>.</p>
+используется <tt>ByteSReader::read()</tt>.</p>
 <note>Функция сама по себе не бросает исключений, но их может бросать
-<tt>ByteReader::read()</tt>.</note>
+<tt>ByteSReader::read()</tt>.</note>
 </synopsis>
 
 <synopsis>
@@ -75,9 +75,9 @@ code point сохраняется в <tt>cp</tt>. Если байты кончи
 <section><title>Свободные функции</title>
 
 <synopsis>
-<prototype>template&lt;class ByteReader>
-utf8::reader&lt;ByteReader> utf8::make_reader(ByteReader r)</prototype>
-<p>Создаёт UTF-8 reader используя указанный <tt>ByteReader</tt>.</p>
+<prototype>template&lt;class ByteSReader>
+utf8::reader&lt;ByteSReader> utf8::make_reader(ByteSReader r)</prototype>
+<p>Создаёт UTF-8 reader используя указанный <tt>ByteSReader</tt>.</p>
 </synopsis>
 
 </section>
@@ -85,19 +85,19 @@ utf8::reader&lt;ByteReader> utf8::make_reader(ByteReader r)</prototype>
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 #include<__vic/utf8/reader.h>
-#include<__vic/readers/string.h>
+#include<__vic/sreaders/string.h>
 #include<string>
 #include<cstdint>
 #include<iostream>
 
 // C++11
-using utf8_string_reader = __vic::utf8::reader<__vic::string_reader>;
+using utf8_string_reader = __vic::utf8::reader<__vic::string_sreader>;
 
 // C++98
-struct utf8_string_reader : __vic::utf8::reader<__vic::string_reader>
+struct utf8_string_reader : __vic::utf8::reader<__vic::string_sreader>
 {
     explicit utf8_string_reader(const std::string &s)
-        : __vic::utf8::reader<__vic::string_reader>(__vic::string_reader(s)) {}
+        : __vic::utf8::reader<__vic::string_sreader>(__vic::string_sreader(s)) {}
 };
 
 void print_utf8_code_points(const string &s)

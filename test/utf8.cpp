@@ -1,9 +1,9 @@
 #include<__vic/utf8/reader.h>
 #include<__vic/utf8/writer.h>
 #include<__vic/utf8/exceptions.h>
-#include<__vic/readers/string.h>
-#include<__vic/readers/cstring.h>
-#include<__vic/writers/string.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/sreaders/cstring.h>
+#include<__vic/swriters/string.h>
 #include<__vic/iterator.h>
 #include<string>
 #include<iostream>
@@ -15,24 +15,24 @@ namespace tests {
 using __vic::unicode_t;
 
 #if __cpp_variadic_templates && __cpp_rvalue_references
-typedef __vic::utf8::reader<__vic::string_reader> utf8_string_reader;
-typedef __vic::utf8::writer<__vic::string_writer> utf8_string_writer;
-typedef __vic::utf8::reader<__vic::cstring_reader> utf8_cstring_reader;
+typedef __vic::utf8::reader<__vic::string_sreader> utf8_string_reader;
+typedef __vic::utf8::writer<__vic::string_swriter> utf8_string_writer;
+typedef __vic::utf8::reader<__vic::cstring_sreader> utf8_cstring_reader;
 #else
-struct utf8_string_reader : __vic::utf8::reader<__vic::string_reader>
+struct utf8_string_reader : __vic::utf8::reader<__vic::string_sreader>
 {
     explicit utf8_string_reader(const std::string &s)
-        : __vic::utf8::reader<__vic::string_reader>(__vic::string_reader(s)) {}
+        : __vic::utf8::reader<__vic::string_sreader>(__vic::string_sreader(s)) {}
 };
-struct utf8_string_writer : __vic::utf8::writer<__vic::string_writer>
+struct utf8_string_writer : __vic::utf8::writer<__vic::string_swriter>
 {
     explicit utf8_string_writer(std::string &s)
-        : __vic::utf8::writer<__vic::string_writer>(__vic::string_writer(s)) {}
+        : __vic::utf8::writer<__vic::string_swriter>(__vic::string_swriter(s)) {}
 };
-struct utf8_cstring_reader : __vic::utf8::reader<__vic::cstring_reader>
+struct utf8_cstring_reader : __vic::utf8::reader<__vic::cstring_sreader>
 {
     explicit utf8_cstring_reader(const char *s)
-        : __vic::utf8::reader<__vic::cstring_reader>(__vic::cstring_reader(s)) {}
+        : __vic::utf8::reader<__vic::cstring_sreader>(__vic::cstring_sreader(s)) {}
 };
 #endif
 

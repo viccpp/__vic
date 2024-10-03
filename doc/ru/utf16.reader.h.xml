@@ -102,14 +102,14 @@ utf16::reader&lt;CodeUnitReader> utf16::make_reader(CodeUnitReader r)</prototype
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 #include<__vic/utf16/reader.h>
-#include<__vic/readers/string.h>
+#include<__vic/sreaders/string.h>
 #include<string>
 #include<cstdint>
 #include<iostream>
 
 class u16string_code_unit_reader
 {
-    __vic::basic_string_reader<char16_t> r;
+    __vic::basic_string_sreader<char16_t> r;
 public:
     explicit u16string_code_unit_reader(const std::u16string &s) : r(s) {}
 
