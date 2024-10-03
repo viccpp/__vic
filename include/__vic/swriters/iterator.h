@@ -20,7 +20,7 @@ class iterator_swriter
     Iter p;
 public:
     explicit iterator_swriter(Iter it) : p(it) {}
-    void write(T v) { *p++ = v; }
+    void operator()(T v) { *p++ = v; }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

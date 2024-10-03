@@ -20,6 +20,7 @@ public:
     explicit writer(CodeUnitSWriter w); // C++98 only
 
     void write(unicode_t cp);
+    void operator()(unicode_t cp);
 };
 
 template<class CodeUnitSWriter>
@@ -52,8 +53,9 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 
 <synopsis>
 <prototype>void write(unicode_t cp)</prototype>
+<prototype>void operator()(unicode_t cp)</prototype>
 <p>Writes the specified code point according to UTF-16 encoding rules.
-<tt>CodeUnitSWriter::write()</tt> is used to write individual code units.</p>
+<tt>CodeUnitSWriter::operator()</tt> is used to write individual code units.</p>
 </synopsis>
 
 </section>
@@ -79,7 +81,7 @@ std::u16string encode_utf16(const std::vector<__vic::unicode_t> &code_points)
 {
     std::u16string utf16_res;
     __vic::utf16::writer<__vic::basic_string_swriter<char16_t>> w(utf16_res);
-    for(auto cp : code_points) w.write(cp);
+    for(auto cp : code_points) w.write(cp); // or w(cp)
     return utf16_res;
 }
 ]]></code-block>

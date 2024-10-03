@@ -16,7 +16,7 @@ namespace tests {
 template<class T, class SWriter>
 void check_write(SWriter w, T v)
 {
-    w.write(v);
+    w(v);
 }
 void push_back()
 {
@@ -24,7 +24,7 @@ void push_back()
     const int num = 3;
     __vic::push_back_swriter<std::vector<int> > w(v);
     for(int i = 0; i < num; i++)
-        w.write(i);
+        w(i);
     assert(v.size() == num);
     for(int i = 0; i < num; i++)
         assert(v[i] == i);
@@ -39,7 +39,7 @@ void string()
     std::string str;
     __vic::string_swriter w(str);
     for(const char *p = data; *p; p++)
-        w.write(*p);
+        w(*p);
     assert(str == data);
     check_write(__vic::make_string_swriter(str), 'x');
 }
@@ -48,14 +48,17 @@ void cstream()
     const char filename[] = "cstream_swriter.out";
     __vic::stdio_file file(filename, "w");
     __vic::cstream_swriter w(file);
-    w.write('a');
-    w.write('b');
-    w.write('c');
+    w('a');
+    w('b');
+    w('c');
     std::remove(filename);
     check_write(__vic::make_cstream_swriter(file), 'x');
 }
 void run()
 {
+#if __cpp_lambdas
+    check_write([](int){}, 0);
+#endif
     check_write(__vic::make_null_swriter(), 0);
     push_back();
     string();

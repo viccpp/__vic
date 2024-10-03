@@ -20,6 +20,7 @@ public:
     explicit writer(ByteSWriter w); // C++98 only
 
     void write(unicode_t cp);
+    void operator()(unicode_t cp);
 };
 
 template<class ByteSWriter>
@@ -52,8 +53,9 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 
 <synopsis>
 <prototype>void write(unicode_t cp)</prototype>
+<prototype>void operator()(unicode_t cp)</prototype>
 <p>Выводит указанный code point согласно правилам кодирования UTF-8.
-Для записи отдельных байтов используется <tt>ByteSWriter::write()</tt>.</p>
+Для записи отдельных байтов используется <tt>ByteSWriter::operator()</tt>.</p>
 </synopsis>
 
 </section>
@@ -89,7 +91,7 @@ std::string encode_utf8(const std::vector<__vic::unicode_t> &code_points)
 {
     std::string utf8_res;
     utf8_string_writer w(utf8_res);
-    for(auto cp : code_points) w.write(cp);
+    for(auto cp : code_points) w.write(cp); // or w(cp)
     return utf8_res;
 }
 ]]></code-block>

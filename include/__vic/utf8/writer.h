@@ -20,7 +20,7 @@ template<class ByteSWriter>
 class writer
 {
     ByteSWriter w;
-    void write_byte(unsigned char b) { w.write(b); }
+    void write_byte(unsigned char b) { w(b); }
     void write_bytes(const unsigned char *p, size_t len)
         { while(len--) write_byte(*p++); }
 public:
@@ -37,6 +37,7 @@ public:
 #endif
 
     void write(unicode_t );
+    void operator()(unicode_t cp) { write(cp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

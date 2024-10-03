@@ -17,7 +17,7 @@ namespace __vic {
 // interace swriter
 // {
 //     swriter(swriter && ); or swriter(const swriter & );
-//     void write(T ); // throws on errors
+//     void operator()(T ); // throws on errors
 // };
 //////////////////////////////////////////////////////////////////////////////
 

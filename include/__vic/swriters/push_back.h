@@ -19,7 +19,7 @@ class push_back_swriter
     Cont *cont;
 public:
     explicit push_back_swriter(Cont &c) : cont(&c) {}
-    void write(T v) { cont->push_back(v); }
+    void operator()(T v) { cont->push_back(v); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

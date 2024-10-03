@@ -11,7 +11,7 @@ class ]]><nt>swriter</nt><![CDATA[
 {
 public:
     swriter(swriter &&o); or swriter(const swriter &o);
-    void write(T v); // throws on errors
+    void operator()(T v); // throws on errors
 };
 ]]></code-block>
 
@@ -34,7 +34,7 @@ are just a particular case and fully and well handled by
 <section><title>Class members</title>
 
 <synopsis>
-<prototype>void write(T v)</prototype>
+<prototype>void operator()(T v)</prototype>
 <p>Writes the element or throws an exception on error.</p>
 </synopsis>
 
@@ -52,7 +52,7 @@ are just a particular case and fully and well handled by
 class null_swriter
 {
 public:
-    template<class T> void write(T v) {}
+    template<class T> void operator()(T v) {}
 };
 
 null_swriter make_null_swriter();
@@ -75,7 +75,7 @@ class push_back_swriter
 {
 public:
     explicit push_back_swriter(Cont &c);
-    void write(T v) { c->push_back(v); }
+    void operator()(T v) { c->push_back(v); }
 };
 
 template<class Cont>
@@ -103,7 +103,7 @@ class iterator_swriter
 {
 public:
     explicit iterator_swriter(OutputIterator it);
-    void write(T v);
+    void operator()(T v);
 };
 
 template<class OutputIterator>
@@ -134,7 +134,7 @@ class basic_string_swriter
 {
 public:
     explicit basic_string_swriter(std::basic_string<charT,Tr,Al> &s);
-    void write(charT ch);
+    void operator()(charT ch);
 };
 
 using string_swriter = basic_string_swriter<char>;
@@ -160,7 +160,7 @@ class cstream_swriter
 {
 public:
     explicit cstream_swriter(std::FILE *fp);
-    void write(char ch) { __vic::write(fp, ch); }
+    void operator()(char ch) { __vic::write(fp, ch); }
 };
 
 cstream_swriter make_cstream_swriter(std::FILE *fp);

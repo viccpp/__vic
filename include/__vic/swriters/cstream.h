@@ -20,7 +20,7 @@ class cstream_swriter
     std::FILE *fp;
 public:
     explicit cstream_swriter(std::FILE *fp) : fp(fp) {}
-    void write(char ch) { __vic::write(fp, ch); }
+    void operator()(char ch) { __vic::write(fp, ch); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

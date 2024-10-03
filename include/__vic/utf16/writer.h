@@ -19,7 +19,7 @@ template<class CodeUnitSWriter>
 class writer
 {
     CodeUnitSWriter w;
-    void write_unit(code_unit_t u) { w.write(u); }
+    void write_unit(code_unit_t u) { w(u); }
 public:
     typedef CodeUnitSWriter code_unit_writer_type;
     CodeUnitSWriter &get_code_unit_writer() { return w; }
@@ -34,6 +34,7 @@ public:
 #endif
 
     void write(unicode_t );
+    void operator()(unicode_t cp) { write(cp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

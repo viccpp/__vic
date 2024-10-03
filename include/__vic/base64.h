@@ -70,28 +70,28 @@ void base64::encode(ByteSReader r, CharSWriter w)
     {
         if(pos == 2)
         {
-            w.write(abc[triad[0] >> 2]);
-            w.write(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
-            w.write(abc[((triad[1] & 0x0F) << 2) | (triad[2] >> 6)]);
-            w.write(abc[triad[2] & 0x3F]);
+            w(abc[triad[0] >> 2]);
+            w(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
+            w(abc[((triad[1] & 0x0F) << 2) | (triad[2] >> 6)]);
+            w(abc[triad[2] & 0x3F]);
             pos = 0;
         }
         else pos++;
     }
     if(pos > 0)
     {
-        w.write(abc[triad[0] >> 2]);
+        w(abc[triad[0] >> 2]);
         if(pos == 2)
         {
-            w.write(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
-            w.write(abc[(triad[1] & 0x0F) << 2]);
+            w(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
+            w(abc[(triad[1] & 0x0F) << 2]);
         }
         else // if(pos == 1)
         {
-            w.write(abc[(triad[0] & 0x03) << 4]);
-            w.write('=');
+            w(abc[(triad[0] & 0x03) << 4]);
+            w('=');
         }
-        w.write('=');
+        w('=');
     }
 }
 //----------------------------------------------------------------------------
@@ -118,12 +118,12 @@ base64::status_t base64::try_decode(CharSReader r, ByteSWriter w)
                 }
                 else code[i] = 255;
             }
-            w.write((code[0] << 2) | (code[1] >> 4));
+            w((code[0] << 2) | (code[1] >> 4));
             if(code[2] != 255)
             {
-                w.write(((code[1] & 0x0F) << 4) | (code[2] >> 2));
+                w(((code[1] & 0x0F) << 4) | (code[2] >> 2));
                 if(code[3] != 255)
-                    w.write(((code[2] & 0x03) << 6) | code[3]);
+                    w(((code[2] & 0x03) << 6) | code[3]);
             }
             pos = 0;
         }

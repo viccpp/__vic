@@ -75,8 +75,8 @@ template<class CharSWriter, class Func>
 inline void base16::encode_byte_(
     unsigned char byte, CharSWriter &w, Func to_hex_digit)
 {
-    w.write(to_hex_digit(hi_nibble(byte)));
-    w.write(to_hex_digit(lo_nibble(byte)));
+    w(to_hex_digit(hi_nibble(byte)));
+    w(to_hex_digit(lo_nibble(byte)));
 }
 //----------------------------------------------------------------------------
 template<class ByteSReader, class CharSWriter, class Func>
@@ -122,7 +122,7 @@ base16::status_t base16::try_decode(CharSReader r, ByteSWriter w)
         int d = ascii::xdigit_to_number(ch);
         if(d < 0) return status::invalid_digit;
         if(first) hi_part = d;
-        else w.write(static_cast<unsigned char>((hi_part << 4) | d));
+        else w(static_cast<unsigned char>((hi_part << 4) | d));
         first = !first;
     }
     if(!first) return status::invalid_length; // the length is odd
