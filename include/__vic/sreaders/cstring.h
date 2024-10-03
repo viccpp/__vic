@@ -46,8 +46,8 @@ class basic_cstring_sreader<char>
     basic_cstring_sreader_<char> r;
 public:
     explicit basic_cstring_sreader(const char *s) : r(s) {}
-    bool read(char &ch) { return r.read(ch); }
-    bool read(unsigned char &ch) { return read(reinterpret_cast<char&>(ch)); }
+    bool operator()(char &ch) { return r.read(ch); }
+    bool operator()(unsigned char &ch) { return (*this)(reinterpret_cast<char&>(ch)); }
     const char *position() const { return r.position(); }
 };
 //////////////////////////////////////////////////////////////////////////////

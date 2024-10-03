@@ -16,7 +16,8 @@ template<class T, class SReader>
 void check_read(SReader r)
 {
     T val;
-    r.read(val);
+    bool st = r(val);
+    (void) st;
     (void) val;
 }
 void container()
@@ -30,10 +31,10 @@ void container()
     int n;
     for(int i = 1; i <= 3; i++)
     {
-        assert(r.read(n));
+        assert(r(n));
         assert(n == i);
     }
-    assert(!r.read(n));
+    assert(!r(n));
 
     check_read<int>(__vic::make_container_sreader(v));
     check_read<unsigned>(__vic::make_container_sreader_for<unsigned>(v));
@@ -51,10 +52,10 @@ void string()
     char ch;
     for(unsigned i = 0; i < str.length(); i++)
     {
-        assert(r.read(ch));
+        assert(r(ch));
         assert(ch == data[i]);
     }
-    assert(!r.read(ch));
+    assert(!r(ch));
     check_read<char>(__vic::make_string_sreader(str));
 }
 void cstring()
@@ -64,10 +65,10 @@ void cstring()
     char ch;
     for(const char *p = str; *p; p++)
     {
-        assert(r.read(ch));
+        assert(r(ch));
         assert(ch == *p);
     }
-    assert(!r.read(ch));
+    assert(!r(ch));
     check_read<char>(__vic::make_cstring_sreader(str));
 }
 void cstream()
@@ -75,10 +76,13 @@ void cstream()
     __vic::stdio_file file("sreaders.cpp", "r");
     __vic::cstream_sreader r(file);
     char ch;
-    r.read(ch);
+    r(ch);
 }
 void run()
 {
+#if __cpp_lambdas
+    check_read<int>([](int &){ return false; });
+#endif
     container();
     string();
     cstring();

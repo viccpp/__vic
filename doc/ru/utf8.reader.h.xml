@@ -21,6 +21,7 @@ public:
 
     status_t parse(unicode_t &cp);
     bool read(unicode_t &cp);
+    bool operator()(unicode_t &cp);
 };
 
 template<class ByteSReader>
@@ -58,13 +59,14 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 code point сохраняется в <tt>cp</tt>. Если байты кончились, возвращается
 <tt>utf8::status::eof</tt>. Другие значения возвращаются в случае ошибок,
 подробности см. в <xref to="utf8--status"/>. Для доступа к отдельным байтам
-используется <tt>ByteSReader::read()</tt>.</p>
+используется <tt>ByteSReader::operator()</tt>.</p>
 <note>Функция сама по себе не бросает исключений, но их может бросать
-<tt>ByteSReader::read()</tt>.</note>
+<tt>ByteSReader::operator()</tt>.</note>
 </synopsis>
 
 <synopsis>
 <prototype>bool read(unicode_t &amp;cp)</prototype>
+<prototype>bool operator()(unicode_t &amp;cp)</prototype>
 <p>То же самое, что <tt>parse()</tt>, но возвращает <tt>true</tt> в случае
 успеха, <tt>false</tt> в случае EOF, бросает исключения из
 <xref to="utf8.exceptions.h"/> в остальных случаях.</p>
@@ -104,7 +106,7 @@ void print_utf8_code_points(const string &s)
 {
     utf8_string_reader r(s);
     __vic::unicode_t cp;
-    while(r.read(cp))
+    while(r.read(cp)) // or r(cp)
         std::cout << uint_least32_t(cp) << '\n';
 }
 ]]></code-block>

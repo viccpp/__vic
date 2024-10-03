@@ -21,7 +21,7 @@ template<class ByteSReader>
 class reader
 {
     ByteSReader r;
-    bool read_byte(unsigned char &b) { return r.read(b); }
+    bool read_byte(unsigned char &b) { return r(b); }
 public:
     typedef ByteSReader byte_reader_type;
     ByteSReader &get_byte_reader() { return r; }
@@ -37,6 +37,7 @@ public:
 
     status_t parse(unicode_t & );
     bool read(unicode_t &cp) { return throw_if_error(parse(cp)); }
+    bool operator()(unicode_t &cp) { return read(cp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

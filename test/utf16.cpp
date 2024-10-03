@@ -22,7 +22,7 @@ public:
 
     __vic::utf16::status_t read_unit(__vic::utf16::code_unit_t &u)
     {
-        if(r.read(u)) return __vic::utf16::status::ok;
+        if(r(u)) return __vic::utf16::status::ok;
         return __vic::utf16::status::eof;
     }
 };

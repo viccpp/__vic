@@ -17,7 +17,7 @@ namespace __vic {
 // interface sreader
 // {
 //     sreader(sreader && ); or sreader(const sreader & );
-//     bool read(T & ); // throws on errors
+//     bool operator()(T & ); // throws on errors
 // };
 //////////////////////////////////////////////////////////////////////////////
 

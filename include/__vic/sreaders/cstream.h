@@ -20,8 +20,8 @@ class cstream_sreader
     std::FILE *fp;
 public:
     explicit cstream_sreader(std::FILE *fp) : fp(fp) {}
-    bool read(char &ch) { return __vic::read(fp, ch); }
-    bool read(unsigned char &ch) { return __vic::read(fp, ch); }
+    bool operator()(char &ch) { return __vic::read(fp, ch); }
+    bool operator()(unsigned char &ch) { return __vic::read(fp, ch); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

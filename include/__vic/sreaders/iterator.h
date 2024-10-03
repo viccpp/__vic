@@ -20,7 +20,7 @@ class iterator_sreader
     Iter p, end;
 public:
     iterator_sreader(Iter begin, Iter end) : p(begin), end(end) {}
-    bool read(T &v)
+    bool operator()(T &v)
     {
         if(p == end) return false;
         v = *p++; // move?
@@ -36,7 +36,7 @@ class iterator_sreader_n
     size_t n;
 public:
     iterator_sreader_n(Iter begin, size_t n) : p(begin), n(n) {}
-    bool read(T &v)
+    bool operator()(T &v)
     {
         if(n == 0) return false;
         v = *p++; // move?

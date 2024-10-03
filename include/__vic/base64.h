@@ -66,7 +66,7 @@ void base64::encode(ByteSReader r, CharSWriter w)
 {
     unsigned char triad[3];
     int pos = 0;
-    while(r.read(triad[pos]))
+    while(r(triad[pos]))
     {
         if(pos == 2)
         {
@@ -102,7 +102,7 @@ base64::status_t base64::try_decode(CharSReader r, ByteSWriter w)
     unsigned char code[4];
     int pos = 0;
     char ch;
-    while(r.read(ch))
+    while(r(ch))
     {
         quad[pos] = ch;
         if(pos == 3)

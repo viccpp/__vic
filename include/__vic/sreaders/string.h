@@ -25,7 +25,7 @@ class basic_string_sreader
 public:
     explicit basic_string_sreader(const std::basic_string<charT,Tr,Al> &s)
         : r(s.data(), s.length()) {}
-    bool read(charT &ch) { return r.read(ch); }
+    bool operator()(charT &ch) { return r(ch); }
     const charT *position() const { return r.position(); }
 };
 //////////////////////////////////////////////////////////////////////////////
@@ -37,8 +37,8 @@ class basic_string_sreader<char,Tr,Al>
 public:
     explicit basic_string_sreader(const std::basic_string<char,Tr,Al> &s)
         : r(s.data(), s.length()) {}
-    bool read(char &ch) { return r.read(ch); }
-    bool read(unsigned char &ch) { return read(reinterpret_cast<char&>(ch)); }
+    bool operator()(char &ch) { return r(ch); }
+    bool operator()(unsigned char &ch) { return (*this)(reinterpret_cast<char&>(ch)); }
     const char *position() const { return r.position(); }
 };
 //////////////////////////////////////////////////////////////////////////////

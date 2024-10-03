@@ -21,6 +21,7 @@ public:
 
     status_t parse(unicode_t &cp);
     bool read(unicode_t &cp);
+    bool operator()(unicode_t &cp);
 };
 
 template<class CodeUnitReader>
@@ -81,6 +82,7 @@ thrown by <tt>CodeUnitReader::read_unit()</tt>.</note>
 
 <synopsis>
 <prototype>bool read(unicode_t &amp;cp)</prototype>
+<prototype>bool operator()(unicode_t &amp;cp)</prototype>
 <p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
 on EOF or throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p>
 </synopsis>
@@ -113,7 +115,7 @@ public:
 
     __vic::utf16::status_t read_unit(__vic::utf16::code_unit_t &u)
     {
-        if(r.read(u)) return __vic::utf16::status::ok;
+        if(r(u)) return __vic::utf16::status::ok;
         return __vic::utf16::status::eof;
     }
 };
@@ -122,7 +124,7 @@ void print_utf16_code_points(const std::u16string &s)
 {
     __vic::utf16::reader<u16string_code_unit_reader> r(s);
     __vic::unicode_t cp;
-    while(r.read(cp))
+    while(r.read(cp)) // or r(cp)
         std::cout << uint_least32_t(cp) << '\n';
 }
 ]]></code-block>

@@ -83,7 +83,7 @@ template<class ByteSReader, class CharSWriter, class Func>
 inline void base16::encode_(ByteSReader &r, CharSWriter &w, Func to_hex_digit)
 {
     unsigned char byte;
-    while(r.read(byte))
+    while(r(byte))
         encode_byte_(byte, w, to_hex_digit);
 }
 //----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ base16::status_t base16::try_decode(CharSReader r, ByteSWriter w)
     bool first = true;
     int hi_part;
     char ch;
-    while(r.read(ch))
+    while(r(ch))
     {
         int d = ascii::xdigit_to_number(ch);
         if(d < 0) return status::invalid_digit;

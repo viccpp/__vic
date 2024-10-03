@@ -44,6 +44,7 @@ public:
 
     status_t parse(unicode_t & );
     bool read(unicode_t &cp) { return throw_if_error(parse(cp)); }
+    bool operator()(unicode_t &cp) { return read(cp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

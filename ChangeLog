@@ -8,6 +8,7 @@ Legend:
     ! Renamed reader -> sreader
     ! Renamed writer -> swriter
     ! swriter: renamed write -> operator()
+    ! sreader: renamed read -> operator()
 
 2024-06-27  __vic
     * to_text_append() is a generic value to text converter.
