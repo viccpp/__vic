@@ -14,27 +14,21 @@
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-template<
-    class charT,
-    class Tr = std::char_traits<charT>,
-    class Al = std::allocator<charT>
->
-class basic_string_sreader
+template<class charT>
+struct basic_string_sreader : public iterator_sreader_n<const charT *>
 {
-    iterator_sreader_n<const charT *> r;
-public:
+    template<class Tr, class Al>
     explicit basic_string_sreader(const std::basic_string<charT,Tr,Al> &s)
-        : r(s.data(), s.length()) {}
-    bool operator()(charT &ch) { return r(ch); }
-    const charT *position() const { return r.position(); }
+        : iterator_sreader_n<const charT *>(s.data(), s.length()) {}
 };
 //////////////////////////////////////////////////////////////////////////////
 // sreader<char> + sreader<unsigned char>
-template<class Tr, class Al>
-class basic_string_sreader<char,Tr,Al>
+template<>
+class basic_string_sreader<char>
 {
     iterator_sreader_n<const char *> r;
 public:
+    template<class Tr, class Al>
     explicit basic_string_sreader(const std::basic_string<char,Tr,Al> &s)
         : r(s.data(), s.length()) {}
     bool operator()(char &ch) { return r(ch); }
@@ -46,10 +40,10 @@ typedef basic_string_sreader<char> string_sreader;
 
 //----------------------------------------------------------------------------
 template<class charT, class Tr, class Al>
-inline basic_string_sreader<charT,Tr,Al>
+inline basic_string_sreader<charT>
     make_string_sreader(const std::basic_string<charT,Tr,Al> &s)
 {
-    return basic_string_sreader<charT,Tr,Al>(s);
+    return basic_string_sreader<charT>(s);
 }
 //----------------------------------------------------------------------------
 

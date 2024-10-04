@@ -194,23 +194,21 @@ well as <tt>sreader&lt;char></tt>.</p>
 <code-block lang="C++"><![CDATA[
 #include<__vic/sreaders/string.h>
 
-template<
-    class charT,
-    class Tr = std::char_traits<charT>,
-    class Al = std::allocator<charT>
->
+template<class charT>
 class basic_string_sreader
 {
 public:
+    template<class Tr, class Al>
     explicit basic_string_sreader(const std::basic_string<charT,Tr,Al> &s);
     bool operator()(charT &ch);
     const charT *position() const;
 };
 
-template<class Tr, class Al>
-class basic_string_sreader<char,Tr,Al>
+template<>
+class basic_string_sreader<char>
 {
 public:
+    template<class Tr, class Al>
     explicit basic_string_sreader(const std::basic_string<char,Tr,Al> &s);
     bool operator()(char &ch);
     bool operator()(unsigned char &ch);
@@ -219,7 +217,7 @@ public:
 using string_sreader = basic_string_sreader<char>;
 
 template<class charT, class Tr, class Al>
-basic_string_sreader<charT,Tr,Al>
+basic_string_sreader<charT>
     make_string_sreader(const std::basic_string<charT,Tr,Al> &s);
 ]]></code-block>
 
