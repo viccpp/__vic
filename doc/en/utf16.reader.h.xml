@@ -19,9 +19,9 @@ public:
     reader(); // C++98 only
     explicit reader(CodeUnitReader r); // C++98 only
 
-    status_t parse(unicode_t &cp);
-    bool read(unicode_t &cp);
-    bool operator()(unicode_t &cp);
+    utf16::read_result parse();
+    sread_result<unicode_t> read();
+    sread_result<unicode_t> operator()();
 };
 
 template<class CodeUnitReader>
@@ -36,14 +36,14 @@ structure:</p>
 class ]]><nt>CodeUnitReader</nt><![CDATA[
 {
 public:
-    utf16::status_t read_unit(utf16::code_unit_t &u);
+    utf16::read_unit_result operator()();
 };
 ]]></code-block>
 
 <synopsis>
-<prototype>utf16::status_t read_unit(utf16::code_unit_t &amp;u)</prototype>
-<p>Tries to read the next code unit. Returns <tt>utf16::status::ok</tt> on
-success, <tt>utf16::status::eof</tt> if no more code units available or
+<prototype>utf16::read_unit_result operator()()</prototype>
+<p>Tries to read the next code unit. Returns the code unit read on success,
+<tt>utf16::status::eof</tt> if no more code units are available or
 <tt>utf16::status::truncated_code_unit</tt> if only partial code unit
 is available.</p>
 </synopsis>
@@ -69,22 +69,21 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 </synopsis>
 
 <synopsis>
-<prototype>status_t parse(unicode_t &amp;cp)</prototype>
+<prototype>utf16::read_result parse()</prototype>
 <p>Tries to extract the next code point from code unit sequence using
-<tt>CodeUnitReader</tt>. On success <tt>utf16::status::ok</tt> is returned and
-the code point is stored in <tt>cp</tt>. <tt>utf16::status::eof</tt> is
-returned when no more code units available. Other values are returned on errors,
-see <xref to="utf16--status"/> for more details.
-<tt>CodeUnitReader::read_unit()</tt> is used to access code units.</p>
+<tt>CodeUnitReader</tt>. On success the code point read is returned.
+<tt>utf16::status::eof</tt> is returned when no more code units available.
+Other values are returned on errors, see <xref to="utf16--status"/> for more details.
+<tt>CodeUnitReader::operator()</tt> is used to access code units.</p>
 <note>The function itself doesn't throw exceptions but exception can be
-thrown by <tt>CodeUnitReader::read_unit()</tt>.</note>
+thrown by <tt>CodeUnitReader::operator()</tt>.</note>
 </synopsis>
 
 <synopsis>
-<prototype>bool read(unicode_t &amp;cp)</prototype>
-<prototype>bool operator()(unicode_t &amp;cp)</prototype>
-<p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
-on EOF or throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p>
+<prototype>sread_result&lt;unicode_t> read()</prototype>
+<prototype>sread_result&lt;unicode_t> operator()()</prototype>
+<p>The same as <tt>parse()</tt> but returns <tt>sread_result</tt> on success or
+on EOF. Throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p>
 </synopsis>
 
 </section>
@@ -94,7 +93,7 @@ on EOF or throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p
 <synopsis>
 <prototype>template&lt;class CodeUnitReader>
 utf16::reader&lt;CodeUnitReader> utf16::make_reader(CodeUnitReader r)</prototype>
-<p>Creates UTF-16 reader using specified <tt>CodeUnitReader</tt>.</p>
+<p>Creates UTF-16 reader using the specified <tt>CodeUnitReader</tt>.</p>
 </synopsis>
 
 </section>
@@ -113,9 +112,10 @@ class u16string_code_unit_reader
 public:
     explicit u16string_code_unit_reader(const std::u16string &s) : r(s) {}
 
-    __vic::utf16::status_t read_unit(__vic::utf16::code_unit_t &u)
+    __vic::utf16::read_unit_result operator()()
     {
-        if(r(u)) return __vic::utf16::status::ok;
+        if(__vic::sread_result<__vic::utf16::code_unit_t> u = r())
+            return u.value();
         return __vic::utf16::status::eof;
     }
 };
@@ -124,8 +124,8 @@ void print_utf16_code_points(const std::u16string &s)
 {
     __vic::utf16::reader<u16string_code_unit_reader> r(s);
     __vic::unicode_t cp;
-    while(r.read(cp)) // or r(cp)
-        std::cout << uint_least32_t(cp) << '\n';
+    while(__VIC_SREAD_RESULT(unicode_t) cp = r())
+        std::cout << uint_least32_t(cp.value()) << '\n';
 }
 ]]></code-block>
 </section>

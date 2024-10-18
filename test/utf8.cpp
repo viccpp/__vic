@@ -58,10 +58,10 @@ void read_write()
     utf8_string_reader r(s);
     const unicode_t *p = str;
     size_t n = __vic::array_size(str);
-    for(unicode_t ch; r.read(ch); p++, n--)
+    for(; __VIC_SREAD_RESULT(unicode_t) ch = r(); p++, n--)
     {
         assert(n != 0);
-        assert(ch == *p);
+        assert(ch.value() == *p);
     }
     assert(n == 0); // all str elements are read
 }
@@ -72,22 +72,24 @@ void long_code_point()
     const char euro_utf8[] = "\xE2\x82\xAC";
 
     utf8_cstring_reader r(euro_utf8);
-    unicode_t ch;
-    r.read(ch);
-    assert(ch == euro);
+    __VIC_SREAD_RESULT(unicode_t) ch = r();
+    assert(ch);
+    assert(ch.value() == euro);
 }
 //----------------------------------------------------------------------------
 template<class UTF8Reader>
 bool is_valid(UTF8Reader r)
 {
-    unicode_t cp;
     for(;;)
-        switch(r.parse(cp))
+    {
+        __vic::utf8::read_result cp = r.parse();
+        switch(cp.status())
         {
             case __vic::utf8::status::ok: break;
             case __vic::utf8::status::eof: return true;
             default: return false;
         }
+    }
 }
 //----------------------------------------------------------------------------
 void valid_encoding_test()
@@ -99,14 +101,16 @@ void valid_encoding_test()
 template<class UTF8Reader>
 __vic::utf8::status_t parse_utf8(UTF8Reader &r)
 {
-    unicode_t cp;
     for(;;)
-        switch(__vic::utf8::status_t st = r.parse(cp))
+    {
+        __vic::utf8::read_result cp = r.parse();
+        switch(cp.status())
         {
             case __vic::utf8::status::ok: break;
             case __vic::utf8::status::eof: return __vic::utf8::status::ok;
-            default: return st;
+            default: return cp.status();
         }
+    }
 }
 //----------------------------------------------------------------------------
 size_t offset(const utf8_cstring_reader &r, const char *begin)
@@ -154,8 +158,7 @@ template<class UTF8Reader>
 size_t code_point_count(UTF8Reader r)
 {
     size_t len = 0;
-    unicode_t cp;
-    while(r.read(cp)) len++;
+    while(__VIC_SREAD_RESULT(unicode_t) cp = r()) len++;
     return len;
 }
 //----------------------------------------------------------------------------
@@ -172,8 +175,8 @@ void code_point_count_test()
 size_t code_point_length(const char *s)
 {
     utf8_cstring_reader r(s);
-    unicode_t cp;
-    if(r.read(cp)) return offset(r, s);
+    if(__VIC_SREAD_RESULT(unicode_t) cp = r())
+        return offset(r, s);
     return 0;
 }
 //----------------------------------------------------------------------------
@@ -204,8 +207,8 @@ std::string replace_invalid(const char *str, unicode_t ch)
     for(;;)
     {
         const char *begin = r.get_byte_reader().position();
-        unicode_t cp;
-        switch(r.parse(cp))
+        __vic::utf8::read_result cp = r.parse();
+        switch(cp.status())
         {
             case __vic::utf8::status::ok:
                 res.append(begin, r.get_byte_reader().position() - begin);

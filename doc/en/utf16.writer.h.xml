@@ -81,7 +81,7 @@ std::u16string encode_utf16(const std::vector<__vic::unicode_t> &code_points)
 {
     std::u16string utf16_res;
     __vic::utf16::writer<__vic::basic_string_swriter<char16_t>> w(utf16_res);
-    for(auto cp : code_points) w.write(cp); // or w(cp)
+    for(auto cp : code_points) w(cp);
     return utf16_res;
 }
 ]]></code-block>

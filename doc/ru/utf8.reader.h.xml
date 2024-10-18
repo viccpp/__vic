@@ -19,9 +19,9 @@ public:
     reader(); // C++98 only
     explicit reader(ByteSReader r); // C++98 only
 
-    status_t parse(unicode_t &cp);
-    bool read(unicode_t &cp);
-    bool operator()(unicode_t &cp);
+    utf8::read_result parse();
+    sread_result<unicode_t> read()
+    sread_result<unicode_t> operator()();
 };
 
 template<class ByteSReader>
@@ -53,22 +53,21 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 </synopsis>
 
 <synopsis>
-<prototype>status_t parse(unicode_t &amp;cp)</prototype>
+<prototype>utf8::read_result parse()</prototype>
 <p>Пытается извлечь следующий code point из последовательности байтов, используя
-<tt>ByteSReader</tt>. В случае успеха возвращается <tt>utf8::status::ok</tt>,
-code point сохраняется в <tt>cp</tt>. Если байты кончились, возвращается
-<tt>utf8::status::eof</tt>. Другие значения возвращаются в случае ошибок,
-подробности см. в <xref to="utf8--status"/>. Для доступа к отдельным байтам
-используется <tt>ByteSReader::operator()</tt>.</p>
+<tt>ByteSReader</tt>. В случае успеха возвращается прочитанный code point. Если
+байты кончились, возвращается <tt>utf8::status::eof</tt>. Другие значения
+возвращаются в случае ошибок, подробности см. в <xref to="utf8--status"/>. Для
+доступа к отдельным байтам используется <tt>ByteSReader::operator()</tt>.</p>
 <note>Функция сама по себе не бросает исключений, но их может бросать
 <tt>ByteSReader::operator()</tt>.</note>
 </synopsis>
 
 <synopsis>
-<prototype>bool read(unicode_t &amp;cp)</prototype>
-<prototype>bool operator()(unicode_t &amp;cp)</prototype>
-<p>То же самое, что <tt>parse()</tt>, но возвращает <tt>true</tt> в случае
-успеха, <tt>false</tt> в случае EOF, бросает исключения из
+<prototype>sread_result&lt;unicode_t> read()</prototype>
+<prototype>sread_result&lt;unicode_t> operator()()</prototype>
+<p>То же самое, что <tt>parse()</tt>, но возвращает <tt>sread_result</tt> в
+случае успеха или при достижении конца файла. Бросает исключения из
 <xref to="utf8.exceptions.h"/> в остальных случаях.</p>
 </synopsis>
 
@@ -105,9 +104,8 @@ struct utf8_string_reader : __vic::utf8::reader<__vic::string_sreader>
 void print_utf8_code_points(const string &s)
 {
     utf8_string_reader r(s);
-    __vic::unicode_t cp;
-    while(r.read(cp)) // or r(cp)
-        std::cout << uint_least32_t(cp) << '\n';
+    while(__VIC_SREAD_RESULT(unicode_t) cp = r())
+        std::cout << uint_least32_t(cp.value()) << '\n';
 }
 ]]></code-block>
 </section>

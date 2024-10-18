@@ -22,20 +22,6 @@ struct basic_string_sreader : public iterator_sreader_n<const charT *>
         : iterator_sreader_n<const charT *>(s.data(), s.length()) {}
 };
 //////////////////////////////////////////////////////////////////////////////
-// sreader<char> + sreader<unsigned char>
-template<>
-class basic_string_sreader<char>
-{
-    iterator_sreader_n<const char *> r;
-public:
-    template<class Tr, class Al>
-    explicit basic_string_sreader(const std::basic_string<char,Tr,Al> &s)
-        : r(s.data(), s.length()) {}
-    bool operator()(char &ch) { return r(ch); }
-    bool operator()(unsigned char &ch) { return (*this)(reinterpret_cast<char&>(ch)); }
-    const char *position() const { return r.position(); }
-};
-//////////////////////////////////////////////////////////////////////////////
 typedef basic_string_sreader<char> string_sreader;
 
 //----------------------------------------------------------------------------

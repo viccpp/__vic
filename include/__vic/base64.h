@@ -9,6 +9,7 @@
 #define __VIC_BASE64_H
 
 #include<__vic/defs.h>
+#include<__vic/sreaders/result.h>
 #include<exception>
 #include<cstring>
 
@@ -66,8 +67,9 @@ void base64::encode(ByteSReader r, CharSWriter w)
 {
     unsigned char triad[3];
     int pos = 0;
-    while(r(triad[pos]))
+    while(__VIC_SREAD_BYTE_RESULT b = r())
     {
+        triad[pos] = b.value();
         if(pos == 2)
         {
             w(abc[triad[0] >> 2]);
@@ -101,10 +103,9 @@ base64::status_t base64::try_decode(CharSReader r, ByteSWriter w)
     char quad[4];
     unsigned char code[4];
     int pos = 0;
-    char ch;
-    while(r(ch))
+    while(__VIC_SREAD_RESULT(char) ch = r())
     {
-        quad[pos] = ch;
+        quad[pos] = ch.value();
         if(pos == 3)
         {
             for(int i=0; i<4; i++)

@@ -19,9 +19,9 @@ public:
     reader(); // C++98 only
     explicit reader(CodeUnitReader r); // C++98 only
 
-    status_t parse(unicode_t &cp);
-    bool read(unicode_t &cp);
-    bool operator()(unicode_t &cp);
+    utf16::read_result parse();
+    sread_result<unicode_t> read();
+    sread_result<unicode_t> operator()();
 };
 
 template<class CodeUnitReader>
@@ -36,14 +36,14 @@ utf16::reader<CodeUnitReader> utf16::make_reader(CodeUnitReader r);
 class ]]><nt>CodeUnitReader</nt><![CDATA[
 {
 public:
-    utf16::status_t read_unit(utf16::code_unit_t &u);
+    utf16::read_unit_result operator()();
 };
 ]]></code-block>
 
 <synopsis>
-<prototype>utf16::status_t read_unit(utf16::code_unit_t &amp;u)</prototype>
-<p>Пытается вычитать следующий code unit. Возвращает <tt>utf16::status::ok</tt>
-в случае успеха, <tt>utf16::status::eof</tt>, если больше не осталось code units,
+<prototype>utf16::read_unit_result operator()()</prototype>
+<p>Пытается вычитать следующий code unit. Возвращает code unit, в случае
+успеха, <tt>utf16::status::eof</tt>, если больше не осталось code units,
 либо <tt>utf16::status::truncated_code_unit</tt> если доступна только часть
 code unit.</p>
 </synopsis>
@@ -69,23 +69,22 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 </synopsis>
 
 <synopsis>
-<prototype>status_t parse(unicode_t &amp;cp)</prototype>
+<prototype>utf16::read_result parse()</prototype>
 <p>Пытается извлечь следующий code point из последовательности code unit,
 используя <tt>CodeUnitReader</tt>. В случае успеха возвращается
-<tt>utf16::status::ok</tt>, code point сохраняется в <tt>cp</tt>. Если code
-units кончились, возвращается <tt>utf16::status::eof</tt>. Другие значения
-возвращаются в случае ошибок, подробности см. в <xref to="utf16--status"/>.
-Для доступа к отдельным code units используется
-<tt>CodeUnitReader::read_unit()</tt>.</p>
+прочитанный code point. Если code units кончились, возвращается
+<tt>utf16::status::eof</tt>. Другие значения возвращаются в случае ошибок,
+подробности см. в <xref to="utf16--status"/>. Для доступа к отдельным code
+units используется <tt>CodeUnitReader::operator()</tt>.</p>
 <note>Функция сама по себе не бросает исключений, но их может бросать
-<tt>CodeUnitReader::read_unit()</tt>.</note>
+<tt>CodeUnitReader::operator()</tt>.</note>
 </synopsis>
 
 <synopsis>
-<prototype>bool read(unicode_t &amp;cp)</prototype>
-<prototype>bool operator()(unicode_t &amp;cp)</prototype>
-<p>То же самое, что <tt>parse()</tt>, но возвращает <tt>true</tt> в случае
-успеха, <tt>false</tt> в случае EOF, бросает исключения из
+<prototype>sread_result&lt;unicode_t> read()</prototype>
+<prototype>sread_result&lt;unicode_t> operator()()</prototype>
+<p>То же самое, что <tt>parse()</tt>, но возвращает <tt>sread_result</tt> в
+случае успеха или при достижении конца файла. Бросает исключения из
 <xref to="utf16.exceptions.h"/> в остальных случаях.</p>
 </synopsis>
 
@@ -115,9 +114,10 @@ class u16string_code_unit_reader
 public:
     explicit u16string_code_unit_reader(const std::u16string &s) : r(s) {}
 
-    __vic::utf16::status_t read_unit(__vic::utf16::code_unit_t &u)
+    __vic::utf16::read_unit_result operator()()
     {
-        if(r(u)) return __vic::utf16::status::ok;
+        if(__vic::sread_result<__vic::utf16::code_unit_t> u = r())
+            return u.value();
         return __vic::utf16::status::eof;
     }
 };
@@ -126,8 +126,8 @@ void print_utf16_code_points(const std::u16string &s)
 {
     __vic::utf16::reader<u16string_code_unit_reader> r(s);
     __vic::unicode_t cp;
-    while(r.read(cp)) // or r(cp)
-        std::cout << uint_least32_t(cp) << '\n';
+    while(__VIC_SREAD_RESULT(unicode_t) cp = r())
+        std::cout << uint_least32_t(cp.value()) << '\n';
 }
 ]]></code-block>
 </section>

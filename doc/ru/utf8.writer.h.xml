@@ -91,7 +91,7 @@ std::string encode_utf8(const std::vector<__vic::unicode_t> &code_points)
 {
     std::string utf8_res;
     utf8_string_writer w(utf8_res);
-    for(auto cp : code_points) w.write(cp); // or w(cp)
+    for(auto cp : code_points) w(cp);
     return utf8_res;
 }
 ]]></code-block>

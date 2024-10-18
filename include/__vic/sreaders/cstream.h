@@ -8,20 +8,19 @@
 #ifndef __VIC_SREADERS_CSTREAM_H
 #define __VIC_SREADERS_CSTREAM_H
 
+#include<__vic/sreaders/result.h>
 #include<__vic/stdio_file.h>
 #include<cstdio>
 
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-// sreader<char> + sreader<unsigned char>
 class cstream_sreader
 {
     std::FILE *fp;
 public:
     explicit cstream_sreader(std::FILE *fp) : fp(fp) {}
-    bool operator()(char &ch) { return __vic::read(fp, ch); }
-    bool operator()(unsigned char &ch) { return __vic::read(fp, ch); }
+    sread_result<char> operator()() { return __vic::read(fp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------

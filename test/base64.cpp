@@ -19,15 +19,14 @@ class skip_ws_sreader
 public:
     template<class Arg>
     explicit skip_ws_sreader(Arg &arg) : r(arg) {}
-    bool operator()(char &res)
+    __vic::sread_result<char> operator()()
     {
         for(;;)
         {
-            char ch;
-            if(!r(ch)) return false;
-            if(__vic::ascii::isspace(ch)) continue;
-            res = ch;
-            return true;
+            __vic::sread_result<char> ch = r();
+            if(!ch) return __vic::sread_eof;
+            if(__vic::ascii::isspace(ch.value())) continue;
+            return ch.value();
         }
     }
 };

@@ -11,7 +11,7 @@
 #include<__vic/defs.h>
 #include<__vic/unicode.h>
 #include<__vic/utf8/defs.h>
-#include<__vic/utf8/status.h>
+#include<__vic/utf8/read_result.h>
 #include<__vic/bits.h>
 
 namespace __vic { namespace utf8 {
@@ -21,7 +21,7 @@ template<class ByteSReader>
 class reader
 {
     ByteSReader r;
-    bool read_byte(unsigned char &b) { return r(b); }
+    sread_byte_result read_byte() { return r(); }
 public:
     typedef ByteSReader byte_reader_type;
     ByteSReader &get_byte_reader() { return r; }
@@ -35,27 +35,29 @@ public:
     explicit reader(ByteSReader r) : r(r) {}
 #endif
 
-    status_t parse(unicode_t & );
-    bool read(unicode_t &cp) { return throw_if_error(parse(cp)); }
-    bool operator()(unicode_t &cp) { return read(cp); }
+    read_result parse();
+    sread_result<unicode_t> read() { return convert_or_throw(parse()); }
+    sread_result<unicode_t> operator()() { return read(); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
 template<class ByteSReader>
-status_t reader<ByteSReader>::parse(unicode_t &cp)
+read_result reader<ByteSReader>::parse()
 {
-    unsigned char b;
-    if(!read_byte(b)) return status::eof;
+    __VIC_SREAD_BYTE_RESULT rr = read_byte();
+    if(!rr) return status::eof;
+    unsigned char b = rr.value();
     // Two short paths for the most frequent cases and generic case
-    if((b & 0x80) == 0) cp = b; // 0xxxxxxx - 1 byte
+    if((b & 0x80) == 0) return b; // 0xxxxxxx - 1 byte
     else if((b & 0xE0) == 0xC0) // 110xxxxx - 2 bytes
     {
         unicode_t ch = (b & 0x1F) << 6;
-        if(!read_byte(b) || !is_continuation_byte(b))
+        rr = read_byte();
+        if(!rr || !is_continuation_byte(rr.value()))
             return status::truncated_code_point;
-        ch |= b & 0x3F;
+        ch |= rr.value() & 0x3F;
         if(ch < 0x80) return status::overlong_encoding;
-        cp = ch;
+        return ch;
     }
     else if((b & 0xE0) == 0xE0  // 111zzzzx - 3 or more bytes
          && (b & 0x1E) != 0x1E) // at least one z is 0
@@ -68,17 +70,17 @@ status_t reader<ByteSReader>::parse(unicode_t &cp)
         unicode_t ch = __vic::get_lsbs(b, 7 - seqlen);
         for(int i = seqlen; --i;) // continuation bytes
         {
-            if(!read_byte(b) || !is_continuation_byte(b))
+            rr = read_byte();
+            if(!rr || !is_continuation_byte(rr.value()))
                 return status::truncated_code_point;
             ch <<= 6;
-            ch |= b & 0x3F;
+            ch |= rr.value() & 0x3F;
         }
         if(ch < length_thresholds[seqlen-2])
             return status::overlong_encoding;
-        cp = ch;
+        return ch;
     }
     else return status::no_leading_byte; // not a start byte
-    return status::ok;
 }
 //----------------------------------------------------------------------------
 template<class ByteSReader>

@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2024-10-15  __vic
+    ! sreaders use regular return for the value instead of the output parameter
+
 2024-10-03  __vic
     ! Renamed reader -> sreader
     ! Renamed writer -> swriter

@@ -9,6 +9,7 @@
 #define __VIC_SREADERS_ITERATOR_H
 
 #include<__vic/defs.h>
+#include<__vic/sreaders/result.h>
 #include<iterator>
 
 namespace __vic {
@@ -20,11 +21,10 @@ class iterator_sreader
     Iter p, end;
 public:
     iterator_sreader(Iter begin, Iter end) : p(begin), end(end) {}
-    bool operator()(T &v)
+    sread_result<T> operator()()
     {
-        if(p == end) return false;
-        v = *p++; // move?
-        return true;
+        if(p != end) return static_cast<T>(*p++); // move?
+        return sread_eof;
     }
     Iter position() const { return p; }
 };
@@ -36,12 +36,16 @@ class iterator_sreader_n
     size_t n;
 public:
     iterator_sreader_n(Iter begin, size_t n) : p(begin), n(n) {}
-    bool operator()(T &v)
+    sread_result<T> operator()()
     {
-        if(n == 0) return false;
-        v = *p++; // move?
-        n--;
-        return true;
+        if(n != 0)
+        {
+            T v = *p; // move?
+            ++p;
+            n--;
+            return v;
+        }
+        return sread_eof;
     }
     Iter position() const { return p; }
 };

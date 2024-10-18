@@ -11,6 +11,7 @@
 #include<__vic/defs.h>
 #include<__vic/bits.h>
 #include<__vic/ascii.h>
+#include<__vic/sreaders/result.h>
 #include<exception>
 
 namespace __vic {
@@ -82,9 +83,8 @@ inline void base16::encode_byte_(
 template<class ByteSReader, class CharSWriter, class Func>
 inline void base16::encode_(ByteSReader &r, CharSWriter &w, Func to_hex_digit)
 {
-    unsigned char byte;
-    while(r(byte))
-        encode_byte_(byte, w, to_hex_digit);
+    while(__VIC_SREAD_BYTE_RESULT byte = r())
+        encode_byte_(byte.value(), w, to_hex_digit);
 }
 //----------------------------------------------------------------------------
 template<class CharSWriter>
@@ -116,10 +116,9 @@ base16::status_t base16::try_decode(CharSReader r, ByteSWriter w)
 {
     bool first = true;
     int hi_part;
-    char ch;
-    while(r(ch))
+    while(__VIC_SREAD_RESULT(char) ch = r())
     {
-        int d = ascii::xdigit_to_number(ch);
+        int d = ascii::xdigit_to_number(ch.value());
         if(d < 0) return status::invalid_digit;
         if(first) hi_part = d;
         else w(static_cast<unsigned char>((hi_part << 4) | d));

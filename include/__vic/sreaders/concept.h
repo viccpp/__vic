@@ -17,7 +17,14 @@ namespace __vic {
 // interface sreader
 // {
 //     sreader(sreader && ); or sreader(const sreader & );
-//     bool operator()(T & ); // throws on errors
+//     sreader_result<T> operator()(); // throws on errors
+// };
+//////////////////////////////////////////////////////////////////////////////
+// template<class T>
+// interface sreader_result
+// {
+//     explicit operator bool() const; // Was the read successful (not EOF)?
+//     T value() const; // The read result. Precondition: *this == true
 // };
 //////////////////////////////////////////////////////////////////////////////
 

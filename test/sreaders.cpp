@@ -15,10 +15,19 @@ namespace tests {
 template<class T, class SReader>
 void check_read(SReader r)
 {
-    T val;
-    bool st = r(val);
-    (void) st;
-    (void) val;
+    if(__vic::sread_result<T> res = r())
+    {
+        T value = res.value();
+        (void) value;
+    }
+#if __cpp_structured_bindings
+    auto [value, ok] = r();
+    if(ok)
+    {
+        T check_value_type{value};
+        (void) check_value_type;
+    }
+#endif
 }
 void container()
 {
@@ -28,13 +37,13 @@ void container()
     for(int i = 1; i <= 3; i++) v.push_back(i);
 
     __vic::container_sreader<std::vector<int> > r(v);
-    int n;
     for(int i = 1; i <= 3; i++)
     {
-        assert(r(n));
-        assert(n == i);
+        __vic::sread_result<int> n = r();
+        assert(n);
+        assert(n.value() == i);
     }
-    assert(!r(n));
+    assert(!r());
 
     check_read<int>(__vic::make_container_sreader(v));
     check_read<unsigned>(__vic::make_container_sreader_for<unsigned>(v));
@@ -49,39 +58,39 @@ void string()
     std::string str(data);
 
     __vic::string_sreader r(str);
-    char ch;
     for(unsigned i = 0; i < str.length(); i++)
     {
-        assert(r(ch));
-        assert(ch == data[i]);
+        __vic::sread_result<char> ch = r();
+        assert(ch);
+        assert(ch.value() == data[i]);
     }
-    assert(!r(ch));
+    assert(!r());
     check_read<char>(__vic::make_string_sreader(str));
 }
 void cstring()
 {
     const char str[] = "abc";
     __vic::cstring_sreader r(str);
-    char ch;
     for(const char *p = str; *p; p++)
     {
-        assert(r(ch));
-        assert(ch == *p);
+        __vic::sread_result<char> ch = r();
+        assert(ch);
+        assert(ch.value() == *p);
     }
-    assert(!r(ch));
+    assert(!r());
     check_read<char>(__vic::make_cstring_sreader(str));
 }
 void cstream()
 {
     __vic::stdio_file file("sreaders.cpp", "r");
     __vic::cstream_sreader r(file);
-    char ch;
-    r(ch);
+    __vic::sread_result<char> ch = r();
+    assert(ch);
 }
 void run()
 {
 #if __cpp_lambdas
-    check_read<int>([](int &){ return false; });
+    check_read<int>([]{ return __vic::sread_result<int>(); });
 #endif
     container();
     string();

@@ -6,7 +6,7 @@
 <title><tt>utf16::status</tt></title>
 
 <code-block lang="C++">
-enum class utf16::status
+enum class utf16::status : unsigned char
 {
     ok = 0,
     eof,
@@ -41,20 +41,6 @@ constexpr bool utf16::is_error(utf16::status s);
 
 <p>Returns <tt>false</tt> for <tt>utf16::status::ok</tt> and
 <tt>utf16::status::eof</tt> values. <tt>true</tt> is returned otherwise.</p>
-
-</chapter>
-
-
-<chapter xml:id="utf16--throw_if_error">
-<title><tt>utf16::throw_if_error()</tt></title>
-
-<code-block lang="C++">
-bool utf16::throw_if_error(utf16::status s);
-</code-block>
-
-<p>Throws exception from <xref to="utf16.exceptions.h"/> if
-<tt>is_error(s)</tt>. Returns <tt>true</tt> for <tt>utf16::status::ok</tt>
-or <tt>false</tt> for <tt>utf16::status::eof</tt>.</p>
 
 </chapter>
 

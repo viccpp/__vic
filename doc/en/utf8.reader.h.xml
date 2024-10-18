@@ -19,9 +19,9 @@ public:
     reader(); // C++98 only
     explicit reader(ByteSReader r); // C++98 only
 
-    status_t parse(unicode_t &cp);
-    bool read(unicode_t &cp);
-    bool operator()(unicode_t &cp);
+    utf8::read_result parse();
+    sread_result<unicode_t> read()
+    sread_result<unicode_t> operator()();
 };
 
 template<class ByteSReader>
@@ -53,22 +53,21 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 </synopsis>
 
 <synopsis>
-<prototype>status_t parse(unicode_t &amp;cp)</prototype>
-<p>Tries to extract the next code point from byte sequence using
-<tt>ByteSReader</tt>. On success <tt>utf8::status::ok</tt> is returned and the
-code point is stored in <tt>cp</tt>. <tt>utf8::status::eof</tt> is returned
-when no more bytes available. Other values are returned on errors, see
-<xref to="utf8--status"/> for more details. <tt>ByteSReader::operator()</tt> is
-used to access individual bytes.</p>
+<prototype>utf8::read_result parse()</prototype>
+<p>Tries to extract the next code point from the byte sequence using
+<tt>ByteSReader</tt>. Returns the code point read on success.
+<tt>utf8::status::eof</tt> is returned when no more bytes are available.
+Other statuses are returned on errors, see <xref to="utf8--status"/> for more
+details. <tt>ByteSReader::operator()</tt> is used to access individual bytes.</p>
 <note>The function itself doesn't throw exceptions but exception can be
 thrown by <tt>ByteSReader::operator()</tt>.</note>
 </synopsis>
 
 <synopsis>
-<prototype>bool read(unicode_t &amp;cp)</prototype>
-<prototype>bool operator()(unicode_t &amp;cp)</prototype>
-<p>Same as <tt>parse()</tt> but returns <tt>true</tt> on success, <tt>false</tt>
-on EOF or throws an exception from <xref to="utf8.exceptions.h"/> otherwise.</p>
+<prototype>sread_result&lt;unicode_t> read()</prototype>
+<prototype>sread_result&lt;unicode_t> operator()()</prototype>
+<p>The same as <tt>parse()</tt> but returns <tt>sread_result</tt> on success or
+on EOF. Throws an exception from <xref to="utf8.exceptions.h"/> otherwise.</p>
 </synopsis>
 
 </section>
@@ -78,7 +77,7 @@ on EOF or throws an exception from <xref to="utf8.exceptions.h"/> otherwise.</p>
 <synopsis>
 <prototype>template&lt;class ByteSReader>
 utf8::reader&lt;ByteSReader> utf8::make_reader(ByteSReader r)</prototype>
-<p>Creates UTF-8 reader using specified <tt>ByteSReader</tt>.</p>
+<p>Creates UTF-8 reader using the specified <tt>ByteSReader</tt>.</p>
 </synopsis>
 
 </section>
@@ -104,9 +103,8 @@ struct utf8_string_reader : __vic::utf8::reader<__vic::string_sreader>
 void print_utf8_code_points(const string &s)
 {
     utf8_string_reader r(s);
-    __vic::unicode_t cp;
-    while(r.read(cp)) // or r(cp)
-        std::cout << uint_least32_t(cp) << '\n';
+    while(__VIC_SREAD_RESULT(unicode_t) cp = r())
+        std::cout << uint_least32_t(cp.value()) << '\n';
 }
 ]]></code-block>
 </section>

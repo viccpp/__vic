@@ -1,0 +1,66 @@
+<chapter xml:id="utf8.read_result.h">
+<title><tt>__vic/utf8/read_result.h</tt></title>
+
+
+<chapter xml:id="utf8--read_result">
+<title><tt>utf8::read_result</tt></title>
+
+<code-block lang="C++">
+class utf8::read_result
+{
+public:
+    read_result(utf8::status_t s);
+    read_result(unicode_t v);
+
+    unicode_t value() const;
+    utf8::status_t status() const;
+    explicit operator bool() const;
+};
+</code-block>
+
+<p>A read result returned by <tt>utf8::reader::parse()</tt> function.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>read_result(utf8::status_t s)</prototype>
+<precondition><tt>s != utf8::status::ok</tt></precondition>
+<postcondition><tt>status() == s</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>unicode_t value() const</prototype>
+<p>Returns the value read.</p>
+<precondition><tt>status() == utf8::status::ok</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>utf8::status_t status() const</prototype>
+<p>Returns the read operation status.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit operator bool() const</prototype>
+<p>The same as <tt>status() == utf8::status::ok</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="utf8--convert_or_throw">
+<title><tt>utf8::convert_or_throw()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+sread_result<unicode_t> utf8::convert_or_throw(utf8::read_result r);
+]]></code-block>
+
+<p>Converts <tt>utf8::read_result</tt> to <tt>sread_result</tt>. Throws
+exception from <xref to="utf8.exceptions.h"/> if <tt>is_error(r.status())</tt>.
+</p>
+
+</chapter>
+
+
+</chapter>
