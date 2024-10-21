@@ -21,7 +21,7 @@ template<class ByteSReader>
 class reader
 {
     ByteSReader r;
-    sread_byte_result read_byte() { return r(); }
+    sread_result<unsigned char> read_byte() { return r(); }
 public:
     typedef ByteSReader byte_reader_type;
     ByteSReader &get_byte_reader() { return r; }
@@ -44,7 +44,7 @@ public:
 template<class ByteSReader>
 read_result reader<ByteSReader>::parse()
 {
-    __VIC_SREAD_BYTE_RESULT rr = read_byte();
+    sread_result<unsigned char> rr = read_byte();
     if(!rr) return status::eof;
     unsigned char b = rr.value();
     // Two short paths for the most frequent cases and generic case

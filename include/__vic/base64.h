@@ -67,7 +67,7 @@ void base64::encode(ByteSReader r, CharSWriter w)
 {
     unsigned char triad[3];
     int pos = 0;
-    while(__VIC_SREAD_BYTE_RESULT b = r())
+    while(__VIC_SREAD_RESULT(unsigned char) b = r())
     {
         triad[pos] = b.value();
         if(pos == 2)

@@ -83,7 +83,7 @@ inline void base16::encode_byte_(
 template<class ByteSReader, class CharSWriter, class Func>
 inline void base16::encode_(ByteSReader &r, CharSWriter &w, Func to_hex_digit)
 {
-    while(__VIC_SREAD_BYTE_RESULT byte = r())
+    while(__VIC_SREAD_RESULT(unsigned char) byte = r())
         encode_byte_(byte.value(), w, to_hex_digit);
 }
 //----------------------------------------------------------------------------

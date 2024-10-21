@@ -150,16 +150,44 @@ public:
     explicit operator bool() const;
     T value() const;
 };
+
+template<>
+class sread_result<unsigned char>
+{
+public:
+    // All the members from the non-specialized version...
+
+    // + Implicit converters:
+    sread_result(sread_result<char> r);
+    sread_result(sread_result<char8_t> r);
+    sread_result(sread_result<std::byte> r);
+};
 ]]></code-block>
 
 <p>A concrete type (template) that models <xref to="sreader_result"/>.</p>
+
+<p>The <tt>sread_result&lt;unsigned char></tt> specialization is compatible
+(implicitly convertible) with any byte result type representation including:</p>
+<list style="bulleted">
+    <item><tt>char</tt></item>
+    <item><tt>unsigned char</tt></item>
+    <item><tt>std::byte</tt> <badge>C++17</badge></item>
+    <item><tt>char8_t</tt> <badge>C++20</badge></item>
+</list>
+
+<section><title>Example (<tt>unsigned char</tt> specialization)</title>
+<code-block lang="C++"><![CDATA[
+__vic::sread_result<char> char_reader();
+
+__vic::sread_result<unsigned char> res = char_reader(); // OK
+]]></code-block>
+</section>
 
 <p>The <tt>__VIC_SREAD_RESULT(T)</tt> macro is used in a code that is required
 to be C++98-compable to specify the return type instead of <tt>auto</tt>:</p>
 <code-block lang="C++"><![CDATA[
 __VIC_SREAD_RESULT(char) result = chars_reader();
 ]]></code-block>
-
 
 <section><title>Class members</title>
 
@@ -185,62 +213,6 @@ __VIC_SREAD_RESULT(char) result = chars_reader();
 <precondition><tt>*this == true</tt></precondition>
 </synopsis>
 
-</section>
-
-</chapter>
-
-
-<chapter xml:id="sread_byte_result">
-<title><tt>sread_byte_result</tt></title>
-
-<code-block lang="C++"><![CDATA[
-#include<__vic/sreaders/result.h>
-
-#if __cplusplus >= 201103L // C++11
-#define __VIC_SREAD_BYTE_RESULT auto
-#else // C++98
-#define __VIC_SREAD_BYTE_RESULT ::__vic::sread_byte_result
-#endif
-
-class sread_byte_result
-{
-public:
-    sread_byte_result();
-    sread_byte_result(sread_eof_t);
-
-    sread_byte_result(unsigned char v);
-    sread_byte_result(sread_result<unsigned char> r);
-
-    sread_byte_result(char v);
-    sread_byte_result(sread_result<char> r);
-
-    sread_byte_result(std::byte v);
-    sread_byte_result(sread_result<std::byte> r);
-
-    sread_byte_result(char8_t v);
-    sread_byte_result(sread_result<char8_t> r);
-
-    unsigned char value() const;
-    explicit operator bool() const;
-};
-]]></code-block>
-
-<p>An <tt>unsigned char</tt> sreader read result. Compatible with any byte
-representation including:</p>
-<list style="bulleted">
-    <item><tt>char</tt></item>
-    <item><tt>unsigned char</tt></item>
-    <item><tt>std::byte</tt></item>
-    <item><tt>char8_t</tt></item>
-</list>
-
-<section><title>Example</title>
-<code-block lang="C++"><![CDATA[
-__vic::sread_result<char> char_reader();
-
-__VIC_SREAD_BYTE_RESULT res = char_reader();
-// res.value() is unsigned char
-]]></code-block>
 </section>
 
 </chapter>
