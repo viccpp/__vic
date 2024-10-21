@@ -9,7 +9,7 @@
 #define __VIC_SREADERS_RESULT_H
 
 #include<__vic/defs.h>
-#include<utility>
+#include<__vic/sreaders/defs.h>
 
 namespace __vic {
 
@@ -75,24 +75,11 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
-template<class SReadResult>
-struct sread_value
-{
-#if __cpp_decltype
-    typedef decltype(std::declval<SReadResult>().value) type;
-#endif
-};
-//////////////////////////////////////////////////////////////////////////////
 template<class T>
-struct sread_value<sread_result<T> >
+struct sreader_value<sread_result<T> >
 {
     typedef T type;
 };
-//////////////////////////////////////////////////////////////////////////////
-#if __cpp_alias_templates
-template<class SReadResult>
-using sread_value_t = typename sread_value<SReadResult>::type;
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 #if __cplusplus >= 201103L // C++11

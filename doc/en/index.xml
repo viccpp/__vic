@@ -123,8 +123,6 @@ TODO
 <chapter xml:id="components-reference">
 <title>Library components reference</title>
 &defs.h;
-&sreaders;
-&swriters;
 &algorithm.h;
 &ascii.h;
 &ascii_string.h;
@@ -165,6 +163,9 @@ TODO
 &utf16.writer.h;
 &waitable_event.h;
 </chapter>
+
+&sreaders;
+&swriters;
 
 <chapter xml:id="build">
 <title>Build and install</title>

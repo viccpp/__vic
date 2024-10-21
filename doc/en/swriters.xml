@@ -1,9 +1,5 @@
 <chapter xml:id="swriters">
-<title><tt>__vic/swriters/</tt></title>
-
-
-<chapter xml:id="swriter-concept">
-<title><tt>swriter</tt> concept</title>
+<title>S-writers</title>
 
 <code-block lang="C++"><![CDATA[
 template<class T>
@@ -15,12 +11,12 @@ public:
 };
 ]]></code-block>
 
-<p>A concept used by the library algorithms to write logical sequence of elements
-of type <tt>T</tt> element by element. It is a generalization and rework
-of the <tt>OutputIterator</tt> concept. In particular it handles streams
-and other output sequences where <tt>end</tt>-iterator is meaningless or
-expensive to obtain better. At the same time, a traditional output iterators
-are just a particular case and fully and well handled by
+<p><b>swriter</b> is a concept used by the library algorithms to write logical
+sequence of elements of type <tt>T</tt> element by element. It is a
+generalization and rework of the <tt>OutputIterator</tt> concept. In particular
+it handles streams and other output sequences where <tt>end</tt>-iterator is
+meaningless or expensive to obtain better. At the same time, a traditional
+output iterators are just a particular case and fully and well handled by
 <tt>__vic::iterator_swriter</tt> adapter.</p>
 
 <p>"swriter" is pronounced as "<b>S</b>-write" where <b>S</b> stands for
@@ -40,7 +36,33 @@ are just a particular case and fully and well handled by
 
 </section>
 
+
+<chapter xml:id="swriters.defs.h">
+<title><tt>__vic/swriters/defs.h</tt></title>
+
+
+<chapter xml:id="swriter">
+<title><tt>swriter</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class W, class T>
+concept swriter =
+    std::movable<W> &&
+    requires(W w, const T v) {
+        w(v);
+    };
+]]></code-block>
+
+<p>A C++ concept for swriters.</p>
+
 </chapter>
+
+
+</chapter>
+
+
+<chapter xml:id="concrete-swriters">
+<title>Concrete swriters</title>
 
 
 <chapter xml:id="null_swriter">
@@ -168,6 +190,9 @@ cstream_swriter make_cstream_swriter(std::FILE *fp);
 
 <p>Models <tt>swriter&lt;char></tt> for <tt>std::FILE</tt>. Can be created using
 constructor or <tt>make_...</tt> function.</p>
+
+</chapter>
+
 
 </chapter>
 

@@ -1,9 +1,5 @@
 <chapter xml:id="swriters">
-<title><tt>__vic/swriters/</tt></title>
-
-
-<chapter xml:id="swriter-concept">
-<title><tt>swriter</tt> concept</title>
+<title>S-writers</title>
 
 <code-block lang="C++"><![CDATA[
 template<class T>
@@ -15,13 +11,14 @@ public:
 };
 ]]></code-block>
 
-<p>Concept, используемый алгоритмами библиотеки для поэлементной записи
-логической последовательности элементов типа <tt>T</tt>. Является
-обобщением и переработкой concept'а <tt>OutputIterator</tt>. В частности,
-он лучше обрабатывает потоки ввода/вывода и другие последовательности, в
-которых <tt>end</tt>-итератор не имеет смысла или его получение дорого. В то
-же время, традиционные выходные итераторы являются частным просто случаем и
-полностью поддерживаются адаптером <tt>__vic::iterator_swriter</tt>.</p>
+<p><b>swriter</b> – это концепция, используемая алгоритмами библиотеки для
+поэлементной записи логической последовательности элементов типа <tt>T</tt>.
+Является обобщением и переработкой концепции <b>output iterator</b>. В
+частности, он лучше обрабатывает потоки ввода/вывода и другие
+последовательности, в которых <tt>end</tt>-итератор не имеет смысла или его
+получение дорого. В то же время, традиционные выходные итераторы являются
+частным просто случаем и полностью поддерживаются адаптером
+<tt>__vic::iterator_swriter</tt>.</p>
 
 <p>"swriter" произносится как "<b>S</b>-writer", где <b>S</b> означает
 "Sequential", "Sequence" или "Stream".</p>
@@ -41,7 +38,33 @@ public:
 
 </section>
 
+
+<chapter xml:id="swriters.defs.h">
+<title><tt>__vic/swriters/defs.h</tt></title>
+
+
+<chapter xml:id="swriter">
+<title><tt>swriter</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class W, class T>
+concept swriter =
+    std::movable<W> &&
+    requires(W w, const T v) {
+        w(v);
+    };
+]]></code-block>
+
+<p>C++ concept для swriter'ов.</p>
+
 </chapter>
+
+
+</chapter>
+
+
+<chapter xml:id="concrete-swriters">
+<title>Конкретные реализации swriter</title>
 
 
 <chapter xml:id="null_swriter">
@@ -170,6 +193,9 @@ cstream_swriter make_cstream_swriter(std::FILE *fp);
 
 <p>Моделирует <tt>swriter&lt;char></tt> для <tt>std::FILE</tt>. Может быть
 создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
 
 </chapter>
 

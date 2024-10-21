@@ -1,3 +1,4 @@
+#include<__vic/sreaders/defs.h>
 #include<__vic/sreaders/container.h>
 #include<__vic/sreaders/iterator.h>
 #include<__vic/sreaders/string.h>
@@ -15,6 +16,10 @@ namespace tests {
 template<class T, class SReader>
 void check_read(SReader r)
 {
+#if __cpp_lib_concepts
+    static_assert(__vic::sreader<SReader, T>);
+    static_assert(__vic::sreader_result<__vic::sread_result<T>, T>);
+#endif
     if(__vic::sread_result<T> res = r())
     {
         T value = res.value();

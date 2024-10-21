@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2024-10-23  __vic
+    + sreader concept
+    + swriter concept
+
 2024-10-15  __vic
     ! sreaders use regular return for the value instead of the output parameter
 

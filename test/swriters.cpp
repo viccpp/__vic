@@ -1,3 +1,4 @@
+#include<__vic/swriters/defs.h>
 #include<__vic/swriters/push_back.h>
 #include<__vic/swriters/iterator.h>
 #include<__vic/swriters/string.h>
@@ -16,6 +17,9 @@ namespace tests {
 template<class T, class SWriter>
 void check_write(SWriter w, T v)
 {
+#if __cpp_lib_concepts
+    static_assert(__vic::swriter<SWriter, T>);
+#endif
     w(v);
 }
 void push_back()

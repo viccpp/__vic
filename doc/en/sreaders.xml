@@ -1,27 +1,23 @@
 <chapter xml:id="sreaders">
-<title><tt>__vic/sreaders/</tt></title>
-
-
-<chapter xml:id="sreader">
-<title><tt>sreader</tt> concept</title>
+<title>S-readers</title>
 
 <code-block lang="C++"><![CDATA[
 template<class T>
-class ]]><nt>sreader</nt><![CDATA[
+interface ]]><nt>sreader</nt><![CDATA[
 {
-public:
     sreader(sreader &&o); or sreader(const sreader &o);
-    sreader_result<T> operator()(); // throws on errors
+    sreader_result<T> auto operator()(); // throws on errors
 };
 ]]></code-block>
 
-<p>A concept used by the library algorithms to read logical sequence of elements
-of type <tt>T</tt> element by element. It is a generalization and rework
-of the <tt>InputIterator</tt> concept. In particular it handles streams,
-NULL-terminated strings and other sequences where <tt>end</tt>-iterator is
-meaningless or expensive to obtain better. At the same time, a traditional
-[<tt>begin</tt>,<tt>end</tt>) pair of iterators is just a particular case and
-fully and well handled by <tt>__vic::iterator_sreader</tt> adapter.</p>
+<p><b>sreader</b> is a concept used by the library algorithms to read logical
+sequence of elements of type <tt>T</tt> element by element. It is a
+generalization and rework of the <b>input iterator</b> concept. In particular
+it handles streams, NULL-terminated strings and other sequences where
+<tt>end</tt>-iterator is meaningless or expensive to obtain better. At the same
+time, a traditional [<tt>begin</tt>,<tt>end</tt>) pair of iterators is just a
+particular case and fully and well handled by <tt>__vic::iterator_sreader</tt>
+adapter.</p>
 
 <p>"sreader" is pronounced as "<b>S</b>-reader" where <b>S</b> stands for
 "Sequential", "Sequence" or "Stream".</p>
@@ -31,23 +27,18 @@ fully and well handled by <tt>__vic::iterator_sreader</tt> adapter.</p>
 
 <p>Each sreader object has to be move- or copy-constructible.</p>
 
-<section><title>Class members</title>
+<section><title>Class members (sreader)</title>
 
 <synopsis>
-<prototype>sreader_result&lt;T> operator()()</prototype>
+<prototype>sreader_result&lt;T> auto operator()()</prototype>
 <p>Attempts to get the next element of the sequence. On success the returned
 object is <tt>true</tt> and its <tt>value()</tt> member-functions returns the
 element read. If no element available (EOF), returns <tt>false</tt>. Throws an
 exception in the other cases.</p>
 </synopsis>
 
-</section>
-
-</chapter>
-
-
-<chapter xml:id="sreader_result">
-<title><tt>sreader_result</tt> concept</title>
+<p>Values returned by sreaders (<b>sreader_result</b>) provide the following
+interface:</p>
 
 <code-block lang="C++"><![CDATA[
 template<class T>
@@ -58,7 +49,7 @@ interface ]]><nt>sreader_result</nt><![CDATA[
 };
 ]]></code-block>
 
-<p>An sreader read result. Contains a status of the read operation
+<p>An sreader read result contains a status of the read operation
 (success/failure) and the value read if the read was successful.
 The instances are (trivially) copy-constructible and copy-assignable.</p>
 
@@ -72,7 +63,7 @@ auto [value, ok] = reader();
 types is impractical. In this language mode sreaders return
 <xref to="sread_result"/> type (or a type implicitly convertible to it).</p>
 
-<section><title>Class members</title>
+<section><title>Class members (sreader_result)</title>
 
 <synopsis>
 <prototype>explicit operator bool() const</prototype>
@@ -121,24 +112,103 @@ while(__VIC_SREAD_RESULT(T) res = reader())
 </code-block>
 </section>
 
+</section>
+
+
+<chapter xml:id="sreaders.defs.h">
+<title><tt>__vic/sreaders/defs.h</tt></title>
+
+
+<chapter xml:id="sreader">
+<title><tt>sreader</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class R, class T>
+concept sreader =
+    std::movable<R> &&
+    requires(R r) {
+        {r()} -> sreader_result<T>;
+    };
+]]></code-block>
+
+<p>A C++ concept for sreaders.</p>
+
 </chapter>
+
+
+<chapter xml:id="byte_sreader">
+<title><tt>byte_sreader</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class R, class T>
+concept byte_sreader =
+    sreader<R, T> && (
+    std::same_as<T, unsigned char> ||
+    std::same_as<T, char         > ||
+    std::same_as<T, char8_t      > ||
+    std::same_as<T, std::byte    >);
+]]></code-block>
+
+<p>A C++ concept for sreaders that read bytes.</p>
+
+</chapter>
+
+
+<chapter xml:id="sreader_result">
+<title><tt>sreader_result</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class R, class T>
+concept sreader_result =
+    std::semiregular<R> &&
+    requires(R r) {
+        bool{r};
+        {r.value()} -> std::same_as<T>;
+    };
+]]></code-block>
+
+<p>A C++ concept for sreader results.</p>
+
+</chapter>
+
+
+<chapter xml:id="sreader_value_t">
+<title><tt>sreader_value_t</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class SReaderResult>
+struct sreader_value
+{
+    typename type;
+};
+
+template<class SReaderResult>
+using sreader_value_t = typename sreader_value<SReaderResult>::type;
+]]></code-block>
+
+<p>A metafunction returning the type returned by the <tt>value()</tt>
+member-function of the specified <tt>SReaderResult</tt>.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+__vic::sreader_value<__vic::sread_result<int> >::type value; // int value;
+]]></code-block>
+</section>
+
+</chapter>
+
+
+</chapter>
+
+
+<chapter xml:id="sreaders.result.h">
+<title><tt>__vic/sreaders/result.h</tt></title>
 
 
 <chapter xml:id="sread_result">
 <title><tt>sread_result</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/sreaders/result.h>
-
-#if __cplusplus >= 201103L // C++11
-#define __VIC_SREAD_RESULT(T) auto
-#else // C++98
-#define __VIC_SREAD_RESULT(T) ::__vic::sread_result<T>
-#endif
-
-struct sread_eof_t;
-inline constexpr sread_eof_t sread_eof;
-
 template<class T>
 class sread_result
 {
@@ -162,6 +232,12 @@ public:
     sread_result(sread_result<char8_t> r);
     sread_result(sread_result<std::byte> r);
 };
+
+#if __cplusplus >= 201103L // C++11
+#define __VIC_SREAD_RESULT(T) auto
+#else // C++98
+#define __VIC_SREAD_RESULT(T) ::__vic::sread_result<T>
+#endif
 ]]></code-block>
 
 <p>A concrete type (template) that models <xref to="sreader_result"/>.</p>
@@ -218,32 +294,25 @@ __VIC_SREAD_RESULT(char) result = chars_reader();
 </chapter>
 
 
-<chapter xml:id="sread_value">
-<title><tt>sread_value</tt></title>
+<chapter xml:id="sread_eof">
+<title><tt>sread_eof</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#include<__vic/sreaders/result.h>
-
-template<class SReadResult>
-struct sread_value
-{
-    typename type;
-};
-
-template<class SReadResult>
-using sread_value_t = typename sread_value<SReadResult>::type;
+struct sread_eof_t;
+inline constexpr sread_eof_t sread_eof;
 ]]></code-block>
 
-<p>A metafunction returning the type returned by the <tt>value()</tt>
-member-function of the specified <tt>SReadResult</tt>.</p>
-
-<section><title>Example</title>
-<code-block lang="C++"><![CDATA[
-__vic::sread_value<__vic::sread_result<int> >::type value; // int value;
-]]></code-block>
-</section>
+<p>The special value used to (implicitly) construct an unsuccessfull
+<tt>sread_result</tt> of any value type.</p>
 
 </chapter>
+
+
+</chapter>
+
+
+<chapter xml:id="concrete-sreaders">
+<title>Concrete sreaders</title>
 
 
 <chapter xml:id="iterator_sreader">
@@ -427,6 +496,9 @@ cstream_sreader make_cstream_sreader(std::FILE *fp);
 <p>Models <tt>sreader&lt;char></tt> for <tt>std::FILE</tt>.</p>
 
 <p>Can be created using constructor or <tt>make_...</tt> function.</p>
+
+</chapter>
+
 
 </chapter>
 
