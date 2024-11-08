@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2024-11-08  __vic
+    + sreaders: uchar_value()
+
 2024-10-25  __vic
     + type_traits.h: is_byte, byte_cast()
 

@@ -9,6 +9,7 @@
 #define __VIC_SREADERS_DEFS_H
 
 #include<__vic/_cfg.h>
+#include<__vic/type_traits.h>
 #if __has_include(<concepts>)
 #include<concepts>
 #include<cstddef> // std::byte
@@ -53,12 +54,7 @@ concept sreader =
     };
 //////////////////////////////////////////////////////////////////////////////
 template<class R, class T>
-concept byte_sreader =
-    sreader<R, T> && (
-    std::same_as<T, unsigned char> ||
-    std::same_as<T, char         > ||
-    std::same_as<T, char8_t      > ||
-    std::same_as<T, std::byte    >);
+concept byte_sreader = sreader<R, T> && is_byte<T>::value;
 //////////////////////////////////////////////////////////////////////////////
 #endif
 
@@ -75,6 +71,18 @@ template<class SReaderResult>
 using sreader_value_t = typename sreader_value<SReaderResult>::type;
 #endif
 //////////////////////////////////////////////////////////////////////////////
+
+#if __cpp_decltype
+//----------------------------------------------------------------------------
+template<class ByteSReaderResult>
+inline typename enable_if<
+    is_byte<typename sreader_value<ByteSReaderResult>::type>::value,
+unsigned char>::type uchar_value(ByteSReaderResult r)
+{
+    return static_cast<unsigned char>(r.value());
+}
+//----------------------------------------------------------------------------
+#endif
 
 } // namespace
 

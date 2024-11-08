@@ -13,6 +13,23 @@
 
 namespace tests {
 
+//////////////////////////////////////////////////////////////////////////////
+template<class T>
+class one_element_reader
+{
+    int i;
+public:
+    one_element_reader() : i(1) {}
+
+    __vic::sread_result<T> operator()()
+    {
+        if(i <= 0) return __vic::sread_eof;
+        i--;
+        return T();
+    }
+};
+//////////////////////////////////////////////////////////////////////////////
+
 template<class T, class SReader>
 void check_read(SReader r)
 {
@@ -92,6 +109,28 @@ void cstream()
     __vic::sread_result<char> ch = r();
     assert(ch);
 }
+template<class ByteType>
+void byte_reader_test()
+{
+    one_element_reader<ByteType> rd;
+
+    if(__VIC_SREAD_RESULT(unsigned char) r = rd())
+    {
+        unsigned char byte = uchar_value(r);
+        (void) byte;
+    }
+}
+void byte_readers()
+{
+    byte_reader_test<char>();
+    byte_reader_test<unsigned char>();
+#if __cpp_lib_byte // C++17
+    byte_reader_test<std::byte>();
+#endif
+#if __cpp_char8_t // C++20
+    byte_reader_test<char8_t>();
+#endif
+}
 void run()
 {
 #if __cpp_lambdas
@@ -101,6 +140,7 @@ void run()
     string();
     cstring();
     cstream();
+    byte_readers();
 }
 
 } // namespace

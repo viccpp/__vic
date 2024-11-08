@@ -21,7 +21,12 @@ template<class ByteSReader>
 class reader
 {
     ByteSReader r;
-    sread_result<unsigned char> read_byte() { return r(); }
+#if __cpp_decltype_auto
+    auto
+#else
+    sread_result<unsigned char>
+#endif
+        read_byte() { return r(); }
 public:
     typedef ByteSReader byte_reader_type;
     ByteSReader &get_byte_reader() { return r; }
@@ -44,18 +49,18 @@ public:
 template<class ByteSReader>
 read_result reader<ByteSReader>::parse()
 {
-    sread_result<unsigned char> rr = read_byte();
+    __VIC_SREAD_RESULT(unsigned char) rr = read_byte();
     if(!rr) return status::eof;
-    unsigned char b = rr.value();
+    unsigned char b = uchar_value(rr);
     // Two short paths for the most frequent cases and generic case
     if((b & 0x80) == 0) return b; // 0xxxxxxx - 1 byte
     else if((b & 0xE0) == 0xC0) // 110xxxxx - 2 bytes
     {
         unicode_t ch = (b & 0x1F) << 6;
         rr = read_byte();
-        if(!rr || !is_continuation_byte(rr.value()))
+        if(!rr || !is_continuation_byte(uchar_value(rr)))
             return status::truncated_code_point;
-        ch |= rr.value() & 0x3F;
+        ch |= uchar_value(rr) & 0x3F;
         if(ch < 0x80) return status::overlong_encoding;
         return ch;
     }
@@ -71,10 +76,10 @@ read_result reader<ByteSReader>::parse()
         for(int i = seqlen; --i;) // continuation bytes
         {
             rr = read_byte();
-            if(!rr || !is_continuation_byte(rr.value()))
+            if(!rr || !is_continuation_byte(uchar_value(rr)))
                 return status::truncated_code_point;
             ch <<= 6;
-            ch |= rr.value() & 0x3F;
+            ch |= uchar_value(rr) & 0x3F;
         }
         if(ch < length_thresholds[seqlen-2])
             return status::overlong_encoding;

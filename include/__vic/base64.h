@@ -69,7 +69,7 @@ void base64::encode(ByteSReader r, CharSWriter w)
     int pos = 0;
     while(__VIC_SREAD_RESULT(unsigned char) b = r())
     {
-        triad[pos] = b.value();
+        triad[pos] = uchar_value(b);
         if(pos == 2)
         {
             w(abc[triad[0] >> 2]);

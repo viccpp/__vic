@@ -144,12 +144,7 @@ concept sreader =
 
 <code-block lang="C++"><![CDATA[
 template<class R, class T>
-concept byte_sreader =
-    sreader<R, T> && (
-    std::same_as<T, unsigned char> ||
-    std::same_as<T, char         > ||
-    std::same_as<T, char8_t      > ||
-    std::same_as<T, std::byte    >);
+concept byte_sreader = sreader<R, T> && is_byte<T>::value;
 ]]></code-block>
 
 <p>C++ concept для sreader'ов читающих байты.</p>
@@ -201,6 +196,25 @@ __vic::sreader_value<__vic::sread_result<int> >::type value; // int value;
 </chapter>
 
 
+<chapter xml:id="uchar_value">
+<title><tt>uchar_value()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ByteSReaderResult>
+unsigned char uchar_value(ByteSReaderResult r);
+]]></code-block>
+
+<p>Возвращает прочитанный байт – <tt>r.value()</tt> – в виде
+<tt>unsigned char</tt>.</p>
+
+<p>Данная функция определена только, если
+<tt><![CDATA[is_byte<sreader_value_t<ByteSReaderResult>>::value == true]]></tt>.</p>
+
+<precondition><tt>r == true</tt> (как для <tt>r.value()</tt>)</precondition>
+
+</chapter>
+
+
 </chapter>
 
 
@@ -235,6 +249,7 @@ public:
     sread_result(sread_result<char8_t> r);
     sread_result(sread_result<std::byte> r);
 };
+unsigned char uchar_value(sread_result<unsigned char> r);
 
 #if __cplusplus >= 201103L // C++11
 #define __VIC_SREAD_RESULT(T) auto
@@ -292,6 +307,16 @@ __VIC_SREAD_RESULT(char) result = chars_reader();
 <prototype>T value() const</prototype>
 <p>Возвращает прочитанное значение.</p>
 <precondition><tt>*this == true</tt></precondition>
+</synopsis>
+
+</section>
+
+<section><title>Свободные функции</title>
+
+<synopsis>
+<prototype>unsigned char uchar_value(sread_result&lt;unsigned char> r)</prototype>
+<p>Возвращает <tt>r.value()</tt>.</p>
+<precondition><tt>r == true</tt></precondition>
 </synopsis>
 
 </section>

@@ -37,6 +37,8 @@ element read. If no element available (EOF), returns <tt>false</tt>. Throws an
 exception in the other cases.</p>
 </synopsis>
 
+</section>
+
 <p>Values returned by sreaders (<b>sreader_result</b>) provide the following
 interface:</p>
 
@@ -112,8 +114,6 @@ while(__VIC_SREAD_RESULT(T) res = reader())
 </code-block>
 </section>
 
-</section>
-
 
 <chapter xml:id="sreaders.defs.h">
 <title><tt>__vic/sreaders/defs.h</tt></title>
@@ -141,12 +141,7 @@ concept sreader =
 
 <code-block lang="C++"><![CDATA[
 template<class R, class T>
-concept byte_sreader =
-    sreader<R, T> && (
-    std::same_as<T, unsigned char> ||
-    std::same_as<T, char         > ||
-    std::same_as<T, char8_t      > ||
-    std::same_as<T, std::byte    >);
+concept byte_sreader = sreader<R, T> && is_byte<T>::value;
 ]]></code-block>
 
 <p>A C++ concept for sreaders that read bytes.</p>
@@ -198,6 +193,25 @@ __vic::sreader_value<__vic::sread_result<int> >::type value; // int value;
 </chapter>
 
 
+<chapter xml:id="uchar_value">
+<title><tt>uchar_value()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ByteSReaderResult>
+unsigned char uchar_value(ByteSReaderResult r);
+]]></code-block>
+
+<p>Returns the resulting byte value – <tt>r.value()</tt> – as an
+<tt>unsigned char</tt>.</p>
+
+<p>This function is defined only if 
+<tt><![CDATA[is_byte<sreader_value_t<ByteSReaderResult>>::value == true]]></tt>.</p>
+
+<precondition><tt>r == true</tt> (same as for <tt>r.value()</tt>)</precondition>
+
+</chapter>
+
+
 </chapter>
 
 
@@ -232,6 +246,7 @@ public:
     sread_result(sread_result<char8_t> r);
     sread_result(sread_result<std::byte> r);
 };
+unsigned char uchar_value(sread_result<unsigned char> r);
 
 #if __cplusplus >= 201103L // C++11
 #define __VIC_SREAD_RESULT(T) auto
@@ -287,6 +302,16 @@ __VIC_SREAD_RESULT(char) result = chars_reader();
 <prototype>T value() const</prototype>
 <p>Returns the value read.</p>
 <precondition><tt>*this == true</tt></precondition>
+</synopsis>
+
+</section>
+
+<section><title>Free functions</title>
+
+<synopsis>
+<prototype>unsigned char uchar_value(sread_result&lt;unsigned char> r)</prototype>
+<p>Returns <tt>r.value()</tt>.</p>
+<precondition><tt>r == true</tt></precondition>
 </synopsis>
 
 </section>
