@@ -1,33 +1,32 @@
-// std::FILE reader
+// std::FILE sreader
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
 // (c) __vic 2017
 
-#ifndef __VIC_READERS_CSTREAM_H
-#define __VIC_READERS_CSTREAM_H
+#ifndef __VIC_SREADERS_CSTREAM_H
+#define __VIC_SREADERS_CSTREAM_H
 
+#include<__vic/sreaders/result.h>
 #include<__vic/stdio_file.h>
 #include<cstdio>
 
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-// Reader<char> + Reader<unsigned char>
-class cstream_reader
+class cstream_sreader
 {
     std::FILE *fp;
 public:
-    explicit cstream_reader(std::FILE *fp) : fp(fp) {}
-    bool read(char &ch) { return __vic::read(fp, ch); }
-    bool read(unsigned char &ch) { return __vic::read(fp, ch); }
+    explicit cstream_sreader(std::FILE *fp) : fp(fp) {}
+    sread_result<char> operator()() { return __vic::read(fp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-inline cstream_reader make_cstream_reader(std::FILE *fp)
+inline cstream_sreader make_cstream_sreader(std::FILE *fp)
 {
-    return cstream_reader(fp);
+    return cstream_sreader(fp);
 }
 //----------------------------------------------------------------------------
 

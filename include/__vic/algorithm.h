@@ -9,7 +9,7 @@
 #define __VIC_ALGORITHM_H
 
 #include<__vic/defs.h>
-#if __cpp_concepts >= 201907
+#if __has_include(<concepts>)
 #include<concepts>
 #include<iterator>
 #endif
@@ -17,7 +17,7 @@
 namespace __vic {
 
 //----------------------------------------------------------------------------
-#if __cpp_concepts >= 201907
+#if __cpp_lib_concepts
 template<
     std::forward_iterator Iter,
     std::predicate<std::iter_value_t<Iter>> Pred
@@ -31,7 +31,7 @@ inline Iter skip_if_front(Iter begin, Iter end, Pred pred)
     return begin;
 }
 //----------------------------------------------------------------------------
-#if __cpp_concepts >= 201907
+#if __cpp_lib_concepts
 template<
     std::bidirectional_iterator Iter,
     std::predicate<std::iter_value_t<Iter>> Pred

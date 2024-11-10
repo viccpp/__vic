@@ -1,7 +1,7 @@
 #include<__vic/utf16/reader.h>
 #include<__vic/utf16/writer.h>
-#include<__vic/readers/string.h>
-#include<__vic/writers/string.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/swriters/string.h>
 #include<__vic/iterator.h>
 #include<string>
 #include<iostream>
@@ -16,13 +16,14 @@ typedef std::basic_string<__vic::utf16::code_unit_t> u16string;
 //////////////////////////////////////////////////////////////////////////////
 class u16string_code_unit_reader
 {
-    __vic::basic_string_reader<__vic::utf16::code_unit_t> r;
+    __vic::basic_string_sreader<__vic::utf16::code_unit_t> r;
 public:
     explicit u16string_code_unit_reader(const u16string &s) : r(s) {}
 
-    __vic::utf16::status_t read_unit(__vic::utf16::code_unit_t &u)
+    __vic::utf16::read_unit_result operator()()
     {
-        if(r.read(u)) return __vic::utf16::status::ok;
+        if(__vic::sread_result<__vic::utf16::code_unit_t> u = r())
+            return u.value();
         return __vic::utf16::status::eof;
     }
 };
@@ -31,7 +32,7 @@ public:
 #if __cpp_variadic_templates && __cpp_rvalue_references
 typedef __vic::utf16::reader<u16string_code_unit_reader> utf16_string_reader;
 typedef __vic::utf16::writer<
-    __vic::basic_string_writer<__vic::utf16::code_unit_t>
+    __vic::basic_string_swriter<__vic::utf16::code_unit_t>
 > utf16_string_writer;
 #else
 struct utf16_string_reader : __vic::utf16::reader<u16string_code_unit_reader>
@@ -41,12 +42,12 @@ struct utf16_string_reader : __vic::utf16::reader<u16string_code_unit_reader>
             u16string_code_unit_reader(s)) {}
 };
 struct utf16_string_writer : __vic::utf16::writer<
-    __vic::basic_string_writer<__vic::utf16::code_unit_t> >
+    __vic::basic_string_swriter<__vic::utf16::code_unit_t> >
 {
     explicit utf16_string_writer(u16string &s) :
         __vic::utf16::writer<
-            __vic::basic_string_writer<__vic::utf16::code_unit_t>
-        >(__vic::basic_string_writer<__vic::utf16::code_unit_t>(s)) {}
+            __vic::basic_string_swriter<__vic::utf16::code_unit_t>
+        >(__vic::basic_string_swriter<__vic::utf16::code_unit_t>(s)) {}
 };
 #endif
 
@@ -72,10 +73,10 @@ void read_write()
     utf16_string_reader r(s);
     const unicode_t *p = str;
     size_t n = __vic::array_size(str);
-    for(unicode_t ch; r.read(ch); p++, n--)
+    for(; __VIC_SREAD_RESULT(unicode_t) ch = r(); p++, n--)
     {
         assert(n != 0);
-        assert(ch == *p);
+        assert(ch.value() == *p);
     }
     assert(n == 0); // all str elements are read
 }

@@ -1,0 +1,203 @@
+<chapter xml:id="swriters">
+<title>S-writers</title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class ]]><nt>swriter</nt><![CDATA[
+{
+public:
+    swriter(swriter &&o); or swriter(const swriter &o);
+    void operator()(T v); // throws on errors
+};
+]]></code-block>
+
+<p><b>swriter</b> – это концепция, используемая алгоритмами библиотеки для
+поэлементной записи логической последовательности элементов типа <tt>T</tt>.
+Является обобщением и переработкой концепции <b>output iterator</b>. В
+частности, он лучше обрабатывает потоки ввода/вывода и другие
+последовательности, в которых <tt>end</tt>-итератор не имеет смысла или его
+получение дорого. В то же время, традиционные выходные итераторы являются
+частным просто случаем и полностью поддерживаются адаптером
+<tt>__vic::iterator_swriter</tt>.</p>
+
+<p>"swriter" произносится как "<b>S</b>-writer", где <b>S</b> означает
+"Sequential", "Sequence" или "Stream".</p>
+
+<p>В случаях, когда конкретный класс удовлетворяет требованиям данного concept
+для некоторого <tt>T</tt>, говорят, что он <b>моделирует</b> concept
+<tt>swriter&lt;T></tt>.</p>
+
+<p>Каждый экземпляр класса должен быть move- или copy-constructible.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>void operator()(T v)</prototype>
+<p>Записывает элемент или бросает исключение в случае ошибки.</p>
+</synopsis>
+
+</section>
+
+
+<chapter xml:id="swriters.defs.h">
+<title><tt>__vic/swriters/defs.h</tt></title>
+
+
+<chapter xml:id="swriter">
+<title><tt>swriter</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class W, class T>
+concept swriter =
+    std::movable<W> &&
+    requires(W w, const T v) {
+        w(v);
+    };
+]]></code-block>
+
+<p>C++ concept для swriter'ов.</p>
+
+</chapter>
+
+
+</chapter>
+
+
+<chapter xml:id="concrete-swriters">
+<title>Конкретные реализации swriter</title>
+
+
+<chapter xml:id="null_swriter">
+<title><tt>null_swriter</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/swriters/null.h>
+
+class null_swriter
+{
+public:
+    template<class T> void operator()(T v) {}
+};
+
+null_swriter make_null_swriter();
+]]></code-block>
+
+<p>Фиктивный writer, принимающий любые значения и никуда их не выводящий (как
+<tt>/dev/null</tt> в UNIX).</p>
+
+</chapter>
+
+
+<chapter xml:id="push_back_swriter">
+<title><tt>push_back_swriter</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/swriters/push_back.h>
+
+template<class Cont, class T = typename Cont::value_type>
+class push_back_swriter
+{
+public:
+    explicit push_back_swriter(Cont &c);
+    void operator()(T v) { c->push_back(v); }
+};
+
+template<class Cont>
+push_back_swriter<Cont> make_push_back_swriter(Cont &c);
+
+template<class T, class Cont>
+push_back_swriter<Cont,T> make_push_back_swriter_for(Cont &c);
+]]></code-block>
+
+<p>Адаптер. Использует функцию-член <tt>push_back()</tt> для записи элементов.
+Может быть создан с помощью конструктора или одной из функций <tt>make_...</tt>.
+</p>
+
+</chapter>
+
+
+<chapter xml:id="iterator_swriter">
+<title><tt>iterator_swriter</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/swriters/iterator.h>
+
+template<class OutputIterator,
+         class T = typename std::iterator_traits<OutputIterator>::value_type>
+class iterator_swriter
+{
+public:
+    explicit iterator_swriter(OutputIterator it);
+    void operator()(T v);
+};
+
+template<class OutputIterator>
+iterator_swriter<OutputIterator> make_iterator_swriter(OutputIterator it);
+
+template<class T, class OutputIterator>
+iterator_swriter<OutputIterator,T> make_iterator_swriter_for(OutputIterator it);
+]]></code-block>
+
+<p>Записывает элементы в выходной итератор. Может быть создан с помощью
+конструктора или одной из функций <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="string_swriter">
+<title><tt>string_swriter</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/swriters/string.h>
+
+template<
+    class charT,
+    class Tr = std::char_traits<charT>,
+    class Al = std::allocator<charT>
+>
+class basic_string_swriter
+{
+public:
+    explicit basic_string_swriter(std::basic_string<charT,Tr,Al> &s);
+    void operator()(charT ch);
+};
+
+using string_swriter = basic_string_swriter<char>;
+
+template<class charT, class Tr, class Al>
+basic_string_swriter<charT,Tr,Al>
+    make_string_swriter(std::basic_string<charT,Tr,Al> &s);
+]]></code-block>
+
+<p>Адаптер для <tt>std::basic_string</tt>. Может быть создан с помощью
+конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="cstream_swriter">
+<title><tt>cstream_swriter</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/swriters/cstream.h>
+
+class cstream_swriter
+{
+public:
+    explicit cstream_swriter(std::FILE *fp);
+    void operator()(char ch) { __vic::write(fp, ch); }
+};
+
+cstream_swriter make_cstream_swriter(std::FILE *fp);
+]]></code-block>
+
+<p>Моделирует <tt>swriter&lt;char></tt> для <tt>std::FILE</tt>. Может быть
+создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+</chapter>
+
+
+</chapter>

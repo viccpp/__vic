@@ -5,36 +5,37 @@
 <title><tt>utf16::writer</tt></title>
 
 <code-block lang="C++"><![CDATA[
-template<class CodeUnitWriter>
+template<class CodeUnitSWriter>
 class utf16::writer
 {
 public:
-    using code_unit_writer_type = CodeUnitWriter;
-    CodeUnitWriter &get_code_unit_writer();
-    const CodeUnitWriter &get_code_unit_writer() const;
+    using code_unit_writer_type = CodeUnitSWriter;
+    CodeUnitSWriter &get_code_unit_writer();
+    const CodeUnitSWriter &get_code_unit_writer() const;
 
     template<class... Args>
     explicit writer(Args&&... args); // since C++11
 
     writer(); // C++98 only
-    explicit writer(CodeUnitWriter w); // C++98 only
+    explicit writer(CodeUnitSWriter w); // C++98 only
 
     void write(unicode_t cp);
+    void operator()(unicode_t cp);
 };
 
-template<class CodeUnitWriter>
-utf16::writer<CodeUnitWriter> utf16::make_writer(CodeUnitWriter w);
+template<class CodeUnitSWriter>
+utf16::writer<CodeUnitSWriter> utf16::make_writer(CodeUnitSWriter w);
 ]]></code-block>
 
 <p>UTF-16 code points to 2-byte <xref to="utf16--code_unit_t"/> sequence writer.
-<tt>CodeUnitWriter</tt> which models <tt>Writer&lt;utf16::code_unit_t></tt>
-(see <xref to="writers"/>) is used as a code units output.</p>
+<tt>CodeUnitSWriter</tt> which models <tt>swriter&lt;utf16::code_unit_t></tt>
+(see <xref to="swriters"/>) is used as a code units output.</p>
 
 <section><title>Class members</title>
 
 <synopsis>
-<prototype>CodeUnitWriter &amp;get_code_unit_writer()</prototype>
-<prototype>const CodeUnitWriter &amp;get_code_unit_writer() const</prototype>
+<prototype>CodeUnitSWriter &amp;get_code_unit_writer()</prototype>
+<prototype>const CodeUnitSWriter &amp;get_code_unit_writer() const</prototype>
 <p>Returns reference to the used code unit writer.</p>
 </synopsis>
 
@@ -46,14 +47,15 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 
 <synopsis>
 <prototype>writer() <badge>C++98 only</badge></prototype>
-<prototype>explicit writer(CodeUnitWriter r) <badge>C++98 only</badge></prototype>
+<prototype>explicit writer(CodeUnitSWriter r) <badge>C++98 only</badge></prototype>
 <p>Constructors for C++98 mode.</p>
 </synopsis>
 
 <synopsis>
 <prototype>void write(unicode_t cp)</prototype>
+<prototype>void operator()(unicode_t cp)</prototype>
 <p>Writes the specified code point according to UTF-16 encoding rules.
-<tt>CodeUnitWriter::write()</tt> is used to write individual code units.</p>
+<tt>CodeUnitSWriter::operator()</tt> is used to write individual code units.</p>
 </synopsis>
 
 </section>
@@ -61,9 +63,9 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <section><title>Free functions</title>
 
 <synopsis>
-<prototype>template&lt;class CodeUnitWriter>
-utf16::writer&lt;CodeUnitWriter> utf16::make_writer(CodeUnitWriter w)</prototype>
-<p>Creates UTF-16 writer using specified <tt>CodeUnitWriter</tt>.</p>
+<prototype>template&lt;class CodeUnitSWriter>
+utf16::writer&lt;CodeUnitSWriter> utf16::make_writer(CodeUnitSWriter w)</prototype>
+<p>Creates UTF-16 writer using specified <tt>CodeUnitSWriter</tt>.</p>
 </synopsis>
 
 </section>
@@ -71,15 +73,15 @@ utf16::writer&lt;CodeUnitWriter> utf16::make_writer(CodeUnitWriter w)</prototype
 <section><title>Example</title>
 <code-block lang="C++"><![CDATA[
 #include<__vic/utf16/writer.h>
-#include<__vic/writers/string.h>
+#include<__vic/swriters/string.h>
 #include<string>
 #include<vector>
 
 std::u16string encode_utf16(const std::vector<__vic::unicode_t> &code_points)
 {
     std::u16string utf16_res;
-    __vic::utf16::writer<__vic::basic_string_writer<char16_t>> w(utf16_res);
-    for(auto cp : code_points) w.write(cp);
+    __vic::utf16::writer<__vic::basic_string_swriter<char16_t>> w(utf16_res);
+    for(auto cp : code_points) w(cp);
     return utf16_res;
 }
 ]]></code-block>

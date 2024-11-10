@@ -1,6 +1,6 @@
 #include<__vic/base64.h>
-#include<__vic/readers/string.h>
-#include<__vic/writers/string.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/swriters/string.h>
 #include<__vic/ascii.h>
 #include<iostream>
 #include<exception>
@@ -10,24 +10,23 @@
 namespace tests {
 
 typedef std::string bytes;
-typedef __vic::string_reader bytes_reader;
-typedef __vic::string_writer bytes_writer;
-template<class Reader>
-class skip_ws_reader
+typedef __vic::string_sreader bytes_sreader;
+typedef __vic::string_swriter bytes_swriter;
+template<class SReader>
+class skip_ws_sreader
 {
-    Reader r;
+    SReader r;
 public:
     template<class Arg>
-    explicit skip_ws_reader(Arg &arg) : r(arg) {}
-    bool read(char &res)
+    explicit skip_ws_sreader(Arg &arg) : r(arg) {}
+    __vic::sread_result<char> operator()()
     {
         for(;;)
         {
-            char ch;
-            if(!r.read(ch)) return false;
-            if(__vic::ascii::isspace(ch)) continue;
-            res = ch;
-            return true;
+            __vic::sread_result<char> ch = r();
+            if(!ch) return __vic::sread_eof;
+            if(__vic::ascii::isspace(ch.value())) continue;
+            return ch.value();
         }
     }
 };
@@ -37,7 +36,7 @@ std::string encode(const bytes &s)
     std::string res;
     size_t enc_len = __vic::base64::encoded_length(s.length());
     res.reserve(enc_len);
-    __vic::base64::encode(bytes_reader(s), __vic::string_writer(res));
+    __vic::base64::encode(bytes_sreader(s), __vic::string_swriter(res));
     assert(res.length() == enc_len);
     return res;
 }
@@ -46,7 +45,7 @@ bytes decode(const std::string &s)
     bytes res;
     size_t max_dec_len = __vic::base64::max_decoded_length(s.length());
     res.reserve(max_dec_len);
-    __vic::base64::decode(__vic::string_reader(s), bytes_writer(res));
+    __vic::base64::decode(__vic::string_sreader(s), bytes_swriter(res));
     assert(res.length() <= max_dec_len);
     return res;
 }
@@ -56,7 +55,7 @@ bytes decode_ignore_ws(const std::string &s)
     size_t max_dec_len = __vic::base64::max_decoded_length(s.length());
     res.reserve(max_dec_len);
     __vic::base64::decode(
-        skip_ws_reader<__vic::string_reader>(s), bytes_writer(res));
+        skip_ws_sreader<__vic::string_sreader>(s), bytes_swriter(res));
     assert(res.length() <= max_dec_len);
     return res;
 }

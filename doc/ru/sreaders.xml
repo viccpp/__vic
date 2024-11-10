@@ -1,0 +1,538 @@
+<chapter xml:id="sreaders">
+<title>S-readers</title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+interface ]]><nt>sreader</nt><![CDATA[
+{
+    sreader(sreader &&o); or sreader(const sreader &o);
+    sreader_result<T> auto operator()(); // throws on errors
+};
+]]></code-block>
+
+<p><b>sreader</b> – это концепция, используемая алгоритмами библиотеки для
+поэлементного чтения логической последовательности элементов типа <tt>T</tt>.
+Является обобщением и переработкой концепции <b>input iterator</b>. В частности,
+он лучше обрабатывает потоки ввода/вывода, строки с нулевым терминатором и
+другие последовательности, в которых <tt>end</tt>-итератор не имеет смысла или
+его получение дорого. В то же время, традиционные пары итераторов
+[<tt>begin</tt>,<tt>end</tt>) являются просто частным случаем и полностью
+поддерживаются адаптером <tt>__vic::iterator_sreader</tt>.</p>
+
+<p>"sreader" произносится как "<b>S</b>-reader", где <b>S</b> означает
+"Sequential", "Sequence" или "Stream".</p>
+
+<p>В случаях, когда конкретный класс удовлетворяет требованиям данного concept
+для некоторого <tt>T</tt>, говорят, что он <b>моделирует</b> concept
+<tt>sreader&lt;T></tt>.</p>
+
+<p>Каждый объект sreader должен быть move- или copy-constructible.</p>
+
+<section><title>Члены класса (sreader)</title>
+
+<synopsis>
+<prototype>sreader_result&lt;T> auto operator()()</prototype>
+<p>Пытается получить следующий элемент последовательности. В случе успеха,
+возвращённый объект - <tt>true</tt> и его функция-член <tt>value()</tt>
+возвращает прочитанный элемент. Если больше элементов не осталось (EOF),
+возвращает <tt>false</tt>. Бросает исключения в остальных случаях.</p>
+</synopsis>
+
+</section>
+
+<p>Значения, возвращаемые sreader'ами (<b>sreader_result</b>), предоставляют
+следующий интерфейс:</p>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+interface ]]><nt>sreader_result</nt><![CDATA[
+{
+    explicit operator bool() const;
+    T value() const;
+};
+]]></code-block>
+
+<p>Результат чтения из sreader содержит статус операции чтения
+(успешно/неуспешно) и прочитанное значение, если чтение было успешным.
+Объекты sreader result (тривиально) копируемы и присваиваемы.</p>
+
+<p>Реализации типов sreader result обеспечивают поддержку structured bindings
+в следующей форме:</p>
+<code-block lang="C++">
+auto [value, ok] = reader();
+</code-block>
+
+<p>Так как в C++98 отсутсвует возможность использования спецификатора типа
+<tt>auto</tt>, использование разных типов для результатов непрактично. В режиме
+данного стандарта sreader'ы возвращают тип <xref to="sread_result"/> (или тип,
+неявно преобразуемый к нему).</p>
+
+<section><title>Члены класса (sreader_result)</title>
+
+<synopsis>
+<prototype>explicit operator bool() const</prototype>
+<p>Возвращает <tt>true</tt>, если чтение было успешным и <tt>value()</tt>
+содержит прочитанное значение. <tt>false</tt>, обычно, сигнализирует о конце
+файла.</p>
+</synopsis>
+
+<synopsis>
+<prototype>T value() const</prototype>
+<p>Возвращает прочитанное значение.</p>
+<precondition><tt>*this == true</tt></precondition>
+</synopsis>
+
+</section>
+
+<section><title>Примеры</title>
+<code-block lang="C++">
+// Basic usage (C++11+)
+while(auto res = reader())
+{
+    // Use res.value() ...
+}
+</code-block>
+<code-block lang="C++">
+// Using structured bindings (C++17+)
+for(;;)
+{
+    auto [value, ok] = reader();
+    if(!ok) break;
+    // Use value ...
+}
+</code-block>
+<code-block lang="C++">
+// C++26+
+while(auto [value, _] = reader())
+{
+    // Use value ...
+}
+</code-block>
+<code-block lang="C++">
+// Legacy C++98
+while(__VIC_SREAD_RESULT(T) res = reader())
+{
+    // Use res.value() of type T ...
+}
+</code-block>
+</section>
+
+
+<chapter xml:id="sreaders.defs.h">
+<title><tt>__vic/sreaders/defs.h</tt></title>
+
+
+<chapter xml:id="sreader">
+<title><tt>sreader</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class R, class T>
+concept sreader =
+    std::movable<R> &&
+    requires(R r) {
+        {r()} -> sreader_result<T>;
+    };
+]]></code-block>
+
+<p>C++ concept для sreader'ов.</p>
+
+</chapter>
+
+
+<chapter xml:id="byte_sreader">
+<title><tt>byte_sreader</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class R, class T>
+concept byte_sreader = sreader<R, T> && is_byte<T>::value;
+]]></code-block>
+
+<p>C++ concept для sreader'ов читающих байты.</p>
+
+</chapter>
+
+
+<chapter xml:id="sreader_result">
+<title><tt>sreader_result</tt> <badge>C++20</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class R, class T>
+concept sreader_result =
+    std::semiregular<R> &&
+    requires(R r) {
+        bool{r};
+        {r.value()} -> std::same_as<T>;
+    };
+]]></code-block>
+
+<p>C++ concept для результатов, возвращаемых sreader.</p>
+
+</chapter>
+
+
+<chapter xml:id="sreader_value_t">
+<title><tt>sreader_value_t</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class SReaderResult>
+struct sreader_value
+{
+    typename type;
+};
+
+template<class SReaderResult>
+using sreader_value_t = typename sreader_value<SReaderResult>::type;
+]]></code-block>
+
+<p>Метафункция возвращающая тип, возвращаемый функцией-членом <tt>value()</tt>,
+для данного <tt>SReaderResult</tt>.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+__vic::sreader_value<__vic::sread_result<int> >::type value; // int value;
+]]></code-block>
+</section>
+
+</chapter>
+
+
+<chapter xml:id="uchar_value">
+<title><tt>uchar_value()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class ByteSReaderResult>
+unsigned char uchar_value(ByteSReaderResult r);
+]]></code-block>
+
+<p>Возвращает прочитанный байт – <tt>r.value()</tt> – в виде
+<tt>unsigned char</tt>.</p>
+
+<p>Данная функция определена только, если
+<tt><![CDATA[is_byte<sreader_value_t<ByteSReaderResult>>::value == true]]></tt>.</p>
+
+<precondition><tt>r == true</tt> (как для <tt>r.value()</tt>)</precondition>
+
+</chapter>
+
+
+</chapter>
+
+
+<chapter xml:id="sreaders.result.h">
+<title><tt>__vic/sreaders/result.h</tt></title>
+
+
+<chapter xml:id="sread_result">
+<title><tt>sread_result</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class sread_result
+{
+public:
+    sread_result();
+    sread_result(sread_eof_t);
+    sread_result(T v);
+
+    explicit operator bool() const;
+    T value() const;
+};
+
+template<>
+class sread_result<unsigned char>
+{
+public:
+    // All the members from the non-specialized version...
+
+    // + Implicit converters:
+    sread_result(sread_result<char> r);
+    sread_result(sread_result<char8_t> r);
+    sread_result(sread_result<std::byte> r);
+};
+unsigned char uchar_value(sread_result<unsigned char> r);
+
+#if __cplusplus >= 201103L // C++11
+#define __VIC_SREAD_RESULT(T) auto
+#else // C++98
+#define __VIC_SREAD_RESULT(T) ::__vic::sread_result<T>
+#endif
+]]></code-block>
+
+<p>Конкретный тип (шаблон), моделирующий <xref to="sreader_result"/>.</p>
+
+<p>Специализация <tt>sread_result&lt;unsigned char></tt> соместима (неявно
+преобразуема) с любыми представлениями результата, представляющим байт,
+включая:</p>
+<list style="bulleted">
+    <item><tt>char</tt></item>
+    <item><tt>unsigned char</tt></item>
+    <item><tt>std::byte</tt> <badge>C++17</badge></item>
+    <item><tt>char8_t</tt> <badge>C++20</badge></item>
+</list>
+
+<section><title>Пример (<tt>unsigned char</tt> специализация)</title>
+<code-block lang="C++"><![CDATA[
+__vic::sread_result<char> char_reader();
+
+__vic::sread_result<unsigned char> res = char_reader(); // OK
+]]></code-block>
+</section>
+
+<p>Макрос <tt>__VIC_SREAD_RESULT(T)</tt> используется в качестве типа
+возвращаемого значения в коде, который должен быть совместим с C++98, вместо
+<tt>auto</tt>:</p>
+<code-block lang="C++"><![CDATA[
+__VIC_SREAD_RESULT(char) result = chars_reader();
+]]></code-block>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>sread_result()</prototype>
+<prototype>sread_result(sread_eof_t)</prototype>
+<postcondition><tt>!*this</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>sread_result(T v)</prototype>
+<postcondition><tt>*this &amp;&amp; value() == v</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit operator bool() const</prototype>
+<p>Возвращает статус операции чтения.</p>
+</synopsis>
+
+<synopsis>
+<prototype>T value() const</prototype>
+<p>Возвращает прочитанное значение.</p>
+<precondition><tt>*this == true</tt></precondition>
+</synopsis>
+
+</section>
+
+<section><title>Свободные функции</title>
+
+<synopsis>
+<prototype>unsigned char uchar_value(sread_result&lt;unsigned char> r)</prototype>
+<p>Возвращает <tt>r.value()</tt>.</p>
+<precondition><tt>r == true</tt></precondition>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="sread_eof">
+<title><tt>sread_eof</tt></title>
+
+<code-block lang="C++"><![CDATA[
+struct sread_eof_t;
+inline constexpr sread_eof_t sread_eof;
+]]></code-block>
+
+<p>Специальное значение, используемое для (неявного) конструирования
+неуспешного <tt>sread_result</tt> для любого типа значений.</p>
+
+</chapter>
+
+
+</chapter>
+
+
+<chapter xml:id="concrete-sreaders">
+<title>Конкретные реализации sreader</title>
+
+
+<chapter xml:id="iterator_sreader">
+<title><tt>iterator_sreader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/sreaders/iterator.h>
+
+template<class InputIterator,
+         class T = typename std::iterator_traits<InputIterator>::value_type>
+class iterator_sreader
+{
+public:
+    iterator_sreader(InputIterator begin, InputIterator end);
+    sread_result<T> operator()();
+    InputIterator position() const;
+};
+
+template<class InputIterator> iterator_sreader<InputIterator>
+make_iterator_sreader(InputIterator begin, InputIterator end);
+
+template<class T, class InputIterator> iterator_sreader<InputIterator,T>
+make_iterator_sreader_for(InputIterator begin, InputIterator end);
+]]></code-block>
+
+<p>Адаптер для традиционной [<tt>begin</tt>,<tt>end</tt>) пары итераторов.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
+
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="iterator_sreader_n">
+<title><tt>iterator_sreader_n</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/sreaders/iterator.h>
+
+template<class InputIterator,
+         class T = typename std::iterator_traits<InputIterator>::value_type>
+class iterator_sreader_n
+{
+public:
+    iterator_sreader_n(InputIterator begin, size_t n);
+    sread_result<T> operator()();
+    InputIterator position() const;
+};
+
+template<class InputIterator> iterator_sreader_n<InputIterator>
+make_iterator_sreader_n(InputIterator begin, size_t n);
+
+template<class T, class InputIterator> iterator_sreader_n<InputIterator,T>
+make_iterator_sreader_n_for(InputIterator begin, size_t n);
+]]></code-block>
+
+<p>Адаптер для итератора со счётчиком элементов.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
+
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="container_sreader">
+<title><tt>container_sreader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/sreaders/container.h>
+
+template<class Cont, class T = typename Cont::value_type>
+class container_sreader
+{
+public:
+    explicit container_sreader(const Cont &c);
+    sread_result<T> operator()();
+    typename Cont::const_iterator position() const;
+};
+
+template<class Cont>
+container_sreader<Cont> make_container_sreader(const Cont &c);
+
+template<class T, class Cont>
+container_sreader<Cont,T> make_container_sreader_for(const Cont &c);
+]]></code-block>
+
+<p>Адаптер для контейнеров в стиле STL, имеющих члены <tt>begin()</tt> и
+<tt>end()</tt>.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+итератора внутри диапазона.</p>
+
+<p>Может быть создан с помощью конструктора или одной из функций
+<tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="cstring_sreader">
+<title><tt>cstring_sreader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/sreaders/cstring.h>
+
+template<class charT>
+class basic_cstring_sreader
+{
+public:
+    explicit basic_cstring_sreader(const charT *s);
+    sread_result<charT> operator()();
+    const charT *position() const;
+};
+using cstring_sreader = basic_cstring_sreader<char>;
+
+template<class charT>
+basic_cstring_sreader<charT> make_cstring_sreader(const charT *s);
+]]></code-block>
+
+<p>Адаптер для C-строк с нулевым терминатором.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+указателя внутри строки.</p>
+
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="string_sreader">
+<title><tt>string_sreader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/sreaders/string.h>
+
+template<class charT>
+class basic_string_sreader
+{
+public:
+    template<class Tr, class Al>
+    explicit basic_string_sreader(const std::basic_string<charT,Tr,Al> &s);
+    sread_result<charT> operator()();
+    const charT *position() const;
+};
+using string_sreader = basic_string_sreader<char>;
+
+template<class charT, class Tr, class Al>
+basic_string_sreader<charT>
+    make_string_sreader(const std::basic_string<charT,Tr,Al> &s);
+]]></code-block>
+
+<p>Адаптер для <tt>std::basic_string</tt>.</p>
+
+<p>Дополнительная функция <tt>position()</tt> возвращает текущую позицию
+указателя внутри строки.</p>
+
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="cstream_sreader">
+<title><tt>cstream_sreader</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/sreaders/cstream.h>
+
+class cstream_sreader
+{
+public:
+    explicit cstream_sreader(std::FILE *fp);
+    sread_result<char> operator()() { return __vic::read(fp); }
+};
+
+cstream_sreader make_cstream_sreader(std::FILE *fp);
+]]></code-block>
+
+<p>Моделирует <tt>sreader&lt;char></tt> для <tt>std::FILE</tt>.</p>
+
+<p>Может быть создан с помощью конструктора или функции <tt>make_...</tt>.</p>
+
+</chapter>
+
+
+</chapter>
+
+
+</chapter>

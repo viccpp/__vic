@@ -13,7 +13,7 @@
 namespace __vic { namespace utf16 {
 
 //////////////////////////////////////////////////////////////////////////////
-__VIC_SCOPED_ENUM_BEGIN(status)
+__VIC_SCOPED_ENUM_UT_BEGIN(status, unsigned char)
 {
     ok = 0,
     eof,
@@ -25,8 +25,6 @@ __VIC_SCOPED_ENUM_BEGIN(status)
 __VIC_SCOPED_ENUM_END(status)
 //////////////////////////////////////////////////////////////////////////////
 __VIC_CONSTEXPR_FUNC bool is_error(status_t s) { return s > status::eof; }
-
-bool throw_if_error(status_t );
 
 }} // namespace
 

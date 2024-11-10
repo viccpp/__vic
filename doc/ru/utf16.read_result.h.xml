@@ -1,0 +1,87 @@
+﻿<chapter xml:id="utf16.read_result.h">
+<title><tt>__vic/utf16/read_result.h</tt></title>
+
+
+<chapter xml:id="utf16--read_result">
+<title><tt>utf16::read_result</tt></title>
+
+<code-block lang="C++">
+class utf16::read_result
+{
+public:
+    read_result(utf16::status_t s)
+    read_result(unicode_t v);
+
+    unicode_t value() const;
+    utf16::status_t status() const;
+    explicit operator bool() const;
+};
+</code-block>
+
+<p>Результат чтения, возвращаемый функцией <tt>utf16::reader::parse()</tt>.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>read_result(utf16::status_t s)</prototype>
+<precondition><tt>s != utf16::status::ok</tt></precondition>
+<postcondition><tt>status() == s</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>unicode_t value() const</prototype>
+<p>Возвращает прочитанное значение.</p>
+<precondition><tt>status() == utf16::status::ok</tt></precondition>
+</synopsis>
+
+<synopsis>
+<prototype>utf16::status_t status() const</prototype>
+<p>Возвращает статус операции чтения.</p>
+</synopsis>
+
+<synopsis>
+<prototype>explicit operator bool() const</prototype>
+<p>То же самое, что <tt>status() == utf16::status::ok</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="utf16--read_unit_result">
+<title><tt>utf16::read_unit_result</tt></title>
+
+<code-block lang="C++">
+class utf16::read_unit_result
+{
+public:
+    read_unit_result(utf16::status_t s)
+    read_unit_result(utf16::code_unit_t v);
+
+    utf16::code_unit_t value() const;
+    utf16::status_t status() const;
+    explicit operator bool() const;
+};
+</code-block>
+
+<p>То же самое, что <tt>utf16::read_result</tt>, но для
+<tt>utf16::code_unit_t</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="utf16--convert_or_throw">
+<title><tt>utf16::convert_or_throw()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+sread_result<unicode_t> utf16::convert_or_throw(utf16::read_result r);
+]]></code-block>
+
+<p>Преобразует <tt>utf16::read_result</tt> в <tt>sread_result</tt>. Бросает
+исключение из <xref to="utf16.exceptions.h"/>, если
+<tt>is_error(r.status())</tt>.</p>
+
+</chapter>
+
+</chapter>
