@@ -9,13 +9,13 @@ namespace __vic {
 //----------------------------------------------------------------------------
 bool getline(std::FILE *fp, std::string &buf, char delim)
 {
-    char ch;
-    if(!read(fp, ch)) return false; // end-of-file
+    sread_result<char> ch = read(fp);
+    if(!ch) return false; // end-of-file
     buf.clear();
     do {
-        if(ch == delim) break;
-        buf.push_back(ch);
-    } while(read(fp, ch));
+        if(ch.value() == delim) break;
+        buf.push_back(ch.value());
+    } while((ch = read(fp)));
     return true;
 }
 //----------------------------------------------------------------------------

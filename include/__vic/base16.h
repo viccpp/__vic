@@ -11,6 +11,7 @@
 #include<__vic/defs.h>
 #include<__vic/bits.h>
 #include<__vic/ascii.h>
+#include<__vic/sreaders/result.h>
 #include<exception>
 
 namespace __vic {
@@ -18,10 +19,10 @@ namespace __vic {
 //////////////////////////////////////////////////////////////////////////////
 class base16
 {
-    template<class CharWriter, class Func>
-    static void encode_byte_(unsigned char , CharWriter & , Func );
-    template<class ByteReader, class CharWriter, class Func>
-    static void encode_(ByteReader & , CharWriter & , Func );
+    template<class CharSWriter, class Func>
+    static void encode_byte_(unsigned char , CharSWriter & , Func );
+    template<class ByteSReader, class CharSWriter, class Func>
+    static void encode_(ByteSReader & , CharSWriter & , Func );
     struct to_hex_digit_lower
     {
         char operator()(int d) const { return ascii::toxdigit_lower(d); }
@@ -52,85 +53,83 @@ public:
     };
 
     // Byte -> Text
-    template<class CharWriter>
-    static void encode_byte_lower(unsigned char , CharWriter );
-    template<class CharWriter>
-    static void encode_byte_upper(unsigned char , CharWriter );
+    template<class CharSWriter>
+    static void encode_byte_lower(unsigned char , CharSWriter );
+    template<class CharSWriter>
+    static void encode_byte_upper(unsigned char , CharSWriter );
 
     // Bytes -> Text
-    template<class ByteReader, class CharWriter>
-    static void encode_lower(ByteReader , CharWriter );
-    template<class ByteReader, class CharWriter>
-    static void encode_upper(ByteReader , CharWriter );
+    template<class ByteSReader, class CharSWriter>
+    static void encode_lower(ByteSReader , CharSWriter );
+    template<class ByteSReader, class CharSWriter>
+    static void encode_upper(ByteSReader , CharSWriter );
 
     // Text -> Bytes
-    template<class CharReader, class ByteWriter>
-    static void decode(CharReader , ByteWriter );
-    template<class CharReader, class ByteWriter>
-    static status_t try_decode(CharReader , ByteWriter );
+    template<class CharSReader, class ByteSWriter>
+    static void decode(CharSReader , ByteSWriter );
+    template<class CharSReader, class ByteSWriter>
+    static status_t try_decode(CharSReader , ByteSWriter );
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class CharWriter, class Func>
+template<class CharSWriter, class Func>
 inline void base16::encode_byte_(
-    unsigned char byte, CharWriter &w, Func to_hex_digit)
+    unsigned char byte, CharSWriter &w, Func to_hex_digit)
 {
-    w.write(to_hex_digit(hi_nibble(byte)));
-    w.write(to_hex_digit(lo_nibble(byte)));
+    w(to_hex_digit(hi_nibble(byte)));
+    w(to_hex_digit(lo_nibble(byte)));
 }
 //----------------------------------------------------------------------------
-template<class ByteReader, class CharWriter, class Func>
-inline void base16::encode_(ByteReader &r, CharWriter &w, Func to_hex_digit)
+template<class ByteSReader, class CharSWriter, class Func>
+inline void base16::encode_(ByteSReader &r, CharSWriter &w, Func to_hex_digit)
 {
-    unsigned char byte;
-    while(r.read(byte))
-        encode_byte_(byte, w, to_hex_digit);
+    while(__VIC_SREAD_RESULT(unsigned char) byte = r())
+        encode_byte_(uchar_value(byte), w, to_hex_digit);
 }
 //----------------------------------------------------------------------------
-template<class CharWriter>
-void base16::encode_byte_lower(unsigned char byte, CharWriter w)
+template<class CharSWriter>
+void base16::encode_byte_lower(unsigned char byte, CharSWriter w)
 {
     encode_byte_(byte, w, to_hex_digit_lower());
 }
 //----------------------------------------------------------------------------
-template<class CharWriter>
-void base16::encode_byte_upper(unsigned char byte, CharWriter w)
+template<class CharSWriter>
+void base16::encode_byte_upper(unsigned char byte, CharSWriter w)
 {
     encode_byte_(byte, w, to_hex_digit_upper());
 }
 //----------------------------------------------------------------------------
-template<class ByteReader, class CharWriter>
-void base16::encode_lower(ByteReader r, CharWriter w)
+template<class ByteSReader, class CharSWriter>
+void base16::encode_lower(ByteSReader r, CharSWriter w)
 {
     encode_(r, w, to_hex_digit_lower());
 }
 //----------------------------------------------------------------------------
-template<class ByteReader, class CharWriter>
-void base16::encode_upper(ByteReader r, CharWriter w)
+template<class ByteSReader, class CharSWriter>
+void base16::encode_upper(ByteSReader r, CharSWriter w)
 {
     encode_(r, w, to_hex_digit_upper());
 }
 //----------------------------------------------------------------------------
-template<class CharReader, class ByteWriter>
-base16::status_t base16::try_decode(CharReader r, ByteWriter w)
+template<class CharSReader, class ByteSWriter>
+base16::status_t base16::try_decode(CharSReader r, ByteSWriter w)
 {
     bool first = true;
     int hi_part;
-    char ch;
-    while(r.read(ch))
+    while(__VIC_SREAD_RESULT(char) ch = r())
     {
-        int d = ascii::xdigit_to_number(ch);
+        int d = ascii::xdigit_to_number(ch.value());
         if(d < 0) return status::invalid_digit;
         if(first) hi_part = d;
-        else w.write(static_cast<unsigned char>((hi_part << 4) | d));
+        else w(static_cast<unsigned char>((hi_part << 4) | d));
         first = !first;
     }
     if(!first) return status::invalid_length; // the length is odd
     return status::ok;
 }
 //----------------------------------------------------------------------------
-template<class CharReader, class ByteWriter>
-void base16::decode(CharReader r, ByteWriter w)
+template<class CharSReader, class ByteSWriter>
+void base16::decode(CharSReader r, ByteSWriter w)
 {
     switch(base16::try_decode(__VIC_STD_MOVE(r), __VIC_STD_MOVE(w)))
     {

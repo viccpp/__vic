@@ -1,27 +1,32 @@
-// null writer
+// std::FILE swriter
 //
 // Platform: ISO C++ 98/11
 // $Id$
 //
-// (c) __vic 2018
+// (c) __vic 2017
 
-#ifndef __VIC_WRITERS_NULL_H
-#define __VIC_WRITERS_NULL_H
+#ifndef __VIC_SWRITERS_CSTREAM_H
+#define __VIC_SWRITERS_CSTREAM_H
 
-#include<__vic/defs.h>
+#include<__vic/stdio_file.h>
+#include<cstdio>
 
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-struct null_writer
+// swriter<char>
+class cstream_swriter
 {
-    template<class T> void write(T ) {}
+    std::FILE *fp;
+public:
+    explicit cstream_swriter(std::FILE *fp) : fp(fp) {}
+    void operator()(char ch) { __vic::write(fp, ch); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-inline null_writer make_null_writer()
+inline cstream_swriter make_cstream_swriter(std::FILE *fp)
 {
-    return null_writer();
+    return cstream_swriter(fp);
 }
 //----------------------------------------------------------------------------
 

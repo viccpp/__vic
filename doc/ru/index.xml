@@ -22,15 +22,16 @@
     <!ENTITY memory.h SYSTEM "memory.h.xml">
     <!ENTITY mutex.h SYSTEM "mutex.h.xml">
     <!ENTITY packon.h SYSTEM "packon.h.xml">
-    <!ENTITY readers SYSTEM "readers.xml">
     <!ENTITY readonly_cstring.h SYSTEM "readonly_cstring.h.xml">
     <!ENTITY set_of_chars.h SYSTEM "set_of_chars.h.xml">
+    <!ENTITY sreaders SYSTEM "sreaders.xml">
     <!ENTITY stdint.h SYSTEM "stdint.h.xml">
     <!ENTITY stdio_file.h SYSTEM "stdio_file.h.xml">
     <!ENTITY str2num.h SYSTEM "str2num.h.xml">
     <!ENTITY string_buffer.h SYSTEM "string_buffer.h.xml">
     <!ENTITY string_ref.h SYSTEM "string_ref.h.xml">
     <!ENTITY string_utils.h SYSTEM "string_utils.h.xml">
+    <!ENTITY swriters SYSTEM "swriters.xml">
     <!ENTITY tchar.h SYSTEM "tchar.h.xml">
     <!ENTITY thread.h SYSTEM "thread.h.xml">
     <!ENTITY throw_errno.h SYSTEM "throw_errno.h.xml">
@@ -39,15 +40,16 @@
     <!ENTITY unicode.h SYSTEM "unicode.h.xml">
     <!ENTITY utf16.defs.h SYSTEM "utf16.defs.h.xml">
     <!ENTITY utf16.exceptions.h SYSTEM "utf16.exceptions.h.xml">
+    <!ENTITY utf16.read_result.h SYSTEM "utf16.read_result.h.xml">
     <!ENTITY utf16.reader.h SYSTEM "utf16.reader.h.xml">
     <!ENTITY utf16.status.h SYSTEM "utf16.status.h.xml">
     <!ENTITY utf16.writer.h SYSTEM "utf16.writer.h.xml">
     <!ENTITY utf8.exceptions.h SYSTEM "utf8.exceptions.h.xml">
+    <!ENTITY utf8.read_result.h SYSTEM "utf8.read_result.h.xml">
     <!ENTITY utf8.reader.h SYSTEM "utf8.reader.h.xml">
     <!ENTITY utf8.status.h SYSTEM "utf8.status.h.xml">
     <!ENTITY utf8.writer.h SYSTEM "utf8.writer.h.xml">
     <!ENTITY waitable_event.h SYSTEM "waitable_event.h.xml">
-    <!ENTITY writers SYSTEM "writers.xml">
 ]>
 <document xml:lang="ru" version="1.0" status="Draft">
 <title>__vic's C++ library</title>
@@ -141,7 +143,6 @@ TODO
 &memory.h;
 &mutex.h;
 &packon.h;
-&readers;
 &readonly_cstring.h;
 &set_of_chars.h;
 &stdint.h;
@@ -158,16 +159,20 @@ TODO
 &unicode.h;
 &utf8.status.h;
 &utf8.exceptions.h;
+&utf8.read_result.h;
 &utf8.reader.h;
 &utf8.writer.h;
 &utf16.defs.h;
 &utf16.status.h;
 &utf16.exceptions.h;
+&utf16.read_result.h;
 &utf16.reader.h;
 &utf16.writer.h;
 &waitable_event.h;
-&writers;
 </chapter>
+
+&sreaders;
+&swriters;
 
 <chapter xml:id="build">
 <title>Сборка и установка</title>

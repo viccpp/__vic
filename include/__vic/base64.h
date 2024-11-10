@@ -9,6 +9,7 @@
 #define __VIC_BASE64_H
 
 #include<__vic/defs.h>
+#include<__vic/sreaders/result.h>
 #include<exception>
 #include<cstring>
 
@@ -40,14 +41,14 @@ struct base64
     static const char abc[64]; // BASE64 alphabet
 
     // Bytes -> Text
-    template<class ByteReader, class CharWriter>
-    static void encode(ByteReader , CharWriter );
+    template<class ByteSReader, class CharSWriter>
+    static void encode(ByteSReader , CharSWriter );
 
     // Text -> Bytes
-    template<class CharReader, class ByteWriter>
-    static void decode(CharReader , ByteWriter );
-    template<class CharReader, class ByteWriter>
-    static status_t try_decode(CharReader , ByteWriter );
+    template<class CharSReader, class ByteSWriter>
+    static void decode(CharSReader , ByteSWriter );
+    template<class CharSReader, class ByteSWriter>
+    static status_t try_decode(CharSReader , ByteSWriter );
 
     static __VIC_CONSTEXPR_FUNC size_t encoded_length(size_t orig_len)
     {
@@ -61,50 +62,50 @@ struct base64
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class ByteReader, class CharWriter>
-void base64::encode(ByteReader r, CharWriter w)
+template<class ByteSReader, class CharSWriter>
+void base64::encode(ByteSReader r, CharSWriter w)
 {
     unsigned char triad[3];
     int pos = 0;
-    while(r.read(triad[pos]))
+    while(__VIC_SREAD_RESULT(unsigned char) b = r())
     {
+        triad[pos] = uchar_value(b);
         if(pos == 2)
         {
-            w.write(abc[triad[0] >> 2]);
-            w.write(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
-            w.write(abc[((triad[1] & 0x0F) << 2) | (triad[2] >> 6)]);
-            w.write(abc[triad[2] & 0x3F]);
+            w(abc[triad[0] >> 2]);
+            w(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
+            w(abc[((triad[1] & 0x0F) << 2) | (triad[2] >> 6)]);
+            w(abc[triad[2] & 0x3F]);
             pos = 0;
         }
         else pos++;
     }
     if(pos > 0)
     {
-        w.write(abc[triad[0] >> 2]);
+        w(abc[triad[0] >> 2]);
         if(pos == 2)
         {
-            w.write(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
-            w.write(abc[(triad[1] & 0x0F) << 2]);
+            w(abc[((triad[0] & 0x03) << 4) | (triad[1] >> 4)]);
+            w(abc[(triad[1] & 0x0F) << 2]);
         }
         else // if(pos == 1)
         {
-            w.write(abc[(triad[0] & 0x03) << 4]);
-            w.write('=');
+            w(abc[(triad[0] & 0x03) << 4]);
+            w('=');
         }
-        w.write('=');
+        w('=');
     }
 }
 //----------------------------------------------------------------------------
-template<class CharReader, class ByteWriter>
-base64::status_t base64::try_decode(CharReader r, ByteWriter w)
+template<class CharSReader, class ByteSWriter>
+base64::status_t base64::try_decode(CharSReader r, ByteSWriter w)
 {
     char quad[4];
     unsigned char code[4];
     int pos = 0;
-    char ch;
-    while(r.read(ch))
+    while(__VIC_SREAD_RESULT(char) ch = r())
     {
-        quad[pos] = ch;
+        quad[pos] = ch.value();
         if(pos == 3)
         {
             for(int i=0; i<4; i++)
@@ -118,12 +119,12 @@ base64::status_t base64::try_decode(CharReader r, ByteWriter w)
                 }
                 else code[i] = 255;
             }
-            w.write((code[0] << 2) | (code[1] >> 4));
+            w((code[0] << 2) | (code[1] >> 4));
             if(code[2] != 255)
             {
-                w.write(((code[1] & 0x0F) << 4) | (code[2] >> 2));
+                w(((code[1] & 0x0F) << 4) | (code[2] >> 2));
                 if(code[3] != 255)
-                    w.write(((code[2] & 0x03) << 6) | code[3]);
+                    w(((code[2] & 0x03) << 6) | code[3]);
             }
             pos = 0;
         }
@@ -133,8 +134,8 @@ base64::status_t base64::try_decode(CharReader r, ByteWriter w)
     return status::ok;
 }
 //----------------------------------------------------------------------------
-template<class CharReader, class ByteWriter>
-void base64::decode(CharReader r, ByteWriter w)
+template<class CharSReader, class ByteSWriter>
+void base64::decode(CharSReader r, ByteSWriter w)
 {
     switch(base64::try_decode(__VIC_STD_MOVE(r), __VIC_STD_MOVE(w)))
     {

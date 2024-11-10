@@ -15,30 +15,31 @@
 namespace __vic { namespace utf16 {
 
 //////////////////////////////////////////////////////////////////////////////
-template<class CodeUnitWriter>
+template<class CodeUnitSWriter>
 class writer
 {
-    CodeUnitWriter w;
-    void write_unit(code_unit_t u) { w.write(u); }
+    CodeUnitSWriter w;
+    void write_unit(code_unit_t u) { w(u); }
 public:
-    typedef CodeUnitWriter code_unit_writer_type;
-    CodeUnitWriter &get_code_unit_writer() { return w; }
-    const CodeUnitWriter &get_code_unit_writer() const { return w; }
+    typedef CodeUnitSWriter code_unit_writer_type;
+    CodeUnitSWriter &get_code_unit_writer() { return w; }
+    const CodeUnitSWriter &get_code_unit_writer() const { return w; }
 
 #if __cpp_variadic_templates && __cpp_rvalue_references
     template<class... Args>
     explicit writer(Args&&... args) : w(std::forward<Args>(args)...) {}
 #else
     writer() {}
-    explicit writer(CodeUnitWriter w) : w(w) {}
+    explicit writer(CodeUnitSWriter w) : w(w) {}
 #endif
 
     void write(unicode_t );
+    void operator()(unicode_t cp) { write(cp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class CodeUnitWriter>
-void writer<CodeUnitWriter>::write(unicode_t cp)
+template<class CodeUnitSWriter>
+void writer<CodeUnitSWriter>::write(unicode_t cp)
 {
     if(cp <= 0xFFFF)
         write_unit(cp);
@@ -50,10 +51,10 @@ void writer<CodeUnitWriter>::write(unicode_t cp)
     }
 }
 //----------------------------------------------------------------------------
-template<class CodeUnitWriter>
-inline writer<CodeUnitWriter> make_writer(CodeUnitWriter w)
+template<class CodeUnitSWriter>
+inline writer<CodeUnitSWriter> make_writer(CodeUnitSWriter w)
 {
-    return writer<CodeUnitWriter>(w);
+    return writer<CodeUnitSWriter>(w);
 }
 //----------------------------------------------------------------------------
 

@@ -9,6 +9,7 @@
 #define __VIC_STDIO_FILE_H
 
 #include<__vic/defs.h>
+#include<__vic/sreaders/result.h>
 #include __VIC_SWAP_HEADER
 #include<cstdio>
 #include<string>
@@ -48,22 +49,13 @@ public:
 __VIC_NORETURN void throw_stdio_read_error();
 __VIC_NORETURN void throw_stdio_write_error();
 //----------------------------------------------------------------------------
-inline bool read(std::FILE *fp, char &ch)
+inline sread_result<char> read(std::FILE *fp)
 {
     using namespace std; // cannot write "std::getc" if getc is a macro
     int c = getc(fp);
-    if(c == EOF)
-    {
-        if(ferror(fp)) throw_stdio_read_error();
-        return false; // feof(fp)
-    }
-    ch = c;
-    return true;
-}
-//----------------------------------------------------------------------------
-inline bool read(std::FILE *fp, unsigned char &ch)
-{
-    return read(fp, reinterpret_cast<char &>(ch));
+    if(c != EOF) return static_cast<char>(c);
+    if(ferror(fp)) throw_stdio_read_error();
+    return sread_eof; // feof(fp)
 }
 //----------------------------------------------------------------------------
 inline void write(std::FILE *fp, char ch)
