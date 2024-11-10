@@ -141,23 +141,21 @@ file.close();
 </chapter>
 
 
-<chapter xml:id="read-FILE-char">
-<title><tt>read(std::FILE, char&amp;)</tt>,
-    <tt>read(std::FILE, unsigned char&amp;)</tt></title>
+<chapter xml:id="read-FILE">
+<title><tt>read(std::FILE)</tt></title>
 
 <code-block lang="C++"><![CDATA[
-bool read(std::FILE *fp, char &ch);
-bool read(std::FILE *fp, unsigned char &ch);
+sread_result<char> read(std::FILE *fp);
 ]]></code-block>
 
-<p>Пытается прочитать байт из потока C. Возвращает <tt>true</tt> в случае
-успеха, <tt>false</tt> при достижении конца файла или бросает исключение в
-случае ошибки.</p>
+<p>Пытается прочитать байт из потока C. Возвращает успешный результат в случае
+успеха, неуспешный при достижении конца файла или бросает исключение в случае
+ошибки.</p>
 </chapter>
 
 
-<chapter xml:id="write-FILE-char">
-<title><tt>write(std::FILE, char)</tt></title>
+<chapter xml:id="write-FILE">
+<title><tt>write(std::FILE)</tt></title>
 
 <code-block lang="C++"><![CDATA[
 void write(std::FILE *fp, char ch);

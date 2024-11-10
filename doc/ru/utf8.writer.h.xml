@@ -5,36 +5,37 @@
 <title><tt>utf8::writer</tt></title>
 
 <code-block lang="C++"><![CDATA[
-template<class ByteWriter>
+template<class ByteSWriter>
 class utf8::writer
 {
 public:
-    using byte_writer_type = ByteWriter;
-    ByteWriter &get_byte_writer();
-    const ByteWriter &get_byte_writer() const;
+    using byte_writer_type = ByteSWriter;
+    ByteSWriter &get_byte_writer();
+    const ByteSWriter &get_byte_writer() const;
 
     template<class... Args>
     explicit writer(Args&&... args); // since C++11
 
     writer(); // C++98 only
-    explicit writer(ByteWriter w); // C++98 only
+    explicit writer(ByteSWriter w); // C++98 only
 
     void write(unicode_t cp);
+    void operator()(unicode_t cp);
 };
 
-template<class ByteWriter>
-utf8::writer<ByteWriter> utf8::make_writer(ByteWriter w);
+template<class ByteSWriter>
+utf8::writer<ByteSWriter> utf8::make_writer(ByteSWriter w);
 ]]></code-block>
 
 <p>Пишет UTF-8 code points в последовательность байтов. Для вывода байтов
-используется <tt>ByteWriter</tt>, моделирующий <tt>Writer&lt;unsigned char></tt>
-(см. <xref to="writers"/>).</p>
+используется <tt>ByteSWriter</tt>, моделирующий <tt>swriter&lt;unsigned char></tt>
+(см. <xref to="swriters"/>).</p>
 
 <section><title>Члены класса</title>
 
 <synopsis>
-<prototype>ByteWriter &amp;get_byte_writer()</prototype>
-<prototype>const ByteWriter &amp;get_byte_writer() const</prototype>
+<prototype>ByteSWriter &amp;get_byte_writer()</prototype>
+<prototype>const ByteSWriter &amp;get_byte_writer() const</prototype>
 <p>Возвращает ссылку на используемый byte writer.</p>
 </synopsis>
 
@@ -46,14 +47,15 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 
 <synopsis>
 <prototype>writer() <badge>C++98 only</badge></prototype>
-<prototype>explicit writer(ByteWriter r) <badge>C++98 only</badge></prototype>
+<prototype>explicit writer(ByteSWriter r) <badge>C++98 only</badge></prototype>
 <p>Конструкторы для режима C++98.</p>
 </synopsis>
 
 <synopsis>
 <prototype>void write(unicode_t cp)</prototype>
+<prototype>void operator()(unicode_t cp)</prototype>
 <p>Выводит указанный code point согласно правилам кодирования UTF-8.
-Для записи отдельных байтов используется <tt>ByteWriter::write()</tt>.</p>
+Для записи отдельных байтов используется <tt>ByteSWriter::operator()</tt>.</p>
 </synopsis>
 
 </section>
@@ -61,9 +63,9 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <section><title>Свободные функции</title>
 
 <synopsis>
-<prototype>template&lt;class ByteWriter>
-utf8::writer&lt;ByteWriter> utf8::make_writer(ByteWriter w)</prototype>
-<p>Создаёт UTF-8 writer используя указанный <tt>ByteWriter</tt>.</p>
+<prototype>template&lt;class ByteSWriter>
+utf8::writer&lt;ByteSWriter> utf8::make_writer(ByteSWriter w)</prototype>
+<p>Создаёт UTF-8 writer используя указанный <tt>ByteSWriter</tt>.</p>
 </synopsis>
 
 </section>
@@ -71,25 +73,25 @@ utf8::writer&lt;ByteWriter> utf8::make_writer(ByteWriter w)</prototype>
 <section><title>Пример</title>
 <code-block lang="C++"><![CDATA[
 #include<__vic/utf8/writer.h>
-#include<__vic/writers/string.h>
+#include<__vic/swriters/string.h>
 #include<string>
 #include<vector>
 
 // C++11
-using utf8_string_writer = __vic::utf8::writer<__vic::string_writer>;
+using utf8_string_writer = __vic::utf8::writer<__vic::string_swriter>;
 
 // C++98
-struct utf8_string_writer : __vic::utf8::writer<__vic::string_writer>
+struct utf8_string_writer : __vic::utf8::writer<__vic::string_swriter>
 {
     explicit utf8_string_writer(std::string &s)
-        : __vic::utf8::writer<__vic::string_writer>(__vic::string_writer(s)) {}
+        : __vic::utf8::writer<__vic::string_swriter>(__vic::string_swriter(s)) {}
 };
 
 std::string encode_utf8(const std::vector<__vic::unicode_t> &code_points)
 {
     std::string utf8_res;
     utf8_string_writer w(utf8_res);
-    for(auto cp : code_points) w.write(cp);
+    for(auto cp : code_points) w(cp);
     return utf8_res;
 }
 ]]></code-block>

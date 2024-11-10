@@ -5,6 +5,29 @@
 
 namespace tests {
 
+void is_byte_tests()
+{
+    assert((__vic::is_byte<char>::value));
+    assert((__vic::is_byte<unsigned char>::value));
+#if __cpp_lib_byte
+    assert((__vic::is_byte<std::byte>::value));
+#endif
+#if __cpp_char8_t
+    assert((__vic::is_byte<char8_t>::value));
+#endif
+
+    assert((!__vic::is_byte<int>::value));
+    assert((!__vic::is_byte<bool>::value));
+
+    (void) __vic::byte_cast<unsigned char>(char());
+#if __cpp_lib_byte
+    (void)  __vic::byte_cast<unsigned char>(std::byte());
+#endif
+#if 0 // Compile errors
+    (void) __vic::byte_cast<unsigned char>(int());
+    (void) __vic::byte_cast<int>(char());
+#endif
+}
 void run()
 {
     assert(( __vic::is_same<int, int>::value));
@@ -95,6 +118,8 @@ void run()
     >::value));
     //using huge_sequence = __vic::make_index_sequence<4096>;
 #endif
+
+    is_byte_tests();
 }
 
 } // namespace

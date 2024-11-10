@@ -77,6 +77,40 @@ template<class T> struct is_const;
 </chapter>
 
 
+<chapter xml:id="is_byte">
+<title><tt>is_byte</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T> struct is_byte;
+]]></code-block>
+
+<p>A predicate. True, if <tt>T</tt> is a type representing byte:</p>
+<list style="bulleted">
+    <item><tt>char</tt></item>
+    <item><tt>unsigned char</tt></item>
+    <item><tt>std::byte</tt> <badge>C++17</badge></item>
+    <item><tt>char8_t</tt> <badge>C++20</badge></item>
+</list>
+
+</chapter>
+
+
+<chapter xml:id="byte_cast">
+<title><tt>byte_cast()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class To, class From>
+constexpr To byte_cast(From v);
+]]></code-block>
+
+<p>Casts value of <tt>From</tt> type to <tt>To</tt> type if both types are
+byte types (see <xref to="is_byte"/>).</p>
+
+<precondition>is_byte&lt;From>::value &amp;&amp; is_byte&lt;To>::value</precondition>
+
+</chapter>
+
+
 <chapter xml:id="is_signed_integer">
 <title><tt>is_signed_integer</tt></title>
 

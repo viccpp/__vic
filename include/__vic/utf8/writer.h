@@ -16,32 +16,33 @@
 namespace __vic { namespace utf8 {
 
 //////////////////////////////////////////////////////////////////////////////
-template<class ByteWriter>
+template<class ByteSWriter>
 class writer
 {
-    ByteWriter w;
-    void write_byte(unsigned char b) { w.write(b); }
+    ByteSWriter w;
+    void write_byte(unsigned char b) { w(b); }
     void write_bytes(const unsigned char *p, size_t len)
         { while(len--) write_byte(*p++); }
 public:
-    typedef ByteWriter byte_writer_type;
-    ByteWriter &get_byte_writer() { return w; }
-    const ByteWriter &get_byte_writer() const { return w; }
+    typedef ByteSWriter byte_writer_type;
+    ByteSWriter &get_byte_writer() { return w; }
+    const ByteSWriter &get_byte_writer() const { return w; }
 
 #if __cpp_variadic_templates && __cpp_rvalue_references
     template<class... Args>
     explicit writer(Args&&... args) : w(std::forward<Args>(args)...) {}
 #else
     writer() {}
-    explicit writer(ByteWriter w) : w(w) {}
+    explicit writer(ByteSWriter w) : w(w) {}
 #endif
 
     void write(unicode_t );
+    void operator()(unicode_t cp) { write(cp); }
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-template<class ByteWriter>
-void writer<ByteWriter>::write(unicode_t cp)
+template<class ByteSWriter>
+void writer<ByteSWriter>::write(unicode_t cp)
 {
     if(cp < 0x80) // single byte (ASCII)
         write_byte(cp); // 0xxxxxxx
@@ -69,10 +70,10 @@ void writer<ByteWriter>::write(unicode_t cp)
     }
 }
 //----------------------------------------------------------------------------
-template<class ByteWriter>
-inline writer<ByteWriter> make_writer(ByteWriter w)
+template<class ByteSWriter>
+inline writer<ByteSWriter> make_writer(ByteSWriter w)
 {
-    return writer<ByteWriter>(w);
+    return writer<ByteSWriter>(w);
 }
 //----------------------------------------------------------------------------
 

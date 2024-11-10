@@ -12,6 +12,7 @@
 #if !__cpp_unicode_characters
 #include<__vic/stdint.h>
 #endif
+#include<__vic/sreaders/result.h>
 
 namespace __vic {
 
@@ -30,8 +31,8 @@ __VIC_INLINE_CONSTEXPR_VAR unicode_t unicode_replacement_char = 0xFFFD;
 template<class UTFReader, class UTFWriter>
 inline void utf_transcode(UTFReader r, UTFWriter w)
 {
-    unicode_t cp;
-    while(r.read(cp)) w.write(cp);
+    while(__VIC_SREAD_RESULT(unicode_t) cp = r())
+        w(cp.value());
 }
 //----------------------------------------------------------------------------
 

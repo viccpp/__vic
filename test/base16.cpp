@@ -1,6 +1,6 @@
 #include<__vic/base16.h>
-#include<__vic/readers/string.h>
-#include<__vic/writers/string.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/swriters/string.h>
 #include<iostream>
 #include<exception>
 #include<cassert>
@@ -9,40 +9,40 @@
 namespace tests {
 
 typedef std::string bytes;
-typedef __vic::string_reader bytes_reader;
-typedef __vic::string_writer bytes_writer;
+typedef __vic::string_sreader bytes_sreader;
+typedef __vic::string_swriter bytes_swriter;
 
 std::string encode_byte_lower(unsigned char byte)
 {
     std::string res;
-    __vic::base16::encode_byte_lower(byte, __vic::string_writer(res));
+    __vic::base16::encode_byte_lower(byte, __vic::string_swriter(res));
     return res;
 }
 std::string encode_byte_upper(unsigned char byte)
 {
     std::string res;
-    __vic::base16::encode_byte_upper(byte, __vic::string_writer(res));
+    __vic::base16::encode_byte_upper(byte, __vic::string_swriter(res));
     return res;
 }
 std::string encode_lower(const bytes &s)
 {
     std::string res;
     res.reserve(s.length() * 2);
-    __vic::base16::encode_lower(bytes_reader(s), __vic::string_writer(res));
+    __vic::base16::encode_lower(bytes_sreader(s), __vic::string_swriter(res));
     return res;
 }
 std::string encode_upper(const bytes &s)
 {
     std::string res;
     res.reserve(s.length() * 2);
-    __vic::base16::encode_upper(bytes_reader(s), __vic::string_writer(res));
+    __vic::base16::encode_upper(bytes_sreader(s), __vic::string_swriter(res));
     return res;
 }
 bytes decode(const std::string &s)
 {
     bytes res;
     res.reserve(s.length() / 2);
-    __vic::base16::decode(__vic::string_reader(s), bytes_writer(res));
+    __vic::base16::decode(__vic::string_sreader(s), bytes_swriter(res));
     return res;
 }
 void run()
