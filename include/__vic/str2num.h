@@ -10,6 +10,7 @@
 
 #include<__vic/defs.h>
 #include<__vic/ascii.h>
+#include<__vic/type_traits.h>
 #include<string>
 #include<limits>
 #if __has_include(<string_view>)
@@ -54,152 +55,72 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 
-namespace impl {
-//////////////////////////////////////////////////////////////////////////////
-template<class UInt>
-class unsigned_decimal_parser
+//----------------------------------------------------------------------------
+template<class UInt, class InputIterator>
+__VIC_NODISCARD typename
+enable_if<is_unsigned_integer<UInt>::value, number_parse_result<UInt> >::type
+parse_decimal(InputIterator begin, InputIterator end)
 {
-#if __cpp_constexpr
-    static constexpr UInt
-        decs = std::numeric_limits<UInt>::max() / UInt(10), // count of full decades in maximum value
-        ones = std::numeric_limits<UInt>::max() % UInt(10); // count of the rest ones in maximum value
-#endif
-    UInt res;
-    typedef number_parse_status_t status;
     typedef number_parse_status st;
-public:
-    template<class InputIterator>
-    __VIC_NODISCARD status parse(InputIterator begin, InputIterator end)
+    if(begin == end) return st::invalid_number;
+
+    // decs - count of full decades in the maximum value
+    // ones - count of the rest ones in the maximum value
+    __VIC_CONSTEXPR_VAR UInt decs = std::numeric_limits<UInt>::max() / UInt(10),
+                             ones = std::numeric_limits<UInt>::max() % UInt(10);
+    UInt res = 0;
+    do {
+        char c = *begin++;
+        if(!ascii::isdigit(c)) return st::invalid_number;
+        UInt dig = c - '0';
+        // check if the next increment will cause overflow
+        if(res > decs || (res == decs && dig > ones))
+            return st::unrepresentable;
+        res *= UInt(10); // decimal left shift (one digit)
+        res += dig;
+    } while(begin != end);
+    return number_parse_result<UInt>(res);
+}
+//----------------------------------------------------------------------------
+template<class Int, class InputIterator>
+__VIC_NODISCARD typename
+enable_if<is_signed_integer<Int>::value, number_parse_result<Int> >::type
+parse_decimal(InputIterator begin, InputIterator end)
+{
+    typedef number_parse_status st;
+    if(begin == end) return st::invalid_number;
+
+    // decs - count of full decades in the maximum value
+    // ones - count of the rest ones in the maximum value
+    __VIC_CONSTEXPR_VAR Int decs = std::numeric_limits<Int>::max() / Int(10),
+                            ones = std::numeric_limits<Int>::max() % Int(10);
+    bool negative = false;
+    switch(*begin)
     {
-        if(begin == end) return st::invalid_number;
-#if !__cpp_constexpr
-        const UInt decs = std::numeric_limits<UInt>::max() / UInt(10),
-                   ones = std::numeric_limits<UInt>::max() % UInt(10);
-#endif
-        UInt res = 0;
-        do {
-            char c = *begin++;
-            if(!ascii::isdigit(c)) return st::invalid_number;
-            UInt dig = c - '0';
-            // check if the next increment will cause overflow
-            if(res > decs || (res == decs && dig > ones))
-                return st::unrepresentable;
-            res *= UInt(10); // decimal left shift (one digit)
-            res += dig;
-        } while(begin != end);
-        this->res = res;
-        return st::ok;
+        case '-':
+            negative = true;
+            __VIC_FALLTHROUGH
+        case '+':
+            if(++begin == end) return st::invalid_number;
     }
-#if __cpp_lib_string_view // C++17
-    __VIC_NODISCARD status parse(std::string_view s)
-        { return parse(s.data(), s.data() + s.length()); }
-#else
-    __VIC_NODISCARD status parse(const std::string &s)
-        { return parse(s.data(), &*s.end()); }
-    __VIC_NODISCARD status parse(const char *s)
-        { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
-#endif
-    __VIC_NODISCARD UInt result() const { return res; }
-};
-//////////////////////////////////////////////////////////////////////////////
-template<class Int>
-class signed_decimal_parser
-{
-#if __cpp_constexpr
-    static constexpr Int
-        decs = std::numeric_limits<Int>::max() / Int(10), // count of full decades in maximum value
-        ones = std::numeric_limits<Int>::max() % Int(10); // count of the rest ones in maximum value
-#endif
-    Int res;
-    typedef number_parse_status_t status;
-    typedef number_parse_status st;
-public:
-    template<class InputIterator>
-    __VIC_NODISCARD status parse(InputIterator begin, InputIterator end)
-    {
-        if(begin == end) return st::invalid_number;
-#if !__cpp_constexpr
-        const Int decs = std::numeric_limits<Int>::max() / Int(10),
-                  ones = std::numeric_limits<Int>::max() % Int(10);
-#endif
-        bool negative = false;
-        switch(*begin)
+    Int res = 0;
+    do {
+        char c = *begin++;
+        if(!ascii::isdigit(c)) return st::invalid_number;
+        Int dig = c - '0';
+        // check if the next increment will cause overflow
+        if(res > decs) return st::unrepresentable;
+        else if(res == decs && dig > ones)
         {
-            case '-':
-                negative = true;
-                __VIC_FALLTHROUGH
-            case '+':
-                if(++begin == end) return st::invalid_number;
+            // cut off the minimal negative case
+            if(negative && dig == ones + 1 && begin == end)
+                return number_parse_result<Int>(std::numeric_limits<Int>::min());
+            return st::unrepresentable;
         }
-        Int res = 0;
-        do {
-            char c = *begin++;
-            if(!ascii::isdigit(c)) return st::invalid_number;
-            Int dig = c - '0';
-            // check if the next increment will cause overflow
-            if(res > decs) return st::unrepresentable;
-            else if(res == decs && dig > ones)
-            {
-                // cut off the minimal negative case
-                if(negative && dig == ones + 1 && begin == end)
-                    return (this->res = std::numeric_limits<Int>::min(), st::ok);
-                return st::unrepresentable;
-            }
-            res *= Int(10);
-            res += dig;
-        } while(begin != end);
-        this->res = negative ? -res : res;
-        return st::ok;
-    }
-#if __cpp_lib_string_view // C++17
-    __VIC_NODISCARD status parse(std::string_view s)
-        { return parse(s.data(), s.data() + s.length()); }
-#else
-    __VIC_NODISCARD status parse(const std::string &s)
-        { return parse(s.data(), &*s.end()); }
-    __VIC_NODISCARD status parse(const char *s)
-        { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
-#endif
-    __VIC_NODISCARD Int result() const { return res; }
-};
-//////////////////////////////////////////////////////////////////////////////
-//----------------------------------------------------------------------------
-__VIC_NORETURN void throw_empty_integer();
-__VIC_NORETURN void throw_null_integer();
-__VIC_NORETURN void throw_non_digit_char();
-__VIC_NORETURN void throw_integer_too_long();
-//----------------------------------------------------------------------------
-} // namespace
-
-//////////////////////////////////////////////////////////////////////////////
-template<class > struct decimal_parser; // not defined
-
-template<> struct decimal_parser<signed char> : impl::signed_decimal_parser<signed char> {};
-template<> struct decimal_parser<short> : impl::signed_decimal_parser<short> {};
-template<> struct decimal_parser<int> : impl::signed_decimal_parser<int> {};
-template<> struct decimal_parser<long> : impl::signed_decimal_parser<long> {};
-
-template<> struct decimal_parser<unsigned char> : impl::unsigned_decimal_parser<unsigned char> {};
-template<> struct decimal_parser<unsigned short> : impl::unsigned_decimal_parser<unsigned short> {};
-template<> struct decimal_parser<unsigned> : impl::unsigned_decimal_parser<unsigned> {};
-template<> struct decimal_parser<unsigned long> : impl::unsigned_decimal_parser<unsigned long> {};
-
-#ifdef __VIC_LONGLONG
-template<> struct decimal_parser<__VIC_LONGLONG> : impl::signed_decimal_parser<__VIC_LONGLONG> {};
-template<> struct decimal_parser<unsigned __VIC_LONGLONG> : impl::unsigned_decimal_parser<unsigned __VIC_LONGLONG> {};
-#endif
-//////////////////////////////////////////////////////////////////////////////
-
-//----------------------------------------------------------------------------
-template<class T, class InputIterator>
-__VIC_NODISCARD inline
-number_parse_result<T> parse_decimal(InputIterator begin, InputIterator end)
-{
-    decimal_parser<T> p;
-    number_parse_status_t st = p.parse(begin, end);
-    if(st == number_parse_status::ok)
-        return number_parse_result<T>(p.result());
-    return st;
+        res *= Int(10);
+        res += dig;
+    } while(begin != end);
+    return number_parse_result<Int>(negative ? -res : res);
 }
 //----------------------------------------------------------------------------
 
@@ -231,6 +152,43 @@ number_parse_result<T> parse_decimal(const char *s)
 //----------------------------------------------------------------------------
 #endif
 
+//////////////////////////////////////////////////////////////////////////////
+template<class T>
+class decimal_parser
+{
+    T res;
+    typedef number_parse_status_t status;
+    typedef number_parse_status st;
+public:
+    template<class InputIterator>
+    __VIC_NODISCARD status parse(InputIterator begin, InputIterator end)
+    {
+        number_parse_result<T> r = parse_decimal<T>(begin, end);
+        if(r) res = r.value();
+        return r.status();
+    }
+#if __cpp_lib_string_view // C++17
+    __VIC_NODISCARD status parse(std::string_view s)
+        { return parse(s.data(), s.data() + s.length()); }
+#else
+    __VIC_NODISCARD status parse(const std::string &s)
+        { return parse(s.data(), &*s.end()); }
+    __VIC_NODISCARD status parse(const char *s)
+        { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
+#endif
+    __VIC_NODISCARD T result() const { return res; }
+};
+//////////////////////////////////////////////////////////////////////////////
+
+namespace impl {
+//----------------------------------------------------------------------------
+__VIC_NORETURN void throw_empty_integer();
+__VIC_NORETURN void throw_null_integer();
+__VIC_NORETURN void throw_non_digit_char();
+__VIC_NORETURN void throw_integer_too_long();
+//----------------------------------------------------------------------------
+} // namespace
+
 //----------------------------------------------------------------------------
 // String to number conversion with strict format control
 //----------------------------------------------------------------------------
@@ -243,11 +201,11 @@ __VIC_NODISCARD T decimal_to_number(
 #endif
     s)
 {
-    decimal_parser<T> p;
-    switch(p.parse(s))
+    number_parse_result<T> r = parse_decimal<T>(s);
+    switch(r.status())
     {
         case number_parse_status::ok:
-            return p.result();
+            return r.value();
         case number_parse_status::invalid_number:
             if(s.empty()) impl::throw_empty_integer();
             else impl::throw_non_digit_char();
@@ -260,11 +218,11 @@ __VIC_NODISCARD T decimal_to_number(
 template<class T, class InputIterator>
 __VIC_NODISCARD T decimal_to_number_range(InputIterator begin, InputIterator end)
 {
-    decimal_parser<T> p;
-    switch(p.parse(begin, end))
+    number_parse_result<T> r = parse_decimal<T>(begin, end);
+    switch(r.status())
     {
         case number_parse_status::ok:
-            return p.result();
+            return r.value();
         case number_parse_status::invalid_number:
             if(begin == end) impl::throw_empty_integer();
             else impl::throw_non_digit_char();
@@ -304,11 +262,11 @@ template<class T>
 __VIC_NODISCARD T decimal_to_number(const char *s)
 {
     if(!s) impl::throw_null_integer();
-    decimal_parser<T> p;
-    switch(p.parse(s))
+    number_parse_result<T> r = parse_decimal<T>(s);
+    switch(r.status())
     {
         case number_parse_status::ok:
-            return p.result();
+            return r.value();
         case number_parse_status::invalid_number:
             if(!*s) impl::throw_empty_integer();
             else impl::throw_non_digit_char();
