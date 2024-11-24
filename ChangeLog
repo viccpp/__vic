@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2024-11-24  __vic
+    + str2num.h: parse_decimal()
+
 2024-11-08  __vic
     + sreaders: uchar_value()
 

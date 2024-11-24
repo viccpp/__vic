@@ -22,13 +22,36 @@
 namespace __vic {
 
 //////////////////////////////////////////////////////////////////////////////
-__VIC_SCOPED_ENUM_BEGIN(number_parse_status)
+__VIC_SCOPED_ENUM_UT_BEGIN(number_parse_status, unsigned char)
 {
     ok,
     invalid_number,
     unrepresentable
 }
 __VIC_SCOPED_ENUM_END(number_parse_status)
+//////////////////////////////////////////////////////////////////////////////
+template<class T>
+class number_parse_result
+{
+    T val;
+    number_parse_status_t st;
+public:
+    typedef T value_type;
+
+    number_parse_result(number_parse_status_t s) : st(s) {}
+    explicit number_parse_result(T n) : val(n), st(number_parse_status::ok) {}
+
+    number_parse_status_t status() const { return st; }
+    T value() const { return val; }
+    bool has_value() const { return st == number_parse_status::ok; }
+#if __cplusplus >= 201103L
+    explicit operator bool() const { return has_value(); }
+#else
+    typedef number_parse_status_t number_parse_result::*unspecified_bool_type;
+    operator unspecified_bool_type() const
+        { return has_value() ? &number_parse_result::st : 0; }
+#endif
+};
 //////////////////////////////////////////////////////////////////////////////
 
 namespace impl {
@@ -166,6 +189,47 @@ template<> struct decimal_parser<__VIC_LONGLONG> : impl::signed_decimal_parser<_
 template<> struct decimal_parser<unsigned __VIC_LONGLONG> : impl::unsigned_decimal_parser<unsigned __VIC_LONGLONG> {};
 #endif
 //////////////////////////////////////////////////////////////////////////////
+
+//----------------------------------------------------------------------------
+template<class T, class InputIterator>
+__VIC_NODISCARD inline
+number_parse_result<T> parse_decimal(InputIterator begin, InputIterator end)
+{
+    decimal_parser<T> p;
+    number_parse_status_t st = p.parse(begin, end);
+    if(st == number_parse_status::ok)
+        return number_parse_result<T>(p.result());
+    return st;
+}
+//----------------------------------------------------------------------------
+
+#if __cpp_lib_string_view // C++17
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD inline
+number_parse_result<T> parse_decimal(std::string_view s)
+{
+    return parse_decimal<T>(s.data(), s.data() + s.length());
+}
+//----------------------------------------------------------------------------
+#else
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD inline
+number_parse_result<T> parse_decimal(const std::string &s)
+{
+    return parse_decimal<T>(s.data(), &*s.end());
+}
+//----------------------------------------------------------------------------
+template<class T>
+__VIC_NODISCARD inline
+number_parse_result<T> parse_decimal(const char *s)
+{
+    return s ? parse_decimal<T>(s, tchar::end(s))
+             : number_parse_status::invalid_number;
+}
+//----------------------------------------------------------------------------
+#endif
 
 //----------------------------------------------------------------------------
 // String to number conversion with strict format control
