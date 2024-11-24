@@ -244,7 +244,7 @@ struct index_sequence
 //////////////////////////////////////////////////////////////////////////////
 // O(log N) implementation from here:
 // http://stackoverflow.com/questions/17424477/implementation-c14-make-integer-sequence
-template<typename Seq1, typename Seq2>
+template<class Seq1, class Seq2>
 struct concat_sequence_;
 
 template<size_t... I1, size_t... I2>

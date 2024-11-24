@@ -204,7 +204,7 @@ unsigned char uchar_value(ByteSReaderResult r);
 <p>Returns the resulting byte value – <tt>r.value()</tt> – as an
 <tt>unsigned char</tt>.</p>
 
-<p>This function is defined only if 
+<p>This function is defined only if
 <tt><![CDATA[is_byte<sreader_value_t<ByteSReaderResult>>::value == true]]></tt>.</p>
 
 <precondition><tt>r == true</tt> (same as for <tt>r.value()</tt>)</precondition>

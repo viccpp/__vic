@@ -127,7 +127,7 @@ public:
         {
             case '-':
                 negative = true;
-                // no break, fall through
+                __VIC_FALLTHROUGH
             case '+':
                 if(++begin == end) return st::invalid_number;
         }
