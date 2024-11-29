@@ -20,6 +20,7 @@ class bin_file : private non_copyable
 {
     HANDLE hFile;
     bool open_(const char * , DWORD , DWORD );
+    bool open_(const wchar_t * , DWORD , DWORD );
     void reset_handle() { hFile = INVALID_HANDLE_VALUE; }
 public:
     // Constructor tags
@@ -31,6 +32,9 @@ public:
     bin_file(const char *fname, in_t) { open_in(fname); }
     bin_file(const char *fname, out_t) { open_out(fname); }
     bin_file(const char *fname, append_t) { open_append(fname); }
+    bin_file(const wchar_t *fname, in_t) { open_in(fname); }
+    bin_file(const wchar_t *fname, out_t) { open_out(fname); }
+    bin_file(const wchar_t *fname, append_t) { open_append(fname); }
     ~bin_file() { if(is_open()) ::CloseHandle(hFile); }
 
 #if __cpp_rvalue_references
@@ -41,6 +45,10 @@ public:
     bool open_in(const char *fname) { return open_(fname, GENERIC_READ, in); }
     bool open_out(const char *fname) { return open_(fname, GENERIC_WRITE, out); }
     bool open_append(const char * );
+
+    bool open_in(const wchar_t *fname) { return open_(fname, GENERIC_READ, in); }
+    bool open_out(const wchar_t *fname) { return open_(fname, GENERIC_WRITE, out); }
+    bool open_append(const wchar_t * );
 
     size_t read_max(void * , size_t );
     size_t read_some(void * , size_t );

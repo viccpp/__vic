@@ -11,12 +11,19 @@ namespace __vic {
 
 //----------------------------------------------------------------------------
 bool bin_file::open_(
-    const char *fname, DWORD dwDesiredAccess, DWORD dwCreationDisposition)
+    const wchar_t *fname, DWORD dwDesiredAccess, DWORD dwCreationDisposition)
 {
-    hFile = ::CreateFileW(windows::utf8to16(fname), dwDesiredAccess,
+    hFile = ::CreateFileW(fname, dwDesiredAccess,
         FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr,
         dwCreationDisposition, FILE_ATTRIBUTE_NORMAL, nullptr);
     return is_open();
+}
+//----------------------------------------------------------------------------
+bool bin_file::open_(
+    const char *fname, DWORD dwDesiredAccess, DWORD dwCreationDisposition)
+{
+    return open_(windows::utf8to16(fname),
+                     dwDesiredAccess, dwCreationDisposition);
 }
 //----------------------------------------------------------------------------
 void bin_file::close()

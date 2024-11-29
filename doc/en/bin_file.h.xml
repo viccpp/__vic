@@ -16,6 +16,9 @@ public:
     bin_file(const char *fname, in_t);
     bin_file(const char *fname, out_t);
     bin_file(const char *fname, append_t);
+    bin_file(const wchar_t *fname, in_t);
+    bin_file(const wchar_t *fname, out_t);
+    bin_file(const wchar_t *fname, append_t);
     ~bin_file();
 
     // BEGIN C++11
@@ -26,6 +29,10 @@ public:
     bool open_in(const char *fname);
     bool open_out(const char *fname);
     bool open_append(const char *fname);
+
+    bool open_in(const wchar_t *fname);
+    bool open_out(const wchar_t *fname);
+    bool open_append(const wchar_t *fname);
 
     size_t read_max(void *buf, size_t n);
     size_t read_some(void *buf, size_t n);
@@ -71,6 +78,9 @@ public:
 <prototype>bin_file(const char *fname, in_t)</prototype>
 <prototype>bin_file(const char *fname, out_t)</prototype>
 <prototype>bin_file(const char *fname, append_t)</prototype>
+<prototype>bin_file(const wchar_t *fname, in_t)</prototype>
+<prototype>bin_file(const wchar_t *fname, out_t)</prototype>
+<prototype>bin_file(const wchar_t *fname, append_t)</prototype>
 <p>Call <tt>open_in(fname)</tt>, <tt>open_out(fname)</tt> or
 <tt>open_append(fname)</tt>, correspondingly. <tt>is_open()</tt> or
 <tt>throw_if_closed()</tt> has to be called then to check the result.</p>
@@ -91,6 +101,9 @@ public:
 <prototype>bool open_in(const char *fname)</prototype>
 <prototype>bool open_out(const char *fname)</prototype>
 <prototype>bool open_append(const char *fname)</prototype>
+<prototype>bool open_in(const wchar_t *fname)</prototype>
+<prototype>bool open_out(const wchar_t *fname)</prototype>
+<prototype>bool open_append(const wchar_t *fname)</prototype>
 <p>Open file for reading, writing or appending, correspondingly. Return
 <tt>is_open()</tt>.</p>
 <precondition><tt>is_open() == false</tt></precondition>

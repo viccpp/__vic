@@ -6,6 +6,7 @@ Legend:
 
 2024-11-29  __vic
     + fs.h: wchar_t overloads
+    + bin_file.h: wchar_t overloads
 
 2024-11-08  __vic
     + sreaders: uchar_value()
