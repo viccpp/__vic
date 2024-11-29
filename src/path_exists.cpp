@@ -14,16 +14,17 @@ namespace __vic {
 
 namespace {
 //----------------------------------------------------------------------------
-bool get_file_attr(const char *path, DWORD &attr, const char *what)
+bool get_file_attr(const wchar_t *path, DWORD &attr, const char *what)
 {
     // TODO: the call doesn't follow symbolic links as opposed to POSIX stat()
     // FILE_ATTRIBUTE_REPARSE_POINT is set for symlink
     windows::FindFile ff;
-    if(ff.FindFirst(windows::utf8to16(path)))
+    if(ff.FindFirst(path))
     {
         attr = ff.dwFileAttributes;
         if(ff.FindNext()) throw exception(__vic::msg(256) <<
-            "More than one entry of \"" << path << "\" has been found");
+            "More than one entry of \"" << windows::utf16to8(path) <<
+            "\" has been found");
         return true;
     }
     DWORD err = ::GetLastError();
@@ -33,12 +34,13 @@ bool get_file_attr(const char *path, DWORD &attr, const char *what)
             return false;
     }
     windows::throw_last_error(__vic::msg(256) <<
-        "Can't get attributes of " << what << " \"" << path << '"', err);
+        "Can't get attributes of " << what <<
+        " \"" << windows::utf16to8(path) << '"', err);
 }
 //----------------------------------------------------------------------------
 } // namespace
 //----------------------------------------------------------------------------
-bool path_exists(const char *path)
+bool path_exists(const wchar_t *path)
 {
 #if 0
     if(::PathFileExistsW(windows::utf8to16(path))) // depends on Shlwapi.dll
@@ -51,7 +53,7 @@ bool path_exists(const char *path)
 #endif
 }
 //----------------------------------------------------------------------------
-bool file_exists(const char *path)
+bool file_exists(const wchar_t *path)
 {
     DWORD attr;
     // TODO: no special attribute to distinguish regular file
@@ -60,10 +62,25 @@ bool file_exists(const char *path)
         !(attr & FILE_ATTRIBUTE_DIRECTORY);
 }
 //----------------------------------------------------------------------------
-bool dir_exists(const char *path)
+bool dir_exists(const wchar_t *path)
 {
     DWORD attr;
     return get_file_attr(path,attr,"dir") && (attr & FILE_ATTRIBUTE_DIRECTORY);
+}
+//----------------------------------------------------------------------------
+bool path_exists(const char *path)
+{
+    return path_exists(windows::utf8to16(path));
+}
+//----------------------------------------------------------------------------
+bool file_exists(const char *path)
+{
+    return file_exists(windows::utf8to16(path));
+}
+//----------------------------------------------------------------------------
+bool dir_exists(const char *path)
+{
+    return dir_exists(windows::utf8to16(path));
 }
 //----------------------------------------------------------------------------
 

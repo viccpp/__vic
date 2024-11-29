@@ -22,6 +22,13 @@ inline void copy_file_replace(const char *src_path, const char *dest_path)
 inline bool copy_file_replace_if_exists(const char *src_path, const char *dest_path)
 { return copy_file_if_exists(src_path, dest_path, true); }
 //----------------------------------------------------------------------------
+void copy_file(const wchar_t * , const wchar_t * , bool = false);
+bool copy_file_if_exists(const wchar_t * , const wchar_t * , bool = false);
+inline void copy_file_replace(const wchar_t *src_path, const wchar_t *dest_path)
+{ copy_file(src_path, dest_path, true); }
+inline bool copy_file_replace_if_exists(const wchar_t *src_path, const wchar_t *dest_path)
+{ return copy_file_if_exists(src_path, dest_path, true); }
+//----------------------------------------------------------------------------
 inline void copy_file(
     const std::string &src_path, const std::string &dest_path, bool repl = false)
 {
@@ -43,12 +50,38 @@ inline bool copy_file_replace_if_exists(
     return copy_file_replace_if_exists(src_path.c_str(), dest_path.c_str());
 }
 //----------------------------------------------------------------------------
+inline void copy_file(
+    const std::wstring &src_path, const std::wstring &dest_path, bool repl = false)
+{
+    copy_file(src_path.c_str(), dest_path.c_str(), repl);
+}
+inline bool copy_file_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path, bool repl = false)
+{
+    return copy_file_if_exists(src_path.c_str(), dest_path.c_str());
+}
+inline void copy_file_replace(
+    const std::wstring &src_path, const std::wstring &dest_path)
+{
+    copy_file_replace(src_path.c_str(), dest_path.c_str());
+}
+inline bool copy_file_replace_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path)
+{
+    return copy_file_replace_if_exists(src_path.c_str(), dest_path.c_str());
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 void move_file(const char * , const char * );
 bool move_file_if_exists(const char * , const char * );
 void move_file_replace(const char * , const char * );
 bool move_file_replace_if_exists(const char * , const char * );
+//----------------------------------------------------------------------------
+void move_file(const wchar_t * , const wchar_t * );
+bool move_file_if_exists(const wchar_t * , const wchar_t * );
+void move_file_replace(const wchar_t * , const wchar_t * );
+bool move_file_replace_if_exists(const wchar_t * , const wchar_t * );
 //----------------------------------------------------------------------------
 inline void move_file(
     const std::string &src_path, const std::string &dest_path)
@@ -71,12 +104,38 @@ inline bool move_file_replace_if_exists(
     return move_file_replace_if_exists(src_path.c_str(), dest_path.c_str());
 }
 //----------------------------------------------------------------------------
+inline void move_file(
+    const std::wstring &src_path, const std::wstring &dest_path)
+{
+    move_file(src_path.c_str(), dest_path.c_str());
+}
+inline bool move_file_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path)
+{
+    return move_file_if_exists(src_path.c_str(), dest_path.c_str());
+}
+inline void move_file_replace(
+    const std::wstring &src_path, const std::wstring &dest_path)
+{
+    move_file_replace(src_path.c_str(), dest_path.c_str());
+}
+inline bool move_file_replace_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path)
+{
+    return move_file_replace_if_exists(src_path.c_str(), dest_path.c_str());
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 void rename_file(const char * , const char * );
 bool rename_file_if_exists(const char * , const char * );
 void rename_file_replace(const char * , const char * );
 bool rename_file_replace_if_exists(const char * , const char * );
+//----------------------------------------------------------------------------
+void rename_file(const wchar_t * , const wchar_t * );
+bool rename_file_if_exists(const wchar_t * , const wchar_t * );
+void rename_file_replace(const wchar_t * , const wchar_t * );
+bool rename_file_replace_if_exists(const wchar_t * , const wchar_t * );
 //----------------------------------------------------------------------------
 inline void rename_file(
     const std::string &src_name, const std::string &dest_name)
@@ -99,11 +158,36 @@ inline bool rename_file_replace_if_exists(
     return rename_file_replace_if_exists(src_path.c_str(), dest_path.c_str());
 }
 //----------------------------------------------------------------------------
+inline void rename_file(
+    const std::wstring &src_name, const std::wstring &dest_name)
+{
+    rename_file(src_name.c_str(), dest_name.c_str());
+}
+inline bool rename_file_if_exists(
+    const std::wstring &src_name, const std::wstring &dest_name)
+{
+    return rename_file_if_exists(src_name.c_str(), dest_name.c_str());
+}
+inline void rename_file_replace(
+    const std::wstring &src_name, const std::wstring &dest_name)
+{
+    rename_file_replace(src_name.c_str(), dest_name.c_str());
+}
+inline bool rename_file_replace_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path)
+{
+    return rename_file_replace_if_exists(src_path.c_str(), dest_path.c_str());
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 void remove_file(const char * );
 bool remove_file_if_exists(const char * );
 bool remove_file_nt(const char * ) noexcept;
+//----------------------------------------------------------------------------
+void remove_file(const wchar_t * );
+bool remove_file_if_exists(const wchar_t * );
+bool remove_file_nt(const wchar_t * ) noexcept;
 //----------------------------------------------------------------------------
 inline void remove_file(const std::string &path)
 { remove_file(path.c_str()); }
@@ -112,11 +196,22 @@ inline bool remove_file_if_exists(const std::string &path)
 inline bool remove_file_nt(const std::string &path) noexcept
 { return remove_file_nt(path.c_str()); }
 //----------------------------------------------------------------------------
+inline void remove_file(const std::wstring &path)
+{ remove_file(path.c_str()); }
+inline bool remove_file_if_exists(const std::wstring &path)
+{ return remove_file_if_exists(path.c_str()); }
+inline bool remove_file_nt(const std::wstring &path) noexcept
+{ return remove_file_nt(path.c_str()); }
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 bool path_exists(const char * );
 bool file_exists(const char * );
 bool dir_exists(const char * );
+//----------------------------------------------------------------------------
+bool path_exists(const wchar_t * );
+bool file_exists(const wchar_t * );
+bool dir_exists(const wchar_t * );
 //----------------------------------------------------------------------------
 inline bool path_exists(const std::string &path)
 { return path_exists(path.c_str()); }
@@ -125,10 +220,20 @@ inline bool file_exists(const std::string &path)
 inline bool dir_exists(const std::string &path)
 { return dir_exists(path.c_str()); }
 //----------------------------------------------------------------------------
+inline bool path_exists(const std::wstring &path)
+{ return path_exists(path.c_str()); }
+inline bool file_exists(const std::wstring &path)
+{ return file_exists(path.c_str()); }
+inline bool dir_exists(const std::wstring &path)
+{ return dir_exists(path.c_str()); }
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 void mkdir(const char * );
 bool mkdir_if_absent(const char * );
+//----------------------------------------------------------------------------
+void mkdir(const wchar_t * );
+bool mkdir_if_absent(const wchar_t * );
 //----------------------------------------------------------------------------
 inline void mkdir(const std::string &path)
 {
@@ -140,10 +245,23 @@ inline bool mkdir_if_absent(const std::string &path)
     return mkdir_if_absent(path.c_str());
 }
 //----------------------------------------------------------------------------
+inline void mkdir(const std::wstring &path)
+{
+    mkdir(path.c_str());
+}
+//----------------------------------------------------------------------------
+inline bool mkdir_if_absent(const std::wstring &path)
+{
+    return mkdir_if_absent(path.c_str());
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 void rmdir(const char * );
 bool rmdir_if_exists(const char * );
+//----------------------------------------------------------------------------
+void rmdir(const wchar_t * );
+bool rmdir_if_exists(const wchar_t * );
 //----------------------------------------------------------------------------
 inline void rmdir(const std::string &path)
 {
@@ -155,10 +273,23 @@ inline bool rmdir_if_exists(const std::string &path)
     return rmdir_if_exists(path.c_str());
 }
 //----------------------------------------------------------------------------
+inline void rmdir(const std::wstring &path)
+{
+    rmdir(path.c_str());
+}
+//----------------------------------------------------------------------------
+inline bool rmdir_if_exists(const std::wstring &path)
+{
+    return rmdir_if_exists(path.c_str());
+}
+//----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 uintmax_t file_size(const char * );
+uintmax_t file_size(const wchar_t * );
 inline uintmax_t file_size(const std::string &path)
+{ return file_size(path.c_str()); }
+inline uintmax_t file_size(const std::wstring &path)
 { return file_size(path.c_str()); }
 //----------------------------------------------------------------------------
 

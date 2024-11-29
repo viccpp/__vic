@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2024-11-29  __vic
+    + fs.h: wchar_t overloads
+
 2024-11-08  __vic
     + sreaders: uchar_value()
 

@@ -3,7 +3,7 @@
 
 <p>Filesystem utilities.</p>
 
-<note>All paths are expected to be UTF-8 encoded!</note>
+<note>All <tt>char</tt>-encoded paths are expected to be UTF-8!</note>
 
 
 <chapter xml:id="path_exists">
@@ -12,13 +12,19 @@
 
 <code-block lang="C++"><![CDATA[
 bool path_exists(const char *path);
+bool path_exists(const wchar_t *path);
 bool path_exists(const std::string &path);
+bool path_exists(const std::wstring &path);
 
 bool file_exists(const char *path);
+bool file_exists(const wchar_t *path);
 bool file_exists(const std::string &path);
+bool file_exists(const std::wstring &path);
 
 bool dir_exists(const char *path);
+bool dir_exists(const wchar_t *path);
 bool dir_exists(const std::string &path);
+bool dir_exists(const std::wstring &path);
 ]]></code-block>
 
 <p><tt>path_exists()</tt> checks whether the path exists in the system. Second
@@ -33,10 +39,14 @@ references to a regular file or to a directory, respectively.</p>
 
 <code-block lang="C++"><![CDATA[
 void mkdir(const char *path);
+void mkdir(const wchar_t *path);
 void mkdir(const std::string &path);
+void mkdir(const std::wstring &path);
 
 bool mkdir_if_absent(const char *path);
+bool mkdir_if_absent(const wchar_t *path);
 bool mkdir_if_absent(const std::string &path);
+bool mkdir_if_absent(const std::wstring &path);
 ]]></code-block>
 
 <p>Creates a directory. Throws exception in case of failure.
@@ -51,10 +61,14 @@ the directory already exists.</p>
 
 <code-block lang="C++"><![CDATA[
 void rmdir(const char *path);
+void rmdir(const wchar_t *path);
 void rmdir(const std::string &path);
+void rmdir(const std::wstring &path);
 
 bool rmdir_if_exists(const char *path);
+bool rmdir_if_exists(const wchar_t *path);
 bool rmdir_if_exists(const std::string &path);
+bool rmdir_if_exists(const std::wstring &path);
 ]]></code-block>
 
 <p>Deletes an empty directory. Throws exception in case of failure.
@@ -82,13 +96,19 @@ std::string get_current_dir();
 
 <code-block lang="C++"><![CDATA[
 void remove_file(const char *path);
+void remove_file(const wchar_t *path);
 void remove_file(const std::string &path);
+void remove_file(const std::wstring &path);
 
 bool remove_file_if_exists(const char *path);
+bool remove_file_if_exists(const wchar_t *path);
 bool remove_file_if_exists(const std::string &path);
+bool remove_file_if_exists(const std::wstring &path);
 
 bool remove_file_nt(const char *path) noexcept;
+bool remove_file_nt(const wchar_t *path) noexcept;
 bool remove_file_nt(const std::string &path) noexcept;
+bool remove_file_nt(const std::wstring &path) noexcept;
 ]]></code-block>
 
 <p>Deletes the file. Throws exception in case of failure.</p>
@@ -110,24 +130,42 @@ if the file doesn't exist.</p>
 void copy_file(
     const char *src_path, const char *dest_path, bool replace = false);
 void copy_file(
+    const wchar_t *src_path, const wchar_t *dest_path, bool replace = false);
+void copy_file(
     const std::string &src_path, const std::string &dest_path,
+    bool replace = false);
+void copy_file(
+    const std::wstring &src_path, const std::wstring &dest_path,
     bool replace = false);
 
 bool copy_file_if_exists(
     const char *src_path, const char *dest_path, bool replace = false);
 bool copy_file_if_exists(
+    const wchar_t *src_path, const wchar_t *dest_path, bool replace = false);
+bool copy_file_if_exists(
     const std::string &src_path, const std::string &dest_path,
+    bool replace = false);
+bool copy_file_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path,
     bool replace = false);
 
 void copy_file_replace(
     const char *src_path, const char *dest_path);
 void copy_file_replace(
+    const wchar_t *src_path, const wchar_t *dest_path);
+void copy_file_replace(
     const std::string &src_path, const std::string &dest_path);
+void copy_file_replace(
+    const std::wstring &src_path, const std::wstring &dest_path);
 
 bool copy_file_replace_if_exists(
     const char *src_path, const char *dest_path);
 bool copy_file_replace_if_exists(
+    const wchar_t *src_path, const wchar_t *dest_path);
+bool copy_file_replace_if_exists(
     const std::string &src_path, const std::string &dest_path);
+bool copy_file_replace_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path);
 ]]></code-block>
 
 <p>Creates a new file <tt>dest_path</tt> which is a copy of a file
@@ -152,20 +190,32 @@ if <tt>src_path</tt> doesn't exist.</p>
 
 <code-block lang="C++"><![CDATA[
 void move_file(const char *src_path, const char *dest_path);
+void move_file(const wchar_t *src_path, const wchar_t *dest_path);
 void move_file(const std::string &src_path, const std::string &dest_path);
+void move_file(const std::wstring &src_path, const std::wstring &dest_path);
 
 bool move_file_if_exists(const char *src_path, const char *dest_path);
+bool move_file_if_exists(const wchar_t *src_path, const wchar_t *dest_path);
 bool move_file_if_exists(
     const std::string &src_path, const std::string &dest_path);
+bool move_file_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path);
 
 void move_file_replace(const char *src_path, const char *dest_path);
+void move_file_replace(const wchar_t *src_path, const wchar_t *dest_path);
 void move_file_replace(
     const std::string &src_path, const std::string &dest_path);
+void move_file_replace(
+    const std::wstring &src_path, const std::wstring &dest_path);
 
 bool move_file_replace_if_exists(
     const char *src_path, const char *dest_path);
 bool move_file_replace_if_exists(
+    const wchar_t *src_path, const wchar_t *dest_path);
+bool move_file_replace_if_exists(
     const std::string &src_path, const std::string &dest_path);
+bool move_file_replace_if_exists(
+    const std::wstring &src_path, const std::wstring &dest_path);
 ]]></code-block>
 
 <p>Moves a file <tt>src_path</tt> to new location specified by
@@ -186,20 +236,32 @@ if <tt>src_path</tt> doesn't exist.</p>
 
 <code-block lang="C++"><![CDATA[
 void rename_file(const char *src_name, const char *dest_name);
+void rename_file(const wchar_t *src_name, const wchar_t *dest_name);
 void rename_file(const std::string &src_name, const std::string &dest_name);
+void rename_file(const std::wstring &src_name, const std::wstring &dest_name);
 
 bool rename_file_if_exists(const char *src_name, const char *dest_name);
+bool rename_file_if_exists(const wchar_t *src_name, const wchar_t *dest_name);
 bool rename_file_if_exists(
     const std::string &src_name, const std::string &dest_name);
+bool rename_file_if_exists(
+    const std::wstring &src_name, const std::wstring &dest_name);
 
 void rename_file_replace(const char *src_name, const char *dest_name);
+void rename_file_replace(const wchar_t *src_name, const wchar_t *dest_name);
 void rename_file_replace(
     const std::string &src_name, const std::string &dest_name);
+void rename_file_replace(
+    const std::wstring &src_name, const std::wstring &dest_name);
 
 bool rename_file_replace_if_exists(
     const char *src_name, const char *dest_name);
 bool rename_file_replace_if_exists(
+    const wchar_t *src_name, const wchar_t *dest_name);
+bool rename_file_replace_if_exists(
     const std::string &src_name, const std::string &dest_name);
+bool rename_file_replace_if_exists(
+    const std::wstring &src_name, const std::wstring &dest_name);
 ]]></code-block>
 
 <p>Renames a file <tt>src_path</tt> to <tt>dest_path</tt>. The new path
@@ -219,7 +281,9 @@ if <tt>src_path</tt> doesn't exist.</p>
 
 <code-block lang="C++"><![CDATA[
 uintmax_t file_size(const char *path);
+uintmax_t file_size(const wchar_t *path);
 uintmax_t file_size(const std::string &path);
+uintmax_t file_size(const std::wstring &path);
 ]]></code-block>
 
 <p>Returns file size in bytes.</p>
