@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2024-12-10  __vic
+    * windows/wchar.h:
+        + string_view's support
+        + utf16to8_append()
+
 2024-11-29  __vic
     + fs.h: wchar_t overloads
     + bin_file.h: wchar_t overloads

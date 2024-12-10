@@ -10,6 +10,9 @@
 
 #include<__vic/defs.h>
 #include<string>
+#if __has_include(<string_view>)
+#include<string_view>
+#endif
 
 namespace __vic { namespace windows {
 
@@ -32,12 +35,36 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 
 wstring utf8to16(const char * , size_t );
-inline wstring utf8to16(const char *s)
-{ return utf8to16(s, std::char_traits<char>::length(s)); }
-
 std::string utf16to8(const wchar_t * , size_t );
+std::string &utf16to8_append(const wchar_t * , size_t , std::string & );
+
+#if __cpp_lib_string_view // C++17
+inline wstring utf8to16(std::string_view s)
+    { return utf8to16(s.data(), s.length()); }
+inline std::string utf16to8(std::wstring_view s)
+    { return utf16to8(s.data(), s.length()); }
+inline std::string &utf16to8_append(std::wstring_view s, std::string &res)
+    { return utf16to8_append(s.data(), s.length(), res); }
+#else
+inline wstring utf8to16(const char *s)
+    { return utf8to16(s, std::char_traits<char>::length(s)); }
+inline wstring utf8to16(const std::string &s)
+    { return utf8to16(s.data(), s.length()); }
+
 inline std::string utf16to8(const wchar_t *s)
-{ return utf16to8(s, std::char_traits<wchar_t>::length(s)); }
+    { return utf16to8(s, std::char_traits<wchar_t>::length(s)); }
+inline std::string utf16to8(const std::wstring &s)
+    { return utf16to8(s.data(), s.length()); }
+
+inline std::string &utf16to8_append(const wchar_t *s, std::string &res)
+{
+    return utf16to8_append(s, std::char_traits<wchar_t>::length(s), res);
+}
+inline std::string &utf16to8_append(const std::wstring &s, std::string &res)
+{
+    return utf16to8_append(s.data(), s.length(), res);
+}
+#endif
 
 }} // namespace
 

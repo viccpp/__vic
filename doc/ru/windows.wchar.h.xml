@@ -31,7 +31,12 @@ public:
 
 <code-block lang="C++">
 windows::wstring windows::utf8to16(const char *s, size_t len);
+#if __cpp_lib_string_view // C++17
+windows::wstring windows::utf8to16(std::string_view s);
+#else
 windows::wstring windows::utf8to16(const char *s);
+windows::wstring windows::utf8to16(const std::string &amp;s);
+#endif
 </code-block>
 
 <p>Конвертер UTF-8 -> UTF-16.</p>
@@ -44,10 +49,35 @@ windows::wstring windows::utf8to16(const char *s);
 
 <code-block lang="C++">
 std::string windows::utf16to8(const wchar_t *s, size_t len);
+#if __cpp_lib_string_view // C++17
+std::string windows::utf16to8(std::wstring_view s);
+#else
 std::string windows::utf16to8(const wchar_t *s);
+std::string windows::utf16to8(const std::wstring &amp;s);
+#endif
 </code-block>
 
 <p>Конвертер UTF-16 -> UTF-8.</p>
+
+</chapter>
+
+
+<chapter xml:id="windows--utf16to8_append">
+<title><tt>windows::utf16to8_append()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+std::string &windows::utf16to8_append(
+                            const wchar_t *s, size_t len, std::string &res);
+#if __cpp_lib_string_view // C++17
+std::string &windows::utf16to8_append(std::wstring_view s, std::string &res);
+#else
+std::string &windows::utf16to8_append(const wchar_t *s, std::string &res);
+std::string &windows::utf16to8_append(const std::wstring &s, std::string &res);
+#endif
+]]></code-block>
+
+<p>То же самое, что <xref to="windows--utf16to8"/>, но добавляет результат к
+<tt>res</tt>. Возвращает ссылку на <tt>res</tt>.</p>
 
 </chapter>
 

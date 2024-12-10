@@ -30,13 +30,19 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 } // namespace
 //----------------------------------------------------------------------------
-std::string utf16to8(const wchar_t *s, size_t len_in_code_points)
+std::string &utf16to8_append(const wchar_t *s, size_t len, std::string &res)
 {
-    std::string res; res.reserve(len_in_code_points);
     utf_transcode(
-        utf16::make_reader(wchar_reader(s, len_in_code_points)),
+        utf16::make_reader(wchar_reader(s, len)),
         utf8::make_writer(make_string_swriter(res))
     );
+    return res;
+}
+//----------------------------------------------------------------------------
+std::string utf16to8(const wchar_t *s, size_t len)
+{
+    std::string res; res.reserve(len);
+    utf16to8_append(s, len, res);
     return res;
 }
 //----------------------------------------------------------------------------
