@@ -26,19 +26,41 @@ const char *error::what() const noexcept
         if(!formatted)
         {
             const char *err_msg = nullptr;
-            DWORD res = ::FormatMessageA(
-                FORMAT_MESSAGE_FROM_SYSTEM |
-                FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                FORMAT_MESSAGE_IGNORE_INSERTS |
-                FORMAT_MESSAGE_MAX_WIDTH_MASK, // No line breaks
-                nullptr,
-                code(),
-                0,
-                reinterpret_cast<LPSTR>(&err_msg),
-                0,
-                (va_list *) 0
-            );
-            if(res == 0) err_msg = nullptr;
+            DWORD lang_id, res = 0;
+            // Borrowed from here https://github.com/microsoft/STL/pull/5104
+            for(int attempt = 0; attempt < 3 && res == 0; attempt++)
+            {
+                switch(attempt)
+                {
+                    case 0:
+                        lang_id = 0x0409; // 1033 decimal, "en-US" locale
+                        break;
+                    case 1:
+                        if(::GetLocaleInfoEx(
+                            LOCALE_NAME_SYSTEM_DEFAULT,
+                            LOCALE_ILANGUAGE | LOCALE_RETURN_NUMBER,
+                            reinterpret_cast<LPWSTR>(&lang_id),
+                            sizeof(lang_id) / sizeof(wchar_t)
+                        )) break; // OK
+                        // If we can't get the system locale's language ID,
+                        // skip this attempt
+                        continue;
+                    default: //case 2:
+                        lang_id = 0;
+                }
+                res = ::FormatMessageA(
+                    FORMAT_MESSAGE_FROM_SYSTEM |
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                    FORMAT_MESSAGE_IGNORE_INSERTS |
+                    FORMAT_MESSAGE_MAX_WIDTH_MASK, // No line breaks
+                    nullptr,
+                    code(),
+                    lang_id,
+                    reinterpret_cast<LPSTR>(&err_msg),
+                    0,
+                    (va_list *) 0
+                );
+            }            if(res == 0) err_msg = nullptr;
             class LocalMemKeeper : private non_copyable
             {
                 HLOCAL p;

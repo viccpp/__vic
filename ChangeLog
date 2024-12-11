@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2024-12-11  __vic
+    * windows::error: use English for error messages when possible
+
 2024-12-10  __vic
     * windows/wchar.h:
         + string_view's support

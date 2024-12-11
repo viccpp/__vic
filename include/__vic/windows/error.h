@@ -13,7 +13,7 @@
 #include<exception>
 #ifdef __MINGW32__
 #include<windef.h>
-// To not include huge windows.h
+// Avoid huge windows.h inclusion
 extern "C" DWORD WINAPI GetLastError(void);
 #else
 #include<windows.h>
