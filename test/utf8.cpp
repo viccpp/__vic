@@ -218,7 +218,7 @@ std::string replace_invalid(const char *str, unicode_t ch)
                 return res;
             case __vic::utf8::status::no_leading_byte:
                 if(skip_continuation_bytes) break;
-                // [[fallthrough]];
+                __VIC_FALLTHROUGH
             default:
                 utf8_string_writer(res).write(ch);
                 skip_continuation_bytes = true;

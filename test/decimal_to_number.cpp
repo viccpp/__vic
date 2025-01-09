@@ -10,13 +10,22 @@ template<class TInt>
 inline void parse_and_check(
     const char *str, __vic::number_parse_status_t expected_status)
 {
-    __vic::decimal_parser<TInt> p;
-    assert(p.parse(str) == expected_status);
+    __vic::number_parse_result<TInt> r = __vic::parse_decimal<TInt>(str);
+    assert(r.status() == expected_status);
 }
 void integer_tests()
 {
     using __vic::decimal_to_number;
     using __vic::number_parse_status;
+    using __vic::number_parse_result;
+    using __vic::parse_decimal;
+
+    if(number_parse_result<int> r = parse_decimal<int>("123"))
+    {
+        assert(r.has_value());
+        assert(r.value() == 123);
+    }
+    else assert(false);
 
     assert(decimal_to_number<int>("4587") == 4587);
     assert(decimal_to_number<long>("-125") == -125L);

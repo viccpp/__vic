@@ -16,7 +16,7 @@
 #endif
 
 #if __cplusplus < 201103L && !defined(__VIC_NO_NULLPTR_DEF) && !defined(nullptr)
-#ifdef __SUNPRO_CC
+#if defined(__SUNPRO_CC) || (defined(__GNUC__) && __GNUC__ >= 12)
 #define nullptr 0
 #else
 const int nullptr = 0;
