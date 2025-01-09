@@ -103,6 +103,48 @@ they work with generic ranges of characters instead of strings.</p>
 </chapter>
 
 
+<chapter xml:id="parse_decimal">
+<title><tt>parse_decimal()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#if __cpp_lib_string_view // since C++17
+
+template<class T>
+[[nodiscard]] number_parse_result<T> parse_decimal(std::string_view s);
+
+#else // until C++17
+
+template<class T>
+[[nodiscard]] number_parse_result<T> parse_decimal(const std::string &s);
+template<class T>
+[[nodiscard]] number_parse_result<T> parse_decimal(const char *s);
+
+#endif
+
+template<class T, class InputIterator>
+[[nodiscard]]
+number_parse_result<T> parse_decimal(InputIterator begin, InputIterator end);
+]]></code-block>
+
+<p>A counterpart of <tt>decimal_to_number()</tt> functions but doesn't throw
+exceptions. The returned object is boolean-testable and indicates the success
+of the operation. Also it contains the resulting number in case of success, or
+an error code otherwise. See <xref to="number_parse_result"/> for more
+information.</p>
+
+<section><title>Example</title>
+<code-block lang="C++"><![CDATA[
+if(auto res = __vic::parse_decimal<int>("123"))
+{
+    int num = res.value();
+    // Use num
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
 <chapter xml:id="decimal_parser">
 <title><tt>decimal_parser</tt></title>
 
@@ -188,7 +230,7 @@ bool to_number(const std::string &s, T &result) noexcept
 <title><tt>number_parse_status</tt></title>
 
 <code-block lang="C++"><![CDATA[
-enum class number_parse_status
+enum class number_parse_status : unsigned char
 {
     ok,
     invalid_number,
@@ -204,6 +246,64 @@ using number_parse_status_t = number_parse_status; // for C++98
 <synopsis>
 <prototype>typename number_parse_status_t</prototype>
 <p>Use this as a name of type if your code has to be C++98-compatible.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="number_parse_result">
+<title><tt>number_parse_result</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class number_parse_result
+{
+public:
+    typedef T value_type;
+
+    number_parse_result(number_parse_status_t s);
+    explicit number_parse_result(T n);
+
+    number_parse_status_t status() const;
+    explicit operator bool() const;
+    bool has_value() const;
+
+    T value() const;
+};
+]]></code-block>
+
+<p><tt>number_parse_status</tt> + the resulting value in case of success.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>number_parse_result(number_parse_status_t s)</prototype>
+<precondition><tt>s != number_parse_status::ok</tt></precondition>
+<postcondition><tt>status() == s</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit number_parse_result(T n)</prototype>
+<postcondition><tt>has_value() &amp;&amp; value() == n</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>number_parse_status_t status() const</prototype>
+<p>A status of the number parsing operation.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool has_value() const</prototype>
+<prototype>explicit operator bool() const</prototype>
+<p>Returns <tt>status() == number_parse_status::ok</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>T value() const</prototype>
+<p>The resulting number.</p>
+<precondition><tt>has_value() == true</tt></precondition>
 </synopsis>
 
 </section>
