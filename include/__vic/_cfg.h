@@ -291,13 +291,21 @@
 #   define __has_include(f) 0
 #endif
 
-#ifndef __has_cpp_attribute
-#   define __has_cpp_attribute(a) 0
+// __has_cpp_attribute doesn't work as expected. Especially on clang 3.9+:
+// https://github.com/llvm/llvm-project/issues/32865
+#if __cpp_attributes && !defined(__clang__)
+#   define __VIC_HAS_CPP_ATTRIBUTE(a) __has_cpp_attribute(a)
+#else
+#   define __VIC_HAS_CPP_ATTRIBUTE(a) 0
 #endif
 
-#if __cpp_attributes && __has_cpp_attribute(nodiscard) && \
-    !defined(__clang__)
-// Clang 3.9+ issue - https://bugs.llvm.org/show_bug.cgi?id=33518
+#if __VIC_HAS_CPP_ATTRIBUTE(fallthrough)
+#   define __VIC_FALLTHROUGH [[fallthrough]];
+#else
+#   define __VIC_FALLTHROUGH
+#endif
+
+#if __VIC_HAS_CPP_ATTRIBUTE(nodiscard)
 #   define __VIC_NODISCARD [[nodiscard]]
 #else
 #   define __VIC_NODISCARD

@@ -104,6 +104,48 @@ template<class T, class InputIterator>
 </chapter>
 
 
+<chapter xml:id="parse_decimal">
+<title><tt>parse_decimal()</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#if __cpp_lib_string_view // since C++17
+
+template<class T>
+[[nodiscard]] number_parse_result<T> parse_decimal(std::string_view s);
+
+#else // until C++17
+
+template<class T>
+[[nodiscard]] number_parse_result<T> parse_decimal(const std::string &s);
+template<class T>
+[[nodiscard]] number_parse_result<T> parse_decimal(const char *s);
+
+#endif
+
+template<class T, class InputIterator>
+[[nodiscard]]
+number_parse_result<T> parse_decimal(InputIterator begin, InputIterator end);
+]]></code-block>
+
+<p>Аналог функций <tt>decimal_to_number()</tt>, но не бросает исключений.
+Возвращаемый объект может тестироваться в bool-контексте, что позволяет узнать
+об успехе операции. Также данный объект содержит число-результат в случае
+успеха, или код ошибки в противном случае. См. <xref to="number_parse_result"/>
+для более подробного описания.</p>
+
+<section><title>Пример</title>
+<code-block lang="C++"><![CDATA[
+if(auto res = __vic::parse_decimal<int>("123"))
+{
+    int num = res.value();
+    // Use num
+}
+]]></code-block>
+</section>
+
+</chapter>
+
+
 <chapter xml:id="decimal_parser">
 <title><tt>decimal_parser</tt></title>
 
@@ -188,7 +230,7 @@ bool to_number(const std::string &s, T &result) noexcept
 <title><tt>number_parse_status</tt></title>
 
 <code-block lang="C++"><![CDATA[
-enum class number_parse_status
+enum class number_parse_status : unsigned char
 {
     ok,
     invalid_number,
@@ -205,6 +247,64 @@ using number_parse_status_t = number_parse_status; // for C++98
 <prototype>typename number_parse_status_t</prototype>
 <p>Используйте данное имя типа, если коду требуется совместимость с режимом
 C++98.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+
+<chapter xml:id="number_parse_result">
+<title><tt>number_parse_result</tt></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class number_parse_result
+{
+public:
+    typedef T value_type;
+
+    number_parse_result(number_parse_status_t s);
+    explicit number_parse_result(T n);
+
+    number_parse_status_t status() const;
+    explicit operator bool() const;
+    bool has_value() const;
+
+    T value() const;
+};
+]]></code-block>
+
+<p><tt>number_parse_status</tt> + результирующее значение в случае успеха.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>number_parse_result(number_parse_status_t s)</prototype>
+<precondition><tt>s != number_parse_status::ok</tt></precondition>
+<postcondition><tt>status() == s</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>explicit number_parse_result(T n)</prototype>
+<postcondition><tt>has_value() &amp;&amp; value() == n</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>number_parse_status_t status() const</prototype>
+<p>Статус операции разбора числа.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool has_value() const</prototype>
+<prototype>explicit operator bool() const</prototype>
+<p>Возвращает <tt>status() == number_parse_status::ok</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>T value() const</prototype>
+<p>Число-результат.</p>
+<precondition><tt>has_value() == true</tt></precondition>
 </synopsis>
 
 </section>
