@@ -1,0 +1,683 @@
+<chapter xml:id="config-library">
+<title>Библиотека Config <badge>C++11</badge></title>
+
+<p>Библиотека предоставляет инструменты для разбора и чтения конфигурационных
+файлов. Инструменты представляют собой:</p>
+
+<list style="bulleted">
+    <item>Базовый класс парсеров конфигурационных файлов –
+          <xref to="config--parser"/>, и</item>
+    <item>Расширяемый набор парсеров конфигурационных параметров различных
+          типов – <xref to="config--value"/>.</item>
+</list>
+
+
+<chapter xml:id="config-format">
+<title>Описание формата файла</title>
+
+<p>Файл конфигурации представляет собой текстовый файл с набором параметров и
+их значений. Параметры бывают:</p>
+
+<list style="numbered">
+    <item>Обычными атомарными или</item>
+    <item>Составными.</item>
+</list>
+
+<p>Также с точки зрения кратности и атомарные, и составные параметры могут
+быть:</p>
+
+<list style="numbered">
+    <item>Одиночными (скалярными) или</item>
+    <item>Множественными (списочными).</item>
+</list>
+
+<p>Все параметры имеют имя и значение. Атомарные параметры определяются в
+виде:</p>
+
+<code-block lang="cfg">
+имя: значение
+</code-block>
+
+<p>У списков значение состоит из набора значений одного типа. Для определения
+списков предусмотрены две равноправные нотации. Можно использовать ту, которая
+кажется удобнее.</p>
+
+<p>Вариант 1:</p>
+<code-block lang="cfg">
+имя_списка: значение1
+имя_списка: значение2
+имя_списка: значение3
+</code-block>
+
+<p>Вариант 2:</p>
+<code-block lang="cfg">
+имя_списка {
+значение1
+значение2
+значение3
+}
+</code-block>
+
+<p>Как видно, первый вариант ничем не отличается по виду от определения
+скалярного параметра. Отличие лишь в том, что после обработки скалярный
+параметр получит только последнее значение, а список будет включать их все.</p>
+
+<p>Формы задания одного параметра можно комбинировать. Например, если в
+качестве значения элемента списка нужно использовать символ <tt>}</tt>, то его
+можно добавить в список используя первую форму с двоеточием. Остальные элементы
+при этом могут быть заданы в фигурных скобках:</p>
+
+<code-block lang="cfg">
+chars {
+$
+#
+{
+}
+
+chars: }
+</code-block>
+
+<p>Такой фрагмент создаст создаст список из четырёх элементов: «<tt>$</tt>»,
+«<tt>#</tt>», «<tt>{</tt>», «<tt>}</tt>».</p>
+
+<p>Если параметр имеет значение из нескольких строк, то для его задания
+следует использовать следующий синтаксис:</p>
+
+<code-block lang="cfg"><![CDATA[
+имя <<EOF
+строка 1
+строка 2
+...
+EOF
+]]></code-block>
+
+<p>Где <tt>EOF</tt> – это любая последовательность латинских букв. Синтаксис и
+логика обработки аналогичны конструкции «here-document» из Bourne Shell.</p>
+
+<p>Составные параметры состоят из набора подпараметров. Например:</p>
+
+<code-block lang="cfg">
+составной_параметр (
+    скалярный_подпараметр: значение
+    списочный_подпараметр {
+        значение1
+        значение2
+    }
+    составной_подпараметр (
+        ...
+    )
+)
+</code-block>
+
+<p>Как было сказано выше, составные параметры так же могут быть списочными.
+Второй вариант записи списков (см. выше) для составных параметров будет
+выглядеть следующим образом:</p>
+
+<code-block lang="cfg">
+список_составных_параметров {
+    (
+        подпараметр: значение1
+        ...
+    )
+    (
+        подпараметр: значение2
+        ...
+    )
+}
+</code-block>
+
+<p>Первый вариант записи списков для составных параметров также разрешён.</p>
+
+<p>Строки, начинающиеся с символа '<tt>#</tt>' считаются комментариями и
+игнорируются парсером.</p>
+
+<p>Если несколько файлов содержат пересекающийся набор параметров и их значений,
+то общую часть можно вынести в отдельный файл, а затем просто включать его в
+исходные файлы. Синтаксис используется следующий:</p>
+
+<code-block lang="cfg"><![CDATA[
+...
+<common.cfg>
+
+param: value
+...
+]]></code-block>
+
+<p><tt>common.cfg</tt> здесь – это имя включаемого файла. Набор параметров из
+него будет включён в текущий конфигурационный файл.</p>
+
+</chapter>
+
+
+<chapter xml:id="config-program">
+<title>Представление в программе</title>
+
+<p>В программе конфигурация представляется в виде структуры с набором полей,
+соответсвующих конфигурационным параметрам. Имя поля может не совпадать с
+именем параметра в файле. При создании экземпляра такой структуры все поля
+должны заполняться какими-либо значениями по умолчанию.</p>
+
+<p>Составные параметры также являются структурами и могут рассматриваться
+как самостоятельные конфиги. По сути, они отличаются только тем, что занимают
+не весь файл, а только регион между круглыми скобками.</p>
+
+<p>Для заполнения таких структур значениями из файла создан базовый класс
+<xref to="config--parser"/>. Чтобы использовать парсер, нужно породить от него
+класс, в конструкторе описав перечень полей, которые мы хотим заполнять и
+файла. Описать атомарный параметр можно двумя способами: макросами
+<tt>__VIC_REGISTER_CONFIG_PARAM()</tt>/<tt>__VIC_REGISTER_CONFIG_PARAM_VP()</tt>,
+либо функцией-членом класса <tt>config::parser</tt> – <tt>register_param()</tt>.
+Первый способ удобнее использовать, если имя параметра в файле совпадает с
+именем поля в структуре, так как нет нужды указывать это имя дважды. Составные
+параметры описываются макросом <tt>__VIC_REGISTER_COMPLEX_CONFIG_PARAM()</tt>,
+либо вызовом функции-члена <tt>register_complex_param()</tt>.</p>
+
+<p>Пример. В программе имеется такая структура с конфигурационными
+параметрами:</p>
+
+<code-block lang="C++"><![CDATA[
+struct myconfig
+{
+    myconfig() = default; // заполняет поля значениями по умолчанию
+
+    int                      int_param = 0;
+    std::string              str_param{"default"};
+    std::vector<std::string> list_param;
+};
+]]></code-block>
+
+<p>Пусть все параметры, кроме <tt>str_param</tt>, имеют такие же имена в файле,
+а <tt>str_param</tt> в файле называется <tt>«string»</tt>. Определяем парсер
+для нашей структуры:</p>
+
+<code-block lang="C++"><![CDATA[
+struct myconfig_parser : public __vic::config::parser
+{
+    explicit myconfig_parser(myconfig &cfg)
+    {
+        __VIC_REGISTER_CONFIG_PARAM(cfg, int_param);
+        register_param(cfg.str_param, "string_param");
+        __VIC_REGISTER_CONFIG_PARAM(cfg, list_param);
+    }
+};
+]]></code-block>
+
+<p>Далее нам просто нужно создать экземпляр парсера и натравить его на файл
+функцией <tt>parse()</tt>:</p>
+
+<code-block lang="C++">
+myconfig cfg;
+myconfig_parser parser(cfg);
+parser.parse("conf/my.cfg");
+</code-block>
+
+<p>Теперь мы имеем заполненную из файла структуру <tt>cfg</tt>.</p>
+
+<p>Для каждого составного параметра нужно определить свой
+<tt>config::parser</tt> и указать его при вызове
+<tt>register_complex_param()</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="config-details">
+<title>Подробности реализации и дополнительные возможности</title>
+
+<p>Тип конфигурационного параметра определяется его типом в программе, и
+его значение проверяется на допустимость при разборе. Библиотека имеет
+встроенную поддержку некоторых типов:</p>
+
+<list style="bulleted">
+    <item>
+        <tt>int</tt>,
+        <tt>short</tt>,
+        <tt>long</tt>,
+        <tt>long long</tt>,
+        <tt>signed char</tt>,
+    </item>
+    <item>
+        <tt>unsigned</tt>,
+        <tt>unsigned short</tt>,
+        <tt>unsigned long</tt>,
+        <tt>unsigned long long</tt>,
+        <tt>unsigned char</tt>,
+    </item>
+    <item>
+        <tt>std::string</tt>,
+        <tt>__vic::string_buffer</tt>,
+    </item>
+    <item>
+        <tt>bool</tt> (допустимые значения в файле:
+            <tt>0</tt>, <tt>1</tt>,
+            <tt>true</tt>, <tt>false</tt>,
+            <tt>yes</tt>, <tt>no</tt>).
+    </item>
+</list>
+
+<p>Включением дополнительных заголовочных файлов также добавлется поддержка:</p>
+
+<list style="bulleted">
+    <item>
+        <tt>std::optional</tt> (<tt>__vic/config/values/std/optional.h</tt>)
+        <badge>C++17</badge>.
+    </item>
+</list>
+
+<p>А также списков с элементами перечисленных выше типов (и любых других
+поддерживаемых):</p>
+
+<list style="bulleted">
+    <item>
+        <tt>std::vector</tt> (<tt>__vic/config/values/std/vector.h</tt>),
+    </item>
+    <item>
+        <tt>std::list</tt> (<tt>__vic/config/values/std/list.h</tt>),
+    </item>
+    <item>
+        <tt>std::forward_list</tt> (<tt>__vic/config/values/std/forward_list.h</tt>)
+        <badge>C++11</badge>.
+    </item>
+</list>
+
+<p>Если Вы используете какой-то неподдерживаемый тип в качестве типа параметра,
+то можете добавить его поддерку сами. Для этого нужно всего лишь определить
+специализацию шаблона <tt>config::value&lt;></tt> для Вашего типа в следующем
+виде:</p>
+
+<code-block lang="C++"><![CDATA[
+namespace __vic { namespace config {
+/////////////////////////////////////////////////////////////////////////////
+template<> struct value<T>
+{
+    static bool parse(const std::string &s, T &res)
+    {
+        // TODO: parse s
+    }
+};
+/////////////////////////////////////////////////////////////////////////////
+}}
+]]></code-block>
+
+<p><tt>T</tt> – это Ваш тип. Функция <tt>parse()</tt> принимает на вход
+строковое представление значения из файла. Она должна проанализировать его,
+преобразовать в значение типа <tt>T</tt> и сохранить результат по ссылке,
+передаваемой вторым параметром. В случае, если значение преобразовать не
+получается, функция должна вернуть <tt>false</tt>.</p>
+
+<p>Пример для типа <tt>bool</tt>:</p>
+
+<code-block lang="C++"><![CDATA[
+bool __vic::config::value<bool>::parse(const std::string &v, bool &res)
+{
+    if(v == "1" || __vic::ascii::equal_icase(v, "true")
+                || __vic::ascii::equal_icase(v, "yes"))
+        res = true;
+    else if(v == "0" || __vic::ascii::equal_icase(v, "false")
+                     || __vic::ascii::equal_icase(v, "no"))
+        res = false;
+    else
+        return false; // error
+    return true; // OK
+}
+]]></code-block>
+
+<p>Вообще говоря, парсер параметра не обязан быть специализацией
+<tt>config::value</tt>. Возможны ситуации, когда два параметра имеют один и тот
+же тип, но разное представление в файле, поэтому должны разбираться разными
+парсерами. Такие возможности предоставляются библиотекой.</p>
+
+<p>Например, мы хотим задавать размер в конфигурационном файле в мегабайтах и
+гигабайтах, для чего будем использовать суффиксы <tt>M</tt> и <tt>G</tt>:</p>
+
+<code-block lang="cfg">
+max_log_file_size: 2M
+</code-block>
+
+<p>Очевидно, что если просто задать тип параметра как <tt>unsigned</tt> и
+зарегистрировать параметр в конструкторе парсера файла, то вызовется парсер
+<tt>config::value&lt;unsigned></tt> и вернёт ошибку, так как в числе встретит
+букву. Выходом является написание своего парсера для параметра. Вот пример его
+реализации:</p>
+
+<code-block lang="C++"><![CDATA[
+struct file_size_value
+{
+    static bool parse(const std::string &st, unsigned &res)
+    {
+        // разбор строки и сохранение значения...
+    }
+};
+]]></code-block>
+
+<p>Теперь нужно сказать парсеру файла, чтобы для нашего параметра
+использовался именно этот парсер. Делается это так:</p>
+
+<code-block lang="C++"><![CDATA[
+register_param<file_size_value>(cfg.max_log_file_size, "max_log_file_size");
+// или
+__VIC_REGISTER_CONFIG_PARAM_VP(cfg, max_log_file_size, file_size_value);
+]]></code-block>
+
+<p>Всё. Теперь параметр будет разбираться корректно.</p>
+
+<p>Аргументом шаблона <tt>register_param&lt;></tt> может быть либо класс, либо
+шаблон с одним параметром-типом. В последнем случае в качестве типа будет
+использован тип конфигурационного параметра.</p>
+
+<p>Если неподдерживаемый тип параметра является списком значений, то для него
+требуется определить специализацию шаблона <xref to="config--list_traits"/>. Вот
+пример добавления нового типа контейнера для хранения списка значений. Позволим,
+например, использовать тип <tt>std::set</tt>.</p>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+struct list_traits<std::set<T>>
+{
+    using value_type = T;
+    static void push(std::set<T> &c, T &&v) { c.insert(std::move(v)); }
+};
+]]></code-block>
+
+<p>Теперь все параметры типа <tt>std::set&lt;T></tt> будут автоматически
+считаться списочными.</p>
+
+</chapter>
+
+
+<chapter xml:id="config.parser.h">
+<title><tt>__vic/config/parser.h</tt> <badge>C++11</badge></title>
+
+<chapter xml:id="config--parser">
+<title><tt>config::parser</tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+class config::parser
+{
+public:
+    class error : public std::exception {};
+    class source_error : public error
+    {
+    public:
+        unsigned line() const;
+    };
+    class duplicate_param : public std::exception {};
+
+    parser(const parser & ) = delete;
+    parser &operator=(const parser & ) = delete;
+
+    void parse(const char *file_path);
+    void parse(const std::string &file_path);
+protected:
+    parser();
+    ~parser();
+
+    template<class T>
+    void register_param(T &v, const char *name);
+
+    template<template<class > class ValueParser, class T>
+    void register_param(T &v, const char *name);
+
+    template<class ValueParser, class T>
+    void register_param(T &v, const char *name);
+
+    template<class Parser, class T>
+    void register_complex_param(T &v, const char *name);
+
+#define __VIC_REGISTER_CONFIG_PARAM(c,p) this->register_param((c).p, #p)
+#define __VIC_REGISTER_CONFIG_PARAM_VP(c,p,vp) \
+    this->register_param<vp>((c).p, #p)
+#define __VIC_REGISTER_COMPLEX_CONFIG_PARAM(c,p,cp) \
+    this->register_complex_param<cp>((c).p, #p)
+};
+]]></code-block>
+
+<p>Базовый класс для создания парсеров конкретных файлов и составных
+параметров.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>class error</prototype>
+<p>Базовый тип исключений, бросаемых при работе парсера.</p>
+</synopsis>
+
+<synopsis>
+<prototype>class source_error</prototype>
+<p>Исключение, бросаемое в случае неправильного формата конфигурационного
+файла.</p>
+</synopsis>
+
+<synopsis>
+<prototype>class duplicate_param</prototype>
+<p>Исключение, бросаемое функциями <tt>register_param()</tt> при попытке
+повторной регистрации параметра с таким же именем.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void parse(const char *file_path)</prototype>
+<prototype>void parse(const std::string &amp;file_path)</prototype>
+<p>Чтение и разбор конфигурации из файла по указанному пути.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class ValueParser, class T>
+void register_param(T &amp;v, const char *name)</prototype>
+<p>Регистрация параметра с именем <tt>name</tt>, находящегося по ссылке
+<tt>v</tt>. Для разбора его значения будет использован парсер
+<tt>ValueParser</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;template&lt;class > class ValueParser, class T>
+void register_param(T &amp;v, const char *name)</prototype>
+<p>Вызывает <tt>register_param&lt; ValueParser&lt;T> >(v, name)</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class T>
+void register_param(T &amp;v, const char *name)</prototype>
+<p>Вызывает <tt>register_param&lt; config::value&lt;T> >(v, name)</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>__VIC_REGISTER_CONFIG_PARAM(cfg, param)</prototype>
+<p>Вызывает <tt>register_param(cfg.param, #param)</tt>, что позволяет не
+указывать имя параметра дважды, если оно совпадает с именем поля в
+структуре программы.</p>
+</synopsis>
+
+<synopsis>
+<prototype>__VIC_REGISTER_CONFIG_PARAM_VP(cfg, papam, ValueParser)</prototype>
+<p>Аналог <tt>__VIC_REGISTER_CONFIG_PARAM()</tt>, но дополнительно задаёт
+<tt>ValueParser</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Parser, class T>
+void register_complex_param(T &amp;v, const char *name)</prototype>
+<p>Регистрация составного параметра. <tt>Parser</tt> - это наследник
+<tt>config::parser</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>__VIC_REGISTER_COMPLEX_CONFIG_PARAM(cfg, param, Parser)</prototype>
+<p>Аналог <tt>__VIC_REGISTER_CONFIG_PARAM()</tt> для
+<tt>register_complex_param()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>
+
+
+<chapter xml:id="config.value.h">
+<title><tt>__vic/config/value.h</tt> <badge>C++11</badge></title>
+
+<chapter xml:id="config--value">
+<title><tt>config::value</tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class config::value
+{
+public:
+    static bool parse(const std::string &s, T &res);
+};
+
+template<> class config::value<int>;
+template<> class config::value<short>;
+template<> class config::value<long>;
+template<> class config::value<long long>;
+template<> class config::value<signed char>;
+
+template<> class config::value<unsigned>;
+template<> class config::value<unsigned short>;
+template<> class config::value<unsigned long>;
+template<> class config::value<unsigned long long>;
+template<> class config::value<unsigned char>;
+
+template<> class config::value<bool>;
+
+template<> class config::value<std::string>;
+template<> class config::value<__vic::string_buffer>;
+]]></code-block>
+
+<p>Парсер значений типа <tt>T</tt>, используемый библиотекой, если такой
+парсер не указан явно. Разбирает входную строку <tt>s</tt>. В случае успеха
+сохраняет результат в <tt>res</tt> и возвращает <tt>true</tt>. Можно создавать
+специализации для своих типов.</p>
+
+<p>Все парсеры значений создаваемые пользователем должны иметь такой же
+интерфейс и поведение.</p>
+
+</chapter>
+
+<chapter xml:id="config--list_traits">
+<title><tt>config::list_traits</tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class List>
+struct config::list_traits
+{
+    using value_type = ]]><nt>list-element-type</nt>;<![CDATA[
+    static void push(List &list, value_type &&v);
+};
+]]></code-block>
+
+<p>Специализация данного шаблона для некоторого типа <tt>List</tt> заставляет
+библиотеку считать данный тип списком, а параметры данного типа списочными.</p>
+
+<section><title>Члены класса</title>
+
+<synopsis>
+<prototype>typename value_type</prototype>
+<p>Задаёт тип элементов списка.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static void push(List &amp;list, value_type &amp;&amp;v)</prototype>
+<p>Помещает <tt>v</tt> в список (обычно в конец).</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>
+
+
+<chapter xml:id="config-value-parsers">
+<title><tt>Дополнительные парсеры значений</tt></title>
+
+
+<chapter xml:id="config--value-std--optional">
+<title><tt>config::value&lt;std::optional&lt;T>></tt> <badge>C++17</badge></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/optional.h>
+
+template<class T>
+class config::value<std::optional<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--complex_value-std--optional">
+<title><tt>config::complex_value&lt;std::optional&lt;T>></tt> <badge>C++17</badge></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/optional.h>
+
+template<class T, class Parser>
+class config::complex_value<std::optional<T>, Parser, false>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--list_traits-std--vector">
+<title><tt>config::list_traits&lt;std::vector&lt;T>></tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/vector.h>
+
+template<class T>
+struct config::list_traits<std::vector<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--list_traits-std--list">
+<title><tt>config::list_traits&lt;std::list&lt;T>></tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/list.h>
+
+template<class T>
+struct config::list_traits<std::list<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--list_traits-std--forward_list">
+<title><tt>config::list_traits&lt;std::forward_list&lt;T>></tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/forward_list.h>
+
+template<class T>
+struct config::list_traits<std::forward_list<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--bytes_value_parser">
+<title><tt>config::bytes_value_parser</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/bytes.h>
+
+template<class TUInt>
+class config::bytes_value_parser;
+]]></code-block>
+
+<p>Парсер для параметров, задающих размеры в байтах. Воспринимает значения в
+виде «<tt>2K</tt>», что означает 2 килобайта. Доступны следующие суффиксы:
+<tt>K</tt> – кило, <tt>M</tt> – мега, <tt>G</tt> – гига. Все суффиксы являются
+степенями 2 (1K = 1024).</p>
+
+<precondition><tt>TUInt</tt> – один из целых беззнаковых типов.</precondition>
+
+</chapter>
+
+
+</chapter>
+
+
+</chapter>

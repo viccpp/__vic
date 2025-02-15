@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2025-03-18  __vic
+    + Config library
+
 2024-11-24  __vic
     + str2num.h: parse_decimal()
     + __VIC_FALLTHROUGH
