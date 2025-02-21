@@ -14,7 +14,11 @@ public:
     constexpr explicit ipv4_addr(::in_addr_t a);
     constexpr ipv4_addr(uint8_t a, uint8_t b, uint8_t c, uint8_t d);
 
+    static constexpr ipv4_addr any();
+    static constexpr ipv4_addr loopback();
+
     constexpr bool is_any() const;
+    constexpr bool is_loopback() const;
 
     static bool parse(const char *begin, const char *end, ::in_addr &res);
 #if __cpp_lib_string_view // C++17
@@ -74,8 +78,23 @@ template<> struct std::hash<ipv4_addr>;
 </synopsis>
 
 <synopsis>
+<prototype>static constexpr ipv4_addr any()</prototype>
+<p>Returns IPv4 address <tt>0.0.0.0</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static constexpr ipv4_addr loopback()</prototype>
+<p>Returns IPv4 address <tt>127.0.0.1</tt>.</p>
+</synopsis>
+
+<synopsis>
 <prototype>constexpr bool is_any() const</prototype>
 <p>Returns <tt>true</tt> if the address is <tt>0.0.0.0</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>constexpr bool is_loopback() const</prototype>
+<p>Returns <tt>true</tt> if the address is <tt>127.0.0.1</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -179,7 +198,11 @@ public:
                         uint16_t e, uint16_t f, uint16_t g, uint16_t h)
     explicit ipv6_addr(const ::in_addr &ip4);
 
+    static constexpr ipv6_addr any();
+    static constexpr ipv6_addr loopback();
+
     bool is_any() const;
+    bool is_loopback() const;
     bool is_ipv4_mapped() const;
     ipv4_addr to_ipv4() const;
 
@@ -231,8 +254,23 @@ template<> struct std::hash<ipv6_addr>;
 </synopsis>
 
 <synopsis>
+<prototype>static constexpr ipv6_addr any()</prototype>
+<p>Returns IPv6 address <tt>::</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static constexpr ipv6_addr loopback()</prototype>
+<p>Returns IPv6 address <tt>::1</tt>.</p>
+</synopsis>
+
+<synopsis>
 <prototype>bool is_any() const</prototype>
 <p>Returns <tt>true</tt> if the address is <tt>::</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool is_loopback() const</prototype>
+<p>Returns <tt>true</tt> if the address is <tt>::1</tt>.</p>
 </synopsis>
 
 <synopsis>

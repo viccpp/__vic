@@ -17,7 +17,10 @@ void run_ipv4_tests()
     assert(!ipv4_addr::parse("127", ip));
     assert(!ipv4_addr::parse("256.0.0.1", ip));
 
-    assert(ipv4_addr{}.is_any());
+    assert(ipv4_addr(0,0,0,0).is_any());
+    assert(ipv4_addr::any().is_any());
+    assert(ipv4_addr(127,0,0,1).is_loopback());
+    assert(ipv4_addr::loopback().is_loopback());
     assert((ipv4_addr(10,1,2,3) & ipv4_addr(255,0,0,0)) == ipv4_addr(10,0,0,0));
 
     std::string st;
@@ -61,7 +64,10 @@ void run_ipv6_tests()
     assert(!ipv6_addr::parse("::1:2:3:4:5:6:7", ip));
     assert(!ipv6_addr::parse("1:2:3::4:5:6:7", ip));
 
-    assert(ipv6_addr{}.is_any());
+    assert(ipv6_addr(0,0,0,0,0,0,0,0).is_any());
+    assert(ipv6_addr::any().is_any());
+    assert(ipv6_addr(0,0,0,0,0,0,0,1).is_loopback());
+    assert(ipv6_addr::loopback().is_loopback());
     assert((ipv6_addr(1,2,3,4,5,6,7,8) &
            ipv6_addr(255,255,255,255,0,0,0,0)) == ipv6_addr(1,2,3,4,0,0,0,0));
 

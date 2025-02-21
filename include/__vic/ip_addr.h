@@ -10,8 +10,8 @@
 
 #include<__vic/defs.h>
 #include<__vic/memory.h>
+#include<__vic/stdint.h>
 #include<string>
-#include<cstdint>
 #include<netinet/in.h>
 #if __has_include(<string_view>)
 #include<string_view>
@@ -24,12 +24,10 @@ namespace __vic {
 //////////////////////////////////////////////////////////////////////////////
 class ipv4_addr : public ::in_addr
 {
-public:
-    ipv4_addr() = default;
-    constexpr ipv4_addr(::in_addr a) : in_addr(a) {}
-    constexpr explicit ipv4_addr(::in_addr_t a) : in_addr{a} {}
-    constexpr ipv4_addr(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
-        : ipv4_addr(
+    __VIC_CONSTEXPR_FUNC static ::in_addr_t to_in_addr_t(
+                                   uint8_t a, uint8_t b, uint8_t c, uint8_t d)
+    {
+        return
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ // 0 == 0 if undefined (Windows)
             (::in_addr_t(d) << 24) | (::in_addr_t(c) << 16) |
             (::in_addr_t(b) << 8 ) |  ::in_addr_t(a)
@@ -37,9 +35,33 @@ public:
             (::in_addr_t(a) << 24) | (::in_addr_t(b) << 16) |
             (::in_addr_t(c) << 8 ) |  ::in_addr_t(d)
 #endif
-        ) {}
+        ;
+    }
+public:
+    ipv4_addr() __VIC_DEFAULT_CTR
+    __VIC_CONSTEXPR_FUNC ipv4_addr(::in_addr a) : in_addr(a) {}
+    __VIC_CONSTEXPR_FUNC explicit ipv4_addr(::in_addr_t a)
+#if __cpp_constexpr
+        : in_addr{a} {}
+#else
+        { this->s_addr = a; }
+#endif
 
-    constexpr bool is_any() const { return this->s_addr == 0; }
+    __VIC_CONSTEXPR_FUNC ipv4_addr(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
+#if __cpp_constexpr
+        : ipv4_addr(to_in_addr_t(a, b, c, d)) {}
+#else
+        { *this = ipv4_addr(to_in_addr_t(a, b, c, d)); }
+#endif
+
+    static __VIC_CONSTEXPR_FUNC ipv4_addr any() { return ipv4_addr(0); }
+    static __VIC_CONSTEXPR_FUNC ipv4_addr loopback() { return ipv4_addr(127,0,0,1); }
+
+    __VIC_CONSTEXPR_FUNC bool is_any() const { return this->s_addr == 0; }
+    __VIC_CONSTEXPR_FUNC bool is_loopback() const
+    {
+        return this->s_addr == to_in_addr_t(127,0,0,1);
+    }
 
     static bool parse(const char * , const char * , ::in_addr & );
 #if __cpp_lib_string_view
@@ -55,31 +77,68 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 class ipv6_addr : public ::in6_addr
 {
-    static constexpr uint8_t hi(uint16_t v) { return v >> 8; }
-    static constexpr uint8_t lo(uint16_t v) { return v & 0xFFU; }
+    static __VIC_CONSTEXPR_FUNC uint8_t hi(uint16_t v) { return v >> 8; }
+    static __VIC_CONSTEXPR_FUNC uint8_t lo(uint16_t v) { return v & 0xFFU; }
 public:
-    ipv6_addr() = default;
-    constexpr ipv6_addr(::in6_addr a) : in6_addr(a) {}
-    constexpr ipv6_addr(uint8_t a, uint8_t b, uint8_t c, uint8_t d,
-                        uint8_t e, uint8_t f, uint8_t g, uint8_t h,
-                        uint8_t i, uint8_t j, uint8_t k, uint8_t l,
-                        uint8_t m, uint8_t n, uint8_t o, uint8_t p)
+    ipv6_addr() __VIC_DEFAULT_CTR
+    __VIC_CONSTEXPR_FUNC ipv6_addr(::in6_addr a) : in6_addr(a) {}
+    __VIC_CONSTEXPR_FUNC ipv6_addr(uint8_t a, uint8_t b, uint8_t c, uint8_t d,
+                                   uint8_t e, uint8_t f, uint8_t g, uint8_t h,
+                                   uint8_t i, uint8_t j, uint8_t k, uint8_t l,
+                                   uint8_t m, uint8_t n, uint8_t o, uint8_t p)
+#if __cpp_constexpr
         : in6_addr{{{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p}}} {}
-    constexpr ipv6_addr(uint16_t a, uint16_t b, uint16_t c, uint16_t d,
-                        uint16_t e, uint16_t f, uint16_t g, uint16_t h)
-        : ipv6_addr(hi(a),lo(a), hi(b),lo(b), hi(c),lo(c), hi(d),lo(d),
-                    hi(e),lo(e), hi(f),lo(f), hi(g),lo(g), hi(h),lo(h)) {}
+#else
+        {
+            uint8_t (&s)[16] = this->s6_addr;
+            s[ 0] = a; s[ 1] = b; s[ 2] = c; s[ 3] = d; s[ 4] = e; s[ 5] = f;
+            s[ 6] = g; s[ 7] = h; s[ 8] = i; s[ 9] = j; s[10] = k; s[11] = l;
+            s[12] = m; s[13] = n; s[14] = o; s[15] = p;
+        }
+#endif
+
+    __VIC_CONSTEXPR_FUNC ipv6_addr(uint16_t a, uint16_t b, uint16_t c, uint16_t d,
+                                   uint16_t e, uint16_t f, uint16_t g, uint16_t h)
+#if __cpp_constexpr
+        :
+#else
+        { *this =
+#endif
+          ipv6_addr(hi(a),lo(a), hi(b),lo(b), hi(c),lo(c), hi(d),lo(d),
+                    hi(e),lo(e), hi(f),lo(f), hi(g),lo(g), hi(h),lo(h))
+#if __cpp_constexpr
+        {}
+#else
+        ; }
+#endif
+
     // IPv4-mapped IPv6 address
-    explicit ipv6_addr(const ::in_addr &a) : in6_addr{}
+    explicit ipv6_addr(const ::in_addr &a)
+#if __cpp_constexpr
+        : in6_addr{}
+#endif
     {
+#if !__cpp_constexpr
+        std::memset(&this->s6_addr, 0, 10);
+#endif
         this->s6_addr[10] = this->s6_addr[11] = 0xFF;
         std::memcpy(this->s6_addr + 12, &a.s_addr, 4);
     }
+
+    static __VIC_CONSTEXPR_FUNC ipv6_addr any() { return ipv6_addr(0,0,0,0,0,0,0,0); }
+    static __VIC_CONSTEXPR_FUNC ipv6_addr loopback() { return ipv6_addr(0,0,0,0,0,0,0,1); }
 
     bool is_any() const
     {
         return load_unaligned<uint64_t>(this->s6_addr    ) == 0
             && load_unaligned<uint64_t>(this->s6_addr + 8) == 0;
+    }
+    bool is_loopback() const
+    {
+        int i = 0;
+        for(; i < 15; i++)
+            if(this->s6_addr[i]) return false;
+        return this->s6_addr[i] == 1;
     }
     bool is_ipv4_mapped() const
     {
@@ -95,8 +154,8 @@ public:
     }
     ipv4_addr to_ipv4() const
     {
-        return {this->s6_addr[12], this->s6_addr[13],
-                this->s6_addr[14], this->s6_addr[15]};
+        return ipv4_addr(this->s6_addr[12], this->s6_addr[13],
+                         this->s6_addr[14], this->s6_addr[15]);
     }
 
     static bool parse(const char * , const char * , ::in6_addr & );
@@ -114,7 +173,7 @@ public:
 
 //----------------------------------------------------------------------------
 #define __VIC_DEFINE_OP(OP,A1,A2) \
-    constexpr bool operator OP(A1 a1, A2 a2) { return a1.s_addr OP a2.s_addr; }
+    __VIC_CONSTEXPR_FUNC bool operator OP(A1 a1, A2 a2) { return a1.s_addr OP a2.s_addr; }
 
 __VIC_DEFINE_OP(==, ipv4_addr, ipv4_addr)
 __VIC_DEFINE_OP(!=, ipv4_addr, ipv4_addr)
@@ -140,14 +199,14 @@ __VIC_DEFINE_OP(> , ::in_addr, ipv4_addr)
 
 #undef __VIC_DEFINE_OP
 //----------------------------------------------------------------------------
-constexpr ipv4_addr operator&(ipv4_addr a1, ipv4_addr a2)
+__VIC_CONSTEXPR_FUNC ipv4_addr operator&(ipv4_addr a1, ipv4_addr a2)
 {
-    return ipv4_addr{a1.s_addr & a2.s_addr};
+    return ipv4_addr(a1.s_addr & a2.s_addr);
 }
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-constexpr int compare(const ::in6_addr &a1, const ::in6_addr &a2)
+__VIC_CONSTEXPR_FUNC int compare(const ::in6_addr &a1, const ::in6_addr &a2)
 {
 #if defined(__GNUC__) && !defined(__VIC_NO_BUILTINS)
     return __builtin_memcmp(a1.s6_addr, a2.s6_addr, 16);
@@ -183,7 +242,7 @@ constexpr int compare(const ::in6_addr &a1, const ::in6_addr &a2)
 }
 //----------------------------------------------------------------------------
 #define __VIC_DEFINE_OP(OP,A1,A2) \
-    constexpr bool operator OP(const A1 &a1, const A2 &a2) { return compare(a1, a2) OP 0; }
+    __VIC_CONSTEXPR_FUNC bool operator OP(const A1 &a1, const A2 &a2) { return compare(a1, a2) OP 0; }
 
 __VIC_DEFINE_OP(==, ipv6_addr, ipv6_addr)
 __VIC_DEFINE_OP(!=, ipv6_addr, ipv6_addr)
@@ -210,8 +269,9 @@ __VIC_DEFINE_OP(> , ::in6_addr, ipv6_addr)
 //----------------------------------------------------------------------------
 inline ipv6_addr operator&(ipv6_addr a1, const ipv6_addr &a2)
 {
-    auto *p = a2.s6_addr;
-    for(auto &b : a1.s6_addr) b &= *p++;
+    uint8_t *p1 = a1.s6_addr;
+    const uint8_t *p2 = a2.s6_addr;
+    for(int i = 16; i > 0; i--) *p1++ &= *p2++;
     return a1;
 }
 //----------------------------------------------------------------------------
@@ -221,6 +281,7 @@ void to_text_append(const ::in6_addr & , std::string & );
 
 } // namespace
 
+#if __cplusplus >= 201103L // C++11
 namespace std {
 //////////////////////////////////////////////////////////////////////////////
 template<> struct hash< ::__vic::ipv4_addr>
@@ -244,5 +305,6 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 } // namespace
+#endif // C++11
 
 #endif // header guard
