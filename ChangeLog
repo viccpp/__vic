@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2025-02-25  __vic
+    + ip_addr.h:
+        + ipv4_addr
+        + ipv6_addr
+
 2024-11-24  __vic
     + str2num.h: parse_decimal()
     + __VIC_FALLTHROUGH
