@@ -60,7 +60,8 @@ const char *error::what() const noexcept
                     0,
                     (va_list *) 0
                 );
-            }            if(res == 0) err_msg = nullptr;
+            }
+            if(res == 0) err_msg = nullptr;
             class LocalMemKeeper : private non_copyable
             {
                 HLOCAL p;

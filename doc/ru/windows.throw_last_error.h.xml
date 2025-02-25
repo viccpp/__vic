@@ -1,6 +1,7 @@
 <chapter xml:id="windows.throw_last_error.h">
 <title><tt>__vic/windows/throw_last_error.h</tt></title>
 
+
 <chapter xml:id="windows--throw_last_error">
 <title><tt>windows::throw_last_error()</tt></title>
 
@@ -12,12 +13,27 @@
 <p>Бросает исключение, содержащее глобальное значение <tt>GetLastError()</tt>
 или указанный <tt>code</tt>, соответственно.</p>
 
-</chapter>
-
 <section><title>Пример</title>
 <code-block lang="C++">
 if(!CloseHandle(h)) __vic::windows::throw_last_error("CloseHandle");
 </code-block>
 </section>
+
+</chapter>
+
+
+<chapter xml:id="windows--throw_wsa_error">
+<title><tt>windows::throw_wsa_error()</tt></title>
+
+<code-block lang="C++">
+[[noreturn]] void throw_wsa_error(const char *prompt);
+[[noreturn]] void throw_wsa_error(const char *prompt, int code);
+</code-block>
+
+<p>Аналог <xref to="windows--throw_last_error"/>, но для кодов ошибок
+возвращаемых <tt>WSAGetLastError()</tt>.</p>
+
+</chapter>
+
 
 </chapter>

@@ -1,4 +1,5 @@
 #include<__vic/windows/throw_last_error.h>
+#include<winsock2.h> // must be included before windows.h
 #include<__vic/windows/error.h>
 #include<windows.h>
 #include<iostream>
@@ -34,6 +35,26 @@ void run_tests()
         assert(ex.code() == err_code);
         assert(ex.code() == err.code());
         assert(std::strcmp(ex.what(), err.what()) == 0);
+    }
+
+    const int wsa_err_code = WSAEACCES;
+    try
+    {
+        __vic::windows::throw_wsa_error("", wsa_err_code);
+        assert(false);
+    }
+    catch(const __vic::windows::error &ex)
+    {
+        assert(ex.code() == wsa_err_code);
+    }
+    try
+    {
+        __vic::windows::throw_wsa_error("");
+        assert(false);
+    }
+    catch(const __vic::windows::error &ex)
+    {
+        assert(ex.code() == 0);
     }
 }
 

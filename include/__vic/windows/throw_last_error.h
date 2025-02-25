@@ -1,4 +1,4 @@
-// Internal implementation header
+// Wrappers for throwing exceptions with the system error codes
 //
 // Platform: ISO C++ 98/11 - Windows
 // $Id$
@@ -16,6 +16,8 @@ namespace __vic { namespace windows {
 // but including big header only for one typedef is an overkill
 __VIC_NORETURN void throw_last_error(const char * );
 __VIC_NORETURN void throw_last_error(const char * , unsigned );
+__VIC_NORETURN void throw_wsa_error(const char * );
+__VIC_NORETURN void throw_wsa_error(const char * , int );
 __VIC_NORETURN void throw_failed(const char * );
 
 }} // namespace
