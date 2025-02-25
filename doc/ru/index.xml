@@ -17,6 +17,7 @@
     <!ENTITY endian.h SYSTEM "endian.h.xml">
     <!ENTITY error.h SYSTEM "error.h.xml">
     <!ENTITY fs.h SYSTEM "fs.h.xml">
+    <!ENTITY ip_addr.h SYSTEM "ip_addr.h.xml">
     <!ENTITY iterator.h SYSTEM "iterator.h.xml">
     <!ENTITY logger.h SYSTEM "logger.h.xml">
     <!ENTITY memory.h SYSTEM "memory.h.xml">
@@ -150,6 +151,7 @@ TODO
 &endian.h;
 &error.h;
 &fs.h;
+&ip_addr.h;
 &iterator.h;
 &logger.h;
 &memory.h;

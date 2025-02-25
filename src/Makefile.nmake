@@ -25,7 +25,7 @@ LIBFILE = $(LIBNAME)$(LIBSUFFIX).$(ARSUFF)
 AR = lib
 ARFLAGS =
 ARFLAGS_ALL = -nologo $(ARFLAGS) /OUT:$@
-CFLAGS_ALL = -I../include -DUNICODE=1 $(CFLAGS) $(WARNS)
+CFLAGS_ALL = -I../include -DUNICODE=1 -DNOMINMAX $(CFLAGS) $(WARNS)
 
 !ifndef SOURCES
 !if !EXISTS(sources.mk)

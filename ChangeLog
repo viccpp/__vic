@@ -6,6 +6,9 @@ Legend:
 
 2025-02-25  __vic
     + windows/throw_last_error.h: windows::throw_wsa_error()
+    + ip_addr.h:
+        + ipv4_addr
+        + ipv6_addr
 
 2024-12-11  __vic
     * windows::error: use English for error messages when possible

@@ -51,7 +51,7 @@ AR = lib
 ARFLAGS =
 ARFLAGS_ALL = -nologo $(ARFLAGS) /OUT:$@
 endif
-CFLAGS_ALL = -I../include -DUNICODE=1 $(CFLAGS) $(WARNS)
+CFLAGS_ALL = -I../include -DUNICODE=1 -DNOMINMAX $(CFLAGS) $(WARNS)
 
 ifndef SOURCES
 SOURCES := $(wildcard *.cpp)
