@@ -20,6 +20,7 @@ public:
         DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent,
         HMENU hMenu, HINSTANCE hInstance, void *lpParam = nullptr);
     void Create(const CREATESTRUCTW &cs);
+    bool Destroy() noexcept;
 
     LRESULT SendMessage(UINT msg, WPARAM w = 0, LPARAM l = 0);
 
@@ -81,6 +82,11 @@ value. Throws on error.</p>
 <prototype>void Create(const CREATESTRUCTW &amp;cs)</prototype>
 <p>Calls <tt>Create()</tt> with the values specified in <tt>cs</tt>.
 Throws on error.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool Destroy() noexcept</prototype>
+<p>Calls <tt>::DestroyWindow()</tt>. Return <tt>true></tt> on success.</p>
 </synopsis>
 
 <synopsis>
@@ -351,7 +357,7 @@ parameter is <tt>NULL</tt> (<tt>HWND_DESKTOP</tt>) when not specified.
 <title><tt>windows::MessageLoop()</tt></title>
 
 <code-block lang="C++">
-WPARAM windows::MessageLoop(HWND hwnd = NULL);
+WPARAM windows::MessageLoop(HWND hwnd = nullptr);
 </code-block>
 
 <p>Calls <tt>::GetMessage()</tt> while it returs nonzero (until
@@ -365,7 +371,7 @@ WPARAM windows::MessageLoop(HWND hwnd = NULL);
 <title><tt>windows::ProcessMessages()</tt></title>
 
 <code-block lang="C++">
-bool windows::ProcessMessages(HWND hwnd = NULL);
+bool windows::ProcessMessages(HWND hwnd = nullptr);
 </code-block>
 
 <p>Like <xref to="windows--MessageLoop"/> but returns when message queue is

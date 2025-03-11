@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2025-03-11  __vic
+    + windows::ShadowDC: Create(HWND hwnd, int w, int h)
+    + windows::Window: Destroy()
+
 2025-02-25  __vic
     + windows/throw_last_error.h: windows::throw_wsa_error()
     + ip_addr.h:

@@ -43,6 +43,7 @@ public:
         Create(cs.dwExStyle, cs.lpszClass, cs.lpszName, cs.style, cs.x, cs.y,
             cs.cx, cs.cy, cs.hwndParent, cs.hMenu, cs.hInstance, cs.lpCreateParams);
     }
+    bool Destroy() noexcept { return ::DestroyWindow(hwnd); }
 
     LRESULT SendMessage(UINT msg, WPARAM w = 0, LPARAM l = 0)
         { return ::SendMessage(hwnd, msg, w, l); }
@@ -148,8 +149,8 @@ inline int MsgBox(const char *msg, const char *title = "", int t = MB_OK)
     { return MsgBox(0, msg, title, t); }
 //----------------------------------------------------------------------------
 
-WPARAM MessageLoop(HWND = NULL);
-bool ProcessMessages(HWND = NULL);
+WPARAM MessageLoop(HWND = nullptr);
+bool ProcessMessages(HWND = nullptr);
 
 }} // namespace
 

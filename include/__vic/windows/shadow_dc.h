@@ -23,6 +23,7 @@ public:
     ~ShadowDC();
 
     void Create(HWND );
+    void Create(HWND , int , int );
     void Destroy();
     bool IsCreated() const { return Handle(); }
 };

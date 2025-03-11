@@ -12,6 +12,7 @@ public:
     ~ShadowDC();
 
     void Create(HWND hwnd);
+    void Create(HWND hwnd, int w, int h);
     void Destroy();
     bool IsCreated() const;
 };
@@ -32,9 +33,17 @@ public:
 </synopsis>
 
 <synopsis>
+<prototype>void Create(HWND hwnd, int w, int h)</prototype>
+<p>Creates a shadow DC compatible with the specified window and having the
+specified dimensions. Throws on errors.</p>
+<precondition><tt>!IsCreated()</tt></precondition>
+<postcondition><tt>IsCreated() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
 <prototype>void Create(HWND hwnd)</prototype>
-<p>Creates shadow DC compatible with the specified window of the same size.
-Throws on errors.</p>
+<p>Creates a shadow DC compatible with the specified window and having the same
+dimensions. Throws on errors.</p>
 <precondition><tt>!IsCreated()</tt></precondition>
 <postcondition><tt>IsCreated() == true</tt></postcondition>
 </synopsis>

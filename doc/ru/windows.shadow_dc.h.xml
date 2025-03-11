@@ -12,6 +12,7 @@ public:
     ~ShadowDC();
 
     void Create(HWND hwnd);
+    void Create(HWND hwnd, int w, int h);
     void Destroy();
     bool IsCreated() const;
 };
@@ -33,7 +34,15 @@ public:
 
 <synopsis>
 <prototype>void Create(HWND hwnd)</prototype>
-<p>Создаёт теневой DC, совместимый с указанным окном и того же размера.
+<p>Создаёт теневой DC, совместимый с указанным окном и тех же размеров.
+Бросает исключения в случае ошибок.</p>
+<precondition><tt>!IsCreated()</tt></precondition>
+<postcondition><tt>IsCreated() == true</tt></postcondition>
+</synopsis>
+
+<synopsis>
+<prototype>void Create(HWND hwnd, int w, int h)</prototype>
+<p>Создаёт теневой DC указанных размеров, совместимый с указанным окном.
 Бросает исключения в случае ошибок.</p>
 <precondition><tt>!IsCreated()</tt></precondition>
 <postcondition><tt>IsCreated() == true</tt></postcondition>

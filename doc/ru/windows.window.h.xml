@@ -20,6 +20,7 @@ public:
         DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent,
         HMENU hMenu, HINSTANCE hInstance, void *lpParam = nullptr);
     void Create(const CREATESTRUCTW &cs);
+    bool Destroy() noexcept;
 
     LRESULT SendMessage(UINT msg, WPARAM w = 0, LPARAM l = 0);
 
@@ -82,6 +83,12 @@ public:
 <prototype>void Create(const CREATESTRUCTW &amp;cs)</prototype>
 <p>Вызывает <tt>Create()</tt> со значениями, указанными в in <tt>cs</tt>.
 Бросает исключение в случае ошибки.</p>
+</synopsis>
+
+<synopsis>
+<prototype>bool Destroy() noexcept</prototype>
+<p>Вызывает <tt>::DestroyWindow()</tt>. Возвращает <tt>true></tt> в случае
+успеха.</p>
 </synopsis>
 
 <synopsis>
