@@ -1,6 +1,6 @@
 // IPv4 & IPv6 address
 //
-// Platform: ISO C++ 11/17 - BSD Socket API
+// Platform: ISO C++ 98/11/14 - BSD Socket API
 // $Id$
 //
 // (c) __vic 2019

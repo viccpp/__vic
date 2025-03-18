@@ -66,6 +66,7 @@
     <!ENTITY posix.sigset.h SYSTEM "posix.sigset.h.xml">
     <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
     <!ENTITY posix.time.h SYSTEM "posix.time.h.xml">
+    <!ENTITY config SYSTEM "config.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
 <title>__vic's C++ library (POSIX)</title>
@@ -206,6 +207,7 @@ TODO
 
 &sreaders;
 &swriters;
+&config;
 
 <chapter xml:id="build">
 <title>Build and install</title>

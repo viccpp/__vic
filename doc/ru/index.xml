@@ -66,6 +66,7 @@
     <!ENTITY posix.sigset.h SYSTEM "posix.sigset.h.xml">
     <!ENTITY posix.thread.h SYSTEM "posix.thread.h.xml">
     <!ENTITY posix.time.h SYSTEM "posix.time.h.xml">
+    <!ENTITY config SYSTEM "config.xml">
 ]>
 <document xml:lang="ru" version="1.0" status="Draft">
 <title>__vic's C++ library (POSIX)</title>
@@ -114,7 +115,7 @@ nt
 link
     Гиперссылка. URL, либо текст + URL в атрибуте href.
 xref
-    Внутрення ссылка на главу документа. Атрибут to указывает ID главы.
+    Внутрення ссылка на главу документа. Атрибут "to" указывает ID главы.
 synopsis
     Справка по функции, типу и т.п. Прототип функции или объявление типа
     заключается в <prototype>. Исходное форматирование в нём сохраняется
@@ -205,6 +206,7 @@ TODO
 
 &sreaders;
 &swriters;
+&config;
 
 <chapter xml:id="build">
 <title>Сборка и установка</title>
