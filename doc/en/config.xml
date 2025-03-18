@@ -1,0 +1,693 @@
+<chapter xml:id="config-library">
+<title>Config library <badge>C++11</badge></title>
+
+<p>The library provides tools for parsing and reading configuration files. The
+tools are:</p>
+
+<list style="bulleted">
+    <item>A base class of configuration file parsers –
+          <xref to="config--parser"/>, and</item>
+    <item>An extensible set of configuration parameter parsers for different
+          types – <xref to="config--value"/>.</item>
+</list>
+
+
+<chapter xml:id="config-format">
+<title>File format description</title>
+
+<p>Configuration file is a text file with a set of named parameters and their
+values. Parameters can be:</p>
+
+<list style="numbered">
+    <item>Ordinary atomic or</item>
+    <item>Complex (compound).</item>
+</list>
+
+<p>Also, from the multiplicity point of view, they (both atomic and complex)
+can be:</p>
+
+<list style="numbered">
+    <item>Solitary (scalar) or</item>
+    <item>Multiple (list).</item>
+</list>
+
+<p>Each parameter has a name and a value. Atomic parameters are defined like
+this:</p>
+
+<code-block lang="cfg">
+name: value
+</code-block>
+
+<p>Lists consist of a set of values of the same type. Two equivalent notation
+can be used to define them. Use any of them you find more convenient.</p>
+
+<p>Notation 1:</p>
+<code-block lang="cfg">
+list_name: value1
+list_name: value2
+list_name: value3
+</code-block>
+
+<p>Notation 2:</p>
+<code-block lang="cfg">
+list_name {
+value1
+value2
+value3
+}
+</code-block>
+
+<p>As you can see, the first notation is the same as that used for the scalar
+types. The only difference is that a scalar parameter gets only the last value,
+while a list gets all of them.</p>
+
+<p>Both notations can be combined. For example, if you want the value
+<tt>}</tt>, it can be added using the first notation with a colon. The rest can
+be added using braces:</p>
+
+<code-block lang="cfg">
+chars {
+$
+#
+{
+}
+
+chars: }
+</code-block>
+
+<p>A snippet like this creates a list of 4 elements: "<tt>$</tt>", "<tt>#</tt>",
+"<tt>{</tt>", "<tt>}</tt>".</p>
+
+<p>Multiline values can be specified the following syntax:</p>
+
+<code-block lang="cfg"><![CDATA[
+name <<EOF
+string 1
+string 2
+...
+EOF
+]]></code-block>
+
+<p>Where <tt>EOF</tt> is any sequence of Latin letters. The syntax and
+processing logic are the same as for the Bourne Shell "here-document"
+construct.</p>
+
+<p>Complex parameters consist of a set of subparameters. For example:</p>
+
+<code-block lang="cfg">
+complex_param (
+    scalar_subparam: value
+    list_subparam {
+        value1
+        value2
+    }
+    complex_subparam (
+        ...
+    )
+)
+</code-block>
+
+<p>As mentioned above, complex parameters can also be lists. The second
+list notation (see above) for complex parameters looks like this:</p>
+
+<code-block lang="cfg">
+complex_list_param {
+    (
+        subparam: value1
+        ...
+    )
+    (
+        subparam: value2
+        ...
+    )
+}
+</code-block>
+
+<p>The first list notation for complex parameters is allowed as well.</p>
+
+<p>Lines starting with the '<tt>#</tt>' character are treated as comments and
+are ignored by the parser.</p>
+
+<p>If different files contain the same subset of parameters and their values,
+this common part can be moved to a separate file and then simply included in
+them. The following syntax is used:</p>
+
+<code-block lang="cfg"><![CDATA[
+...
+<common.cfg>
+
+param: value
+...
+]]></code-block>
+
+<p><tt>common.cfg</tt> here is the name of the included file. The set of
+parameters from it is included in the current configuration file.</p>
+
+</chapter>
+
+
+<chapter xml:id="config-program">
+<title>Representation in code</title>
+
+<p>The configuration in the code is represented as a <tt>struct</tt> with a set
+of fields corresponding to the configuration parameters. The names do not have
+to be the same as in the file. On instantiation of such <tt>struct</tt>, each
+field must get some default value.</p>
+
+<p>A complex parameter is also a <tt>struct</tt> and can be treated as
+a configuration. In fact, the only difference is that they do not occupy the
+entire file, only a fragment between the parens.</p>
+
+<p>The base class <xref to="config--parser"/> is created to fill in such
+structs. To create your own parser, you derive a class from the base parser and
+then describe the set of parameters in the constructor. There are 2 ways to
+describe an atomic parameter: either using the
+<tt>__VIC_REGISTER_CONFIG_PARAM()</tt>/<tt>__VIC_REGISTER_CONFIG_PARAM_VP()</tt>
+macros, or using the <tt>register_param()</tt> member function defined in
+<tt>config::parser</tt>. The first method is more convenient if the parameter
+name is the same in both the <tt>struct</tt> and the file – you do not have to
+specify it twice. Complex parameters are described using either the
+<tt>__VIC_REGISTER_COMPLEX_CONFIG_PARAM()</tt> macro, or the
+<tt>register_complex_param()</tt> member function.</p>
+
+<p>Here is an example. Suppose your code contains a structure with
+configuration parameters, like this:</p>
+
+<code-block lang="C++"><![CDATA[
+struct myconfig
+{
+    myconfig() = default; // sets the parameters to their default values
+
+    int                      int_param = 0;
+    std::string              str_param{"default"};
+    std::vector<std::string> list_param;
+};
+]]></code-block>
+
+<p>Let's assume that all the parameters except <tt>str_param</tt> have the same
+name in the file, and <tt>str_param</tt> is called <tt>"string"</tt> in the
+file. Now let's define a parser for the structure:</p>
+
+<code-block lang="C++"><![CDATA[
+struct myconfig_parser : public __vic::config::parser
+{
+    explicit myconfig_parser(myconfig &cfg)
+    {
+        __VIC_REGISTER_CONFIG_PARAM(cfg, int_param);
+        register_param(cfg.str_param, "string_param");
+        __VIC_REGISTER_CONFIG_PARAM(cfg, list_param);
+    }
+};
+]]></code-block>
+
+<p>The final step is to create an instance of the parser and apply it to the
+file using the <tt>parse()</tt> function:</p>
+
+<code-block lang="C++">
+myconfig cfg;
+myconfig_parser parser(cfg);
+parser.parse("conf/my.cfg");
+</code-block>
+
+<p>Now we have the <tt>cfg</tt> structure filled with values from the file.</p>
+
+<p>For each complex parameter you have to define the corresponding
+<tt>config::parser</tt> and register it using
+<tt>register_complex_param()</tt>.</p>
+
+</chapter>
+
+
+<chapter xml:id="config-details">
+<title>Implemetation details and additional features</title>
+
+<p>The type of a configuration parameter is determined by its type in the code,
+and its value is validated during parsing. The library has built-in support for
+some types:</p>
+
+<list style="bulleted">
+    <item>
+        <tt>int</tt>,
+        <tt>short</tt>,
+        <tt>long</tt>,
+        <tt>long long</tt>,
+        <tt>signed char</tt>,
+    </item>
+    <item>
+        <tt>unsigned</tt>,
+        <tt>unsigned short</tt>,
+        <tt>unsigned long</tt>,
+        <tt>unsigned long long</tt>,
+        <tt>unsigned char</tt>,
+    </item>
+    <item>
+        <tt>std::string</tt>,
+        <tt>__vic::string_buffer</tt>,
+    </item>
+    <item>
+        <tt>bool</tt> (possible values in the file:
+            <tt>0</tt>, <tt>1</tt>,
+            <tt>true</tt>, <tt>false</tt>,
+            <tt>yes</tt>, <tt>no</tt>).
+    </item>
+</list>
+
+<p>By including additional headers, you can also add support for:</p>
+
+<list style="bulleted">
+    <item>
+        <tt>std::optional</tt> (<tt>__vic/config/values/std/optional.h</tt>)
+        <badge>C++17</badge>.
+    </item>
+    <item>
+        <tt>__vic::ipv4_addr</tt> (<tt>__vic/config/values/ipv4_addr.h</tt>).
+    </item>
+</list>
+
+<p>And also lists with elements of the types mentioned above:</p>
+
+<list style="bulleted">
+    <item>
+        <tt>std::vector</tt> (<tt>__vic/config/values/std/vector.h</tt>),
+    </item>
+    <item>
+        <tt>std::list</tt> (<tt>__vic/config/values/std/list.h</tt>),
+    </item>
+    <item>
+        <tt>std::forward_list</tt> (<tt>__vic/config/values/std/forward_list.h</tt>)
+        <badge>C++11</badge>.
+    </item>
+</list>
+
+<p>If you are using an unsupported type for your parameter, you can add such
+support yourself. All you need to do is specialize the <tt>config::value&lt;></tt>
+template for your type in the following form:</p>
+
+<code-block lang="C++"><![CDATA[
+namespace __vic { namespace config {
+/////////////////////////////////////////////////////////////////////////////
+template<> struct value<T>
+{
+    static bool parse(const std::string &s, T &res)
+    {
+        // TODO: parse s
+    }
+};
+/////////////////////////////////////////////////////////////////////////////
+}}
+]]></code-block>
+
+<p>Where <tt>T</tt> is your type. The string representation of the value from
+the file is passed to the <tt>parse()</tt> function. It must parse it, convert
+to a value of the type <tt>T</tt>, and assign the value to the reference
+specified as the second parameter of the function. If the function fails to
+convert the value, it must return <tt>false</tt>.</p>
+
+<p>Example for type <tt>bool</tt>:</p>
+
+<code-block lang="C++"><![CDATA[
+bool __vic::config::value<bool>::parse(const std::string &v, bool &res)
+{
+    if(v == "1" || __vic::ascii::equal_icase(v, "true")
+                || __vic::ascii::equal_icase(v, "yes"))
+        res = true;
+    else if(v == "0" || __vic::ascii::equal_icase(v, "false")
+                     || __vic::ascii::equal_icase(v, "no"))
+        res = false;
+    else
+        return false; // error
+    return true; // OK
+}
+]]></code-block>
+
+<p>In general, a value parser doesn't have to be a specialization of
+<tt>config::value</tt>. There are situations when 2 parameters have the same
+type, but different representation in the file, so they need to be parsed
+differently. And the library provides such capabilities.</p>
+
+<p>For example, we want to specify size in the configuration file in megabytes
+and gigabytes, for which we are going to use the suffixes <tt>M</tt> and
+<tt>G</tt>:</p>
+
+<code-block lang="cfg">
+max_log_file_size: 2M
+</code-block>
+
+<p>Obviously, if we just specify the type as <tt>unsigned</tt> and register the
+parameter in the constructor of the file parser, the
+<tt>config::value&lt;unsigned></tt> parser will be used and it will fail when a
+letter is encountered. The solution is to create your own value parser, like
+this:</p>
+
+<code-block lang="C++"><![CDATA[
+struct file_size_value
+{
+    static bool parse(const std::string &st, unsigned &res)
+    {
+        // parse the string and save the result
+    }
+};
+]]></code-block>
+
+<p>Now we need to tell the file parser to use this value parser for the
+parameter. It can be done like this:</p>
+
+<code-block lang="C++"><![CDATA[
+register_param<file_size_value>(cfg.max_log_file_size, "max_log_file_size");
+// or
+__VIC_REGISTER_CONFIG_PARAM_VP(cfg, max_log_file_size, file_size_value);
+]]></code-block>
+
+<p>That's it. Now the parameter will be parsed correctly.</p>
+
+<p>The template argument for the <tt>register_param&lt;></tt> function template
+can be either a class or a class template with one type-parameter. In the
+latter case, the configuration parameter type will be used as a template
+argument for the type-parameter.</p>
+
+<p>If the new parameter type is a list of values, you also need to define a
+specialization for the <xref to="config--list_traits"/> template. Here is an
+example of adding a new container for lists of values – let's allow
+<tt>std::set</tt> to be used.</p>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+struct list_traits<std::set<T>>
+{
+    using value_type = T;
+    static void push(std::set<T> &c, T &&v) { c.insert(std::move(v)); }
+};
+]]></code-block>
+
+<p>Now all parameters of type <tt>std::set&lt;T></tt> will be automatically
+treated as lists.</p>
+
+</chapter>
+
+
+<chapter xml:id="config.parser.h">
+<title><tt>__vic/config/parser.h</tt> <badge>C++11</badge></title>
+
+<chapter xml:id="config--parser">
+<title><tt>config::parser</tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+class config::parser
+{
+public:
+    class error : public std::exception {};
+    class source_error : public error
+    {
+    public:
+        unsigned line() const;
+    };
+    class duplicate_param : public std::exception {};
+
+    parser(const parser & ) = delete;
+    parser &operator=(const parser & ) = delete;
+
+    void parse(const char *file_path);
+    void parse(const std::string &file_path);
+protected:
+    parser();
+    ~parser();
+
+    template<class T>
+    void register_param(T &v, const char *name);
+
+    template<template<class > class ValueParser, class T>
+    void register_param(T &v, const char *name);
+
+    template<class ValueParser, class T>
+    void register_param(T &v, const char *name);
+
+    template<class Parser, class T>
+    void register_complex_param(T &v, const char *name);
+
+#define __VIC_REGISTER_CONFIG_PARAM(c,p) this->register_param((c).p, #p)
+#define __VIC_REGISTER_CONFIG_PARAM_VP(c,p,vp) \
+    this->register_param<vp>((c).p, #p)
+#define __VIC_REGISTER_COMPLEX_CONFIG_PARAM(c,p,cp) \
+    this->register_complex_param<cp>((c).p, #p)
+};
+]]></code-block>
+
+<p>Base class for parsers of config files and complex parameters.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>class error</prototype>
+<p>Base class for exceptions thrown by the parser.</p>
+</synopsis>
+
+<synopsis>
+<prototype>class source_error</prototype>
+<p>Exception thrown on invalid config file format.</p>
+</synopsis>
+
+<synopsis>
+<prototype>class duplicate_param</prototype>
+<p>Exception throw by the <tt>register_param()</tt> functions when attempting
+to register a parameter with the same name.</p>
+</synopsis>
+
+<synopsis>
+<prototype>void parse(const char *file_path)</prototype>
+<prototype>void parse(const std::string &amp;file_path)</prototype>
+<p>Parse the configuration file specified by the path.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class ValueParser, class T>
+void register_param(T &amp;v, const char *name)</prototype>
+<p>Register a parameter with the specified <tt>name</tt> and referred by
+<tt>v</tt>. <tt>ValueParser</tt> will be used to parse its values.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;template&lt;class > class ValueParser, class T>
+void register_param(T &amp;v, const char *name)</prototype>
+<p>Calls <tt>register_param&lt; ValueParser&lt;T> >(v, name)</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class T>
+void register_param(T &amp;v, const char *name)</prototype>
+<p>Calls <tt>register_param&lt; config::value&lt;T> >(v, name)</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>__VIC_REGISTER_CONFIG_PARAM(cfg, param)</prototype>
+<p>Calls <tt>register_param(cfg.param, #param)</tt>, which prevents duplication
+of the parameter name (when it is the same as the <tt>struct</tt> field name).
+</p>
+</synopsis>
+
+<synopsis>
+<prototype>__VIC_REGISTER_CONFIG_PARAM_VP(cfg, papam, ValueParser)</prototype>
+<p>Same as <tt>__VIC_REGISTER_CONFIG_PARAM()</tt> but additionally specifies
+<tt>ValueParser</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>template&lt;class Parser, class T>
+void register_complex_param(T &amp;v, const char *name)</prototype>
+<p>Registers a complex parameter. <tt>Parser</tt> is derived from
+<tt>config::parser</tt>.</p>
+</synopsis>
+
+<synopsis>
+<prototype>__VIC_REGISTER_COMPLEX_CONFIG_PARAM(cfg, param, Parser)</prototype>
+<p>Same as <tt>__VIC_REGISTER_CONFIG_PARAM()</tt> but for
+<tt>register_complex_param()</tt>.</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>
+
+
+<chapter xml:id="config.value.h">
+<title><tt>__vic/config/value.h</tt> <badge>C++11</badge></title>
+
+<chapter xml:id="config--value">
+<title><tt>config::value</tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class T>
+class config::value
+{
+public:
+    static bool parse(const std::string &s, T &res);
+};
+
+template<> class config::value<int>;
+template<> class config::value<short>;
+template<> class config::value<long>;
+template<> class config::value<long long>;
+template<> class config::value<signed char>;
+
+template<> class config::value<unsigned>;
+template<> class config::value<unsigned short>;
+template<> class config::value<unsigned long>;
+template<> class config::value<unsigned long long>;
+template<> class config::value<unsigned char>;
+
+template<> class config::value<bool>;
+
+template<> class config::value<std::string>;
+template<> class config::value<__vic::string_buffer>;
+]]></code-block>
+
+<p>Value parser for values of <tt>T</tt> type, used by default (unless
+specified explicitly). Parses the input string <tt>s</tt>. If successful,
+stores the result in <tt>res</tt> and returns <tt>true</tt>. You can create
+specializations for your own types.</p>
+
+<p>All user-defined value parsers must have the same interface and behaviour.
+</p>
+
+</chapter>
+
+<chapter xml:id="config--list_traits">
+<title><tt>config::list_traits</tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+template<class List>
+struct config::list_traits
+{
+    using value_type = ]]><nt>list-element-type</nt>;<![CDATA[
+    static void push(List &list, value_type &&v);
+};
+]]></code-block>
+
+<p>Specializing this template for some <tt>List</tt> type makes the library
+treat parameters of that type as a list.</p>
+
+<section><title>Class members</title>
+
+<synopsis>
+<prototype>typename value_type</prototype>
+<p>Type of list elements.</p>
+</synopsis>
+
+<synopsis>
+<prototype>static void push(List &amp;list, value_type &amp;&amp;v)</prototype>
+<p>Adds <tt>v</tt> to the list (usually at the end).</p>
+</synopsis>
+
+</section>
+
+</chapter>
+
+</chapter>
+
+
+<chapter xml:id="config-value-parsers">
+<title><tt>Additional value parsers</tt></title>
+
+
+<chapter xml:id="config--value-std--optional">
+<title><tt>config::value&lt;std::optional&lt;T>></tt> <badge>C++17</badge></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/optional.h>
+
+template<class T>
+class config::value<std::optional<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--value-__vic--ipv4_addr">
+<title><tt>config::value&lt;__vic::ipv4_addr></tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<mfisoft/config/values/ip_addr.h>
+
+template<> class config::value<__vic::ipv4_addr>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--complex_value-std--optional">
+<title><tt>config::complex_value&lt;std::optional&lt;T>></tt> <badge>C++17</badge></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/optional.h>
+
+template<class T, class Parser>
+class config::complex_value<std::optional<T>, Parser, false>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--list_traits-std--vector">
+<title><tt>config::list_traits&lt;std::vector&lt;T>></tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/vector.h>
+
+template<class T>
+struct config::list_traits<std::vector<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--list_traits-std--list">
+<title><tt>config::list_traits&lt;std::list&lt;T>></tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/list.h>
+
+template<class T>
+struct config::list_traits<std::list<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--list_traits-std--forward_list">
+<title><tt>config::list_traits&lt;std::forward_list&lt;T>></tt> <badge>C++11</badge></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/std/forward_list.h>
+
+template<class T>
+struct config::list_traits<std::forward_list<T>>;
+]]></code-block>
+
+</chapter>
+
+
+<chapter xml:id="config--bytes_value_parser">
+<title><tt>config::bytes_value_parser</tt></title>
+
+<code-block lang="C++"><![CDATA[
+#include<__vic/config/values/bytes.h>
+
+template<class TUInt>
+class config::bytes_value_parser;
+]]></code-block>
+
+<p>Parser of parameters specifying the size in bytes. Allows values like
+"<tt>2K</tt>", which means 2 kilobytes. The following suffixes are supported:
+<tt>K</tt> – kilo, <tt>M</tt> – mega, <tt>G</tt> – giga. All the suffixes are
+powers of 2 (1K = 1024).</p>
+
+<precondition><tt>TUInt</tt> – is an usigned integer type.</precondition>
+
+</chapter>
+
+
+</chapter>
+
+
+</chapter>

@@ -63,6 +63,7 @@
     <!ENTITY windows.wait_cursor.h SYSTEM "windows.wait_cursor.h.xml">
     <!ENTITY windows.wchar.h SYSTEM "windows.wchar.h.xml">
     <!ENTITY windows.window.h SYSTEM "windows.window.h.xml">
+    <!ENTITY config SYSTEM "config.xml">
 ]>
 <document xml:lang="en" version="1.0" status="Draft">
 <title>__vic's C++ library (Windows)</title>
@@ -200,6 +201,7 @@ TODO
 
 &sreaders;
 &swriters;
+&config;
 
 <chapter xml:id="build">
 <title>Build and install</title>
