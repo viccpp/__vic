@@ -47,6 +47,9 @@ public:
         : in_addr{{{uint8_t(a & 0xFF), uint8_t((a >> 8) & 0xFF), // UB: type punning
                     uint8_t((a >> 16) & 0xFF), uint8_t(a >> 24)}}} {}
 #else
+#if __cpp_constexpr
+        : in_addr{}
+#endif
         { this->s_addr = a; }
 #endif
 
