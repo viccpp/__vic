@@ -57,7 +57,7 @@ void to_text_append(::in_addr ip, std::string &res);
 template<> struct std::hash<ipv4_addr>;
 ]]></code-block>
 
-<p>An IPv4 address. A handy C++-wrapper for <tt>::in_addr</tt>.</p>
+<p>IPv4 address. A handy C++-wrapper for <tt>::in_addr</tt>.</p>
 
 <section><title>Class members</title>
 
