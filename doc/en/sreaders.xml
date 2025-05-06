@@ -51,7 +51,7 @@ interface ]]><nt>sreader_result</nt><![CDATA[
 };
 ]]></code-block>
 
-<p>An sreader read result contains a status of the read operation
+<p>Sreader read result. Contains a status of the read operation
 (success/failure) and the value read if the read was successful.
 The instances are (trivially) copy-constructible and copy-assignable.</p>
 
@@ -131,7 +131,7 @@ concept sreader =
     };
 ]]></code-block>
 
-<p>A C++ concept for sreaders.</p>
+<p>C++ concept for sreaders.</p>
 
 </chapter>
 
@@ -144,7 +144,7 @@ template<class R, class T>
 concept byte_sreader = sreader<R, T> && is_byte<T>::value;
 ]]></code-block>
 
-<p>A C++ concept for sreaders that read bytes.</p>
+<p>C++ concept for sreaders that read bytes.</p>
 
 </chapter>
 
@@ -162,7 +162,7 @@ concept sreader_result =
     };
 ]]></code-block>
 
-<p>A C++ concept for sreader results.</p>
+<p>C++ concept for sreader results.</p>
 
 </chapter>
 
@@ -181,7 +181,7 @@ template<class SReaderResult>
 using sreader_value_t = typename sreader_value<SReaderResult>::type;
 ]]></code-block>
 
-<p>A metafunction returning the type returned by the <tt>value()</tt>
+<p>Metafunction returning the type returned by the <tt>value()</tt>
 member-function of the specified <tt>SReaderResult</tt>.</p>
 
 <section><title>Example</title>
@@ -255,7 +255,7 @@ unsigned char uchar_value(sread_result<unsigned char> r);
 #endif
 ]]></code-block>
 
-<p>A concrete type (template) that models <xref to="sreader_result"/>.</p>
+<p>Concrete type (template) that models <xref to="sreader_result"/>.</p>
 
 <p>The <tt>sread_result&lt;unsigned char></tt> specialization is compatible
 (implicitly convertible) with any byte result type representation including:</p>
@@ -363,7 +363,7 @@ template<class T, class InputIterator> iterator_sreader<InputIterator,T>
 make_iterator_sreader_for(InputIterator begin, InputIterator end);
 ]]></code-block>
 
-<p>An adapter for a traditional [<tt>begin</tt>,<tt>end</tt>) pair of iterators.
+<p>Adapter for a traditional [<tt>begin</tt>,<tt>end</tt>) pair of iterators.
 </p>
 
 <p>Additional <tt>position()</tt> function returns the current iterator
@@ -397,7 +397,7 @@ template<class T, class InputIterator> iterator_sreader_n<InputIterator,T>
 make_iterator_sreader_n_for(InputIterator begin, size_t n);
 ]]></code-block>
 
-<p>An adapter for iterator + elements counter.</p>
+<p>Adapter for iterator + elements counter.</p>
 
 <p>Additional <tt>position()</tt> function returns the current iterator
 position.</p>
@@ -429,7 +429,7 @@ template<class T, class Cont>
 container_sreader<Cont,T> make_container_sreader_for(const Cont &c);
 ]]></code-block>
 
-<p>An adapter for STL-style container classes with <tt>begin()</tt> and
+<p>Adapter for STL-style container classes with <tt>begin()</tt> and
 <tt>end()</tt> members.</p>
 
 <p>Additional <tt>position()</tt> function returns the current iterator
@@ -460,7 +460,7 @@ template<class charT>
 basic_cstring_sreader<charT> make_cstring_sreader(const charT *s);
 ]]></code-block>
 
-<p>An adapter for NULL-terminated C-style strings.</p>
+<p>Adapter for NULL-terminated C-style strings.</p>
 
 <p>Additional <tt>position()</tt> function returns the current pointer
 position.</p>
@@ -492,7 +492,7 @@ basic_string_sreader<charT>
     make_string_sreader(const std::basic_string<charT,Tr,Al> &s);
 ]]></code-block>
 
-<p>An adapter for <tt>std::basic_string</tt>.</p>
+<p>Adapter for <tt>std::basic_string</tt>.</p>
 
 <p>Additional <tt>position()</tt> function returns the current pointer
 position.</p>

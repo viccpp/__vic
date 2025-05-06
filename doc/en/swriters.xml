@@ -53,7 +53,7 @@ concept swriter =
     };
 ]]></code-block>
 
-<p>A C++ concept for swriters.</p>
+<p>C++ concept for swriters.</p>
 
 </chapter>
 
@@ -107,7 +107,7 @@ template<class T, class Cont>
 push_back_swriter<Cont,T> make_push_back_swriter_for(Cont &c);
 ]]></code-block>
 
-<p>An adapter. Uses <tt>push_back()</tt> member function to write elements.
+<p>Adapter. Uses <tt>push_back()</tt> member function to write elements.
 Can be created using constructor or one of <tt>make_...</tt> functions.</p>
 
 </chapter>
@@ -166,7 +166,7 @@ basic_string_swriter<charT,Tr,Al>
     make_string_swriter(std::basic_string<charT,Tr,Al> &s);
 ]]></code-block>
 
-<p>An adapter for <tt>std::basic_string</tt>. Can be created using constructor
+<p>Adapter for <tt>std::basic_string</tt>. Can be created using constructor
 or <tt>make_...</tt> function.</p>
 
 </chapter>

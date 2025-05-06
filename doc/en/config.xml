@@ -483,8 +483,8 @@ of the parameter name (when it is the same as the <tt>struct</tt> field name).
 
 <synopsis>
 <prototype>__VIC_REGISTER_CONFIG_PARAM_VP(cfg, papam, ValueParser)</prototype>
-<p>Same as <tt>__VIC_REGISTER_CONFIG_PARAM()</tt> but additionally specifies
-<tt>ValueParser</tt>.</p>
+<p>The same as <tt>__VIC_REGISTER_CONFIG_PARAM()</tt>, but additionally
+specifies <tt>ValueParser</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -496,7 +496,7 @@ void register_complex_param(T &amp;v, const char *name)</prototype>
 
 <synopsis>
 <prototype>__VIC_REGISTER_COMPLEX_CONFIG_PARAM(cfg, param, Parser)</prototype>
-<p>Same as <tt>__VIC_REGISTER_CONFIG_PARAM()</tt> but for
+<p>The same as <tt>__VIC_REGISTER_CONFIG_PARAM()</tt>, but for
 <tt>register_complex_param()</tt>.</p>
 </synopsis>
 
