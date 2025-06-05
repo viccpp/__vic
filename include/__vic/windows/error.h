@@ -14,7 +14,7 @@
 #ifdef __MINGW32__
 #include<windef.h>
 // Avoid huge windows.h inclusion
-extern "C" DWORD WINAPI GetLastError(void);
+extern "C" DWORD __declspec(dllimport) WINAPI GetLastError(void);
 #else
 #include<windows.h>
 #endif
