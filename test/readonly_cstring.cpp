@@ -12,6 +12,28 @@ void run_tests()
     assert(compare("a",  st) < 0);
 
     assert(__vic::readonly_cstring().empty());
+
+    // Check comparison
+    assert(st == st);
+    assert(!(st != st));
+    assert(!(st < st));
+    assert(!(st > st));
+    assert(st <= st);
+    assert(st >= st);
+
+    assert(st == cstr);
+    assert(!(st != cstr));
+    assert(!(st < cstr));
+    assert(!(st > cstr));
+    assert(st <= cstr);
+    assert(st >= cstr);
+
+    assert(cstr == st);
+    assert(!(cstr != st));
+    assert(!(cstr < st));
+    assert(!(cstr > st));
+    assert(cstr <= st);
+    assert(cstr >= st);
 }
 
 int main()

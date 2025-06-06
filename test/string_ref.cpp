@@ -34,6 +34,14 @@ void run()
     sr = std_str;
     assert(sr == std_str);
 
+    // Check comparison
+    assert(sr == sr);
+    assert(!(sr != sr));
+    assert(!(sr < sr));
+    assert(!(sr > sr));
+    assert(sr <= sr);
+    assert(sr >= sr);
+
 #if __cpp_lib_string_view
     sr = std::string_view();
     std::string_view sv = sr;

@@ -12,6 +12,9 @@
 #include<__vic/defs.h>
 #include __VIC_SWAP_HEADER
 #include<cstring>
+#if __has_include(<compare>)
+#include<compare>
+#endif
 
 namespace __vic {
 
@@ -75,25 +78,40 @@ public:
     inline bool operator OP(T1 s1, T2 s2) { return compare(s1, s2) OP 0; }
 
 __VIC_DEFINE_OP(==, const readonly_cstring &, const readonly_cstring &)
+__VIC_DEFINE_OP(==, const readonly_cstring &, const char *)
+
+#if !__cpp_impl_three_way_comparison
+__VIC_DEFINE_OP(==, const char *, const readonly_cstring &)
 __VIC_DEFINE_OP(!=, const readonly_cstring &, const readonly_cstring &)
+__VIC_DEFINE_OP(!=, const readonly_cstring &, const char *)
+__VIC_DEFINE_OP(!=, const char *, const readonly_cstring &)
+#endif
+
+#if __cpp_lib_three_way_comparison
+inline auto operator<=>(const readonly_cstring &s1, const readonly_cstring &s2)
+{
+    return compare(s1, s2) <=> 0;
+}
+inline auto operator<=>(const readonly_cstring &s1, const char *s2)
+{
+    return compare(s1, s2) <=> 0;
+}
+#else
 __VIC_DEFINE_OP(< , const readonly_cstring &, const readonly_cstring &)
 __VIC_DEFINE_OP(> , const readonly_cstring &, const readonly_cstring &)
 __VIC_DEFINE_OP(<=, const readonly_cstring &, const readonly_cstring &)
 __VIC_DEFINE_OP(>=, const readonly_cstring &, const readonly_cstring &)
 
-__VIC_DEFINE_OP(==, const readonly_cstring &, const char *)
-__VIC_DEFINE_OP(!=, const readonly_cstring &, const char *)
 __VIC_DEFINE_OP(< , const readonly_cstring &, const char *)
 __VIC_DEFINE_OP(> , const readonly_cstring &, const char *)
 __VIC_DEFINE_OP(<=, const readonly_cstring &, const char *)
 __VIC_DEFINE_OP(>=, const readonly_cstring &, const char *)
 
-__VIC_DEFINE_OP(==, const char *, const readonly_cstring &)
-__VIC_DEFINE_OP(!=, const char *, const readonly_cstring &)
 __VIC_DEFINE_OP(< , const char *, const readonly_cstring &)
 __VIC_DEFINE_OP(> , const char *, const readonly_cstring &)
 __VIC_DEFINE_OP(<=, const char *, const readonly_cstring &)
 __VIC_DEFINE_OP(>=, const char *, const readonly_cstring &)
+#endif
 
 #undef __VIC_DEFINE_OP
 //----------------------------------------------------------------------------

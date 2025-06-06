@@ -4,6 +4,10 @@ Legend:
     * Changes
     ! Important
 
+2025-06-06  __vic
+    + readonly_cstring: operator<=> support
+    + string_ref: operator<=> support
+
 2025-03-18  __vic
     + Config library
 

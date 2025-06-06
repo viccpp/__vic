@@ -39,13 +39,19 @@ int compare(const readonly_cstring &s1, const char *s2);
 int compare(const char *s1, const readonly_cstring &s2);
 
 bool operator==(const readonly_cstring &s1, const readonly_cstring &s2);
+bool operator==(const readonly_cstring &s1, const char *s2);
+
+// BEGIN C++20
+auto operator<=>(const readonly_cstring &s1, const readonly_cstring &s2);
+auto operator<=>(const readonly_cstring &s1, const char *s2);
+
+// ELSE
 bool operator!=(const readonly_cstring &s1, const readonly_cstring &s2);
 bool operator<(const readonly_cstring &s1, const readonly_cstring &s2);
 bool operator>(const readonly_cstring &s1, const readonly_cstring &s2);
 bool operator<=(const readonly_cstring &s1, const readonly_cstring &s2);
 bool operator>=(const readonly_cstring &s1, const readonly_cstring &s2);
 
-bool operator==(const readonly_cstring &s1, const char *s2);
 bool operator!=(const readonly_cstring &s1, const char *s2);
 bool operator<(const readonly_cstring &s1, const char *s2);
 bool operator>(const readonly_cstring &s1, const char *s2);
@@ -58,6 +64,7 @@ bool operator<(const char *s1, const readonly_cstring &s2);
 bool operator>(const char *s1, const readonly_cstring &s2);
 bool operator<=(const char *s1, const readonly_cstring &s2);
 bool operator>=(const char *s1, const readonly_cstring &s2);
+// END C++20
 
 void swap(readonly_cstring &s1, readonly_cstring &s2) noexcept;
 ]]></code-block>
@@ -164,8 +171,11 @@ it. Can be useful in conjunction with functions like <tt>std::sprintf()</tt>.</p
 
 <synopsis>
 <prototype>bool operator==(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2)</prototype>
+<prototype>bool operator==(const readonly_cstring &amp;s1, const char *s2)</prototype>
+<prototype>auto operator&lt;=>(const readonly_cstring &amp;s1, const readonly_cstring &amp;s2) <badge>C++20</badge></prototype>
+<prototype>auto operator&lt;=>(const readonly_cstring &amp;s1, const char *s2) <badge>C++20</badge></prototype>
 <prototype>...</prototype>
-<prototype>bool operator>=(const char *s1, const readonly_cstring &amp;s2)</prototype>
+<prototype>bool operator>=(const char *s1, const readonly_cstring &amp;s2) <badge>until C++20</badge></prototype>
 <p>Full set of comparators for <tt>readonly_cstring</tt> and <tt>const char *</tt>
 in all combinations.</p>
 </synopsis>

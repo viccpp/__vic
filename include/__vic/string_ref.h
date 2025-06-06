@@ -14,6 +14,9 @@
 #if __has_include(<string_view>)
 #include<string_view>
 #endif
+#if __has_include(<compare>)
+#include<compare>
+#endif
 
 namespace __vic {
 
@@ -108,9 +111,17 @@ inline bool operator==(basic_string_ref<charT> s1, basic_string_ref<charT> s2)
         std::memcmp(s1.data(), s2.data(), len * sizeof(charT)) == 0;
 }
 //----------------------------------------------------------------------------
+#if !__cpp_impl_three_way_comparison
 template<class charT>
 inline bool operator!=(basic_string_ref<charT> s1, basic_string_ref<charT> s2)
     { return !(s1 == s2); }
+#endif
+//----------------------------------------------------------------------------
+#if __cpp_lib_three_way_comparison
+template<class charT>
+inline auto operator<=>(basic_string_ref<charT> s1, basic_string_ref<charT> s2)
+    { return s1.compare(s2) <=> 0; }
+#else
 //----------------------------------------------------------------------------
 template<class charT>
 inline bool operator<(basic_string_ref<charT> s1, basic_string_ref<charT> s2)
@@ -127,14 +138,21 @@ inline bool operator<=(basic_string_ref<charT> s1, basic_string_ref<charT> s2)
 template<class charT>
 inline bool operator>=(basic_string_ref<charT> s1, basic_string_ref<charT> s2)
     { return s1.compare(s2) >= 0; }
+#endif
 //----------------------------------------------------------------------------
 // Non-templated operators to force implicit conversions to string_ref
 inline bool operator==(string_ref s1, string_ref s2) { return operator== <>(s1, s2); }
+#if !__cpp_impl_three_way_comparison
 inline bool operator!=(string_ref s1, string_ref s2) { return operator!= <>(s1, s2); }
+#endif
+#if __cpp_lib_three_way_comparison
+inline auto operator<=>(string_ref s1, string_ref s2) { return operator<=> <>(s1, s2); }
+#else
 inline bool operator< (string_ref s1, string_ref s2) { return operator<  <>(s1, s2); }
 inline bool operator> (string_ref s1, string_ref s2) { return operator>  <>(s1, s2); }
 inline bool operator<=(string_ref s1, string_ref s2) { return operator<= <>(s1, s2); }
 inline bool operator>=(string_ref s1, string_ref s2) { return operator>= <>(s1, s2); }
+#endif
 //----------------------------------------------------------------------------
 
 } // namespace
