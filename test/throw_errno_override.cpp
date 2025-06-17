@@ -12,14 +12,16 @@ struct my_exception : public __vic::exception
 };
 //////////////////////////////////////////////////////////////////////////////
 
+namespace __vic {
 //----------------------------------------------------------------------------
-// Override library functions to throw my_exception
+// Override the library functions to throw std::system_error
 //----------------------------------------------------------------------------
-void __vic::throw_errno(const char *prompt, int err_no)
+void throw_errno(const char *prompt, int err_no)
 {
     throw my_exception(prompt);
 }
 //----------------------------------------------------------------------------
+} // namespace
 
 void run_tests()
 {
