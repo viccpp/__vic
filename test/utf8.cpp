@@ -8,11 +8,13 @@
 #include<string>
 #include<iostream>
 #include<exception>
+#include<cstddef>
 #include<cassert>
 
 namespace tests {
 
 using __vic::unicode_t;
+using std::size_t;
 
 #if __cpp_variadic_templates && __cpp_rvalue_references
 typedef __vic::utf8::reader<__vic::string_sreader> utf8_string_reader;

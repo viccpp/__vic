@@ -1,4 +1,5 @@
 #include<__vic/logger.h>
+#include<cstddef>
 #include<iostream>
 #include<exception>
 
@@ -7,7 +8,7 @@ class coutput : public __vic::logger::output
 {
 public:
     void publish_record(__vic::logger::severity_t s,
-                            const char *rec, size_t rec_len)
+                            const char *rec, std::size_t rec_len)
     {
         (std::clog << to_string(s) << ": ").write(rec, rec_len) << std::endl;
     }

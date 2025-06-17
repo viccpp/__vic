@@ -4,6 +4,7 @@
 #include<__vic/ascii.h>
 #include<iostream>
 #include<exception>
+#include<cstddef>
 #include<cassert>
 #include<string>
 
@@ -34,7 +35,7 @@ public:
 std::string encode(const bytes &s)
 {
     std::string res;
-    size_t enc_len = __vic::base64::encoded_length(s.length());
+    std::size_t enc_len = __vic::base64::encoded_length(s.length());
     res.reserve(enc_len);
     __vic::base64::encode(bytes_sreader(s), __vic::string_swriter(res));
     assert(res.length() == enc_len);
@@ -43,7 +44,7 @@ std::string encode(const bytes &s)
 bytes decode(const std::string &s)
 {
     bytes res;
-    size_t max_dec_len = __vic::base64::max_decoded_length(s.length());
+    std::size_t max_dec_len = __vic::base64::max_decoded_length(s.length());
     res.reserve(max_dec_len);
     __vic::base64::decode(__vic::string_sreader(s), bytes_swriter(res));
     assert(res.length() <= max_dec_len);
@@ -52,7 +53,7 @@ bytes decode(const std::string &s)
 bytes decode_ignore_ws(const std::string &s)
 {
     bytes res;
-    size_t max_dec_len = __vic::base64::max_decoded_length(s.length());
+    std::size_t max_dec_len = __vic::base64::max_decoded_length(s.length());
     res.reserve(max_dec_len);
     __vic::base64::decode(
         skip_ws_sreader<__vic::string_sreader>(s), bytes_swriter(res));

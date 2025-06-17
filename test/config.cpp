@@ -7,6 +7,7 @@
 #include<__vic/config/values/std/list.h>
 #include<__vic/config/values/std/forward_list.h>
 #include<__vic/config/values/bytes.h>
+#include<cstddef>
 #include<cstdint>
 #include<string>
 #include<vector>
@@ -63,16 +64,16 @@ namespace tests {
 //////////////////////////////////////////////////////////////////////////////
 struct main_config
 {
-    std::string str_param;
-    int32_t     int32_param{};
-    int         int_param{};
-    short       short_param{};
+    std::string  str_param;
+    std::int32_t int32_param{};
+    int          int_param{};
+    short        short_param{};
     std::list<std::string>   str_list_param1;
     std::vector<std::string> str_list_param2;
     std::list<decoder_instance> instances;
-    bool        bool_param{};
-    size_t      size_param{};
-    unsigned    unsigned_param{};
+    bool         bool_param{};
+    std::size_t  size_param{};
+    unsigned     unsigned_param{};
 #if __cpp_lib_optional
     std::optional<unsigned>
 #else

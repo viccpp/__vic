@@ -6,12 +6,14 @@
 #include<string>
 #include<iostream>
 #include<exception>
+#include<cstddef>
 #include<cstring>
 #include<cassert>
 
 namespace tests {
 
 using __vic::unicode_t;
+using std::size_t;
 #if __cpp_unicode_characters
 using std::u16string;
 #else

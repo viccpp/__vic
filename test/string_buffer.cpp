@@ -1,11 +1,12 @@
 #include<__vic/string_buffer.h>
 #include<iostream>
 #include<exception>
+#include<cstddef>
 #include<cassert>
 
 void run_tests()
 {
-    const size_t initial_capacity = 64;
+    const std::size_t initial_capacity = 64;
     __vic::string_buffer s(initial_capacity);
     assert(s.empty());
     assert(s.capacity() >= initial_capacity);
