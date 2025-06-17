@@ -159,20 +159,21 @@ inline bool operator>=(string_ref s1, string_ref s2) { return operator>= <>(s1, 
 
 #ifdef __VIC_DEFINE_OSTREAM_INSERTERS
 #include<ostream>
+namespace __vic {
 //----------------------------------------------------------------------------
 template<class charT, class Traits>
 inline std::basic_ostream<charT,Traits> &operator<<(
-    std::basic_ostream<charT,Traits> &os,
-    __vic::basic_string_ref<charT> sr)
+    std::basic_ostream<charT,Traits> &os, basic_string_ref<charT> sr)
 {
     return os.write(sr.begin(), sr.size());
 }
 //----------------------------------------------------------------------------
-inline std::ostream &operator<<(std::ostream &os, __vic::string_ref sr)
+inline std::ostream &operator<<(std::ostream &os, string_ref sr)
 {
     return operator<< <>(os, sr);
 }
 //----------------------------------------------------------------------------
+} // namespace
 #endif
 
 #endif // header guard

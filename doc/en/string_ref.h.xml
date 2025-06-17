@@ -84,7 +84,7 @@ bool operator>=(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
 #ifdef __VIC_DEFINE_OSTREAM_INSERTERS
 template<class charT, class Traits>
 std::basic_ostream<charT,Traits> &operator<<(
-    std::basic_ostream<charT,Traits> &os, const basic_string_ref<charT> &sr);
+    std::basic_ostream<charT,Traits> &os, basic_string_ref<charT> sr);
 #endif
 ]]></code-block>
 
@@ -261,7 +261,7 @@ bool operator>=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2) <b
 <synopsis>
 <prototype>template&lt;class charT, class Traits>
 std::basic_ostream&lt;charT,Traits> &amp;operator&lt;&lt;(
-    std::basic_ostream&lt;charT,Traits> &amp;os, const basic_string_ref&lt;charT> &amp;sr)</prototype>
+    std::basic_ostream&lt;charT,Traits> &amp;os, basic_string_ref&lt;charT> sr)</prototype>
 <p>Inserter to an output stream. Defined (and <tt>&lt;ostream></tt> is included)
 only if <tt>__VIC_DEFINE_OSTREAM_INSERTERS</tt> macro was defined before the
 header inclusion.</p>
