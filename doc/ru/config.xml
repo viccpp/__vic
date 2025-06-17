@@ -512,6 +512,16 @@ void register_complex_param(T &amp;v, const char *name)</prototype>
 </chapter>
 
 
+<chapter xml:id="config.parser.macros.h">
+<title><tt>__vic/config/parser.macros.h</tt></title>
+
+<p>Данный заголовочный файл содержит только макросы из
+<xref to="config.parser.h"/>. Это позволяет использовать их в случаях, когда
+данная библиотека подключается как C++-модуль.</p>
+
+</chapter>
+
+
 <chapter xml:id="config.value.h">
 <title><tt>__vic/config/value.h</tt> <badge>C++11</badge></title>
 

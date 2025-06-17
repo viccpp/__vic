@@ -6,6 +6,7 @@ Legend:
 
 2025-06-17  __vic
     * stdint.h always includes <stdint.h> not <cstdint>
+    + config/parser.macros.h
 
 2025-06-06  __vic
     + readonly_cstring: operator<=> support
