@@ -15,6 +15,9 @@
 #ifdef __VIC_HAVE_STD_CHRONO
 #include<chrono>
 #endif
+#if __has_include(<compare>)
+#include<compare>
+#endif
 
 namespace __vic { namespace posix {
 
@@ -126,39 +129,51 @@ private:
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-inline bool operator==(const time_spec &t1, const time_spec &t2)
+__VIC_CONSTEXPR_FUNC bool operator==(const time_spec &t1, const time_spec &t2)
 {
     return t1.tv_sec == t2.tv_sec && t1.tv_nsec == t2.tv_nsec;
 }
 //----------------------------------------------------------------------------
-inline bool operator!=(const time_spec &t1, const time_spec &t2)
+#if !__cpp_impl_three_way_comparison
+__VIC_CONSTEXPR_FUNC bool operator!=(const time_spec &t1, const time_spec &t2)
 {
     return !(t1 == t2);
 }
+#endif
 //----------------------------------------------------------------------------
-inline bool operator<(const time_spec &t1, const time_spec &t2)
+
+#if __cpp_lib_three_way_comparison
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC auto operator<=>(const time_spec &t1, const time_spec &t2)
+{
+    auto cmp = t1.tv_sec <=> t2.tv_sec;
+    return cmp != 0 ? cmp : t1.tv_nsec <=> t2.tv_nsec;
+}
+#else
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool operator<(const time_spec &t1, const time_spec &t2)
 {
     return t1.tv_sec < t2.tv_sec ||
         (t1.tv_sec == t2.tv_sec && t1.tv_nsec < t2.tv_nsec);
 }
 //----------------------------------------------------------------------------
-inline bool operator>(const time_spec &t1, const time_spec &t2)
+__VIC_CONSTEXPR_FUNC bool operator>(const time_spec &t1, const time_spec &t2)
 {
-    return t1.tv_sec > t2.tv_sec ||
-        (t1.tv_sec == t2.tv_sec && t1.tv_nsec > t2.tv_nsec);
+    return t2 < t1;
 }
 //----------------------------------------------------------------------------
-inline bool operator<=(const time_spec &t1, const time_spec &t2)
+__VIC_CONSTEXPR_FUNC bool operator<=(const time_spec &t1, const time_spec &t2)
 {
-    return t1.tv_sec < t2.tv_sec ||
-        (t1.tv_sec == t2.tv_sec && t1.tv_nsec <= t2.tv_nsec);
+    return !(t2 < t1);
 }
 //----------------------------------------------------------------------------
-inline bool operator>=(const time_spec &t1, const time_spec &t2)
+__VIC_CONSTEXPR_FUNC bool operator>=(const time_spec &t1, const time_spec &t2)
 {
-    return t1.tv_sec > t2.tv_sec ||
-        (t1.tv_sec == t2.tv_sec && t1.tv_nsec >= t2.tv_nsec);
+    return !(t1 < t2);
 }
+//----------------------------------------------------------------------------
+#endif
+
 //----------------------------------------------------------------------------
 inline time_spec operator+(time_spec t1, const time_spec &t2)
 {

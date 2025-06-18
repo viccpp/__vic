@@ -40,12 +40,16 @@ struct posix::time_spec : ::timespec
     time_spec &operator-=(time_spec t2);
 };
 
-bool operator==(time_spec t1, time_spec t2);
-bool operator!=(time_spec t1, time_spec t2);
-bool operator< (time_spec t1, time_spec t2);
-bool operator> (time_spec t1, time_spec t2);
-bool operator<=(time_spec t1, time_spec t2);
-bool operator>=(time_spec t1, time_spec t2);
+constexpr bool operator==(time_spec t1, time_spec t2);
+// BEGIN C++20
+constexpr auto operator<=>(time_spec t1, time_spec t2);
+// ELSE
+constexpr bool operator!=(time_spec t1, time_spec t2);
+constexpr bool operator< (time_spec t1, time_spec t2);
+constexpr bool operator> (time_spec t1, time_spec t2);
+constexpr bool operator<=(time_spec t1, time_spec t2);
+constexpr bool operator>=(time_spec t1, time_spec t2);
+// END C++20
 
 time_spec operator+(time_spec t1, time_spec t2);
 time_spec operator-(time_spec t1, time_spec t2);
@@ -113,12 +117,13 @@ time_spec &operator-=(std::chrono::duration<Rep,Period> t2)]]> <badge>C++11</bad
 </synopsis>
 
 <synopsis>
-<prototype>bool operator==(time_spec t1, time_spec t2)</prototype>
-<prototype>bool operator!=(time_spec t1, time_spec t2)</prototype>
-<prototype>bool operator&lt; (time_spec t1, time_spec t2)</prototype>
-<prototype>bool operator> (time_spec t1, time_spec t2)</prototype>
-<prototype>bool operator&lt;=(time_spec t1, time_spec t2)</prototype>
-<prototype>bool operator>=(time_spec t1, time_spec t2)</prototype>
+<prototype>constexpr bool operator==(time_spec t1, time_spec t2)</prototype>
+<prototype>constexpr auto operator&lt;=>(time_spec t1, time_spec t2) <badge>C++20</badge></prototype>
+<prototype>constexpr bool operator!=(time_spec t1, time_spec t2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator&lt; (time_spec t1, time_spec t2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator> (time_spec t1, time_spec t2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator&lt;=(time_spec t1, time_spec t2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator>=(time_spec t1, time_spec t2) <badge>until C++20</badge></prototype>
 <p>Comparison operators.</p>
 </synopsis>
 

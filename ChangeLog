@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2025-06-18  __vic
+    + posix::time_spec: operator<=> support
+
 2025-03-18  __vic
     + Config library
 
