@@ -32,13 +32,19 @@ public:
 constexpr ipv4_addr operator&(ipv4_addr a1, ipv4_addr a2);
 
 constexpr bool operator==(ipv4_addr a1, ipv4_addr a2);
+constexpr bool operator==(ipv4_addr a1, ::in_addr a2);
+
+// BEGIN C++20
+constexpr auto operator<=>(ipv4_addr a1, ipv4_addr a2);
+constexpr auto operator<=>(ipv4_addr a1, ::in_addr a2);
+
+// ELSE
 constexpr bool operator!=(ipv4_addr a1, ipv4_addr a2);
 constexpr bool operator< (ipv4_addr a1, ipv4_addr a2);
 constexpr bool operator> (ipv4_addr a1, ipv4_addr a2);
 constexpr bool operator<=(ipv4_addr a1, ipv4_addr a2);
 constexpr bool operator>=(ipv4_addr a1, ipv4_addr a2);
 
-constexpr bool operator==(ipv4_addr a1, ::in_addr a2);
 constexpr bool operator!=(ipv4_addr a1, ::in_addr a2);
 constexpr bool operator< (ipv4_addr a1, ::in_addr a2);
 constexpr bool operator> (ipv4_addr a1, ::in_addr a2);
@@ -51,6 +57,7 @@ constexpr bool operator< (::in_addr a1, ipv4_addr a2);
 constexpr bool operator> (::in_addr a1, ipv4_addr a2);
 constexpr bool operator<=(::in_addr a1, ipv4_addr a2);
 constexpr bool operator>=(::in_addr a1, ipv4_addr a2);
+// END C++20
 
 void to_text_append(::in_addr ip, std::string &res);
 
@@ -128,27 +135,29 @@ by dots.</note>
 
 <synopsis>
 <prototype>constexpr bool operator==(ipv4_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator!=(ipv4_addr a1, ipv4_addr a2)</prototype>
 <prototype>constexpr bool operator==(ipv4_addr a1, ::in_addr a2)</prototype>
-<prototype>constexpr bool operator!=(ipv4_addr a1, ::in_addr a2)</prototype>
-<prototype>constexpr bool operator==(::in_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator!=(::in_addr a1, ipv4_addr a2)</prototype>
+<prototype>constexpr bool operator==(::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator!=(ipv4_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator!=(ipv4_addr a1, ::in_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator!=(::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
 <p>Equality comparison operators.</p>
 </synopsis>
 
 <synopsis>
-<prototype>constexpr bool operator&lt; (ipv4_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator> (ipv4_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator&lt;=(ipv4_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator>=(ipv4_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator&lt; (ipv4_addr a1, ::in_addr a2)</prototype>
-<prototype>constexpr bool operator> (ipv4_addr a1, ::in_addr a2)</prototype>
-<prototype>constexpr bool operator&lt;=(ipv4_addr a1, ::in_addr a2)</prototype>
-<prototype>constexpr bool operator>=(ipv4_addr a1, ::in_addr a2)</prototype>
-<prototype>constexpr bool operator&lt; (::in_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator> (::in_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator&lt;=(::in_addr a1, ipv4_addr a2)</prototype>
-<prototype>constexpr bool operator>=(::in_addr a1, ipv4_addr a2)</prototype>
+<prototype>constexpr auto operator&lt;=>(ipv4_addr a1, ipv4_addr a2) <badge>C++20</badge></prototype>
+<prototype>constexpr auto operator&lt;=>(ipv4_addr a1, ::in_addr a2) <badge>C++20</badge></prototype>
+<prototype>constexpr bool operator&lt; (ipv4_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator> (ipv4_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator&lt;=(ipv4_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator>=(ipv4_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator&lt; (ipv4_addr a1, ::in_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator> (ipv4_addr a1, ::in_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator&lt;=(ipv4_addr a1, ::in_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator>=(ipv4_addr a1, ::in_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator&lt; (::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator> (::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator&lt;=(::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
+<prototype>constexpr bool operator>=(::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
 <p>Relational comparison operators. The resulting order may differ across
 platforms, but always mathematically consistent within a given platform.</p>
 </synopsis>
@@ -217,14 +226,17 @@ public:
 
 ipv6_addr operator&(const ipv6_addr &a1, const ipv6_addr &a2);
 
+// BEGIN C++20
 constexpr bool operator==(ipv6_addr a1, ipv6_addr a2);
+constexpr bool operator==(ipv6_addr a1, ::in6_addr a2);
+
+// ELSE
 constexpr bool operator!=(ipv6_addr a1, ipv6_addr a2);
 constexpr bool operator< (ipv6_addr a1, ipv6_addr a2);
 constexpr bool operator> (ipv6_addr a1, ipv6_addr a2);
 constexpr bool operator<=(ipv6_addr a1, ipv6_addr a2);
 constexpr bool operator>=(ipv6_addr a1, ipv6_addr a2);
 
-constexpr bool operator==(ipv6_addr a1, ::in6_addr a2);
 constexpr bool operator!=(ipv6_addr a1, ::in6_addr a2);
 constexpr bool operator< (ipv6_addr a1, ::in6_addr a2);
 constexpr bool operator> (ipv6_addr a1, ::in6_addr a2);
@@ -237,6 +249,7 @@ constexpr bool operator< (::in6_addr a1, ipv6_addr a2);
 constexpr bool operator> (::in6_addr a1, ipv6_addr a2);
 constexpr bool operator<=(::in6_addr a1, ipv6_addr a2);
 constexpr bool operator>=(::in6_addr a1, ipv6_addr a2);
+// END C++20
 
 void to_text_append(::in6_addr ip, std::string &res);
 

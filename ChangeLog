@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2025-06-18  __vic
+    + ip_addr.h: operator<=> support
+
 2025-03-18  __vic
     + Config library
 
