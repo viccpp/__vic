@@ -1,7 +1,13 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/fs.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

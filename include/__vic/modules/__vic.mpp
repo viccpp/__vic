@@ -34,6 +34,10 @@ module;
 #include<__vic/stdio_file.h>
 #include<__vic/bin_file.h>
 #include<__vic/waitable_event.h>
+#include<__vic/mutex.h>
+#include<__vic/thread.h>
+#include<__vic/ip_addr.h>
+#include<__vic/fs.h>
 
 #include<__vic/sreaders/defs.h>
 #include<__vic/sreaders/result.h>
@@ -68,6 +72,7 @@ module;
 
 #include<__vic/config/value.h>
 #include<__vic/config/values/bytes.h>
+#include<__vic/config/values/ip_addr.h>
 #include<__vic/config/values/std/optional.h>
 #include<__vic/config/values/std/forward_list.h>
 #include<__vic/config/values/std/list.h>
@@ -332,6 +337,52 @@ export namespace __vic {
 // __vic/waitable_event.h
     using __vic::waitable_event;
 
+// __vic/mutex.h
+    using __vic::mutex;
+    using __vic::mutex_lock;
+
+// __vic/thread.h
+    using __vic::thread;
+    namespace this_thread
+    {
+        using __vic::sleep_ms;
+        using __vic::get_id;
+    } // namespace
+
+// __vic/ip_addr.h
+    using __vic::ipv4_addr;
+    using __vic::ipv6_addr;
+    using __vic::operator&;
+    using __vic::operator==;
+    using __vic::operator<=>;
+    using __vic::to_text_append;
+
+// __vic/fs.h
+    using __vic::copy_file;
+    using __vic::copy_file_if_exists;
+    using __vic::copy_file_replace;
+    using __vic::copy_file_replace_if_exists;
+    using __vic::move_file;
+    using __vic::move_file_if_exists;
+    using __vic::move_file_replace;
+    using __vic::move_file_replace_if_exists;
+    using __vic::rename_file;
+    using __vic::rename_file_if_exists;
+    using __vic::rename_file_replace;
+    using __vic::rename_file_replace_if_exists;
+    using __vic::remove_file;
+    using __vic::remove_file_if_exists;
+    using __vic::remove_file_nt;
+    using __vic::path_exists;
+    using __vic::file_exists;
+    using __vic::dir_exists;
+    using __vic::mkdir;
+    using __vic::mkdir_if_absent;
+    using __vic::rmdir;
+    using __vic::rmdir_if_exists;
+    using __vic::file_size;
+    using __vic::get_current_dir;
+
 // __vic/sreaders
     using __vic::sreader;
     using __vic::byte_sreader;
@@ -451,4 +502,8 @@ export namespace __vic {
         using __vic::config::parser;
     } // namespace
 
+} // namespace
+
+export namespace std {
+    using std::hash;
 } // namespace
