@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/ascii_string.h>
 #include<iostream>
 #include<exception>
-#include<cassert>
 #include<cstring>
 #include<string>
+#endif
+#include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

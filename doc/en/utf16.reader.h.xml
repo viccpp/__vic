@@ -75,14 +75,14 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <tt>utf16::status::eof</tt> is returned when no more code units available.
 Other values are returned on errors, see <xref to="utf16--status"/> for more details.
 <tt>CodeUnitReader::operator()</tt> is used to access code units.</p>
-<note>The function itself doesn't throw exceptions but exception can be
+<note>The function itself does not throw exceptions, but exception can be
 thrown by <tt>CodeUnitReader::operator()</tt>.</note>
 </synopsis>
 
 <synopsis>
 <prototype>sread_result&lt;unicode_t> read()</prototype>
 <prototype>sread_result&lt;unicode_t> operator()()</prototype>
-<p>The same as <tt>parse()</tt> but returns <tt>sread_result</tt> on success or
+<p>The same as <tt>parse()</tt>, but returns <tt>sread_result</tt> on success or
 on EOF. Throws an exception from <xref to="utf16.exceptions.h"/> otherwise.</p>
 </synopsis>
 

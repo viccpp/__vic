@@ -4,6 +4,20 @@ Legend:
     * Changes
     ! Important
 
+2025-06-19  __vic
+    + modules/__vic.mpp
+
+2025-06-18  __vic
+    + ip_addr.h: operator<=> support
+
+2025-06-17  __vic
+    * stdint.h always includes <stdint.h> not <cstdint>
+    + config/parser.macros.h
+
+2025-06-06  __vic
+    + readonly_cstring: operator<=> support
+    + string_ref: operator<=> support
+
 2025-03-18  __vic
     + Config library
 

@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/throw_errno.h>
 #include<__vic/error.h>
 #include<iostream>
 #include<exception>
 #include<cstring>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 struct my_exception : public __vic::exception
@@ -12,14 +18,16 @@ struct my_exception : public __vic::exception
 };
 //////////////////////////////////////////////////////////////////////////////
 
+namespace __vic {
 //----------------------------------------------------------------------------
-// Override library functions to throw my_exception
+// Override the library functions to throw std::system_error
 //----------------------------------------------------------------------------
-void __vic::throw_errno(const char *prompt, int err_no)
+void throw_errno(const char *prompt, int err_no)
 {
     throw my_exception(prompt);
 }
 //----------------------------------------------------------------------------
+} // namespace
 
 void run_tests()
 {

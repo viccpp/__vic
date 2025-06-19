@@ -37,7 +37,7 @@ template<class Iter>
 void advance(Iter &it, Iter end, size_t n);
 ]]></code-block>
 
-<p>A counterpart of <tt>std::advance()</tt> but differs in parameters and
+<p>The same as <tt>std::advance()</tt>, but differs in parameters and
 behaviour:</p>
 <list style="numbered">
     <item>Allows only forward movement (<tt>++</tt>),</item>
@@ -66,7 +66,7 @@ BidirectionalIterator prev(BidirectionalIterator it, size_t n);
 ]]></code-block>
 
 <p><tt>next()</tt> returns an iterator advanced by <tt>n</tt> positions.
-<tt>prev()</tt> does the same but in reverse order. As opposed to C++11 STL
+<tt>prev()</tt> does the same, but in reverse order. As opposed to C++11 STL
 functions of the same name, the offset cannot be negative. The versions with
 single parameter just call <tt>++it</tt>/<tt>--it</tt> and return the result.
 </p>

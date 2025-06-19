@@ -59,14 +59,14 @@ explicit reader(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <tt>utf8::status::eof</tt> is returned when no more bytes are available.
 Other statuses are returned on errors, see <xref to="utf8--status"/> for more
 details. <tt>ByteSReader::operator()</tt> is used to access individual bytes.</p>
-<note>The function itself doesn't throw exceptions but exception can be
+<note>The function itself does not throw exceptions, but exception can be
 thrown by <tt>ByteSReader::operator()</tt>.</note>
 </synopsis>
 
 <synopsis>
 <prototype>sread_result&lt;unicode_t> read()</prototype>
 <prototype>sread_result&lt;unicode_t> operator()()</prototype>
-<p>The same as <tt>parse()</tt> but returns <tt>sread_result</tt> on success or
+<p>The same as <tt>parse()</tt>, but returns <tt>sread_result</tt> on success or
 on EOF. Throws an exception from <xref to="utf8.exceptions.h"/> otherwise.</p>
 </synopsis>
 

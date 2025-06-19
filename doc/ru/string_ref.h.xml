@@ -65,6 +65,10 @@ using string_ref = basic_string_ref<char> ;
 
 template<class charT>
 bool operator==(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+// BEGIN C++20
+template<class charT>
+auto operator<=>(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+// ELSE
 template<class charT>
 bool operator!=(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
 template<class charT>
@@ -75,11 +79,12 @@ template<class charT>
 bool operator<=(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
 template<class charT>
 bool operator>=(basic_string_ref<charT> s1, basic_string_ref<charT> s2);
+// END C++20
 
 #ifdef __VIC_DEFINE_OSTREAM_INSERTERS
 template<class charT, class Traits>
 std::basic_ostream<charT,Traits> &operator<<(
-    std::basic_ostream<charT,Traits> &os, const basic_string_ref<charT> &sr);
+    std::basic_ostream<charT,Traits> &os, basic_string_ref<charT> sr);
 #endif
 ]]></code-block>
 
@@ -242,22 +247,24 @@ std::basic_string&lt;charT,Traits,Alloc> str(const Alloc &amp;a = Alloc()) const
 <prototype>template&lt;class charT>
 bool operator==(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
 <prototype>template&lt;class charT>
-bool operator!=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+auto operator&lt;=>(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2) <badge>C++20</badge></prototype>
 <prototype>template&lt;class charT>
-bool operator&lt;(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+bool operator!=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2) <badge>until C++20</badge></prototype>
 <prototype>template&lt;class charT>
-bool operator>(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+bool operator&lt;(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2) <badge>until C++20</badge></prototype>
 <prototype>template&lt;class charT>
-bool operator&lt;=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+bool operator>(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2) <badge>until C++20</badge></prototype>
 <prototype>template&lt;class charT>
-bool operator>=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2)</prototype>
+bool operator&lt;=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2) <badge>until C++20</badge></prototype>
+<prototype>template&lt;class charT>
+bool operator>=(basic_string_ref&lt;charT> s1, basic_string_ref&lt;charT> s2) <badge>until C++20</badge></prototype>
 <p>Полный набор операторов сравнения.</p>
 </synopsis>
 
 <synopsis>
 <prototype>template&lt;class charT, class Traits>
 std::basic_ostream&lt;charT,Traits> &amp;operator&lt;&lt;(
-    std::basic_ostream&lt;charT,Traits> &amp;os, const basic_string_ref&lt;charT> &amp;sr)</prototype>
+    std::basic_ostream&lt;charT,Traits> &amp;os, basic_string_ref&lt;charT> sr)</prototype>
 <p>Инсертер в стандартный выходной поток. Определён (а также
 <tt>&lt;ostream></tt> включён) только, если определён макрос
 <tt>__VIC_DEFINE_OSTREAM_INSERTERS</tt> перед включением.</p>

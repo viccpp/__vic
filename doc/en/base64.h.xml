@@ -164,7 +164,7 @@ template<class CharSReader, class ByteSWriter>
 base64::status_t base64::try_decode(CharSReader reader, ByteSWriter writer);
 ]]></code-block>
 
-<p>Same as <xref to="base64--decode"/> but returns <xref to="base64--status"/>
+<p>The same as <xref to="base64--decode"/>, but returns <xref to="base64--status"/>
 different from <tt>base64::status::ok</tt> in case of invalid input sequence
 instead of throwing exception.</p>
 

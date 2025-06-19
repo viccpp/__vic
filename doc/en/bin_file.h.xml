@@ -145,7 +145,7 @@ first chunk of any size was successfully received. Throws on error.</p>
 
 <synopsis>
 <prototype>bool close_nt() noexcept</prototype>
-<p>A counterpart of <tt>close()</tt> but never throws, returns <tt>false</tt>
+<p>The same as <tt>close()</tt>, but never throws. Returns <tt>false</tt>
 instead in case of error.</p>
 </synopsis>
 

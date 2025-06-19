@@ -1,3 +1,4 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/utf8/reader.h>
 #include<__vic/utf8/writer.h>
 #include<__vic/utf8/exceptions.h>
@@ -8,11 +9,20 @@
 #include<string>
 #include<iostream>
 #include<exception>
+#include<cstddef>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#define __VIC_SREAD_RESULT(T) auto
+#define __VIC_FALLTHROUGH [[fallthrough]];
+#endif
 
 namespace tests {
 
 using __vic::unicode_t;
+using std::size_t;
 
 #if __cpp_variadic_templates && __cpp_rvalue_references
 typedef __vic::utf8::reader<__vic::string_sreader> utf8_string_reader;

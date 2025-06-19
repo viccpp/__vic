@@ -27,7 +27,7 @@ template<class UTFReader, class UTFWriter>
 void utf_transcode(UTFReader r, UTFWriter w);
 ]]></code-block>
 
-<p>An algorithm that reads all code points of type <xref to="unicode_t"/> from
+<p>Algorithm that reads all code points of type <xref to="unicode_t"/> from
 <tt>UTFReader</tt> using <tt>r()</tt> and writes them to <tt>UTFWriter</tt>
 using <tt>w()</tt>.</p>
 

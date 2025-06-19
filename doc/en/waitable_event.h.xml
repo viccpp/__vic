@@ -28,7 +28,7 @@ public:
 ]]>
 </code-block>
 
-<p>A synchronization object like Event Object in Windows. Can be in ether of
+<p>Synchronization object like Event Object in Windows. Can be in either of
 two states: signaled or nonsignaled. A thread can effectively wait for the
 signaled state using one of the available wait-functions (with minimal system
 resources consumption).</p>

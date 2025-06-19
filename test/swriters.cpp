@@ -1,3 +1,4 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/swriters/defs.h>
 #include<__vic/swriters/push_back.h>
 #include<__vic/swriters/iterator.h>
@@ -10,7 +11,13 @@
 #include<cstdio>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

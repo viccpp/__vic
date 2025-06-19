@@ -19,7 +19,7 @@ C:\> gmake
 </tty>
 <p>The library file will be built for you.</p>
 
-<p>C++17 is used by default but you can choose another language standard
+<p>C++17 is used by default, but you can choose another language standard
 version using <tt>std</tt> option. E.g. to build the library in C++98 mode
 write:</p>
 <tty>

@@ -113,9 +113,9 @@ FILE *fp = fopen(fname, "r");)
 </code-block></item>
 
 <item>Some design irregularities of <tt>std::string</tt> are corrected. For
-instance <tt>std::string</tt> is a complete container but operations
+instance <tt>std::string</tt> is a complete container, but operations
 <tt>front()</tt> and <tt>back()</tt> are missed in C++98. There is
-<tt>push_back()</tt> but no <tt>pop_back()</tt>.</item>
+<tt>push_back()</tt>, but no <tt>pop_back()</tt>.</item>
 
 </list>
 
@@ -126,7 +126,7 @@ that require <tt>std::string</tt>. Class has no additional data-members.</p>
 <p>Using of inserter (operator <tt>&lt;&lt;</tt>) provides the easiest way to
 convert numbers to decimal string representation. Using of
 <tt>std::ostringstream</tt> for this purposes is more functional (you can
-specify radix, formatting, etc) but too tedious and not efficient in most
+specify radix, formatting, etc), but too tedious and not efficient in most
 cases.</p>
 
 <p>Additionally this type has a short synonym <tt>msg</tt>. It is very

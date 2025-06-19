@@ -1,7 +1,13 @@
 #include<__vic/stdint.h>
+#ifndef __VIC_USE_MODULES
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {
