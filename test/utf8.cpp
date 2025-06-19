@@ -1,3 +1,4 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/utf8/reader.h>
 #include<__vic/utf8/writer.h>
 #include<__vic/utf8/exceptions.h>
@@ -9,7 +10,14 @@
 #include<iostream>
 #include<exception>
 #include<cstddef>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#define __VIC_SREAD_RESULT(T) auto
+#define __VIC_FALLTHROUGH [[fallthrough]];
+#endif
 
 namespace tests {
 

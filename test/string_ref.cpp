@@ -1,8 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #define __VIC_DEFINE_OSTREAM_INSERTERS 1
 #include<__vic/string_ref.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

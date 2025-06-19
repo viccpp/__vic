@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/bin_file.h>
 #include<iostream>
 #include<exception>
 #include<cstdio>
 #include<cstddef>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void copy_test()
 {

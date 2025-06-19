@@ -1,7 +1,14 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/logger.h>
 #include<cstddef>
 #include<iostream>
 #include<exception>
+#endif
+#ifdef __VIC_USE_MODULES
+#include<version>
+import std;
+import __vic;
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 class coutput : public __vic::logger::output

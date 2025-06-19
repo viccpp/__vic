@@ -1,5 +1,6 @@
 #if __cplusplus >= 201103L // C++11
 
+#ifndef __VIC_USE_MODULES
 #include<__vic/defs.h>
 #include<__vic/config/parser.h>
 #include<__vic/config/value.h>
@@ -19,6 +20,14 @@
 #if __cpp_lib_optional
 #include<__vic/config/values/std/optional.h>
 #endif
+#endif
+#endif
+#include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+#include<__vic/config/parser.macros.h>
+import std;
+import __vic;
 #endif
 
 namespace tests {
@@ -115,7 +124,9 @@ struct main_config_parser : public __vic::config::parser
 };
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef __VIC_USE_MODULES
 #include<iostream>
+#endif
 //----------------------------------------------------------------------------
 std::ostream &operator<<(std::ostream &os, const decoder_instance &di)
 {

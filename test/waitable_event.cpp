@@ -1,10 +1,18 @@
+#ifndef __VIC_USE_MODULES
 #include<iostream>
 #include<exception>
 #include<cstring>
+#endif
 
 #if __cplusplus >= 201103L // C++11
+#ifndef __VIC_USE_MODULES
 #include<__vic/waitable_event.h>
 #include<thread>
+#endif
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

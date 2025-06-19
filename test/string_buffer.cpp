@@ -1,8 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/string_buffer.h>
 #include<iostream>
 #include<exception>
 #include<cstddef>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {

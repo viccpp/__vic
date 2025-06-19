@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/iterator.h>
 #include<__vic/defs.h>
 #include<iostream>
 #include<exception>
-#include<cassert>
 #include<list>
+#endif
+#include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {

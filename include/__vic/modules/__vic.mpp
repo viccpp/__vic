@@ -1,0 +1,454 @@
+// C++ module for the __vic library
+//
+// $Id$
+
+module;
+
+#define __VIC_DEFINE_OSTREAM_INSERTERS 1
+
+#include<__vic/defs.h>
+#include<__vic/stdint.h>
+#include<__vic/type_traits.h>
+#include<__vic/endian.h>
+#include<__vic/ascii.h>
+#include<__vic/ascii_string.h>
+#include<__vic/bits.h>
+#include<__vic/memory.h>
+#include<__vic/tchar.h>
+#include<__vic/set_of_chars.h>
+#include<__vic/iterator.h>
+#include<__vic/algorithm.h>
+#include<__vic/error.h>
+#include<__vic/throw_errno.h>
+#include<__vic/date_time.h>
+#include<__vic/readonly_cstring.h>
+#include<__vic/string_ref.h>
+#include<__vic/string_utils.h>
+#include<__vic/str2num.h>
+#include<__vic/to_text.h>
+#include<__vic/string_buffer.h>
+#include<__vic/logger.h>
+#include<__vic/bounded_vector.h>
+#include<__vic/base16.h>
+#include<__vic/base64.h>
+#include<__vic/stdio_file.h>
+#include<__vic/bin_file.h>
+#include<__vic/waitable_event.h>
+
+#include<__vic/sreaders/defs.h>
+#include<__vic/sreaders/result.h>
+#include<__vic/sreaders/iterator.h>
+#include<__vic/sreaders/container.h>
+#include<__vic/sreaders/string.h>
+#include<__vic/sreaders/cstring.h>
+#include<__vic/sreaders/cstream.h>
+
+#include<__vic/swriters/defs.h>
+#include<__vic/swriters/null.h>
+#include<__vic/swriters/iterator.h>
+#include<__vic/swriters/push_back.h>
+#include<__vic/swriters/string.h>
+#include<__vic/swriters/cstream.h>
+
+#include<__vic/unicode.h>
+
+#include<__vic/utf8/defs.h>
+#include<__vic/utf8/status.h>
+#include<__vic/utf8/read_result.h>
+#include<__vic/utf8/exceptions.h>
+#include<__vic/utf8/reader.h>
+#include<__vic/utf8/writer.h>
+
+#include<__vic/utf16/defs.h>
+#include<__vic/utf16/status.h>
+#include<__vic/utf16/read_result.h>
+#include<__vic/utf16/exceptions.h>
+#include<__vic/utf16/reader.h>
+#include<__vic/utf16/writer.h>
+
+#include<__vic/config/value.h>
+#include<__vic/config/values/bytes.h>
+#include<__vic/config/values/std/optional.h>
+#include<__vic/config/values/std/forward_list.h>
+#include<__vic/config/values/std/list.h>
+#include<__vic/config/values/std/vector.h>
+#include<__vic/config/parser.h>
+
+#ifdef isascii
+#undef isascii
+#endif
+
+export module __vic;
+
+export namespace __vic {
+
+// __vic/defs.h
+    using __vic::non_copyable;
+    using __vic::non_heap_allocatable;
+    using __vic::array_size;
+
+// __vic/stdint.h
+    using __vic::int_exact_bytes;
+    using __vic::uint_exact_bytes;
+    using __vic::int_exactly_bytes;
+    using __vic::uint_exactly_bytes;
+
+// __vic/type_traits.h
+    using __vic::integral_constant;
+    using __vic::true_type;
+    using __vic::false_type;
+    using __vic::is_same;
+    using __vic::is_const;
+    using __vic::remove_const;
+    using __vic::remove_const_t;
+    using __vic::remove_volatile;
+    using __vic::remove_volatile_t;
+    using __vic::remove_cv;
+    using __vic::remove_cv_t;
+    using __vic::remove_reference;
+    using __vic::remove_reference_t;
+    using __vic::remove_pointer;
+    using __vic::remove_pointer_t;
+    using __vic::remove_cvref;
+    using __vic::remove_cvref_t;
+    using __vic::conditional;
+    using __vic::conditional_t;
+    using __vic::enable_if;
+    using __vic::disable_if;
+
+    using __vic::index_sequence;
+    using __vic::make_index_sequence;
+
+    using __vic::conjunction;
+    using __vic::disjunction;
+    using __vic::negation;
+
+    using __vic::is_signed_integer;
+    using __vic::is_unsigned_integer;
+
+    using __vic::is_byte;
+    using __vic::byte_cast;
+
+// __vic/endian.h
+    namespace endian {
+        using __vic::endian::unknown;
+        using __vic::endian::little;
+        using __vic::endian::big;
+        using __vic::endian::pdp;
+        using __vic::endian::native;
+
+        using __vic::endian::from_big;
+        using __vic::endian::from_little;
+        using __vic::endian::to_big;
+        using __vic::endian::to_little;
+    } // namespace
+    using __vic::endianness;
+    using __vic::swab16;
+    using __vic::swab32;
+    using __vic::swab64;
+
+// __vic/ascii.h
+    namespace ascii {
+        using __vic::ascii::isdigit;
+        using __vic::ascii::isxdigit;
+        using __vic::ascii::islower;
+        using __vic::ascii::isupper;
+        using __vic::ascii::isalpha;
+        using __vic::ascii::isalnum;
+        using __vic::ascii::isspace;
+        using __vic::ascii::isblank;
+        using __vic::ascii::isprint;
+        using __vic::ascii::isgraph;
+        using __vic::ascii::ispunct;
+        using __vic::ascii::iscntrl;
+        using __vic::ascii::isascii;
+        using __vic::ascii::todigit;
+        using __vic::ascii::digit_to_number;
+        using __vic::ascii::toxdigit_upper;
+        using __vic::ascii::toxdigit_lower;
+        using __vic::ascii::xdigit_to_number;
+        using __vic::ascii::tolower;
+        using __vic::ascii::upper_to_lower;
+        using __vic::ascii::toupper;
+        using __vic::ascii::lower_to_upper;
+        using __vic::ascii::equal_icase;
+    } // namespace
+
+// __vic/ascii_string.h
+    namespace ascii {
+        using __vic::ascii::tolower;
+        using __vic::ascii::toupper;
+        using __vic::ascii::equal_icase;
+    } // namespace
+
+// __vic/bits.h
+    using __vic::lo_nibble;
+    using __vic::hi_nibble;
+    using __vic::msb_ones;
+    using __vic::lsb_ones;
+    using __vic::get_lsbs;
+    using __vic::ord;
+    using __vic::swapped_nibbles;
+    using __vic::popcount;
+    using __vic::msb_position;
+    using __vic::rotl;
+    using __vic::rotr;
+    using __vic::ispow2;
+    using __vic::ceil2;
+    using __vic::ceil_log2;
+    using __vic::floor2;
+    using __vic::floor_log2;
+
+// __vic/memory.h
+    using __vic::load_unaligned;
+    using __vic::store_unaligned;
+
+// __vic/tchar.h
+    namespace tchar {
+        using __vic::tchar::length;
+        using __vic::tchar::empty;
+        using __vic::tchar::end;
+        using __vic::tchar::compare;
+        using __vic::tchar::equal;
+        using __vic::tchar::copy;
+        using __vic::tchar::move;
+        using __vic::tchar::concat;
+        using __vic::tchar::find;
+        using __vic::tchar::find_if;
+        using __vic::tchar::find_if_not;
+        using __vic::tchar::rfind;
+        using __vic::tchar::rfind_if;
+        using __vic::tchar::rfind_if_not;
+        using __vic::tchar::find_first_of;
+        using __vic::tchar::find_first_not_of;
+        using __vic::tchar::find_last_of;
+        using __vic::tchar::find_last_not_of;
+        using __vic::tchar::skip;
+    } // namespace
+
+// __vic/set_of_chars.h
+    using __vic::set_of_chars;
+
+// __vic/iterator.h
+    using __vic::begin;
+    using __vic::end;
+    using __vic::cbegin;
+    using __vic::cend;
+    using __vic::advance;
+    using __vic::next;
+    using __vic::prev;
+
+// __vic/algorithm.h
+    using __vic::skip_if_front;
+    using __vic::skip_if_back;
+
+// __vic/error.h
+    using __vic::exception;
+    using __vic::libc_error;
+
+// __vic/throw_errno.h
+    using __vic::throw_errno;
+
+// __vic/date_time.h
+    using __vic::is_leap_year;
+    using __vic::days_in_month;
+    using __vic::days_between_years;
+    using __vic::invalid_date;
+    using __vic::validate_date;
+    using __vic::validate_time;
+    using __vic::validate_date_time;
+
+// __vic/readonly_cstring.h
+    using __vic::readonly_cstring;
+    using __vic::operator==;
+    using __vic::operator<=>;
+    using __vic::swap;
+
+// __vic/string_ref.h
+    using __vic::string_ref;
+    using __vic::basic_string_ref;
+    using __vic::operator==;
+    using __vic::operator<=>;
+    using __vic::operator<<;
+
+// __vic/string_utils.h
+    using __vic::trim;
+    using __vic::trim_front;
+    using __vic::trim_back;
+    using __vic::trimmed;
+    using __vic::trimmed_front;
+    using __vic::trimmed_back;
+    using __vic::sift;
+    using __vic::sift_if;
+    using __vic::pad_front;
+    using __vic::pad_back;
+    using __vic::starts_with;
+    using __vic::ends_with;
+
+// __vic/str2num.h
+    using __vic::number_parse_status;
+    using __vic::number_parse_status_t;
+    using __vic::number_parse_result;
+    using __vic::parse_decimal;
+    using __vic::decimal_parser;
+    using __vic::decimal_to_number;
+    using __vic::decimal_to_number_range;
+
+// __vic/to_text.h
+    using __vic::to_text_append;
+
+// __vic/string_buffer.h
+    using __vic::string_buffer;
+    using __vic::msg;
+    using __vic::operator+;
+
+// __vic/logger.h
+    using __vic::logger;
+    using __vic::log_value;
+    using __vic::to_string;
+    using __vic::to_string_view;
+
+// __vic/bounded_vector.h
+    using __vic::bounded_vector;
+    using __vic::swap;
+
+// __vic/base16.h
+    using __vic::base16;
+
+// __vic/base64.h
+    using __vic::base64;
+
+// __vic/stdio_file.h
+    using __vic::stdio_file;
+    using __vic::read;
+    using __vic::write;
+    using __vic::getline;
+    using __vic::throw_stdio_read_error;
+    using __vic::throw_stdio_write_error;
+
+// __vic/bin_file.h
+    using __vic::bin_file;
+
+// __vic/waitable_event.h
+    using __vic::waitable_event;
+
+// __vic/sreaders
+    using __vic::sreader;
+    using __vic::byte_sreader;
+    using __vic::sreader_result;
+    using __vic::sread_result;
+    using __vic::sread_eof;
+    using __vic::sread_eof_t;
+    using __vic::sreader_value;
+    using __vic::sreader_value_t;
+    using __vic::uchar_value;
+
+    using __vic::iterator_sreader;
+    using __vic::make_iterator_sreader;
+    using __vic::make_iterator_sreader_n;
+    using __vic::make_iterator_sreader_for;
+    using __vic::make_iterator_sreader_n_for;
+
+    using __vic::container_sreader;
+    using __vic::make_container_sreader;
+    using __vic::make_container_sreader_for;
+
+    using __vic::string_sreader;
+    using __vic::basic_string_sreader;
+    using __vic::make_string_sreader;
+
+    using __vic::cstring_sreader;
+    using __vic::basic_cstring_sreader;
+    using __vic::make_cstring_sreader;
+
+    using __vic::cstream_sreader;
+    using __vic::make_cstream_sreader;
+
+// __vic/swriters
+    using __vic::swriter;
+
+    using __vic::null_swriter;
+    using __vic::make_null_swriter;
+
+    using __vic::iterator_swriter;
+    using __vic::make_iterator_swriter;
+    using __vic::make_iterator_swriter_for;
+
+    using __vic::push_back_swriter;
+    using __vic::make_push_back_swriter;
+    using __vic::make_push_back_swriter_for;
+
+    using __vic::string_swriter;
+    using __vic::basic_string_swriter;
+    using __vic::make_string_swriter;
+
+    using __vic::cstream_swriter;
+    using __vic::make_cstream_swriter;
+
+// __vic/unicode.h
+    using __vic::unicode_t;
+    using __vic::unicode_max;
+    using __vic::unicode_bom;
+    using __vic::unicode_replacement_char;
+    using __vic::utf_transcode;
+
+// __vic/utf8
+    namespace utf8 {
+        using __vic::utf8::is_continuation_byte;
+        using __vic::utf8::status;
+        using __vic::utf8::status_t;
+        using __vic::utf8::is_error;
+        using __vic::utf8::read_result;
+        using __vic::utf8::convert_or_throw;
+
+        using __vic::utf8::bad_encoding;
+        using __vic::utf8::no_leading_byte;
+        using __vic::utf8::truncated_code_point;
+        using __vic::utf8::overlong_encoding;
+        using __vic::utf8::code_point_too_big;
+
+        using __vic::utf8::reader;
+        using __vic::utf8::make_reader;
+
+        using __vic::utf8::writer;
+        using __vic::utf8::make_writer;
+    } // namespace
+
+// __vic/utf16
+    namespace utf16 {
+        using __vic::utf16::code_unit_t;
+        using __vic::utf16::hi_surrogate_min;
+        using __vic::utf16::hi_surrogate_max;
+        using __vic::utf16::lo_surrogate_min;
+        using __vic::utf16::lo_surrogate_max;
+        using __vic::utf16::status;
+        using __vic::utf16::status_t;
+        using __vic::utf16::is_error;
+        using __vic::utf16::read_unit_result;
+        using __vic::utf16::read_result;
+        using __vic::utf16::convert_or_throw;
+
+        using __vic::utf16::bad_encoding;
+        using __vic::utf16::truncated_code_unit;
+        using __vic::utf16::truncated_code_point;
+        using __vic::utf16::invalid_sequence;
+
+        using __vic::utf16::reader;
+        using __vic::utf16::make_reader;
+
+        using __vic::utf16::writer;
+        using __vic::utf16::make_writer;
+    } // namespace
+
+// __vic/config
+    namespace config {
+        using __vic::config::value;
+        using __vic::config::complex_value;
+        using __vic::config::list_traits;
+        using __vic::config::abstract_complex_value;
+        using __vic::config::bytes_value_parser;
+        using __vic::config::source;
+        using __vic::config::parser;
+    } // namespace
+
+} // namespace

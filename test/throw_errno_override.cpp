@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/throw_errno.h>
 #include<__vic/error.h>
 #include<iostream>
 #include<exception>
 #include<cstring>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 struct my_exception : public __vic::exception

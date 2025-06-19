@@ -1,8 +1,14 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/memory.h>
-#include<__vic/stdint.h>
 #include<iostream>
 #include<exception>
+#endif
+#include<__vic/stdint.h>
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void load_unaligned_test()
 {

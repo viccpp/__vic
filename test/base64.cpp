@@ -1,3 +1,4 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/base64.h>
 #include<__vic/sreaders/string.h>
 #include<__vic/swriters/string.h>
@@ -5,8 +6,13 @@
 #include<iostream>
 #include<exception>
 #include<cstddef>
-#include<cassert>
 #include<string>
+#endif
+#include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 
