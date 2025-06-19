@@ -11,7 +11,7 @@
 
 <p>Throw an exception with global <tt>errno</tt> value or given
 <tt>err_no</tt> correspondingly. Default exception type is
-<xref to="libc_error"/> at the moment but can be changed at link time
+<xref to="libc_error"/> at the moment, but it can be changed at link time
 by overriding this functions. For example <tt>std::system_error</tt> can be
 used. Just create cpp-file with the following content in your project:</p>
 
@@ -19,14 +19,18 @@ used. Just create cpp-file with the following content in your project:</p>
 #include<__vic/throw_errno.h>
 #include<system_error>
 
+namespace __vic {
+
 //----------------------------------------------------------------------------
-// Override library functions to throw std::system_error
+// Override the library functions to throw std::system_error
 //----------------------------------------------------------------------------
-void __vic::throw_errno(const char *prompt, int err_no)
+void throw_errno(const char *prompt, int err_no)
 {
     throw std::system_error(err_no, std::system_category(), prompt);
 }
 //----------------------------------------------------------------------------
+
+} // namespace
 ]]></code-block>
 
 <p>It's enough to override only one functions because the second one just calls

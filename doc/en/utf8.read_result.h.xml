@@ -18,7 +18,7 @@ public:
 };
 </code-block>
 
-<p>A read result returned by <tt>utf8::reader::parse()</tt> function.</p>
+<p>Read result returned by <tt>utf8::reader::parse()</tt> function.</p>
 
 <section><title>Class members</title>
 

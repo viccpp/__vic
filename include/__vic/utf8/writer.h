@@ -45,7 +45,7 @@ template<class ByteSWriter>
 void writer<ByteSWriter>::write(unicode_t cp)
 {
     if(cp < 0x80) // single byte (ASCII)
-        write_byte(cp); // 0xxxxxxx
+        write_byte(static_cast<unsigned char>(cp)); // 0xxxxxxx
     else if(cp < 0x0800) // 2 bytes
     {
         write_byte(0xC0 | (cp >> 6));   // 110xxxxx
@@ -56,14 +56,14 @@ void writer<ByteSWriter>::write(unicode_t cp)
         // Cases with 1 & 2 bytes can be processed here
         // They are processed specifically only for optimization reasons
         unsigned char utf8_cp[6];
-        size_t len =
+        unsigned len =
           //cp < 0x80      ? 1 :
           //cp < 0x0800    ? 2 :
             cp < 0x10000   ? 3 :
             cp < 0x200000  ? 4 :
             cp < 0x4000000 ? 5 :
                              6 ;
-        for(int i = len - 1; i; i--, cp >>= 6)
+        for(unsigned i = len - 1U; i; i--, cp >>= 6)
             utf8_cp[i] = 0x80 | (cp & 0x3F); // ... | __vic::get_lsbs(cp, 6)
         utf8_cp[0] = __vic::msb_ones<unicode_t>(len) | cp; // ... | __vic::get_lsbs(cp, 7 - len)
         write_bytes(utf8_cp, len);

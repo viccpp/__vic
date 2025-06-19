@@ -32,8 +32,8 @@ pthread_create(&tid, nullptr, thread_func, nullptr);
 <chapter xml:id="noexcept">
 <title><tt>noexcept</tt> <badge>C++98 only</badge></title>
 
-<p>A macro in C++98 mode, synonym for <tt>throw()</tt>. In other standard modes
-the definition is absent.</p>
+<p>Macro which is a synonym for <tt>throw()</tt> in C++98 mode. In other
+standard modes the definition is absent.</p>
 
 </chapter>
 
@@ -136,7 +136,7 @@ C *p = new C; // Error! Attempt to allocate on heap
 <chapter xml:id="VIC_SWAP_HEADER">
 <title><tt>__VIC_SWAP_HEADER</tt></title>
 
-<p>A macro for <tt>#include</tt>. Expands to the header name that contains
+<p>Macro for <tt>#include</tt>. Expands to the header name that contains
 <tt>std::swap()</tt> definition, dependig on the used language standard.</p>
 
 <section><title>Example</title>

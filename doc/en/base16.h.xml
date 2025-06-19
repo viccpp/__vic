@@ -125,7 +125,7 @@ template<class ByteSReader, class CharSWriter>
 void base16::encode_lower(ByteSReader reader, CharSWriter writer);
 ]]></code-block>
 
-<p>Same as <xref to="base16--encode_upper"/> but lower case is used for
+<p>The same as <xref to="base16--encode_upper"/>, but lower case is used for
 hexadecimal digits.</p>
 
 </chapter>
@@ -140,7 +140,7 @@ template<class CharSWriter>
 void base16::encode_byte_lower(unsigned char byte, CharSWriter writer);
 ]]></code-block>
 
-<p>Same as <xref to="base16--encode_lower"/> but encodes only single byte.</p>
+<p>The same as <xref to="base16--encode_lower"/>, but encodes only single byte.</p>
 
 </chapter>
 
@@ -154,7 +154,7 @@ template<class CharSWriter>
 void base16::encode_byte_upper(unsigned char byte, CharSWriter writer);
 ]]></code-block>
 
-<p>Same as <xref to="base16--encode_upper"/> but encodes only single byte.</p>
+<p>The same as <xref to="base16--encode_upper"/>, but encodes only single byte.</p>
 
 </chapter>
 
@@ -208,7 +208,7 @@ template<class CharSReader, class ByteSWriter>
 base16::status_t base16::try_decode(CharSReader reader, ByteSWriter writer);
 ]]></code-block>
 
-<p>Same as <xref to="base16--decode"/> but returns <xref to="base16--status"/>
+<p>The same as <xref to="base16--decode"/>, but returns <xref to="base16--status"/>
 different from <tt>base16::status::ok</tt> in case of invalid input sequence
 instead of throwing exception.</p>
 

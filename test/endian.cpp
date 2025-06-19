@@ -1,8 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/endian.h>
 #include<iostream>
 #include<exception>
 #include<cstring>
+#endif
+#include<__vic/stdint.h>
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

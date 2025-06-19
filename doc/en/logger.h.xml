@@ -158,7 +158,7 @@ ascending order):</p>
         continue.</item>
 </list>
 
-<p>INFO is the default logging level but any other can be chosen. If severity
+<p>INFO is the default logging level, but any other can be chosen. If severity
 of the log message (record) is below the logging level, it will be ignored and
 will not be published in the log's output.</p>
 
@@ -179,7 +179,7 @@ log.error("Recoverable error");
 log.fatal("Fatal error");
 </code-block>
 
-<p>The second is slightly more complex but provides more capabilities:</p>
+<p>The second one is slightly more complex, but provides more capabilities:</p>
 <code-block lang="C++"><![CDATA[
 log.error() << "Cannot open file " << filename << '!';
 log.warning() << "Loop iteration no " << i;
@@ -212,7 +212,7 @@ log.info() << "Message";
 ]]></code-block>
 
 <p>Output of the records with the severities DEBUG and TRACE is usually disabled.
-Such records will not be published in the log but the program will waste
+Such records will not be published in the log, but the program will waste
 time to format it. Therefore before creating any debug message using operator
 <tt>&lt;&lt;</tt> one should check if debug is enabled using
 <tt>debug_visible()</tt> or <tt>trace_visible()</tt> call:</p>

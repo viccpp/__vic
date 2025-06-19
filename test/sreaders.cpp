@@ -1,3 +1,4 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/sreaders/defs.h>
 #include<__vic/sreaders/container.h>
 #include<__vic/sreaders/iterator.h>
@@ -9,7 +10,14 @@
 #include<vector>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+import std;
+import __vic;
+#define __VIC_SREAD_RESULT(T) auto
+#endif
 
 namespace tests {
 

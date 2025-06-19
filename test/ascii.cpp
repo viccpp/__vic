@@ -1,7 +1,13 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/ascii.h>
 #include<exception>
 #include<iostream>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 #ifdef isascii
 #undef isascii

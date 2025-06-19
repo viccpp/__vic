@@ -76,12 +76,12 @@ The new element is created using several phases:</p>
 <p>See the example at the end of the article.</p>
 
 <p>Maximum capacity is specified on creation of the container. Later it
-can be changed but all the elements has to be destroyed before. In other words,
+can be changed, but all the elements has to be destroyed before. In other words,
 the container can be recreated (<tt>recreate()</tt> function).</p>
 
 <p>When available, <tt>emplace_back()</tt> must be used for elements creation.
 If not, the unsafe interface described above must be used with care. It is very
-ugly and error-prone but solves the task. After the element is created in the
+ugly and error-prone, but solves the task. After the element is created in the
 container, you operate with it almost as easy as with any other copyable object
 in the standard container. Anyway, it is more efficient and convenient to use
 in general than alternative approaches like creating the objects on the free

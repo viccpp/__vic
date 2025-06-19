@@ -1,3 +1,4 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/utf16/reader.h>
 #include<__vic/utf16/writer.h>
 #include<__vic/sreaders/string.h>
@@ -6,12 +7,20 @@
 #include<string>
 #include<iostream>
 #include<exception>
+#include<cstddef>
 #include<cstring>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#define __VIC_SREAD_RESULT(T) auto
+#endif
 
 namespace tests {
 
 using __vic::unicode_t;
+using std::size_t;
 #if __cpp_unicode_characters
 using std::u16string;
 #else

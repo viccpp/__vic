@@ -42,7 +42,7 @@ template<class CodeUnitSWriter>
 void writer<CodeUnitSWriter>::write(unicode_t cp)
 {
     if(cp <= 0xFFFF)
-        write_unit(cp);
+        write_unit(static_cast<code_unit_t>(cp));
     else
     {
         cp -= 0x10000; // 20 bits

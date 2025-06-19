@@ -1,8 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #define __VIC_DEFINE_OSTREAM_INSERTERS 1
 #include<__vic/string_ref.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+import std;
+import __vic;
+#endif
 
 namespace tests {
 
@@ -33,6 +40,14 @@ void run()
     std::string std_str(str);
     sr = std_str;
     assert(sr == std_str);
+
+    // Check comparison
+    assert(sr == sr);
+    assert(!(sr != sr));
+    assert(!(sr < sr));
+    assert(!(sr > sr));
+    assert(sr <= sr);
+    assert(sr >= sr);
 
 #if __cpp_lib_string_view
     sr = std::string_view();

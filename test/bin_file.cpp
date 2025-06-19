@@ -1,8 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/bin_file.h>
 #include<iostream>
 #include<exception>
 #include<cstdio>
+#include<cstddef>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void copy_test()
 {
@@ -11,8 +18,8 @@ void copy_test()
     __vic::bin_file out("bin_file.copy", __vic::bin_file::out);
     assert(out.is_open());
 
-    char buf[BUFSIZ];
-    while(size_t n = in.read_some(buf, sizeof buf))
+    char buf[4096];
+    while(std::size_t n = in.read_some(buf, sizeof buf))
         out.write_all(buf, n);
     in.close();
     assert(!in.is_open());
