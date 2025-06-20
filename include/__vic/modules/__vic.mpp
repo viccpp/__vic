@@ -343,10 +343,9 @@ export namespace __vic {
 
 // __vic/thread.h
     using __vic::thread;
-    namespace this_thread
-    {
-        using __vic::sleep_ms;
-        using __vic::get_id;
+    namespace this_thread {
+        using __vic::this_thread::sleep_ms;
+        using __vic::this_thread::get_id;
     } // namespace
 
 // __vic/ip_addr.h
