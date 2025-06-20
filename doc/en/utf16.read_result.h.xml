@@ -18,7 +18,7 @@ public:
 };
 </code-block>
 
-<p>A read result returned by <tt>utf16::reader::parse()</tt> function.</p>
+<p>Read result returned by <tt>utf16::reader::parse()</tt> function.</p>
 
 <section><title>Class members</title>
 
@@ -65,7 +65,7 @@ public:
 };
 </code-block>
 
-<p>The same as <tt>utf16::read_result</tt> but for
+<p>The same as <tt>utf16::read_result</tt>, but for
 <tt>utf16::code_unit_t</tt>.</p>
 
 </chapter>

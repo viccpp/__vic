@@ -8,6 +8,7 @@
 #ifndef __VIC_CONFIG_PARSER_H
 #define __VIC_CONFIG_PARSER_H
 
+#include<__vic/config/parser.macros.h>
 #include<__vic/config/value.h>
 #include<__vic/string_buffer.h>
 #include<__vic/error.h>
@@ -79,9 +80,6 @@ protected:
     parser();
     ~parser();
 
-#define __VIC_REGISTER_CONFIG_PARAM(c,p) this->register_param((c).p, #p)
-#define __VIC_REGISTER_CONFIG_PARAM_VP(c,p,vp) this->register_param<vp>((c).p, #p)
-#define __VIC_REGISTER_COMPLEX_CONFIG_PARAM(c,p,cp) this->register_complex_param<cp>((c).p, #p)
     template<class T>
     void register_param(T &v, const char *name)
     {

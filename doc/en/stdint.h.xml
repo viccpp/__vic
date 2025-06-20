@@ -2,7 +2,7 @@
 <title><tt>__vic/stdint.h</tt></title>
 
 <p>ISO C99 <tt>&lt;stdint.h></tt> for C++98. Since C++11 - just a redirector to
-<tt>&lt;cstdint></tt>.</p>
+<tt>&lt;stdint.h></tt>.</p>
 <p>Additionally, some metafunctions for template metaprogramming are provided.
 </p>
 
@@ -13,14 +13,14 @@
 <p>Following types are guaranteed to be available in the <b>global
 namespace</b>:</p>
 <list style="bulleted">
-    <item><tt>int8_t</tt></item>
-    <item><tt>int16_t</tt></item>
-    <item><tt>int32_t</tt></item>
-    <item><tt>int64_t</tt></item>
-    <item><tt>uint8_t</tt></item>
-    <item><tt>uint16_t</tt></item>
-    <item><tt>uint32_t</tt></item>
-    <item><tt>uint64_t</tt></item>
+    <item><tt>::int8_t</tt></item>
+    <item><tt>::int16_t</tt></item>
+    <item><tt>::int32_t</tt></item>
+    <item><tt>::int64_t</tt></item>
+    <item><tt>::uint8_t</tt></item>
+    <item><tt>::uint16_t</tt></item>
+    <item><tt>::uint32_t</tt></item>
+    <item><tt>::uint64_t</tt></item>
 </list>
 
 </chapter>
@@ -32,14 +32,14 @@ namespace</b>:</p>
 <p>Following types are guaranteed to be available in the <b>global
 namespace</b>:</p>
 <list style="bulleted">
-    <item><tt>int_least8_t</tt></item>
-    <item><tt>int_least16_t</tt></item>
-    <item><tt>int_least32_t</tt></item>
-    <item><tt>int_least64_t</tt></item>
-    <item><tt>uint_least8_t</tt></item>
-    <item><tt>uint_least16_t</tt></item>
-    <item><tt>uint_least32_t</tt></item>
-    <item><tt>uint_least64_t</tt></item>
+    <item><tt>::int_least8_t</tt></item>
+    <item><tt>::int_least16_t</tt></item>
+    <item><tt>::int_least32_t</tt></item>
+    <item><tt>::int_least64_t</tt></item>
+    <item><tt>::uint_least8_t</tt></item>
+    <item><tt>::uint_least16_t</tt></item>
+    <item><tt>::uint_least32_t</tt></item>
+    <item><tt>::uint_least64_t</tt></item>
 </list>
 
 </chapter>
@@ -51,14 +51,14 @@ namespace</b>:</p>
 <p>Following types are guaranteed to be available in the <b>global
 namespace</b>:</p>
 <list style="bulleted">
-    <item><tt>int_fast8_t</tt></item>
-    <item><tt>int_fast16_t</tt></item>
-    <item><tt>int_fast32_t</tt></item>
-    <item><tt>int_fast64_t</tt></item>
-    <item><tt>uint_fast8_t</tt></item>
-    <item><tt>uint_fast16_t</tt></item>
-    <item><tt>uint_fast32_t</tt></item>
-    <item><tt>uint_fast64_t</tt></item>
+    <item><tt>::int_fast8_t</tt></item>
+    <item><tt>::int_fast16_t</tt></item>
+    <item><tt>::int_fast32_t</tt></item>
+    <item><tt>::int_fast64_t</tt></item>
+    <item><tt>::uint_fast8_t</tt></item>
+    <item><tt>::uint_fast16_t</tt></item>
+    <item><tt>::uint_fast32_t</tt></item>
+    <item><tt>::uint_fast64_t</tt></item>
 </list>
 
 </chapter>
@@ -70,8 +70,8 @@ namespace</b>:</p>
 <p>Following types are guaranteed to be available in the <b>global
 namespace</b>:</p>
 <list style="bulleted">
-    <item><tt>intmax_t</tt></item>
-    <item><tt>uintmax_t</tt></item>
+    <item><tt>::intmax_t</tt></item>
+    <item><tt>::uintmax_t</tt></item>
 </list>
 
 </chapter>
@@ -83,8 +83,8 @@ namespace</b>:</p>
 <p>Following types are guaranteed to be available in the <b>global
 namespace</b>:</p>
 <list style="bulleted">
-    <item><tt>intptr_t</tt></item>
-    <item><tt>uintptr_t</tt></item>
+    <item><tt>::intptr_t</tt></item>
+    <item><tt>::uintptr_t</tt></item>
 </list>
 
 </chapter>

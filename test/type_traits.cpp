@@ -1,7 +1,14 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/type_traits.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

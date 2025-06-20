@@ -13,10 +13,10 @@
 
 #if __cplusplus >= 201103L
 
-#include<cstdint>
+#include<stdint.h>
 
-#elif defined(_MSC_VER) && _MSC_VER < 1600 || \
-    defined(__BORLANDC__) && __BORLANDC__ < 0x0580
+#elif defined(_MSC_VER) && _MSC_VER < 1600 \
+   || defined(__BORLANDC__) && __BORLANDC__ < 0x0580
 
 // Exact-width integer types
 typedef signed char int8_t;

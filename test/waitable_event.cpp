@@ -1,8 +1,14 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/waitable_event.h>
 #include<__vic/thread.h>
 #include<iostream>
 #include<exception>
 #include<cstring>
+#endif
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

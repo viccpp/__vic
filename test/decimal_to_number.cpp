@@ -1,10 +1,16 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/str2num.h>
-#include<__vic/stdint.h>
 #include<stdexcept>
 #include<iostream>
 #include<cstdio>
 #include<limits>
+#endif
+#include<__vic/stdint.h>
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 template<class TInt>
 inline void parse_and_check(

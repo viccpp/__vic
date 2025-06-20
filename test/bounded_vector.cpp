@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/defs.h>
 #include<__vic/bounded_vector.h>
 #include<iostream>
 #include<exception>
 #include<string>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

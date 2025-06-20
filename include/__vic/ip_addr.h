@@ -16,6 +16,9 @@
 #if __has_include(<string_view>)
 #include<string_view>
 #endif
+#if __has_include(<compare>)
+#include<compare>
+#endif
 #include<functional> // for std::hash
 #include<cstring> // for std::memcpy
 
@@ -176,26 +179,41 @@ public:
     __VIC_CONSTEXPR_FUNC bool operator OP(A1 a1, A2 a2) { return a1.s_addr OP a2.s_addr; }
 
 __VIC_DEFINE_OP(==, ipv4_addr, ipv4_addr)
+__VIC_DEFINE_OP(==, ipv4_addr, ::in_addr)
+
+#if !__cpp_impl_three_way_comparison
+__VIC_DEFINE_OP(==, ::in_addr, ipv4_addr)
 __VIC_DEFINE_OP(!=, ipv4_addr, ipv4_addr)
+__VIC_DEFINE_OP(!=, ipv4_addr, ::in_addr)
+__VIC_DEFINE_OP(!=, ::in_addr, ipv4_addr)
+#endif
+
 // Ordering depends on byte order but suitable for std::map etc
+#if __cpp_lib_three_way_comparison
+constexpr auto operator<=>(ipv4_addr a1, ipv4_addr a2)
+{
+    return a1.s_addr <=> a2.s_addr;
+}
+constexpr auto operator<=>(ipv4_addr a1, ::in_addr a2)
+{
+    return a1.s_addr <=> a2.s_addr;
+}
+#else
 __VIC_DEFINE_OP(<=, ipv4_addr, ipv4_addr)
 __VIC_DEFINE_OP(>=, ipv4_addr, ipv4_addr)
 __VIC_DEFINE_OP(< , ipv4_addr, ipv4_addr)
 __VIC_DEFINE_OP(> , ipv4_addr, ipv4_addr)
 
-__VIC_DEFINE_OP(==, ipv4_addr, ::in_addr)
-__VIC_DEFINE_OP(!=, ipv4_addr, ::in_addr)
 __VIC_DEFINE_OP(<=, ipv4_addr, ::in_addr)
 __VIC_DEFINE_OP(>=, ipv4_addr, ::in_addr)
 __VIC_DEFINE_OP(< , ipv4_addr, ::in_addr)
 __VIC_DEFINE_OP(> , ipv4_addr, ::in_addr)
 
-__VIC_DEFINE_OP(==, ::in_addr, ipv4_addr)
-__VIC_DEFINE_OP(!=, ::in_addr, ipv4_addr)
 __VIC_DEFINE_OP(<=, ::in_addr, ipv4_addr)
 __VIC_DEFINE_OP(>=, ::in_addr, ipv4_addr)
 __VIC_DEFINE_OP(< , ::in_addr, ipv4_addr)
 __VIC_DEFINE_OP(> , ::in_addr, ipv4_addr)
+#endif
 
 #undef __VIC_DEFINE_OP
 //----------------------------------------------------------------------------
@@ -245,25 +263,40 @@ __VIC_CONSTEXPR_FUNC int compare(const ::in6_addr &a1, const ::in6_addr &a2)
     __VIC_CONSTEXPR_FUNC bool operator OP(const A1 &a1, const A2 &a2) { return compare(a1, a2) OP 0; }
 
 __VIC_DEFINE_OP(==, ipv6_addr, ipv6_addr)
+__VIC_DEFINE_OP(==, ipv6_addr, ::in6_addr)
+
+#if !__cpp_impl_three_way_comparison
+__VIC_DEFINE_OP(==, ::in6_addr, ipv6_addr)
 __VIC_DEFINE_OP(!=, ipv6_addr, ipv6_addr)
+__VIC_DEFINE_OP(!=, ipv6_addr, ::in6_addr)
+__VIC_DEFINE_OP(!=, ::in6_addr, ipv6_addr)
+#endif
+
+#if __cpp_lib_three_way_comparison
+constexpr auto operator<=>(const ipv6_addr &a1, const ipv6_addr &a2)
+{
+    return compare(a1, a2) <=> 0;
+}
+constexpr auto operator<=>(const ipv6_addr &a1, const ::in6_addr &a2)
+{
+    return compare(a1, a2) <=> 0;
+}
+#else
 __VIC_DEFINE_OP(<=, ipv6_addr, ipv6_addr)
 __VIC_DEFINE_OP(>=, ipv6_addr, ipv6_addr)
 __VIC_DEFINE_OP(< , ipv6_addr, ipv6_addr)
 __VIC_DEFINE_OP(> , ipv6_addr, ipv6_addr)
 
-__VIC_DEFINE_OP(==, ipv6_addr, ::in6_addr)
-__VIC_DEFINE_OP(!=, ipv6_addr, ::in6_addr)
 __VIC_DEFINE_OP(<=, ipv6_addr, ::in6_addr)
 __VIC_DEFINE_OP(>=, ipv6_addr, ::in6_addr)
 __VIC_DEFINE_OP(< , ipv6_addr, ::in6_addr)
 __VIC_DEFINE_OP(> , ipv6_addr, ::in6_addr)
 
-__VIC_DEFINE_OP(==, ::in6_addr, ipv6_addr)
-__VIC_DEFINE_OP(!=, ::in6_addr, ipv6_addr)
 __VIC_DEFINE_OP(<=, ::in6_addr, ipv6_addr)
 __VIC_DEFINE_OP(>=, ::in6_addr, ipv6_addr)
 __VIC_DEFINE_OP(< , ::in6_addr, ipv6_addr)
 __VIC_DEFINE_OP(> , ::in6_addr, ipv6_addr)
+#endif
 
 #undef __VIC_DEFINE_OP
 //----------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 #if __cplusplus >= 201103L // C++11
 
+#ifndef __VIC_USE_MODULES
 #include<__vic/defs.h>
 #include<__vic/config/parser.h>
 #include<__vic/config/value.h>
@@ -8,6 +9,7 @@
 #include<__vic/config/values/std/forward_list.h>
 #include<__vic/config/values/ip_addr.h>
 #include<__vic/config/values/bytes.h>
+#include<cstddef>
 #include<cstdint>
 #include<string>
 #include<vector>
@@ -19,6 +21,14 @@
 #if __cpp_lib_optional
 #include<__vic/config/values/std/optional.h>
 #endif
+#endif
+#endif
+#include<cassert>
+#ifdef __VIC_USE_MODULES
+#include<version>
+#include<__vic/config/parser.macros.h>
+import std;
+import __vic;
 #endif
 
 namespace tests {
@@ -64,16 +74,16 @@ namespace tests {
 //////////////////////////////////////////////////////////////////////////////
 struct main_config
 {
-    std::string str_param;
-    int32_t     int32_param{};
-    int         int_param{};
-    short       short_param{};
+    std::string  str_param;
+    std::int32_t int32_param{};
+    int          int_param{};
+    short        short_param{};
     std::list<std::string>   str_list_param1;
     std::vector<std::string> str_list_param2;
     std::list<decoder_instance> instances;
-    bool        bool_param{};
-    size_t      size_param{};
-    unsigned    unsigned_param{};
+    bool         bool_param{};
+    std::size_t  size_param{};
+    unsigned     unsigned_param{};
     __vic::ipv4_addr ipv4_addr_param{};
 #if __cpp_lib_optional
     std::optional<unsigned>
@@ -117,7 +127,9 @@ struct main_config_parser : public __vic::config::parser
 };
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef __VIC_USE_MODULES
 #include<iostream>
+#endif
 //----------------------------------------------------------------------------
 std::ostream &operator<<(std::ostream &os, const decoder_instance &di)
 {

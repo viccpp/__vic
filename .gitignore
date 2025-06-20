@@ -11,3 +11,10 @@
 *.obj
 *.lib
 *.exe
+
+# precompiled modules
+/test/gcm.cache/
+/test/std.pcm
+/test/__vic.pcm
+/test/std.ifc
+/test/__vic.ifc
