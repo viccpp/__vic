@@ -11,9 +11,8 @@
 *.exe
 
 # precompiled modules
-/tests/gcm.cache/std.gcm
-/tests/gcm.cache/__vic.gcm
-/tests/std.pcm
-/tests/__vic.pcm
-/tests/std.ifc
-/tests/__vic.ifc
+/test/gcm.cache/
+/test/std.pcm
+/test/__vic.pcm
+/test/std.ifc
+/test/__vic.ifc
