@@ -1,7 +1,13 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/windows/critical_section.h>
 #include<iostream>
 #include<exception>
-#include<cassert>
+#endif
+#include<windows.h>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void native_test()
 {

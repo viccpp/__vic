@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/windows/error.h>
 #include<__vic/string_utils.h>
-#include<windows.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#include<windows.h>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {

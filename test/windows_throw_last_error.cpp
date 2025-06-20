@@ -1,11 +1,19 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/windows/throw_last_error.h>
+#endif
 #include<winsock2.h> // must be included before windows.h
-#include<__vic/windows/error.h>
 #include<windows.h>
+#ifndef __VIC_USE_MODULES
+#include<__vic/windows/error.h>
 #include<iostream>
 #include<exception>
 #include<cstring>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {

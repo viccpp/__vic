@@ -1,8 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/windows/find_file.h>
 #include<__vic/windows/wchar.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#include<windows.h>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

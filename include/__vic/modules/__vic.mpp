@@ -79,6 +79,20 @@ module;
 #include<__vic/config/values/std/vector.h>
 #include<__vic/config/parser.h>
 
+#include<__vic/windows/bitmap.h>
+#include<__vic/windows/critical_section.h>
+#include<__vic/windows/dc.h>
+#include<__vic/windows/error.h>
+#include<__vic/windows/event.h>
+#include<__vic/windows/find_file.h>
+#include<__vic/windows/handle.h>
+#include<__vic/windows/shadow_dc.h>
+#include<__vic/windows/sync_object.h>
+#include<__vic/windows/throw_last_error.h>
+#include<__vic/windows/wait_cursor.h>
+#include<__vic/windows/wchar.h>
+#include<__vic/windows/window.h>
+
 #ifdef isascii
 #undef isascii
 #endif
@@ -500,6 +514,59 @@ export namespace __vic {
         using __vic::config::bytes_value_parser;
         using __vic::config::source;
         using __vic::config::parser;
+    } // namespace
+
+    namespace windows {
+// __vic/bitmap.h
+        using __vic::windows::Bitmap;
+
+// __vic/critical_section.h
+        using __vic::windows::CriticalSection;
+        using __vic::windows::CSGuard;
+
+// __vic/dc.h
+        using __vic::windows::DC;
+        using __vic::windows::ClientDC;
+        using __vic::windows::PaintDC;
+
+// __vic/error.h
+        using __vic::windows::error;
+
+// __vic/event.h
+        using __vic::windows::Event;
+
+// __vic/find_file.h
+        using __vic::windows::FindFile;
+
+// __vic/handle.h
+        using __vic::windows::Handle;
+        using __vic::windows::WaitAbandoned;
+
+// __vic/shadow_dc.h
+        using __vic::windows::ShadowDC;
+
+// __vic/sync_object.h
+        using __vic::windows::SyncObject;
+
+// __vic/throw_last_error.h
+        using __vic::windows::throw_last_error;
+        using __vic::windows::throw_wsa_error;
+        using __vic::windows::throw_failed;
+
+// __vic/wait_cursor.h
+        using __vic::windows::WaitCursor;
+
+// __vic/wchar.h
+        using __vic::windows::wstring;
+        using __vic::windows::utf8to16;
+        using __vic::windows::utf16to8;
+        using __vic::windows::utf16to8_append;
+
+// __vic/window.h
+        using __vic::windows::Window;
+        using __vic::windows::MsgBox;
+        using __vic::windows::MessageLoop;
+        using __vic::windows::ProcessMessages;
     } // namespace
 
 } // namespace

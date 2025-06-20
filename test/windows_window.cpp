@@ -1,7 +1,13 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/windows/window.h>
 #include<exception>
-#include<windows.h>
 #include<cstring>
+#endif
+#include<windows.h>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 extern "C" LRESULT CALLBACK WindowFunc(
     HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
