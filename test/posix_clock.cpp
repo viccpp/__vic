@@ -1,8 +1,14 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/posix/time.h>
 #include<iostream>
 #include<exception>
-#include<cassert>
 #include<ctime>
+#endif
+#include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {

@@ -56,6 +56,7 @@
     <!ENTITY posix.dir_entries.h SYSTEM "posix.dir_entries.h.xml">
     <!ENTITY posix.dir_files.h SYSTEM "posix.dir_files.h.xml">
     <!ENTITY posix.error.h SYSTEM "posix.error.h.xml">
+    <!ENTITY posix.error.macros.h SYSTEM "posix.error.macros.h.xml">
     <!ENTITY posix.file.h SYSTEM "posix.file.h.xml">
     <!ENTITY posix.file_stat.h SYSTEM "posix.file_stat.h.xml">
     <!ENTITY posix.fs.h SYSTEM "posix.fs.h.xml">
@@ -192,6 +193,7 @@ TODO
 &posix.dir_entries.h;
 &posix.dir_files.h;
 &posix.error.h;
+&posix.error.macros.h;
 &posix.file.h;
 &posix.file_stat.h;
 &posix.fs.h;

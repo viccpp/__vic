@@ -9,22 +9,9 @@
 #define __VIC_POSIX_ERROR_H
 
 #include<__vic/defs.h>
-#include<cerrno>
+#include<__vic/error.macros.h>
 
 namespace __vic { namespace posix {
-
-#if defined(ESTALE) && ESTALE != ENOENT
-// ESTALE - Stale NFS file handle
-#define __VIC_CASE_ENOENT case ENOENT: case ESTALE:
-#else
-#define __VIC_CASE_ENOENT case ENOENT:
-#endif
-
-#if defined(EWOULDBLOCK) && EWOULDBLOCK != EAGAIN
-#define __VIC_CASE_EAGAIN case EAGAIN: case EWOULDBLOCK:
-#else
-#define __VIC_CASE_EAGAIN case EAGAIN:
-#endif
 
 //----------------------------------------------------------------------------
 inline bool is_ENOENT(int err_no)

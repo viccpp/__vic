@@ -79,6 +79,22 @@ module;
 #include<__vic/config/values/std/vector.h>
 #include<__vic/config/parser.h>
 
+#include<__vic/posix/cond_variable.h>
+#include<__vic/posix/daemon_control.h>
+#include<__vic/posix/dir_entries.h>
+#include<__vic/posix/dir_files.h>
+#include<__vic/posix/error.h>
+#include<__vic/posix/file.h>
+#include<__vic/posix/file_stat.h>
+#include<__vic/posix/fs.h>
+#include<__vic/posix/iov.h>
+#include<__vic/posix/mutex.h>
+#include<__vic/posix/pidfile.h>
+#include<__vic/posix/process.h>
+#include<__vic/posix/sigset.h>
+#include<__vic/posix/thread.h>
+#include<__vic/posix/time.h>
+
 #ifdef isascii
 #undef isascii
 #endif
@@ -499,6 +515,88 @@ export namespace __vic {
         using __vic::config::bytes_value_parser;
         using __vic::config::source;
         using __vic::config::parser;
+    } // namespace
+
+    namespace posix {
+// __vic/posix/cond_variable.h
+        using __vic::posix::cond_variable;
+
+// __vic/posix/daemon_control.h
+        using __vic::posix::daemon_control;
+
+// __vic/posix/dir_entries.h
+        using __vic::posix::dir_entries;
+
+// __vic/posix/dir_files.h
+        using __vic::posix::dir_files;
+
+// __vic/posix/error.h
+        using __vic::posix::is_ENOENT;
+        using __vic::posix::is_EAGAIN;
+
+// __vic/posix/file.h
+        using __vic::posix::file;
+
+// __vic/posix/file_stat.h
+        using __vic::posix::file_stat;
+        using __vic::posix::is_block;
+        using __vic::posix::is_char;
+        using __vic::posix::is_dir;
+        using __vic::posix::is_fifo;
+        using __vic::posix::is_regular;
+        using __vic::posix::is_link;
+        using __vic::posix::is_socket;
+        using __vic::posix::is_same_file;
+
+// __vic/posix/fs.h
+        using __vic::posix::dirname;
+        using __vic::posix::basename;
+        using __vic::posix::append_dirname;
+        using __vic::posix::append_basename;
+        using __vic::posix::add_trailing_slash;
+        using __vic::posix::with_trailing_slash;
+
+// __vic/posix/iov.h
+        using __vic::posix::ovectors;
+        using __vic::posix::total;
+        using __vic::posix::cut_prefix;
+        using __vic::posix::writev_all;
+
+// __vic/posix/mutex.h
+        using __vic::posix::mutex;
+        using __vic::posix::mutex_lock;
+
+// __vic/posix/pidfile.h
+        using __vic::posix::pidfile;
+
+// __vic/posix/process.h
+        using __vic::posix::daemon;
+        using __vic::posix::process_alive;
+        using __vic::posix::ignore_signals;
+
+// __vic/posix/sigset.h
+        using __vic::posix::sigset;
+
+// __vic/posix/thread.h
+        namespace this_thread {
+            using __vic::posix::this_thread::sigwait;
+            using __vic::posix::this_thread::sigwait_at_most;
+            using __vic::posix::this_thread::sigwaitinfo;
+            using __vic::posix::this_thread::sigwaitinfo_at_most;
+            using __vic::posix::this_thread::change_sigmask;
+            using __vic::posix::this_thread::block_signals;
+            using __vic::posix::this_thread::unblock_signals;
+            using __vic::posix::this_thread::set_sigmask;
+        } // namespace
+
+// __vic/posix/time.h
+        using __vic::posix::time_spec;
+        using __vic::posix::operator==;
+        using __vic::posix::operator<=>;
+        using __vic::posix::operator+;
+        using __vic::posix::operator-;
+        using __vic::posix::nanoseconds_since_epoch
+        using __vic::posix::clock;
     } // namespace
 
 } // namespace

@@ -1,7 +1,13 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/posix/fs.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 // WARNING: no brackets around macro arguments
 #define test_basename(src, expected_res) \

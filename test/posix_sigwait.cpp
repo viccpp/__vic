@@ -1,9 +1,15 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/posix/thread.h>
 #include<__vic/posix/sigset.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
 #include<csignal>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {

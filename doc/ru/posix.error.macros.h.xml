@@ -1,0 +1,8 @@
+<chapter xml:id="posix.error.macros.h">
+<title><tt>__vic/posix/error.macros.h</tt></title>
+
+<p>Данный заголовочный файл содержит только макросы из
+<xref to="posix.error.h"/>. Это позволяет использовать их в случаях, когда
+данная библиотека подключается как C++-модуль.</p>
+
+</chapter>

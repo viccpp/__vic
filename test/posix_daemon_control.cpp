@@ -1,11 +1,18 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/posix/daemon_control.h>
 #include<iostream>
 #include<exception>
 #include<cstring>
-#include<cassert>
 #include<csignal>
-#include<unistd.h>
+#endif
+#include<cassert>
+#include<signal.h>
 #include<sys/wait.h>
+#include<unistd.h>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 namespace tests {
 

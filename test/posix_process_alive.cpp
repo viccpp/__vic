@@ -1,8 +1,14 @@
+#ifndef __VIC_USE_MODULES
 #include<__vic/posix/process.h>
 #include<iostream>
 #include<exception>
+#endif
 #include<cassert>
 #include<unistd.h>
+#ifdef __VIC_USE_MODULES
+import std;
+import __vic;
+#endif
 
 void run_tests()
 {

@@ -1,0 +1,7 @@
+<chapter xml:id="posix.error.macros.h">
+<title><tt>__vic/posix/error.macros.h</tt></title>
+
+<p>This header contains only macros from <xref to="posix.error.h"/>. It makes
+the macros available when the library is imported as a C++ module.</p>
+
+</chapter>
