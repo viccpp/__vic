@@ -40,8 +40,7 @@ public:
 
     void Select(HGDIOBJ hObj) // not a region object
         { if(!::SelectObject(hdc, hObj)) throw_failed("SelectObject"); }
-    void Select(HRGN hReg)
-        { if(::SelectObject(hdc, hReg) == HGDI_ERROR) throw_failed("SelectObject"); }
+    void Select(HRGN hReg);
 
     COLORREF SetPixel(int x, int y, COLORREF c) { return ::SetPixel(hdc, x, y, c); }
     bool MoveTo(int x, int y, POINT *p = 0) { return ::MoveToEx(hdc, x, y, p); }

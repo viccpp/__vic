@@ -3,8 +3,8 @@
 #include<iostream>
 #include<exception>
 #endif
-#include<windows.h>
 #ifdef __VIC_USE_MODULES
+#include<__vic/modules/windows.h>
 import std;
 import __vic;
 #endif
