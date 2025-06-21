@@ -5,6 +5,9 @@
 #   $ gmake [compiler={gcc|clang[-cl]|msvc}] [std={98|11|14|17|20|23}]
 
 include ../src/defs.mk
+ifndef PS1
+RM = ..\src\rm.cmd
+endif
 std = 17
 compiler = gcc
 

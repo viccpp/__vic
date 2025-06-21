@@ -11,7 +11,7 @@ CHECKS := $(addprefix check-,$(LANGS))
 XSLTPROC = xsltproc
 XMLVALIDATOR = xmllint --valid -noout
 
-RM := $(if $(PS1),rm -f,del /Q /F)
+RM := $(if $(PS1),rm -f,..\src\rm.cmd)
 
 .PHONY: all check $(LANGS) $(CHECKS) clean
 
@@ -29,4 +29,4 @@ endef
 $(foreach lang,$(LANGS),$(eval $(call lang_template,$(lang))))
 
 clean:
-	-del /Q /F *.html 2>nul
+	-$(RM) *.html

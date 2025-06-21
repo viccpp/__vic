@@ -5,6 +5,7 @@
 #   $ nmake -f Makefile.nmake [compiler={msvc|clang-cl}] [std={14|17|20|latest}]
 
 !include ../src/defs.mk
+RM = ..\src\rm.cmd
 std = 17
 compiler = msvc
 

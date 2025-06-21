@@ -14,4 +14,4 @@ $(LIBFILE): $(OBJS)
 	$(CC) $(CFLAGS_ALL) $(CFLAGS_TEST) $< $(LIBS)
 
 clean::
-	del /Q /F *.$(OBJSUFF) *.$(ARSUFF) $(GARBAGE) 2>nul
+	-$(RM) *.$(OBJSUFF) *.$(ARSUFF) $(GARBAGE)
