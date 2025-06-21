@@ -11,7 +11,7 @@ CHECKS := $(addprefix check-,$(LANGS))
 XSLTPROC = xsltproc
 XMLVALIDATOR = xmllint --valid -noout
 
-RM := $(if $(PS1),rm -f,del /Q /F)
+RM := $(if $(PS1),rm -f,..\src\rm.cmd)
 
 .PHONY: all check $(LANGS) $(CHECKS) clean
 
