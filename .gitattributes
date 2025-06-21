@@ -1,0 +1,10 @@
+* text=auto eol=lf
+*.h     text eol=lf
+*.cpp   text eol=lf
+*.xml   text eol=lf
+*.xsl   text eol=lf
+*.dtd   text eol=lf
+*.mk    text eol=lf
+ChangeLog   text eol=lf
+.gitignore  text eol=lf
+*[Mm]akefile* text eol=lf
