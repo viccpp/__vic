@@ -8,7 +8,6 @@
 *.d
 *.obj
 *.lib
-*.exe
 
 # precompiled modules
 /test/gcm.cache/
