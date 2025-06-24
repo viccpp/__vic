@@ -9,7 +9,7 @@
 #define __VIC_POSIX_ERROR_H
 
 #include<__vic/defs.h>
-#include<__vic/error.macros.h>
+#include<__vic/posix/error.macros.h>
 
 namespace __vic { namespace posix {
 
