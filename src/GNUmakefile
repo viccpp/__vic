@@ -20,8 +20,8 @@ binutils = 1
 ##############################################################################
 else ifeq ($(compiler),clang)
 CC     := clang++
-TARGET := -target $(patsubst %-msvc,%-gnu,$(lastword $(shell $(CC) --version|find "Target:")))
-CC     += -std=c++$(std) $(TARGET) -pthread
+#TARGET := -target $(patsubst %-msvc,%-gnu,$(lastword $(shell $(CC) --version|find "Target:")))
+CC     += -std=c++$(std) -pthread
 CFLAGS := -pedantic-errors -DNDEBUG -O3
 WARNS  := $(if $(filter 98,$(std)),-Wno-long-long )-Wno-non-literal-null-conversion
 binutils = 1
