@@ -2,21 +2,42 @@
 # NMAKE Makefile for Visual C++ & LLVM clang-cl
 #
 # Usage:
-#   $ nmake -f Makefile.nmake [check]
+#   $ nmake -f Makefile.nmake [modules=1] [check]
 
 !include ../src/defs.mk
 Makefile = Makefile.nmake
 !include sources.mk
 TESTS = $(SOURCES:.cpp=.exe)
-GARBAGE = $(GARBAGE) *.$(TESTSUFF)
+GARBAGE = $(GARBAGE) *.$(TESTSUFF) *.ifc
 
 !include pref.mk
 !include ../src/$(Makefile)
 
 # Override included values
 CFLAGS = -D_CRT_SECURE_NO_DEPRECATE
-CFLAGS_TEST = -MT
 WARNS = -W3 -wd4290 -wd4800 -D_CRT_SECURE_NO_WARNINGS
-LIBS = $(LIBS) user32.lib gdi32.lib ws2_32.lib notelemetry.obj
+WINLIBS = user32.lib gdi32.lib ws2_32.lib notelemetry.obj
+!ifdef modules
+CFLAGS_TEST = -MT -D__VIC_USE_MODULES=1
+LIBS = $(LIBS) $(WINLIBS) std.obj
+!else
+CFLAGS_TEST = -MT
+LIBS = $(LIBS) $(WINLIBS)
+!endif
+
+################################################################
+!ifdef modules
+PRECOMPILED_MODULES = std.ifc std.obj __vic.ifc
+MSVC_HOME = C:/opt/VC
+
+$(TESTS): $(PRECOMPILED_MODULES)
+
+std.ifc std.obj:
+	$(CC) $(CFLAGS_ALL) -c $(MSVC_HOME)/modules/std.ixx
+__vic.ifc: ../include/__vic/modules/__vic.mpp
+	$(CC)  $(CFLAGS_ALL) -c /interface /TP $?
+	-@del /Q /F __vic.obj 2>nul
+!endif
+################################################################
 
 !include suff.mk

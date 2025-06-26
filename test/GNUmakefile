@@ -58,7 +58,7 @@ PCM_FLAGS = -Wno-reserved-module-identifier -fmodules-reduced-bmi -fmodule-outpu
 GARBAGE += *.pcm
 # MS VC++
 else ifeq ($(compiler),msvc)
-PRECOMPILED_MODULES = std.ifc __vic.ifc
+PRECOMPILED_MODULES = std.ifc std.obj __vic.ifc
 MSVC_HOME = $(realpath $(dir $(shell where cl.exe))..\..\..)
 LIBS += std.obj
 GARBAGE += *.ifc
@@ -79,7 +79,7 @@ __vic.pcm: ../include/__vic/modules/__vic.mpp
 	$(CC) $(CFLAGS_ALL) -c $(PCM_FLAGS) -xc++-module $?
 	-$(RM) __vic.o
 
-std.ifc:
+std.ifc std.obj:
 	$(CC) $(CFLAGS_ALL) -c $(MSVC_HOME)/modules/std.ixx
 __vic.ifc: ../include/__vic/modules/__vic.mpp
 	$(CC)  $(CFLAGS_ALL) -c /interface /TP $?
