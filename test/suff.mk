@@ -3,7 +3,7 @@
 
 $(TESTS): ../src/$(LIBFILE)
 ../src/$(LIBFILE):
-	cd ../src && $(MAKE) -f $(Makefile) CFLAGS="$(CFLAGS)" WARNS="$(WARNS)"
+	cd ../src && $(MAKE) -f $(Makefile) std=$(std) CFLAGS="$(CFLAGS)" WARNS="$(WARNS)"
 
 clean::
 	@cd ../src && $(MAKE) -f $(Makefile) RM="$(RM)" clean
