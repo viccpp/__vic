@@ -242,9 +242,10 @@ inline logger::record logger::warning() { return record(*this, severity::warning
 inline logger::record logger::error() { return record(*this, severity::error); }
 inline logger::record logger::fatal() { return record(*this, severity::fatal); }
 //----------------------------------------------------------------------------
+extern const char * const logger_severity_strs[]; // internal declaration
+//----------------------------------------------------------------------------
 inline const char *to_string(logger::severity_t s)
 {
-    extern const char * const logger_severity_strs[];
     return logger_severity_strs[static_cast<int>(s)];
 }
 //----------------------------------------------------------------------------

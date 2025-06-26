@@ -4,6 +4,14 @@
 
 module;
 
+#ifdef _MSC_VER
+#include<winsock2.h>
+#include<windows.h>
+#ifdef isascii
+#undef isascii
+#endif
+#endif
+
 #define __VIC_DEFINE_OSTREAM_INSERTERS 1
 
 #include<__vic/defs.h>
