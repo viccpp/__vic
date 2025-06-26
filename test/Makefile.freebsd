@@ -2,7 +2,7 @@
 # FreeBSD 10+ bmake Makefile
 #
 # Usage:
-#   $ make -f Makefile.freebsd [check]
+#   $ make -f Makefile.freebsd [modules=1] [check]
 
 .include "../src/defs.mk"
 Makefile = Makefile.freebsd
@@ -15,8 +15,11 @@ TESTS := $(SOURCES:.cpp=.$(TESTSUFF))
 
 # Override included values
 CFLAGS = -pedantic-errors
-CFLAGS_TEST = -MMD -o $@
+CFLAGS_TEST = $(modules:?:-MMD ) -o $@
 WARNS = -Wall -Wno-unused-local-typedefs
+.if $(compiler) == clang
+WARNS += -Wno-mismatched-tags
+.endif
 .if $(std) == 98
 WARNS += -Wno-long-long
 .if $(compiler) == gcc
@@ -26,6 +29,39 @@ WARNS += -Wno-non-literal-null-conversion
 .endif
 .endif
 GARBAGE += *.d *.$(TESTSUFF)
+
+##############################################################################
+.ifdef modules
+# GCC
+.if $(compiler) == gcc
+PRECOMPILED_MODULES = gcm.cache/std.gcm gcm.cache/__vic.gcm
+CC += -fmodules
+GARBAGE += gcm.cache
+# Clang
+.elif $(compiler) == clang
+PRECOMPILED_MODULES = std.pcm __vic.pcm
+CLANG_HOME != readlink -f "`env LANG=C $(CC) -print-search-dirs | grep '^libraries:' | cut -c 13- | cut -d : -f 1`/../../.."
+CFLAGS_TEST += -fprebuilt-module-path=.
+PCM_FLAGS = -Wno-reserved-module-identifier -fmodules-reduced-bmi -fmodule-output=$@
+GARBAGE += *.pcm
+.endif
+CFLAGS_TEST += -D__VIC_USE_MODULES=1
+
+$(TESTS): $(PRECOMPILED_MODULES)
+
+gcm.cache/std.gcm:
+	$(CC) $(CFLAGS_ALL) -c -fmodule-only -fsearch-include-path bits/std.cc
+gcm.cache/__vic.gcm: ../include/__vic/modules/__vic.mpp
+	$(CC) $(CFLAGS_ALL) -c -fmodule-only -xc++ $?
+
+std.pcm:
+	$(CC) $(CFLAGS_ALL) -c $(PCM_FLAGS) $(CLANG_HOME)/share/libc++/v1/std.cppm
+	-$(RM) std.o
+__vic.pcm: ../include/__vic/modules/__vic.mpp
+	$(CC) $(CFLAGS_ALL) -c $(PCM_FLAGS) -xc++-module $?
+	-$(RM) __vic.o
+endif
+##############################################################################
 
 .-include "*.d"
 .include "suff.mk"
