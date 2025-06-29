@@ -9,6 +9,7 @@
 #include<cerrno>
 #include<unistd.h>
 #include<fcntl.h>
+// AIX 6.1: flock() is emulated but lock is not inherited
 #if !defined(__hpux) && !defined(_AIX) && !defined(__sun)
 #define HAVE_FLOCK 1
 #endif
