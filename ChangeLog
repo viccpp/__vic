@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2025-08-19  __vic
+    - bounded_vector::recreate(): basic exception safety
+
 2025-06-19  __vic
     + modules/__vic.mpp
 
