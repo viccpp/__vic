@@ -24,6 +24,13 @@ namespace __vic { namespace windows {
 class SyncObject : private non_copyable
 {
     Handle h;
+
+    template<class T>
+    static DWORD ceil_(T t)
+    {
+        DWORD timeout = ~DWORD(0);
+        return t < timeout ? static_cast<DWORD>(t) : timeout;
+    }
 protected:
     SyncObject(const char *err, HANDLE h) : h(h)
         { if(!h) throw_last_error(err); }
@@ -31,7 +38,7 @@ protected:
 public:
     bool Wait(DWORD timeout = INFINITE) const { return h.Wait(timeout); }
 #ifdef __VIC_HAVE_STD_CHRONO
-    bool wait_for(std::chrono::milliseconds ms) const { return Wait(ms.count()); }
+    bool wait_for(std::chrono::milliseconds ms) const { return Wait(ceil_(ms.count())); }
 #endif
     HANDLE handle() const { return h; }
 };
