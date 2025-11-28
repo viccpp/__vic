@@ -107,7 +107,7 @@ constexpr To byte_cast(From v);
 <p>Приводит значение типа <tt>From</tt> к типу <tt>To</tt>, если оба типа
 представляют байт (см. <xref to="is_byte"/>).</p>
 
-<precondition>is_byte&lt;From>::value &amp;&amp; is_byte&lt;To>::value</precondition>
+<precondition><tt>is_byte&lt;From>::value &amp;&amp; is_byte&lt;To>::value</tt></precondition>
 
 </chapter>
 

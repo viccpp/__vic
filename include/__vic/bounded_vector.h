@@ -109,8 +109,9 @@ void bounded_vector<T>::recreate(size_t max_size, bool exact)
     clear();
     if(max_size > capacity() || (exact && max_size != capacity()))
     {
+        T *p = this->allocate(max_size);;
         deallocate(mem);
-        mem = next = this->allocate(max_size);
+        mem = next = p;
         limit = mem + max_size;
     }
 }

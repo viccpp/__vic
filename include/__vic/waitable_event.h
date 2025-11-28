@@ -32,12 +32,12 @@ public:
     bool wait_ms(unsigned msec) { return ev.Wait(msec); }
 #ifdef __VIC_HAVE_STD_CHRONO
     template<class Rep, class Period>
-    bool wait_for(const std::chrono::duration<Rep,Period> &t)
+    bool wait_for(std::chrono::duration<Rep,Period> t)
     {
         return ev.wait_for(t);
     }
     template<class Clock, class Duration>
-    bool wait_until(const std::chrono::time_point<Clock,Duration> &t)
+    bool wait_until(std::chrono::time_point<Clock,Duration> t)
     {
         using clock = typename std::chrono::time_point<Clock,Duration>::clock;
         auto now = clock::now();

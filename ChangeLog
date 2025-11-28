@@ -4,9 +4,15 @@ Legend:
     * Changes
     ! Important
 
+2025-11-28  __vic
+    * waitable_event: takes timeouts by value
+
 2025-11-20  __vic
     - bin_file: narrowing integer conversions in read and write functions
     - windows::SyncObject: narrowing integer conversion in wait_for
+
+2025-08-19  __vic
+    - bounded_vector::recreate(): basic exception safety
 
 2025-06-19  __vic
     + modules/__vic.mpp
