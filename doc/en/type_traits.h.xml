@@ -106,7 +106,7 @@ constexpr To byte_cast(From v);
 <p>Casts value of <tt>From</tt> type to <tt>To</tt> type if both types are
 byte types (see <xref to="is_byte"/>).</p>
 
-<precondition>is_byte&lt;From>::value &amp;&amp; is_byte&lt;To>::value</precondition>
+<precondition><tt>is_byte&lt;From>::value &amp;&amp; is_byte&lt;To>::value</tt></precondition>
 
 </chapter>
 

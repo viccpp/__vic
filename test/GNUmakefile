@@ -42,7 +42,7 @@ else ifeq ($(compiler),clang)
 PRECOMPILED_MODULES = std.pcm __vic.pcm
 CLANG_HOME = $(patsubst =%/bin,%,$(word 2,$(shell $(CC) -print-search-dirs)))
 CFLAGS_TEST += -fprebuilt-module-path=.
-PCM_FLAGS = -Wno-reserved-module-identifier -fmodules-reduced-bmi -fmodule-output=$@
+PCM_FLAGS = -Wno-reserved-module-identifier -fmodule-output=$@
 GARBAGE += *.pcm
 endif
 CFLAGS_TEST += -D__VIC_USE_MODULES=1
