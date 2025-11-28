@@ -17,9 +17,9 @@ public:
 
     void wait();
     template<class Rep, class Period>
-    bool wait_for(const std::chrono::duration<Rep,Period> &d);
+    bool wait_for(std::chrono::duration<Rep,Period> d);
     template<class Clock, class Duration>
-    bool wait_until(const std::chrono::time_point<Clock,Duration> &t);
+    bool wait_until(std::chrono::time_point<Clock,Duration> t);
 };
 ]]>
 </code-block>
@@ -61,9 +61,9 @@ resources consumption).</p>
 
 <synopsis>
 <prototype><![CDATA[template<class Rep, class Period>
-bool wait_for(const std::chrono::duration<Rep,Period> &d)]]></prototype>
+bool wait_for(std::chrono::duration<Rep,Period> d)]]></prototype>
 <prototype><![CDATA[template<class Clock, class Duration>
-bool wait_until(const std::chrono::time_point<Clock,Duration> &t)]]></prototype>
+bool wait_until(std::chrono::time_point<Clock,Duration> t)]]></prototype>
 <p>Waits for the signaled state no longer than the specified timeout. Returns
 <tt>signaled()</tt>.</p>
 </synopsis>

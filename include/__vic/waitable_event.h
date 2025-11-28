@@ -39,15 +39,15 @@ public:
 
     void wait();
     template<class Rep, class Period>
-    bool wait_for(const std::chrono::duration<Rep,Period> & );
+    bool wait_for(std::chrono::duration<Rep,Period> );
     template<class Clock, class Duration>
-    bool wait_until(const std::chrono::time_point<Clock,Duration> & );
+    bool wait_until(std::chrono::time_point<Clock,Duration> );
 };
 //////////////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------
 template<class R, class P>
-bool waitable_event::wait_for(const std::chrono::duration<R,P> &t)
+bool waitable_event::wait_for(std::chrono::duration<R,P> t)
 {
     if(signaled()) return true;
     std::unique_lock<std::mutex> lock(mtx);
@@ -56,7 +56,7 @@ bool waitable_event::wait_for(const std::chrono::duration<R,P> &t)
 }
 //----------------------------------------------------------------------------
 template<class C, class D>
-bool waitable_event::wait_until(const std::chrono::time_point<C,D> &t)
+bool waitable_event::wait_until(std::chrono::time_point<C,D> t)
 {
     if(signaled()) return true;
     std::unique_lock<std::mutex> lock(mtx);
