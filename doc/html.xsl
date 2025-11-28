@@ -86,6 +86,7 @@ h1:hover>a.self-link, h2:hover>a.self-link, h3:hover>a.self-link, h4:hover>a.sel
 	visibility: visible;
 }
 tt { font-family: consolas, monospace; }
+:not(a, h2, h3) > tt { background-color: #E3E6E8; padding: 0 2px; }
 pre.code {
 	background-color: #EEE;
 	border: 1px solid #CCCCCC;

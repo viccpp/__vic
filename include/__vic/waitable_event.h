@@ -45,9 +45,9 @@ public:
     bool wait_ms(unsigned );
 #if __cplusplus >= 201103L // C++11
     template<class Rep, class Period>
-    bool wait_for(const std::chrono::duration<Rep,Period> & );
+    bool wait_for(std::chrono::duration<Rep,Period> );
     template<class Clock, class Duration>
-    bool wait_until(const std::chrono::time_point<Clock,Duration> & );
+    bool wait_until(std::chrono::time_point<Clock,Duration> );
 #endif
 };
 //////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ inline void waitable_event::reset()
 }
 //----------------------------------------------------------------------------
 template<class R, class P>
-bool waitable_event::wait_for(const std::chrono::duration<R,P> &t)
+bool waitable_event::wait_for(std::chrono::duration<R,P> t)
 {
     if(signaled()) return true;
     std::unique_lock<std::mutex> lock(mtx);
@@ -74,7 +74,7 @@ bool waitable_event::wait_for(const std::chrono::duration<R,P> &t)
 }
 //----------------------------------------------------------------------------
 template<class C, class D>
-bool waitable_event::wait_until(const std::chrono::time_point<C,D> &t)
+bool waitable_event::wait_until(std::chrono::time_point<C,D> t)
 {
     if(signaled()) return true;
     std::unique_lock<std::mutex> lock(mtx);
