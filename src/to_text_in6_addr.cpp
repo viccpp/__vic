@@ -5,6 +5,7 @@
 #include<__vic/ip_addr.h>
 #include<__vic/throw_errno.h>
 #include<arpa/inet.h>
+#include<sys/socket.h>
 
 namespace __vic {
 

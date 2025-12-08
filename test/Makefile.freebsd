@@ -60,7 +60,7 @@ std.pcm:
 __vic.pcm: ../include/__vic/modules/__vic.mpp
 	$(CC) $(CFLAGS_ALL) -c $(PCM_FLAGS) -xc++-module $?
 	-$(RM) __vic.o
-endif
+.endif
 ##############################################################################
 
 .-include "*.d"
