@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2026-01-22  __vic
+    * is_[un]signed_integer should cover the extended integer types
+
 2025-11-28  __vic
     * waitable_event: takes timeouts by value
 

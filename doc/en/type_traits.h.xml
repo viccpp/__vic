@@ -118,8 +118,8 @@ byte types (see <xref to="is_byte"/>).</p>
 template<class T> struct is_signed_integer;
 ]]></code-block>
 
-<p>A predicate. True if <tt>T</tt> is a one of the "standard signed integer
-types" (see the Standard).</p>
+<p>A predicate. True if <tt>T</tt> is a one of the "standard or extended signed
+integer types" (see the Standard).</p>
 
 </chapter>
 
@@ -131,8 +131,8 @@ types" (see the Standard).</p>
 template<class T> struct is_unsigned_integer;
 ]]></code-block>
 
-<p>A predicate. True if <tt>T</tt> is a one of the "standard unsigned integer
-types" (see the Standard).</p>
+<p>A predicate. True if <tt>T</tt> is a one of the "standard or extended unsigned
+integer types" (see the Standard).</p>
 
 </chapter>
 
