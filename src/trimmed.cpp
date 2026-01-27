@@ -103,16 +103,17 @@ inline std::basic_string<charT,Traits,Alloc> trimmed_if_back(
 {
     const charT *begin = st.data();
     return std::basic_string<charT,Traits,Alloc>(
-        begin, skip_if_back(begin, &*st.end(), pred));
+        begin, skip_if_back(begin, begin + st.length(), pred));
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
 inline std::basic_string<charT,Traits,Alloc> trimmed_if_front(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
-    const charT *end = &*st.end();
+    const charT *begin = st.data(),
+                *end = begin + st.length();
     return std::basic_string<charT,Traits,Alloc>(
-        skip_if_front(st.data(), end, pred), end);
+        skip_if_front(begin, end, pred), end);
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
@@ -120,7 +121,8 @@ inline std::basic_string<charT,Traits,Alloc> trimmed_if(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     const charT *begin = st.data();
-    const charT *e = skip_if_back(begin, &*st.end(), pred);
+                *end = begin + st.length();
+    const charT *e = skip_if_back(begin, end, pred);
     const charT *b = skip_if_front(begin, e, pred);
     return std::basic_string<charT,Traits,Alloc>(b, e);
 }

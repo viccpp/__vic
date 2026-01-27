@@ -6,6 +6,8 @@ Legend:
 
 2026-01-22  __vic
     * is_[un]signed_integer should cover the extended integer types
+    ! string_ref: the string::const_iterator constructor removed
+    * No &*string.end(), which is UB
 
 2025-11-28  __vic
     * waitable_event: takes timeouts by value

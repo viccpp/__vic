@@ -14,16 +14,17 @@ namespace {
 template<class charT, class Traits, class Alloc, class Pred>
 inline void trim_if_back(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
-    charT *end = &*st.end();
-    charT *p = skip_if_back(&*st.begin(), end, pred);
-    if(p != end) st.resize(p - st.data());
+    charT *begin = st.data(),
+          *end = begin + st.length();
+    charT *p = skip_if_back(begin, end, pred);
+    if(p != end) st.resize(p - begin);
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
 inline void trim_if_front(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
-    charT *begin = &*st.begin();
-    charT *p = skip_if_front(begin, &*st.end(), pred);
+    charT *begin = st.data();
+    charT *p = skip_if_front(begin, begin + st.length(), pred);
     if(p != begin) st.erase(0, p - begin);
 }
 //----------------------------------------------------------------------------
