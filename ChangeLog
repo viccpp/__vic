@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2026-01-29  __vic
+    - posix/dir_entries.h: __VIC_USE_READDIR detection
+
 2025-11-28  __vic
     * waitable_event: takes timeouts by value
 
