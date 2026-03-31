@@ -7,7 +7,7 @@
 
 namespace __vic { namespace posix {
 
-#if _POSIX_TIMERS > 0
+#ifdef __VIC_HAVE_POSIX_TIMERS
 //----------------------------------------------------------------------------
 time_spec clock_base::get_time_(clockid_t id)
 {

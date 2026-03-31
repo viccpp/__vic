@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2026-03-30  __vic
+    + macOS support
+
 2026-01-29  __vic
     - posix/dir_entries.h: __VIC_USE_READDIR detection
 

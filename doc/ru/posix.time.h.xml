@@ -153,7 +153,7 @@ posix::time_spec posix::nanoseconds_since_epoch();
 <title><tt>posix::realtime_clock</tt>, <tt>posix::monotonic_clock</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#if _POSIX_TIMERS > 0
+#ifdef __VIC_HAVE_POSIX_TIMERS
 
 class posix::realtime_clock
 {
@@ -195,7 +195,7 @@ public:
 
 <p>Системные часы POSIX (<tt>clock_gettime()</tt>) с интерфейсом часов
 <tt>&lt;chrono></tt>. Отсутсвуют в системах, которые их не поддерживают
-(проверяется макросом <tt>_POSIX_TIMERS</tt>). Дополнительно,
+(проверяется макросом <tt>__VIC_HAVE_POSIX_TIMERS</tt>). Дополнительно,
 <tt>monotonic_clock</tt> доступен только, если определён макрос
 <tt>_POSIX_MONOTONIC_CLOCK</tt>.</p>
 

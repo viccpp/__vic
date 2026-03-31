@@ -16,9 +16,9 @@
 #define _DIRENT_HAVE_D_TYPE 1
 #endif
 
-// Don't use readdir_r() since glibc-2.24 (Linux) and FreeBSD 12
+// Don't use readdir_r() since glibc-2.24 (Linux), FreeBSD 12 and for Apple
 #if (defined(__GLIBC__) && (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 24) || __GLIBC__ > 2) || \
-    (defined(__FreeBSD__) && __FreeBSD__ >= 12)
+    (defined(__FreeBSD__) && __FreeBSD__ >= 12) || defined(__APPLE__)
 #define __VIC_USE_READDIR 1
 #endif
 

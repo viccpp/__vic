@@ -15,6 +15,8 @@ ifeq ($(OS),Linux)
 compiler = gcc
 else ifeq ($(OS),FreeBSD)
 compiler = clang
+else ifeq ($(OS),Darwin)
+compiler = clang
 endif
 endif
 

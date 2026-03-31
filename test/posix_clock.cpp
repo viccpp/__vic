@@ -17,7 +17,7 @@ void run_tests()
     std::strftime(st, sizeof st,
         "%H:%M:%S %d.%m.%Y", std::localtime(&t.tv_sec));
     std::cout << "Current time: " << st << '\n';
-#if _POSIX_TIMERS > 0
+#ifdef __VIC_HAVE_POSIX_TIMERS
     t = __vic::posix::realtime_clock::get_time();
     std::strftime(st, sizeof st,
         "%H:%M:%S %d.%m.%Y", std::localtime(&t.tv_sec));

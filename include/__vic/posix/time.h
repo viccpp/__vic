@@ -9,6 +9,9 @@
 #include<__vic/posix/_cfg.h>
 #include<__vic/defs.h>
 #include<time.h>
+#if _POSIX_TIMERS > 0 || defined(__APPLE__)
+#define __VIC_HAVE_POSIX_TIMERS 1
+#endif
 #if __cplusplus >= 201103L && !defined(__VIC_HAVE_STD_CHRONO)
 #define __VIC_HAVE_STD_CHRONO 1
 #endif
@@ -186,7 +189,7 @@ inline time_spec operator-(time_spec t1, const time_spec &t2)
 }
 //----------------------------------------------------------------------------
 
-#if _POSIX_TIMERS > 0
+#ifdef __VIC_HAVE_POSIX_TIMERS
 
 using ::clockid_t;
 template<clockid_t > struct clock; // not implemented
@@ -234,7 +237,7 @@ inline time_spec nanoseconds_since_epoch()
 
 time_spec nanoseconds_since_epoch();
 
-#endif // _POSIX_TIMERS
+#endif // __VIC_HAVE_POSIX_TIMERS
 
 }} // namespace
 

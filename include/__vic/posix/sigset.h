@@ -53,17 +53,17 @@ public:
         return assign(sigs, Size);;
     }
 
-    sigset &add(int signo) { ::sigaddset(&set, signo); return *this; }
-    sigset &del(int signo) { ::sigdelset(&set, signo); return *this; }
+    sigset &add(int signo) { sigaddset(&set, signo); return *this; }
+    sigset &del(int signo) { sigdelset(&set, signo); return *this; }
     sigset &operator+=(int signo) { return add(signo); }
     sigset &operator-=(int signo) { return del(signo); }
     sigset &operator<<(int signo) { return add(signo); }
     sigset &operator>>(int signo) { return del(signo); }
 
-    sigset &fill() { ::sigfillset(&set); return *this; }
-    sigset &clear() { ::sigemptyset(&set); return *this; }
+    sigset &fill() { sigfillset(&set); return *this; }
+    sigset &clear() { sigemptyset(&set); return *this; }
 
-    bool is_member(int signo) const { return ::sigismember(&set, signo) == 1; }
+    bool is_member(int signo) const { return sigismember(&set, signo) == 1; }
     bool contains(int signo) const { return is_member(signo); }
 
     operator ::sigset_t &() { return set; }

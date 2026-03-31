@@ -157,7 +157,7 @@ result when available. The actual precision depends on the used platform.</p>
 <title><tt>posix::realtime_clock</tt>, <tt>posix::monotonic_clock</tt></title>
 
 <code-block lang="C++"><![CDATA[
-#if _POSIX_TIMERS > 0
+#ifdef __VIC_HAVE_POSIX_TIMERS
 
 class posix::realtime_clock
 {
@@ -199,8 +199,9 @@ public:
 
 <p>POSIX system clocks (<tt>clock_gettime()</tt>) with
 <tt>&lt;chrono></tt>-clock interface. Absent in system not supporting them
-(check <tt>_POSIX_TIMERS</tt> macro). Additionally <tt>monotonic_clock</tt>
-is available only if <tt>_POSIX_MONOTONIC_CLOCK</tt> macro is defined.</p>
+(check <tt>__VIC_HAVE_POSIX_TIMERS</tt> macro). Additionally
+<tt>monotonic_clock</tt> is available only if <tt>_POSIX_MONOTONIC_CLOCK</tt>
+ macro is defined.</p>
 
 <section><title>Class members</title>
 

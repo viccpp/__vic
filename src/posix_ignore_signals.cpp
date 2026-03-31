@@ -14,7 +14,7 @@ void ignore_signals(const int sigs[], size_t n)
 {
     struct ::sigaction sa;
     sa.sa_handler = SIG_IGN;
-    ::sigemptyset(&sa.sa_mask);
+    sigemptyset(&sa.sa_mask); // this can be a macro
     sa.sa_flags = 0;
     for(const int *s = sigs; n--; s++)
         if(::sigaction(*s, &sa, nullptr)) throw_errno(__vic::msg(32) <<
