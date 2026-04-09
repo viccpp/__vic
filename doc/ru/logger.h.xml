@@ -114,13 +114,13 @@ public:
     record error();
     record fatal();
 
-    bool trace_visible() const;
-    bool debug_visible() const;
-    bool info_visible() const;
-    bool notice_visible() const;
-    bool warning_visible() const;
-    bool error_visible() const;
-    bool fatal_visible() const;
+    [[nodiscard]] bool trace_on() const;
+    [[nodiscard]] bool debug_on() const;
+    [[nodiscard]] bool info_on() const;
+    [[nodiscard]] bool notice_on() const;
+    [[nodiscard]] bool warning_on() const;
+    [[nodiscard]] bool error_on() const;
+    [[nodiscard]] bool fatal_on() const;
 };
 class logger::record
 {
@@ -215,10 +215,10 @@ log.info() << "Message";
 условиях. Такие записи хоть и не попадут в лог, но время на их форматирование
 всё равно будет тратиться. Поэтому перед попыткой сформировать какую-нибудь
 отладочную запись с помощью операторов <tt>&lt;&lt;</tt> проверьте, включена ли
-отладка, с помощью вызова <tt>debug_visible()</tt> или <tt>trace_visible()</tt>:
+отладка, с помощью вызова <tt>debug_on()</tt> или <tt>trace_on()</tt>:
 </p>
 <code-block lang="C++"><![CDATA[
-if(log.debug_visible())
+if(log.debug_on())
     log.debug() << ...; // формируем запись
 ]]></code-block>
 <p>Это не относится к обычным вызовам <tt>debug(msg)</tt> и <tt>trace(msg)</tt>,
@@ -396,13 +396,13 @@ void fatal(std::format_string<Arg1,Args...> fmt, Arg1 &&arg1, Args&&... args)]]>
 </synopsis>
 
 <synopsis>
-<prototype>bool trace_visible() const</prototype>
-<prototype>bool debug_visible() const</prototype>
-<prototype>bool info_visible() const</prototype>
-<prototype>bool notice_visible() const</prototype>
-<prototype>bool warning_visible() const</prototype>
-<prototype>bool error_visible() const</prototype>
-<prototype>bool fatal_visible() const</prototype>
+<prototype>[[nodiscard]] bool trace_on() const</prototype>
+<prototype>[[nodiscard]] bool debug_on() const</prototype>
+<prototype>[[nodiscard]] bool info_on() const</prototype>
+<prototype>[[nodiscard]] bool notice_on() const</prototype>
+<prototype>[[nodiscard]] bool warning_on() const</prototype>
+<prototype>[[nodiscard]] bool error_on() const</prototype>
+<prototype>[[nodiscard]] bool fatal_on() const</prototype>
 <p>Возвращает <tt>true</tt>, если запись с указанным уровнем логирования будет
 выведена в лог при текущих настройках. Использование данных функций позволяет
 исключить форматирование сообщений, которые всё равно не попадут в лог.</p>

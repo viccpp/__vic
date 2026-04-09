@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2026-04-09  __vic
+    ! logger: renamed *_visible() -> *_on()
+
 2026-01-22  __vic
     * is_[un]signed_integer should cover the extended integer types
     ! string_ref: the string::const_iterator constructor removed
