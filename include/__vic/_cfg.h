@@ -3,6 +3,7 @@
 // Hardware platforms (CPU):
 // __VIC_X86__      - Intel x86 (IA32)
 // __VIC_X64__      - x64 AKA x86-64 AKA AMD 64
+// __VIC_ARM64__    - AArch64 AKA ARM 64
 // __VIC_IA64__     - Intel IA64
 // __VIC_SPARC32__  - Sun SPARC 32-bit
 // __VIC_SPARC64__  - Sun SPARC 64-bit
@@ -16,6 +17,7 @@
 // __hpux       - HP-UX
 // _AIX         - AIX
 // _WIN32       - Windows
+// __APPLE__    - macOS
 //
 // Other defines:
 // __VIC_STRICT_RAM_ALIGNMENT__ - unaligned data cannot be fetched from RAM
@@ -184,6 +186,9 @@
 #define __VIC_CPU_DEFINED 1
 #elif defined(__i386__)
 #define __VIC_X86__ 1
+#define __VIC_CPU_DEFINED 1
+#elif defined(__arm64__)
+#define __VIC_ARM64__ 1
 #define __VIC_CPU_DEFINED 1
 #elif defined(__IA64__)
 #define __VIC_IA64__ 1
