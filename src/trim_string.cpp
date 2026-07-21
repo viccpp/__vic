@@ -14,7 +14,7 @@ namespace {
 template<class charT, class Traits, class Alloc, class Pred>
 inline void trim_if_back(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
-    charT *begin = st.data(),
+    charT *begin = &*st.begin(), // data() is const in C++98
           *end = begin + st.length();
     charT *p = skip_if_back(begin, end, pred);
     if(p != end) st.resize(p - begin);
@@ -23,7 +23,7 @@ inline void trim_if_back(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 template<class charT, class Traits, class Alloc, class Pred>
 inline void trim_if_front(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
-    charT *begin = st.data();
+    charT *begin = &*st.begin();
     charT *p = skip_if_front(begin, begin + st.length(), pred);
     if(p != begin) st.erase(0, p - begin);
 }

@@ -30,7 +30,7 @@ public:
 };
 ]]></code-block>
 
-<p>Compact (only 32 bytes) and very fast implemetation of a set of chars. The
+<p>Compact (only 32 bytes) and very fast implementation of a set of chars. The
 cost of the <tt>contains()</tt> operation is always constant regardles of the
 argument and number of elements in the set.</p>
 

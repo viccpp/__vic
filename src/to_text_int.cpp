@@ -17,12 +17,12 @@ inline void append_unsigned_integer(UInt n, std::string &s)
         return;
     }
     char buf[sizeof(n) * 4]; // *3 would be enough but I prefer aligned bufs
-    char *p = buf + sizeof buf;
+    char *end = buf + sizeof buf, *p = end;
     do {
         *--p = char(n % 10) + '0';
         n /= 10;
     } while(n);
-    s.append(p, buf + sizeof buf - p);
+    s.append(p, end - p);
 }
 //----------------------------------------------------------------------------
 template<class Int>

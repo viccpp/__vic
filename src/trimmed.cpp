@@ -120,7 +120,7 @@ template<class charT, class Traits, class Alloc, class Pred>
 inline std::basic_string<charT,Traits,Alloc> trimmed_if(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
-    const charT *begin = st.data();
+    const charT *begin = st.data(),
                 *end = begin + st.length();
     const charT *e = skip_if_back(begin, end, pred);
     const charT *b = skip_if_front(begin, e, pred);

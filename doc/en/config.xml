@@ -78,7 +78,7 @@ chars: }
 <p>A snippet like this creates a list of 4 elements: "<tt>$</tt>", "<tt>#</tt>",
 "<tt>{</tt>", "<tt>}</tt>".</p>
 
-<p>Multiline values can be specified the following syntax:</p>
+<p>Multiline values can be specified using the following syntax:</p>
 
 <code-block lang="cfg"><![CDATA[
 name <<EOF
@@ -219,7 +219,7 @@ parser.parse("conf/my.cfg");
 
 
 <chapter xml:id="config-details">
-<title>Implemetation details and additional features</title>
+<title>Implementation details and additional features</title>
 
 <p>The type of a configuration parameter is determined by its type in the code,
 and its value is validated during parsing. The library has built-in support for
