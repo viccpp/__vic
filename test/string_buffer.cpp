@@ -11,6 +11,46 @@ import std;
 import __vic;
 #endif
 
+void test_basic_inserters()
+{
+    __vic::string_buffer s;
+    s << char();
+    s << "";
+#if __cpp_lib_string_view
+    s << std::string_view{};
+#endif
+    s << std::string();
+    s << __vic::string_buffer();
+
+    typedef signed char schar;
+    typedef signed char uchar;
+    typedef unsigned short ushort;
+    typedef unsigned long ulong;
+    typedef long long llong;
+    typedef unsigned long long ullong;
+
+    s << schar();
+    s << short();
+    s << int();
+    s << long();
+    s << llong();
+
+    s << uchar();
+    s << ushort();
+    s << unsigned();
+    s << ulong();
+    s << ullong();
+
+    typedef long double ldouble;
+
+    s << float();
+    s << double();
+    s << ldouble();
+
+    const void *ptr = 0;
+    s << ptr;
+}
+
 void run_tests()
 {
     const std::size_t initial_capacity = 64;
@@ -26,9 +66,7 @@ void run_tests()
     const char *c_str = s;
     s.clear() << static_cast<const void *>(c_str);
 
-#if __cpp_lib_string_view
-    s << std::string_view("string_view");
-#endif
+    test_basic_inserters();
 }
 
 int main()
