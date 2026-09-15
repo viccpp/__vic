@@ -47,7 +47,7 @@ void run()
     // test 2
     ::iovec *p = v;
     unsigned v_len = __vic::array_size(v);
-    __vic::posix::cut_prefix(p, v_len, 8);
+    __vic::posix::remove_prefix(p, v_len, 8);
 
     assert(v_len == 1);
     assert(p == &v[2]);
@@ -60,7 +60,7 @@ void run()
 
     p = v;
     v_len = __vic::array_size(v);
-    __vic::posix::cut_prefix(p, v_len, 100);
+    __vic::posix::remove_prefix(p, v_len, 100);
     assert(v_len == 0);
 
     ovectors_test();

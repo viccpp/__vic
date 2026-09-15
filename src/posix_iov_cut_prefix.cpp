@@ -8,7 +8,7 @@
 namespace __vic { namespace posix {
 
 //----------------------------------------------------------------------------
-void cut_prefix(::iovec *&vec, unsigned &vec_len, size_t n)
+void remove_prefix(::iovec *&vec, unsigned &vec_len, size_t n)
 {
     ::iovec *v = vec;
     unsigned len = vec_len;

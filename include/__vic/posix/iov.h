@@ -73,7 +73,7 @@ inline size_t total(const ::iovec (&v)[vsize])
 }
 //----------------------------------------------------------------------------
 
-void cut_prefix(::iovec *& , unsigned & , size_t );
+void remove_prefix(::iovec *& , unsigned & , size_t );
 
 void writev_all(int , ::iovec * , unsigned , size_t );
 //----------------------------------------------------------------------------

@@ -559,7 +559,7 @@ export namespace __vic {
 // __vic/posix/iov.h
         using __vic::posix::ovectors;
         using __vic::posix::total;
-        using __vic::posix::cut_prefix;
+        using __vic::posix::remove_prefix;
         using __vic::posix::writev_all;
 
 // __vic/posix/mutex.h

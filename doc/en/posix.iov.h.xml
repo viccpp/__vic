@@ -130,17 +130,18 @@ template<unsigned vsize> size_t total(const ::iovec (&vec)[vsize]);
 </chapter>
 
 
-<chapter xml:id="posix--cut_prefix-iovec">
-<title><tt>posix::cut_prefix(iovec[])</tt></title>
+<chapter xml:id="posix--remove_prefix-iovec">
+<title><tt>posix::remove_prefix(iovec[])</tt></title>
 
 <code-block lang="C++"><![CDATA[
-void posix::cut_prefix(::iovec *&vec, unsigned &vec_len, size_t n);
+void posix::remove_prefix(::iovec *&vec, unsigned &vec_len, size_t n);
 ]]></code-block>
 
 <p>Removes first <tt>n</tt> bytes from the set of vectors <tt>vec</tt>. Returns
-the pointer to the modified set and the new length of the set. If <tt>n</tt> is
-greater than total size of the all buffers, <tt>vec_len</tt> becomes
-<tt>0</tt> and the value of <tt>vec</tt> is undefined.</p>
+(via the in/out parameters) the pointer to the modified set and the new length
+of the set. If <tt>n</tt> is greater than total size of the all buffers,
+<tt>vec_len</tt> becomes <tt>0</tt> and the value of <tt>vec</tt> is undefined.
+</p>
 
 <p>The function is useful to retry the interrrupted by signal system call when
 only part of data was written.</p>

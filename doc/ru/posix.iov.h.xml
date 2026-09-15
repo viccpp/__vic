@@ -130,17 +130,18 @@ template<unsigned vsize> size_t total(const ::iovec (&vec)[vsize]);
 </chapter>
 
 
-<chapter xml:id="posix--cut_prefix-iovec">
-<title><tt>posix::cut_prefix(iovec[])</tt></title>
+<chapter xml:id="posix--remove_prefix-iovec">
+<title><tt>posix::remove_prefix(iovec[])</tt></title>
 
 <code-block lang="C++"><![CDATA[
-void posix::cut_prefix(::iovec *&vec, unsigned &vec_len, size_t n);
+void posix::remove_prefix(::iovec *&vec, unsigned &vec_len, size_t n);
 ]]></code-block>
 
 <p>Удаляет из вектора <tt>vec</tt> первые <tt>n</tt> байтов. Возвращает
-указатель на модифицированный набор буферов и новую длину вектора. Если
-<tt>n</tt> больше суммарной длины всех буферов вектора, то <tt>vec_len</tt>
-станет <tt>0</tt>, значение <tt>vec</tt> при этом неопределенно.</p>
+(через in/out параметры) указатель на модифицированный набор буферов и новую
+длину вектора. Если <tt>n</tt> больше суммарной длины всех буферов вектора, то
+<tt>vec_len</tt> станет <tt>0</tt>, значение <tt>vec</tt> при этом неопределенно.
+</p>
 
 <p>Функция полезна для возобновления прерванного сигналом системного вызова,
 если записалась только часть данных.</p>

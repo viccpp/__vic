@@ -25,7 +25,7 @@ void writev_all(int fd, ::iovec *v, unsigned v_len, size_t total_bytes)
         else // n >= 0
         {
             if(static_cast<size_t>(n) == total_bytes) break; // all done
-            cut_prefix(v, v_len, n);
+            remove_prefix(v, v_len, n);
         }
     }
 }
