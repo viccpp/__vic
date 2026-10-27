@@ -239,8 +239,8 @@ export namespace __vic {
     using __vic::prev;
 
 // __vic/algorithm.h
-    using __vic::skip_if_front;
-    using __vic::skip_if_back;
+    using __vic::skip_front_if;
+    using __vic::skip_back_if;
 
 // __vic/error.h
     using __vic::exception;

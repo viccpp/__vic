@@ -12,27 +12,27 @@ namespace {
 
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
-inline void trim_if_back(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
+inline void trim_back_if(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     charT *begin = &*st.begin(), // data() is const in C++98
           *end = begin + st.length();
-    charT *p = skip_if_back(begin, end, pred);
+    charT *p = skip_back_if(begin, end, pred);
     if(p != end) st.resize(p - begin);
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
-inline void trim_if_front(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
+inline void trim_front_if(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     charT *begin = &*st.begin();
-    charT *p = skip_if_front(begin, begin + st.length(), pred);
+    charT *p = skip_front_if(begin, begin + st.length(), pred);
     if(p != begin) st.erase(0, p - begin);
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
 inline void trim_if(std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
-    trim_if_back(st, pred);
-    trim_if_front(st, pred);
+    trim_back_if(st, pred);
+    trim_front_if(st, pred);
 }
 //----------------------------------------------------------------------------
 
@@ -47,13 +47,13 @@ std::string &trim(std::string &st)
 //----------------------------------------------------------------------------
 std::string &trim_back(std::string &st)
 {
-    trim_if_back(st, is_ascii_ws());
+    trim_back_if(st, is_ascii_ws());
     return st;
 }
 //----------------------------------------------------------------------------
 std::string &trim_front(std::string &st)
 {
-    trim_if_front(st, is_ascii_ws());
+    trim_front_if(st, is_ascii_ws());
     return st;
 }
 //----------------------------------------------------------------------------
@@ -65,13 +65,13 @@ std::string &trim(std::string &st, char ch)
 //----------------------------------------------------------------------------
 std::string &trim_back(std::string &st, char ch)
 {
-    trim_if_back(st, is_eq_char(ch));
+    trim_back_if(st, is_eq_char(ch));
     return st;
 }
 //----------------------------------------------------------------------------
 std::string &trim_front(std::string &st, char ch)
 {
-    trim_if_front(st, is_eq_char(ch));
+    trim_front_if(st, is_eq_char(ch));
     return st;
 }
 //----------------------------------------------------------------------------
@@ -83,13 +83,13 @@ std::string &trim(std::string &st, const char *set)
 //----------------------------------------------------------------------------
 std::string &trim_back(std::string &st, const char *set)
 {
-    if(set) trim_if_back(st, is_one_of_chars(set));
+    if(set) trim_back_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------
 std::string &trim_front(std::string &st, const char *set)
 {
-    if(set) trim_if_front(st, is_one_of_chars(set));
+    if(set) trim_front_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------

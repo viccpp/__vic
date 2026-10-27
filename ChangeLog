@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2026-10-27  __vic
+    * Renamed skip_if_{front,back}() -> skip_{front,back}_if()
+
 2026-04-09  __vic
     ! logger: renamed *_visible() -> *_on()
 

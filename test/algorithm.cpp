@@ -27,10 +27,10 @@ void skip_if_tests()
     const char src[] = "..abc...";
     const char * const end = __vic::tchar::end(src);
 
-    const char *b = __vic::skip_if_front(src, end, is_eq_char('.'));
+    const char *b = __vic::skip_front_if(src, end, is_eq_char('.'));
     assert(*b == 'a');
 
-    const char *e = __vic::skip_if_back(src, end, is_eq_char('.'));
+    const char *e = __vic::skip_back_if(src, end, is_eq_char('.'));
     assert(e > src);
     assert(*(e - 1) == 'c');
 }
