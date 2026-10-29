@@ -15,6 +15,9 @@
 #if __cpp_initializer_lists
 #include<initializer_list>
 #endif
+#if __has_include(<string_view>)
+#include<string_view>
+#endif
 
 namespace __vic {
 
@@ -38,6 +41,9 @@ public:
     template<class Iter>
     set_of_chars(Iter begin, Iter end) { assign(begin, end); }
     set_of_chars(const char *c_str) { assign(c_str); }
+#endif
+#if __cpp_lib_string_view // C++17
+    constexpr set_of_chars(std::string_view chars) { add(chars); }
 #endif
 
     __VIC_CONSTEXPR_FUNC bool contains(char ch) const
@@ -87,6 +93,18 @@ public:
     {
         clear();
         add(set);
+    }
+#endif
+
+#if __cpp_lib_string_view // C++17
+    constexpr void add(std::string_view chars)
+    {
+        add(chars.begin(), chars.end());
+    }
+    void assign(std::string_view chars)
+    {
+        clear();
+        add(chars);
     }
 #endif
 

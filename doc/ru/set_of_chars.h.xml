@@ -12,6 +12,7 @@ public:
     template<class Iter> constexpr set_of_chars(Iter begin, Iter end);
     constexpr set_of_chars(std::initializer_list<char> set); // C++11
     constexpr set_of_chars(const char *c_str);
+    constexpr set_of_chars(std::string_view chars); // C++17
 
     constexpr bool contains(char ch) const;
 
@@ -21,10 +22,12 @@ public:
     template<class Iter> constexpr void add(Iter begin, Iter end);
     constexpr void add(const char *c_str);
     constexpr void add(std::initializer_list<char> set); // C++11
+    constexpr void add(std::string_view chars); // C++17
 
     template<class Iter> void assign(Iter begin, Iter end);
     void assign(const char *c_str)
     void assign(std::initializer_list<char> set); // C++11
+    void assign(std::string_view chars); // C++17
 
     void clear();
 };
@@ -46,6 +49,7 @@ public:
 <synopsis>
 <prototype>template&lt;class Iter> constexpr set_of_chars(Iter begin, Iter end)</prototype>
 <prototype>constexpr set_of_chars(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
+<prototype>constexpr set_of_chars(std::string_view chars) <badge>C++17</badge></prototype>
 <p>Создаёт множество, заполненное символами из указанного диапазона значений.
 </p>
 <note><tt>constexpr</tt> только начиная с C++14!</note>
@@ -80,6 +84,7 @@ public:
 <synopsis>
 <prototype>template&lt;class Iter> constexpr void add(Iter begin, Iter end)</prototype>
 <prototype>constexpr void add(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
+<prototype>constexpr void add(std::string_view chars) <badge>C++17</badge></prototype>
 <p>Вызывает <tt>add(ch)</tt> для каждого значения из диапазона.</p>
 <note><tt>constexpr</tt> только начиная с C++14!</note>
 </synopsis>
@@ -95,6 +100,7 @@ public:
 <prototype>template&lt;class Iter> void assign(Iter begin, Iter end)</prototype>
 <prototype>void assign(const char *c_str)</prototype>
 <prototype>void assign(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
+<prototype>void assign(std::string_view chars) <badge>C++17</badge></prototype>
 <p>Вызывает <tt>clear()</tt>, затем <tt>add()</tt> с указанными параметрами.
 </p>
 </synopsis>

@@ -42,6 +42,33 @@ void run_tests()
     assert(!set.contains('4'));
 #endif
 
+    {
+        __vic::set_of_chars set("123");
+        assert(set.contains('1'));
+        assert(set.contains('2'));
+        assert(set.contains('3'));
+        assert(!set.contains('4'));
+        set.add('4');
+        assert(set.contains('4'));
+        set.assign("0");
+        assert(!set.contains('4'));
+        assert(set.contains('0'));
+    }
+#if __cpp_lib_string_view // C++17
+    {
+        __vic::set_of_chars set{std::string_view{"123"}};
+        assert(set.contains('1'));
+        assert(set.contains('2'));
+        assert(set.contains('3'));
+        assert(!set.contains('4'));
+        set.add('4');
+        assert(set.contains('4'));
+        set.assign(std::string_view{"0"});
+        assert(!set.contains('4'));
+        assert(set.contains('0'));
+    }
+#endif
+
 #if __cpp_constexpr >= 201304 && __cpp_static_assert
     constexpr __vic::set_of_chars cset{'a', 'b', 'c'};
     static_assert(cset.contains('c'), "");

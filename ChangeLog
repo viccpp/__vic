@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2026-10-29  __vic
+    + set_of_chars: std::string_view
+
 2026-10-27  __vic
     * Renamed skip_if_{front,back}() -> skip_{front,back}_if()
 
