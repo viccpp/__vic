@@ -69,7 +69,8 @@ public:
     }
     __VIC_CONSTEXPR14 void add(const char *c_str)
     {
-        while(*c_str) add(*c_str++);
+        if(c_str)
+            while(*c_str) add(*c_str++);
     }
 
     template<class Iter>

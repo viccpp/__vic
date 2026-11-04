@@ -58,7 +58,7 @@ public:
 <synopsis>
 <prototype>constexpr set_of_chars(const char *c_str)</prototype>
 <p>Создаёт множество, заполненное символами указанной C-строки, исключая
-нулевой терминатор.</p>
+нулевой терминатор. <tt>nullptr</tt> создаёт пустое множество.</p>
 <note><tt>constexpr</tt> только начиная с C++14!</note>
 </synopsis>
 
@@ -92,7 +92,7 @@ public:
 <synopsis>
 <prototype>constexpr void add(const char *c_str)</prototype>
 <p>Вызывает <tt>add(ch)</tt> для каждого символа C-строки, исключая нулевой
-терминатор.</p>
+терминатор. <tt>nullptr</tt> создаёт пустое множество.</p>
 <note><tt>constexpr</tt> только начиная с C++14!</note>
 </synopsis>
 

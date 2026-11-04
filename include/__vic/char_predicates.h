@@ -29,12 +29,9 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 class is_one_of_chars
 {
-    set_of_chars set;
+    const set_of_chars &set;
 public:
-    explicit is_one_of_chars(const char *chars) : set(chars) {}
-#if __cpp_lib_string_view // C++17
-    explicit is_one_of_chars(std::string_view chars) : set(chars) {}
-#endif
+    explicit is_one_of_chars(const set_of_chars &chars) : set(chars) {}
     bool operator()(char ch) const { return set.contains(ch); }
 };
 //////////////////////////////////////////////////////////////////////////////

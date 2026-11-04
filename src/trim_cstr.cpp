@@ -81,21 +81,21 @@ char *trim_front(char *st, char ch) noexcept
     return st;
 }
 //----------------------------------------------------------------------------
-char *trim(char *st, const char *set) noexcept
+char *trim(char *st, const set_of_chars &set) noexcept
 {
-    if(st && set) trim_if(st, is_one_of_chars(set));
+    if(st) trim_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------
-char *trim_back(char *st, const char *set) noexcept
+char *trim_back(char *st, const set_of_chars &set) noexcept
 {
-    if(st && set) trim_back_if(st, is_one_of_chars(set));
+    if(st) trim_back_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------
-char *trim_front(char *st, const char *set) noexcept
+char *trim_front(char *st, const set_of_chars &set) noexcept
 {
-    if(st && set) trim_front_if(st, is_one_of_chars(set));
+    if(st) trim_front_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------

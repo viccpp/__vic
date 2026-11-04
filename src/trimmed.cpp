@@ -8,97 +8,12 @@
 
 namespace __vic {
 
-#if __cpp_lib_string_view // C++17
-namespace {
-
-//----------------------------------------------------------------------------
-template<class charT, class Traits, class Pred>
-inline std::basic_string_view<charT,Traits> trimmed_back_if(
-    std::basic_string_view<charT,Traits> st, Pred pred)
-{
-    const charT *begin = st.data();
-    const charT *end = skip_back_if(begin, begin + st.length(), pred);
-    return {begin, static_cast<std::size_t>(end - begin)};
-}
-//----------------------------------------------------------------------------
-template<class charT, class Traits, class Pred>
-inline std::basic_string_view<charT,Traits> trimmed_front_if(
-    std::basic_string_view<charT,Traits> st, Pred pred)
-{
-    const charT *begin = st.data();
-    const charT *end = begin + st.length();
-    begin = skip_front_if(begin, end, pred);
-    return {begin, static_cast<std::size_t>(end - begin)};
-}
-//----------------------------------------------------------------------------
-template<class charT, class Traits, class Pred>
-inline std::basic_string_view<charT,Traits> trimmed_if(
-    std::basic_string_view<charT,Traits> st, Pred pred)
-{
-    const charT *begin = st.data();
-    const charT *end = begin + st.length();
-    end = skip_back_if(begin, end, pred);
-    begin = skip_front_if(begin, end, pred);
-    return {begin, static_cast<std::size_t>(end - begin)};
-}
-//----------------------------------------------------------------------------
-
-} // namespace
-
-//----------------------------------------------------------------------------
-std::string_view trimmed(std::string_view st)
-{
-    return trimmed_if(st, is_ascii_ws());
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed_back(std::string_view st)
-{
-    return trimmed_back_if(st, is_ascii_ws());
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed_front(std::string_view st)
-{
-    return trimmed_front_if(st, is_ascii_ws());
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed(std::string_view st, char ch)
-{
-    return trimmed_if(st, is_eq_char(ch));
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed_back(std::string_view st, char ch)
-{
-    return trimmed_back_if(st, is_eq_char(ch));
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed_front(std::string_view st, char ch)
-{
-    return trimmed_front_if(st, is_eq_char(ch));
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed(std::string_view st, const char *set)
-{
-    return set ? trimmed_if(st, is_one_of_chars(set)) : st;
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed_back(std::string_view st, const char *set)
-{
-    return set ? trimmed_back_if(st, is_one_of_chars(set)) : st;
-}
-//----------------------------------------------------------------------------
-std::string_view trimmed_front(std::string_view st, const char *set)
-{
-    return set ? trimmed_front_if(st, is_one_of_chars(set)) : st;
-}
-//----------------------------------------------------------------------------
-
-#else // no string_view
-
+#if !__cpp_lib_string_view
 namespace {
 
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
-inline std::basic_string<charT,Traits,Alloc> trimmed_if_back(
+inline std::basic_string<charT,Traits,Alloc> trimmed_back_if(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     const charT *begin = st.data();
@@ -107,7 +22,7 @@ inline std::basic_string<charT,Traits,Alloc> trimmed_if_back(
 }
 //----------------------------------------------------------------------------
 template<class charT, class Traits, class Alloc, class Pred>
-inline std::basic_string<charT,Traits,Alloc> trimmed_if_front(
+inline std::basic_string<charT,Traits,Alloc> trimmed_front_if(
     const std::basic_string<charT,Traits,Alloc> &st, Pred pred)
 {
     const charT *begin = st.data(),
@@ -161,19 +76,19 @@ std::string trimmed_front(const std::string &st, char ch)
     return trimmed_front_if(st, is_eq_char(ch));
 }
 //----------------------------------------------------------------------------
-std::string trimmed(const std::string &st, const char *set)
+std::string trimmed(const std::string &st, const set_of_chars &set)
 {
-    return set ? trimmed_if(st, is_one_of_chars(set)) : st;
+    return trimmed_if(st, is_one_of_chars(set));
 }
 //----------------------------------------------------------------------------
-std::string trimmed_back(const std::string &st, const char *set)
+std::string trimmed_back(const std::string &st, const set_of_chars &set)
 {
-    return set ? trimmed_back_if(st, is_one_of_chars(set)) : st;
+    return trimmed_back_if(st, is_one_of_chars(set));
 }
 //----------------------------------------------------------------------------
-std::string trimmed_front(const std::string &st, const char *set)
+std::string trimmed_front(const std::string &st, const set_of_chars &set)
 {
-    return set ? trimmed_front_if(st, is_one_of_chars(set)) : st;
+    return trimmed_front_if(st, is_one_of_chars(set));
 }
 //----------------------------------------------------------------------------
 #endif

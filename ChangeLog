@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2026-11-03  __vic
+    * set_of_chars: add(nullptr) creates an empty set
+    * strung_utils.h:
+        * trim & sift functions: set_of_chars is used instead of const char *
+        + trim & trim_if functions for std::string_view
+
 2026-10-29  __vic
     + set_of_chars: std::string_view
 

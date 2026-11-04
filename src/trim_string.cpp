@@ -75,21 +75,21 @@ std::string &trim_front(std::string &st, char ch)
     return st;
 }
 //----------------------------------------------------------------------------
-std::string &trim(std::string &st, const char *set)
+std::string &trim(std::string &st, const set_of_chars &set)
 {
-    if(set) trim_if(st, is_one_of_chars(set));
+    trim_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------
-std::string &trim_back(std::string &st, const char *set)
+std::string &trim_back(std::string &st, const set_of_chars &set)
 {
-    if(set) trim_back_if(st, is_one_of_chars(set));
+    trim_back_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------
-std::string &trim_front(std::string &st, const char *set)
+std::string &trim_front(std::string &st, const set_of_chars &set)
 {
-    if(set) trim_front_if(st, is_one_of_chars(set));
+    trim_front_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------

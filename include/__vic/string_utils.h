@@ -9,10 +9,23 @@
 #define __VIC_STRING_UTILS_H
 
 #include<__vic/defs.h>
+#include<__vic/set_of_chars.h>
 #include<cstring>
 #include<string>
 #if __has_include(<string_view>)
 #include<string_view>
+#endif
+#if __has_include(<concepts>)
+#include<concepts>
+#endif
+#if __cpp_lib_string_view
+#include<__vic/ascii.h>
+#endif
+
+#if __cpp_lib_concepts
+#define __VIC_STD_PREDICATE(t) std::predicate<t>
+#else
+#define __VIC_STD_PREDICATE(t) class
 #endif
 
 namespace __vic {
@@ -24,9 +37,9 @@ char *trim_back(char * ) noexcept;
 char *trim(char * , char ) noexcept;
 char *trim_front(char * , char ) noexcept;
 char *trim_back(char * , char ) noexcept;
-char *trim(char * , const char * ) noexcept;
-char *trim_front(char * , const char * ) noexcept;
-char *trim_back(char * , const char * ) noexcept;
+char *trim(char * , const set_of_chars & ) noexcept;
+char *trim_front(char * , const set_of_chars & ) noexcept;
+char *trim_back(char * , const set_of_chars & ) noexcept;
 //----------------------------------------------------------------------------
 std::string &trim(std::string & );
 std::string &trim_front(std::string & );
@@ -34,20 +47,144 @@ std::string &trim_back(std::string & );
 std::string &trim(std::string & , char );
 std::string &trim_front(std::string & , char );
 std::string &trim_back(std::string & , char );
-std::string &trim(std::string & , const char * );
-std::string &trim_front(std::string & , const char * );
-std::string &trim_back(std::string & , const char * );
+std::string &trim(std::string & , const set_of_chars & );
+std::string &trim_front(std::string & , const set_of_chars & );
+std::string &trim_back(std::string & , const set_of_chars & );
 //----------------------------------------------------------------------------
+
 #if __cpp_lib_string_view // C++17
-std::string_view trimmed(std::string_view );
-std::string_view trimmed_front(std::string_view );
-std::string_view trimmed_back(std::string_view );
-std::string_view trimmed(std::string_view , char );
-std::string_view trimmed_front(std::string_view , char );
-std::string_view trimmed_back(std::string_view , char );
-std::string_view trimmed(std::string_view , const char * );
-std::string_view trimmed_front(std::string_view , const char * );
-std::string_view trimmed_back(std::string_view , const char * );
+//----------------------------------------------------------------------------
+template<class charT, class Traits, __VIC_STD_PREDICATE(charT) Pred>
+constexpr std::basic_string_view<charT, Traits> &trim_front_if(
+    std::basic_string_view<charT, Traits> &s, Pred pred)
+{
+    auto p = s.data(), end = p + s.length();
+    if(p != end && pred(*p))
+    {
+        while(++p != end && pred(*p));
+        s = {p, static_cast<std::size_t>(end - p)};
+    }
+    return s;
+}
+//----------------------------------------------------------------------------
+template<class charT, class Traits, __VIC_STD_PREDICATE(charT) Pred>
+constexpr std::basic_string_view<charT, Traits> &trim_back_if(
+    std::basic_string_view<charT, Traits> &s, Pred pred)
+{
+    auto begin = s.data(), p = begin + s.length();
+    if(p != begin && pred(*(p - 1)))
+    {
+        while(--p != begin && pred(*(p - 1)));
+        s = {begin, static_cast<std::size_t>(p - begin)};
+        //s.remove_suffix(static_cast<std::size_t>(end - p));
+    }
+    return s;
+}
+//----------------------------------------------------------------------------
+template<class charT, class Traits, __VIC_STD_PREDICATE(charT) Pred>
+constexpr std::basic_string_view<charT, Traits> &trim_if(
+    std::basic_string_view<charT, Traits> &s, Pred pred)
+{
+    return trim_front_if(trim_back_if(s, pred), pred);
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+constexpr std::string_view &trim(std::string_view &s)
+{
+    return trim_if(s, [](char c){ return ascii::isspace(c); });
+}
+constexpr std::string_view &trim_front(std::string_view &s)
+{
+    return trim_front_if(s, [](char c){ return ascii::isspace(c); });
+}
+constexpr std::string_view &trim_back(std::string_view &s)
+{
+    return trim_back_if(s, [](char c){ return ascii::isspace(c); });
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+constexpr std::string_view &trim(std::string_view &s, char ch)
+{
+    return trim_if(s, [ch](char c){ return c == ch; });
+}
+constexpr std::string_view &trim_front(std::string_view &s, char ch)
+{
+    return trim_front_if(s, [ch](char c){ return c == ch; });
+}
+constexpr std::string_view &trim_back(std::string_view &s, char ch)
+{
+    return trim_back_if(s, [ch](char c){ return c == ch; });
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+constexpr std::string_view &trim(std::string_view &s, const set_of_chars &set)
+{
+    return trim_if(s, [&](char c){ return set.contains(c); });
+}
+constexpr
+std::string_view &trim_front(std::string_view &s, const set_of_chars &set)
+{
+    return trim_front_if(s, [&](char c){ return set.contains(c); });
+}
+constexpr
+std::string_view &trim_back(std::string_view &s, const set_of_chars &set)
+{
+    return trim_back_if(s, [&](char c){ return set.contains(c); });
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+constexpr std::string_view trimmed(std::string_view s)
+{
+    return trim(s);
+}
+constexpr std::string_view trimmed_front(std::string_view s)
+{
+    return trim_front(s);
+}
+constexpr std::string_view trimmed_back(std::string_view s)
+{
+    return trim_back(s);
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+__VIC_NODISCARD constexpr std::string_view trimmed(std::string_view s, char ch)
+{
+    return trim(s, ch);
+}
+__VIC_NODISCARD
+constexpr std::string_view trimmed_front(std::string_view s, char ch)
+{
+    return trim_front(s, ch);
+}
+__VIC_NODISCARD
+constexpr std::string_view trimmed_back(std::string_view s, char ch)
+{
+    return trim_back(s, ch);
+}
+//----------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+__VIC_NODISCARD constexpr
+std::string_view trimmed(std::string_view s, const set_of_chars &set)
+{
+    return trim(s, set);
+}
+__VIC_NODISCARD constexpr
+std::string_view trimmed_front(std::string_view s, const set_of_chars &set)
+{
+    return trim_front(s, set);
+}
+__VIC_NODISCARD constexpr
+std::string_view trimmed_back(std::string_view s, const set_of_chars &set)
+{
+    return trim_back(s, set);
+}
+//----------------------------------------------------------------------------
 #else // until C++17
 std::string trimmed(const std::string & );
 std::string trimmed_front(const std::string & );
@@ -55,15 +192,14 @@ std::string trimmed_back(const std::string & );
 std::string trimmed(const std::string & , char );
 std::string trimmed_front(const std::string & , char );
 std::string trimmed_back(const std::string & , char );
-std::string trimmed(const std::string & , const char * );
-std::string trimmed_front(const std::string & , const char * );
-std::string trimmed_back(const std::string & , const char * );
+std::string trimmed(const std::string & , const set_of_chars & );
+std::string trimmed_front(const std::string & , const set_of_chars & );
+std::string trimmed_back(const std::string & , const set_of_chars & );
 #endif
 //----------------------------------------------------------------------------
 
-namespace impl {
 //----------------------------------------------------------------------------
-template<class Pred>
+template<__VIC_STD_PREDICATE(char) Pred>
 inline char *sift_if(char *st, Pred pred)
 {
     if(!st) return st;
@@ -77,30 +213,22 @@ inline char *sift_if(char *st, Pred pred)
     return st;
 }
 //----------------------------------------------------------------------------
-template<class Pred>
-std::string &sift_if(std::string &st, Pred pred)
+template<__VIC_STD_PREDICATE(char) Pred>
+inline std::string &sift_if(std::string &st, Pred pred)
 {
-    std::string::iterator in = st.begin();
-    while(in != st.end() && !pred(*in)) ++in;
-    if(in == st.end()) return st; // no trash chars
-    std::string::iterator out = in;
-    while(++in != st.end())
+    // data() is const in C++98
+    char *in = &st[0], *end = in + st.length();
+    while(in != end && !pred(*in)) ++in;
+    if(in == end) return st; // no trash chars
+    char *out = in;
+    while(++in != end)
         if(!pred(*in)) *out++ = *in;
-    st.erase(out, st.end());
+    st.resize(out - st.data());
     return st;
 }
 //----------------------------------------------------------------------------
-} // namespace
-
-//----------------------------------------------------------------------------
-char *sift(char * , const char * );
-std::string &sift(std::string & , const char * );
-
-template<class Pred>
-char *sift_if(char *s, Pred pred) { return impl::sift_if(s, pred); }
-
-template<class Pred>
-std::string &sift_if(std::string &s, Pred pred) { return impl::sift_if(s, pred);}
+char *sift(char * , const set_of_chars & );
+std::string &sift(std::string & , const set_of_chars & );
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
@@ -216,6 +344,8 @@ inline bool ends_with(const std::string &s, const std::string &suff)
 }
 //----------------------------------------------------------------------------
 #endif
+
+#undef __VIC_STD_PREDICATE
 
 } // namespace
 

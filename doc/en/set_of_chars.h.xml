@@ -57,7 +57,7 @@ argument and number of elements in the set.</p>
 <synopsis>
 <prototype>constexpr set_of_chars(const char *c_str)</prototype>
 <p>Creates a set filled with characters from the specified C-string excluding
-NULL-terminator.</p>
+the NULL-terminator. <tt>nullptr</tt> creates an empty set.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
 
@@ -91,7 +91,7 @@ NULL-terminator.</p>
 <synopsis>
 <prototype>constexpr void add(const char *c_str)</prototype>
 <p>Calls <tt>add(ch)</tt> for each character in the C-string excluding
-NULL-terminator.</p>
+the NULL-terminator. <tt>nullptr</tt> creates an empty set.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
 
