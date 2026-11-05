@@ -35,6 +35,10 @@ CFLAGS_PIC = -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 endif
 ##############################################################################
 
+ifeq ($(OS),Linux)
+CFLAGS += -D_FILE_OFFSET_BITS=64
+endif
+
 LIBSUFFIX = $(std)$(if $(pic),_pic)
 LIBFILE := lib$(LIBNAME)$(LIBSUFFIX).$(ARSUFF)
 CFLAGS_ALL = -I../include $(if $(pic),$(CFLAGS_PIC) )$(CFLAGS) $(WARNS)

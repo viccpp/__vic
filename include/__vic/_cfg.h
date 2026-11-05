@@ -40,10 +40,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #elif defined(__GNUC__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
 
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE 1 // use all
-#endif
-
 #if defined(__GXX_EXPERIMENTAL_CXX0X__) && !defined(__VIC_NO_NULLPTR_DEF)
 #define __VIC_NO_NULLPTR_DEF 1
 #endif
@@ -221,10 +217,15 @@
 #define __VIC_STRICT_RAM_ALIGNMENT__ 1
 #endif
 
-// Always use Large File Support for Linux-x86
-#if defined(__linux__) && defined(__VIC_X86__) && \
-    !defined(__VIC_NO_LARGE_FILE_SUPPORT)
-#define _FILE_OFFSET_BITS 64
+#ifdef __linux__
+#ifndef _GNU_SOURCE
+#error "_GNU_SOURCE (use all) is expected"
+#endif
+// Large File Support for Linux-x86
+#if defined(__VIC_X86__) && !defined(__VIC_NO_LARGE_FILE_SUPPORT) && \
+    _FILE_OFFSET_BITS < 64
+#error "_FILE_OFFSET_BITS=64 is expected on 32-bits Linux"
+#endif
 #endif
 
 //////////////////////////////////////////////////////////////////////////////

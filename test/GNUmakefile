@@ -28,6 +28,9 @@ else ifeq ($(compiler),clang)
 WARNS += -Wno-non-literal-null-conversion
 endif
 endif
+ifeq ($(OS),Linux)
+CFLAGS += -D_FILE_OFFSET_BITS=64
+endif
 GARBAGE += *.d *.$(TESTSUFF)
 
 ##############################################################################
