@@ -13,6 +13,7 @@ Legend:
     - utf8::writer: codepoints longers that 2 bytes
     - utf8::reader: reject values more than U+10FFFF
     - waitable_event (C++11 impl): could miss a wakeup
+    - base64::decode: correct padding handling
 
 2026-11-03  __vic
     * set_of_chars: add(nullptr) creates an empty set
