@@ -98,6 +98,8 @@ void long_code_point()
     const unicode_t emoji = 0x01F600; // Grinning Face emoji
     const char emoji_utf8[] = "\xF0\x9F\x98\x80";
     roundtrip_test(emoji, emoji_utf8);
+
+    roundtrip_test(__vic::unicode_max, "\xF4\x8F\xBF\xBF");
 }
 //----------------------------------------------------------------------------
 template<class UTF8Reader>
@@ -148,6 +150,15 @@ void code_point_too_big_test()
     utf8_cstring_reader r(str);
     assert(parse_utf8(r) == __vic::utf8::status::code_point_too_big);
     assert(offset(r, str) >= 8);
+
+    {
+        std::string s;
+        utf8_string_writer w(s);
+        w(__vic::unicode_max + 1);
+
+        utf8_string_reader r(s);
+        assert(r.parse().status() == __vic::utf8::status::code_point_too_big);
+    }
 }
 //----------------------------------------------------------------------------
 void truncated_code_point_test()
