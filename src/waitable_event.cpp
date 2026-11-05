@@ -20,16 +20,18 @@ waitable_event::~waitable_event()
 //----------------------------------------------------------------------------
 void waitable_event::wait()
 {
-    while(!signaled())
-    {
-        std::unique_lock<std::mutex> lock(mtx);
-        cond.wait(lock);
-    }
+    if(signaled()) return;
+    std::unique_lock<std::mutex> lock(mtx);
+    auto &s = signaled_;
+    cond.wait(lock, [&s]{ return s.load(); });
 }
 //----------------------------------------------------------------------------
 void waitable_event::set()
 {
-    signaled_ = true;
+    {
+        std::lock_guard<std::mutex> _(mtx);
+        signaled_ = true;
+    }
     cond.notify_all();
 }
 //----------------------------------------------------------------------------
