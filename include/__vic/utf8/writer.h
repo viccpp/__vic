@@ -65,7 +65,7 @@ void writer<ByteSWriter>::write(unicode_t cp)
                              6 ;
         for(unsigned i = len - 1U; i; i--, cp >>= 6)
             utf8_cp[i] = 0x80 | (cp & 0x3F); // ... | __vic::get_lsbs(cp, 6)
-        utf8_cp[0] = __vic::msb_ones<unicode_t>(len) | cp; // ... | __vic::get_lsbs(cp, 7 - len)
+        utf8_cp[0] = __vic::msb_ones<unsigned char>(len) | cp; // ... | __vic::get_lsbs(cp, 7 - len)
         write_bytes(utf8_cp, len);
     }
 }

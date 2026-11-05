@@ -76,15 +76,28 @@ void read_write()
     assert(n == 0); // all str elements are read
 }
 //----------------------------------------------------------------------------
+void roundtrip_test(unicode_t codepoint, const char *utf8)
+{
+    utf8_cstring_reader r(utf8);
+    __VIC_SREAD_RESULT(unicode_t) ch = r();
+    assert(ch);
+    assert(ch.value() == codepoint);
+
+    std::string s;
+    utf8_string_writer w(s);
+    w.write(codepoint);
+    assert(s == utf8);
+}
+//----------------------------------------------------------------------------
 void long_code_point()
 {
     const unicode_t euro = 0x20AC; // euro sign
     const char euro_utf8[] = "\xE2\x82\xAC";
+    roundtrip_test(euro, euro_utf8);
 
-    utf8_cstring_reader r(euro_utf8);
-    __VIC_SREAD_RESULT(unicode_t) ch = r();
-    assert(ch);
-    assert(ch.value() == euro);
+    const unicode_t emoji = 0x01F600; // Grinning Face emoji
+    const char emoji_utf8[] = "\xF0\x9F\x98\x80";
+    roundtrip_test(emoji, emoji_utf8);
 }
 //----------------------------------------------------------------------------
 template<class UTF8Reader>

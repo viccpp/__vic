@@ -6,6 +6,11 @@ Legend:
 
 2026-11-05  __vic
     ! _cfg.h: no _GNU_SOURCE and _FILE_OFFSET_BITS 64 defines
+    * bits.h:
+        * rotl(), rotr(): the shift parameter is unsigned
+        - msb_ones(), lsb_ones(), get_lsbs(): strict preconditions and correct
+          corner cases
+    - utf8::writer: codepoints longers that 2 bytes
 
 2026-11-03  __vic
     * set_of_chars: add(nullptr) creates an empty set

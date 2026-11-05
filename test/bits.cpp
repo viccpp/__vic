@@ -16,31 +16,54 @@ namespace tests {
 void nibble_tests()
 {
     char ch = '\xFA';
-    std::cout << std::hex << std::uppercase <<
-        unsigned(__vic::hi_nibble(ch)) << ' ' <<
-        unsigned(__vic::lo_nibble(ch)) << '\n';
     assert(__vic::hi_nibble(ch) == 0xF);
     assert(__vic::lo_nibble(ch) == 0xA);
 }
 //----------------------------------------------------------------------------
 void ones_test()
 {
-    std::cout << __vic::lsb_ones<int>(5) << '\n';
-    assert(__vic::lsb_ones<int>(5) == 0x1F);
-    std::cout << unsigned(__vic::msb_ones<uint8_t>(5)) << '\n';
+    assert(__vic::lsb_ones<unsigned>(5) == 0x1FU);
     assert(__vic::msb_ones<uint8_t>(5) == uint8_t('\xF8'));
+
+    //assert(__vic::lsb_ones<uint8_t>(0) == 0x00U);
+    assert(__vic::lsb_ones<uint8_t>(1) == 0x01U);
+    assert(__vic::lsb_ones<uint8_t>(2) == 0x03U);
+    assert(__vic::lsb_ones<uint8_t>(3) == 0x07U);
+    assert(__vic::lsb_ones<uint8_t>(4) == 0x0FU);
+    assert(__vic::lsb_ones<uint8_t>(5) == 0x1FU);
+    assert(__vic::lsb_ones<uint8_t>(6) == 0x3FU);
+    assert(__vic::lsb_ones<uint8_t>(7) == 0x7FU);
+    assert(__vic::lsb_ones<uint8_t>(8) == 0xFFU);
+
+    //assert(__vic::msb_ones<uint8_t>(0) == 0x00U);
+    assert(__vic::msb_ones<uint8_t>(1) == 0x80U);
+    assert(__vic::msb_ones<uint8_t>(2) == 0xC0U);
+    assert(__vic::msb_ones<uint8_t>(3) == 0xE0U);
+    assert(__vic::msb_ones<uint8_t>(4) == 0xF0U);
+    assert(__vic::msb_ones<uint8_t>(5) == 0xF8U);
+    assert(__vic::msb_ones<uint8_t>(6) == 0xFCU);
+    assert(__vic::msb_ones<uint8_t>(7) == 0xFEU);
+    assert(__vic::msb_ones<uint8_t>(8) == 0xFFU);
+
+    //assert(__vic::lsb_ones<uint32_t>(0)  == 0x00000000U);
+    assert(__vic::lsb_ones<uint32_t>(1)  == 0x00000001U);
+    assert(__vic::lsb_ones<uint32_t>(32) == 0xFFFFFFFFU);
+
+    //assert(__vic::msb_ones<uint32_t>(0)  == 0x00000000U);
+    assert(__vic::msb_ones<uint32_t>(1)  == 0x80000000U);
+    assert(__vic::msb_ones<uint32_t>(32) == 0xFFFFFFFFU);
 }
 //----------------------------------------------------------------------------
 void get_lsbs_test()
 {
-    std::cout << __vic::get_lsbs(~int(0), 6) << '\n';
-    assert(__vic::get_lsbs(~int(0), 6) == 0x3F);
+    assert(__vic::get_lsbs(~0U, 6) == 0x3FU);
+    assert(__vic::get_lsbs(~0U, 5) == 0x1FU);
+    assert(__vic::get_lsbs(~0U, 1) == 1U);
 }
 //----------------------------------------------------------------------------
 void ord_test()
 {
     char ch = -20;
-    std::cout << std::dec << __vic::ord(ch) << '\n';
     assert(__vic::ord(ch) == 236);
 }
 //----------------------------------------------------------------------------
