@@ -22,11 +22,14 @@ respectively.</p>
 <title><tt>msb_ones()</tt>, <tt>lsb_ones()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-template<class T> constexpr T lsb_ones(unsigned bits_num);
-template<class T> constexpr T msb_ones(unsigned bits_num);
+template<class UInt> constexpr UInt lsb_ones(unsigned bits_num);
+template<class UInt> constexpr UInt msb_ones(unsigned bits_num);
 ]]></code-block>
 
-<p>Return the value of the type <tt>T</tt> with all least/most significant
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+<precondition><tt><![CDATA[0 < bits_num && bits_num <= sizeof(UInt)*CHAR_BIT]]></tt></precondition>
+
+<p>Returns a value of the type <tt>UInt</tt> with all least/most significant
 <tt>bits_num</tt> bits filled with <tt>1</tt>, respectively. All other bits
 are set to <tt>0</tt>.</p>
 
@@ -37,8 +40,11 @@ are set to <tt>0</tt>.</p>
 <title><tt>get_lsbs()</tt></title>
 
 <code-block lang="C++">
-template&lt;class T> constexpr T get_lsbs(T v, unsigned bits_num);
+template&lt;class UInt> constexpr UInt get_lsbs(UInt v, unsigned bits_num);
 </code-block>
+
+<precondition><tt>UInt</tt> is an unsigned integer type</precondition>
+<precondition><tt><![CDATA[0 < bits_num && bits_num <= sizeof(v)*CHAR_BIT]]></tt></precondition>
 
 <p>Returns <tt>bits_num</tt> least significant bits of <tt>v</tt>. In other
 words, zeroes all but <tt>bits_num</tt> least significant bits.</p>
@@ -176,22 +182,23 @@ unsigned floor_log2(UInt n);
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 
 <code-block lang="C++">
-unsigned long long rotl(unsigned long long v, int shift);
-unsigned long      rotl(unsigned long v, int shift);
-unsigned           rotl(unsigned v, int shift);
-unsigned short     rotl(unsigned short v, int shift);
-unsigned char      rotl(unsigned char v, int shift);
+unsigned long long rotl(unsigned long long v, unsigned shift);
+unsigned long      rotl(unsigned long v,      unsigned shift);
+unsigned           rotl(unsigned v,           unsigned shift);
+unsigned short     rotl(unsigned short v,     unsigned shift);
+unsigned char      rotl(unsigned char v,      unsigned shift);
 
-unsigned long long rotr(unsigned long long v, int shift);
-unsigned long      rotr(unsigned long v, int shift);
-unsigned           rotr(unsigned v, int shift);
-unsigned short     rotr(unsigned short v, int shift);
-unsigned char      rotr(unsigned char v, int shift);
+unsigned long long rotr(unsigned long long v, unsigned shift);
+unsigned long      rotr(unsigned long v,      unsigned shift);
+unsigned           rotr(unsigned v,           unsigned shift);
+unsigned short     rotr(unsigned short v,     unsigned shift);
+unsigned char      rotr(unsigned char v,      unsigned shift);
 </code-block>
+
+<precondition><tt>shift &lt; sizeof(v)*CHAR_BIT</tt></precondition>
 
 <p>The functions perform circular left (<tt>rotl</tt>) or right
 (<tt>rotr</tt>) bitwise shift (rotation).</p>
-<precondition><tt>0 &lt;= shift &amp;&amp; shift &lt; sizeof(v)*CHAR_BIT</tt></precondition>
 
 </chapter>
 

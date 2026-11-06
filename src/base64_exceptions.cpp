@@ -17,5 +17,10 @@ const char *base64::bad_digit::what() const noexcept
     return "Bad BASE64 digit";
 }
 //----------------------------------------------------------------------------
+const char *base64::bad_padding::what() const noexcept
+{
+    return "Bad BASE64 padding";
+}
+//----------------------------------------------------------------------------
 
 } // namespace

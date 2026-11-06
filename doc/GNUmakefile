@@ -2,6 +2,7 @@
 # GNU Make Makefile. Building the doc using XML-tools
 
 LANGS = en ru
+STYLESHEET = html.xsl
 CHECKS := $(addprefix check-,$(LANGS))
 
 # Oracle tools
@@ -20,8 +21,8 @@ check: $(CHECKS) ;
 
 define lang_template =
 $(1): $(1).html ;
-$(1).html: html.xsl $(1)/*.xml
-	cd $(1) && $(XSLTPROC) ../html.xsl index.xml > ../$$@
+$(1).html: $(STYLESHEET) $(1)/*.xml
+	cd $(1) && $(XSLTPROC) ../$(STYLESHEET) index.xml > ../$$@
 check-$(1):
 	cd $(1) && $(XMLVALIDATOR) index.xml
 endef

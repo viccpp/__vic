@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="html" version="5" encoding="UTF-8"/>
+
+<!-- Fallback for processors that ignore version="5".
+     HTML5: "about:legacy-compat" is the spec-sanctioned doctype for XML tools
+     that cannot emit a bare <!DOCTYPE html>. Works with every XSLT 1.0 processor. ->
+<xsl:output method="html" encoding="UTF-8" doctype-system="about:legacy-compat"/-->
+
+<xsl:variable name="lang" select="string(/document/@xml:lang)"/>
+<xsl:key name="chapters" match="chapter" use="@xml:id"/>
+
+<xsl:template match="/">
+	<xsl:apply-templates select="document"/>
+</xsl:template>
+
+<xsl:template match="annotation"/>
+
+<xsl:template match="document">
+<html lang="{@xml:lang}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title><xsl:value-of select="title"/></title>
+<style>
+body {
+	font-family: verdana, sans-serif;
+	font-size: 10pt;
+	background-color: #777777;
+	margin: 0;
+}
+div.page-wrap {
+	background-color: white;
+	width: 210mm; /* A4 */
+	margin: 0 auto;
+	padding: 2mm 5mm;
+}
+p, div {
+	margin-top: 6pt;
+	margin-bottom: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+	margin-top: 9pt;
+	margin-bottom: 12pt;
+	margin-left: 0;
+}
+h1 { font-size: 16pt; }
+h2 { font-size: 13pt; }
+h3 { font-size: 11pt; }
+h4 { font-size: 11pt; }
+span.h1_num, span.h2_num {
+	margin-right: 2em;
+	font-family: sans-serif;
+}
+span.h3_num, span.h4_num {
+	margin-right: 2em;
+	font-weight: normal;
+	font-size: smaller;
+}
+h1.main-title {
+	font-size: 2em;
+	font-weight: bold;
+}
+caption.toc {
+	text-align: left;
+	font-weight: bold;
+	font-size: 13pt;
+	margin-top: 9pt;
+	margin-bottom: 12pt;
+	margin-left: 0;
+}
+table.toc {
+	font-size: 10pt;
+	border-spacing: 0;
+}
+table.toc td {
+	padding: 0;
+}
+table.toc td.toc-chapter-no {
+	padding-right: 1ex;
+	vertical-align: top;
+}
+table.toc td.toc-indent {
+	padding-left: 4ex;
+}
+table.toc tr.toc-gap td {
+	font-size: 5pt;
+}
+a { color: #0000EE; text-decoration: none; }
+a:hover { text-decoration: underline; }
+a.broken-link { color: red; }
+a.self-link {
+	font-weight: normal;
+	margin-left: -1.5ex;
+	width: 2em;
+	text-align: center;
+	visibility: hidden;
+}
+a.self-link::before {
+	content: "\00A7";
+}
+h1:hover>a.self-link, h2:hover>a.self-link, h3:hover>a.self-link, h4:hover>a.self-link {
+	visibility: visible;
+}
+code { font-family: consolas, monospace; }
+:not(a, h2, h3) > code { background-color: #E3E6E8; padding: 0 2px; }
+pre.code {
+	background-color: #EEE;
+	border: 1px solid #CCCCCC;
+	padding-top: 6pt;
+	padding-bottom: 6pt;
+	padding-left: 2pt;
+	font-family: consolas, monospace;
+	font-size: 10pt;
+	width: 17.3cm; /* 80ch */
+}
+pre.prototype {
+	font-family: consolas, monospace;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+div.section {
+	font-weight: bold;
+}
+div.todo {
+	color: red;
+	font-weight: bold;
+}
+span.ver {
+	font-size: smaller;
+	color: #C0C0C0;
+}
+span.nonterminal {
+	font-family: consolas, monospace;
+	font-style: italic;
+}
+span.badge {
+	color: #C0C0C0;
+	font-family: consolas, monospace;
+	font-size: 9pt;
+	font-weight: bold;
+}
+span.label {
+	text-decoration: underline;
+}
+span.label-strong {
+	text-decoration: underline;
+	font-weight: bold;
+}
+ul.nomarks {
+	list-style-type: none;
+}
+blockquote {
+	margin-top: 6pt;
+	margin-bottom: 0;
+	margin-right: 0;
+}
+blockquote * {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+</style>
+</head>
+<body>
+	<div class="page-wrap">
+		<header>
+			<xsl:apply-templates select="title" mode="document"/>
+		</header>
+		<nav>
+			<xsl:call-template name="toc"/>
+		</nav>
+		<main>
+			<xsl:apply-templates>
+				<xsl:with-param name="chapter_level" select="1"/>
+			</xsl:apply-templates>
+		</main>
+	</div>
+</body>
+</html>
+</xsl:template>
+
+<xsl:template match="chapter">
+	<xsl:param name="chapter_level"/>
+	<xsl:param name="chapter_prefix"/>
+
+	<!-- Detect position of the current chapter relatively sibling chapters -->
+	<xsl:variable name="my-id" select="generate-id()"/>
+	<xsl:variable name="pos">
+		<xsl:for-each select="../chapter">
+			<xsl:if test="generate-id() = $my-id">
+				<xsl:value-of select="position()"/>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:variable>
+
+	<section>
+		<xsl:apply-templates select="title" mode="chapter">
+			<xsl:with-param name="level" select="$chapter_level"/>
+			<xsl:with-param name="no" select="concat($chapter_prefix, $pos)"/>
+		</xsl:apply-templates>
+		<xsl:apply-templates>
+			<xsl:with-param name="chapter_level" select="$chapter_level+1"/>
+			<xsl:with-param name="chapter_prefix" select="concat($chapter_prefix, $pos, '.')"/>
+		</xsl:apply-templates>
+	</section>
+</xsl:template>
+
+<xsl:template name="toc">
+	<table class="toc">
+		<caption class="toc">
+			<xsl:choose>
+				<xsl:when test="$lang='ru'">Содержание</xsl:when>
+				<xsl:otherwise>Contents</xsl:otherwise>
+			</xsl:choose>
+		</caption>
+		<xsl:call-template name="toc-entry"/>
+	</table>
+</xsl:template>
+
+<xsl:template name="toc-entry">
+	<xsl:param name="prefix"/>
+	<xsl:param name="level" select="1"/>
+
+	<xsl:for-each select="chapter">
+		<xsl:variable name="chap" select="concat($prefix, position())"/>
+		<tr>
+			<td class="toc-chapter-no">
+				<xsl:value-of select="$chap"/>
+			</td>
+			<td>
+				<xsl:if test="$level > 2">
+					<xsl:attribute name="class">toc-indent</xsl:attribute>
+				</xsl:if>
+				<a href="#{@xml:id}">
+					<xsl:if test="not(string(@xml:id))">
+						<xsl:attribute name="class">broken-link</xsl:attribute>
+					</xsl:if>
+					<xsl:apply-templates select="title" mode="toc"/>
+				</a>
+			</td>
+		</tr>
+		<xsl:call-template name="toc-entry">
+			<xsl:with-param name="prefix" select="concat($chap, '.')"/>
+			<xsl:with-param name="level" select="$level + 1"/>
+		</xsl:call-template>
+		<xsl:if test="$level = 1">
+			<!-- Space between level 1 chapters -->
+			<tr class="toc-gap"><td colspan="2">&#xA0;</td></tr>
+		</xsl:if>
+	</xsl:for-each>
+</xsl:template>
+
+<xsl:template match="title"/>
+
+<xsl:template match="title" mode="document">
+	<h1 class="main-title">
+		<xsl:apply-templates/>
+		<xsl:if test="/document/@version">
+			<span class="ver">
+				<xsl:value-of select="concat(' v', /document/@version)"/>
+				<xsl:if test="/document/@status and /document/@status != 'Release'">
+					<xsl:value-of select="concat(' [', /document/@status, ']')"/>
+				</xsl:if>
+			</span>
+		</xsl:if>
+	</h1>
+</xsl:template>
+
+<xsl:template match="title" mode="chapter">
+	<xsl:param name="level"/>
+	<xsl:param name="no"/>
+
+	<xsl:variable name="chapter_id" select="string(../@xml:id)"/>
+	<xsl:element name="h{$level}">
+		<xsl:attribute name="id">
+			<xsl:value-of select="$chapter_id"/>
+		</xsl:attribute>
+		<a class="self-link" href="#{$chapter_id}"/>
+		<span class="h{$level}_num">
+			<xsl:value-of select="$no"/>
+		</span>
+		<xsl:apply-templates/>
+	</xsl:element>
+</xsl:template>
+
+<xsl:template match="title" mode="section">
+	<div class="section"><xsl:apply-templates/></div>
+</xsl:template>
+
+<xsl:template match="title" mode="toc">
+	<xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="p">
+	<p><xsl:apply-templates/></p>
+</xsl:template>
+
+<xsl:template match="tt">
+	<code><xsl:apply-templates/></code>
+</xsl:template>
+
+<xsl:template match="u">
+	<u><xsl:apply-templates/></u>
+</xsl:template>
+
+<xsl:template match="b">
+	<b><xsl:apply-templates/></b>
+</xsl:template>
+
+<xsl:template match="nt">
+	<span class="nonterminal"><xsl:apply-templates/></span>
+</xsl:template>
+
+<xsl:template match="list[@style='numbered']">
+	<ol>
+		<xsl:for-each select="item">
+			<li><xsl:apply-templates/></li>
+		</xsl:for-each>
+	</ol>
+</xsl:template>
+
+<xsl:template match="list[@style='bulleted']">
+	<ul>
+		<xsl:for-each select="item">
+			<li><xsl:apply-templates/></li>
+		</xsl:for-each>
+	</ul>
+</xsl:template>
+
+<xsl:template match="list[@style='nomarks']">
+	<ul class="nomarks">
+		<xsl:for-each select="item">
+			<li><xsl:apply-templates/></li>
+		</xsl:for-each>
+	</ul>
+</xsl:template>
+
+<xsl:template match="list">
+	<div class="todo">Invalid list style</div>
+	<xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="link">
+	<a href="{.}"><xsl:apply-templates/></a>
+</xsl:template>
+
+<xsl:template match="link[@href]">
+	<a href="{@href}"><xsl:apply-templates/></a>
+</xsl:template>
+
+<xsl:template match="xref">
+	<a href="#{@to}">
+		<xsl:variable name="target" select="key('chapters', @to)"/>
+		<xsl:choose>
+			<xsl:when test="$target">
+				<xsl:apply-templates select="$target/title/node()"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:attribute name="class">broken-link</xsl:attribute>
+				<xsl:value-of select="@to"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</a>
+</xsl:template>
+
+<xsl:template match="code-block | tty">
+	<pre class="code"><xsl:apply-templates/></pre>
+</xsl:template>
+
+<xsl:template match="section">
+	<xsl:apply-templates select="title" mode="section"/>
+	<xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="note">
+	<div><span class="label-strong">
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Замечание</xsl:when>
+			<xsl:otherwise>Note</xsl:otherwise>
+		</xsl:choose>
+	</span>: <xsl:apply-templates/></div>
+</xsl:template>
+
+<xsl:template match="note[parent::synopsis]">
+	<div><span class="label">
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Замечание</xsl:when>
+			<xsl:otherwise>Note</xsl:otherwise>
+		</xsl:choose>
+	</span>: <xsl:apply-templates/></div>
+</xsl:template>
+
+<xsl:template match="precondition">
+	<div><span class="label">
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Предусловие</xsl:when>
+			<xsl:otherwise>Precondition</xsl:otherwise>
+		</xsl:choose>
+	</span>: <xsl:apply-templates/></div>
+</xsl:template>
+
+<xsl:template match="postcondition">
+	<div><span class="label">
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Постусловие</xsl:when>
+			<xsl:otherwise>Postcondition</xsl:otherwise>
+		</xsl:choose>
+	</span>: <xsl:apply-templates/></div>
+</xsl:template>
+
+<xsl:template match="invariant">
+	<div><span class="label">
+		<xsl:choose>
+			<xsl:when test="$lang='ru'">Инвариант</xsl:when>
+			<xsl:otherwise>Invariant</xsl:otherwise>
+		</xsl:choose>
+	</span>: <xsl:apply-templates/></div>
+</xsl:template>
+
+<xsl:template match="synopsis">
+	<div>
+		<xsl:apply-templates select="prototype" mode="synopsis"/>
+		<blockquote><xsl:apply-templates/></blockquote>
+	</div>
+</xsl:template>
+
+<xsl:template match="prototype"/>
+<xsl:template match="prototype" mode="synopsis">
+	<pre class="prototype"><xsl:apply-templates/></pre>
+</xsl:template>
+
+<xsl:template match="badge">
+	<span class="badge">[<xsl:apply-templates/>]</span>
+</xsl:template>
+
+<xsl:template match="TODO">
+	<div class="todo">[TODO<xsl:if test="string(.)">: <xsl:value-of select="."/>
+		</xsl:if>]</div>
+</xsl:template>
+
+</xsl:stylesheet>

@@ -260,8 +260,8 @@ export namespace __vic {
     using __vic::prev;
 
 // __vic/algorithm.h
-    using __vic::skip_if_front;
-    using __vic::skip_if_back;
+    using __vic::skip_front_if;
+    using __vic::skip_back_if;
 
 // __vic/error.h
     using __vic::exception;
@@ -296,6 +296,9 @@ export namespace __vic {
     using __vic::trim;
     using __vic::trim_front;
     using __vic::trim_back;
+    using __vic::trim_if;
+    using __vic::trim_front_if;
+    using __vic::trim_back_if;
     using __vic::trimmed;
     using __vic::trimmed_front;
     using __vic::trimmed_back;

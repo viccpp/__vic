@@ -13,7 +13,7 @@ public:
     using const_iterator = ]]><nt>&lt;implementation-defined></nt><![CDATA[;
 
     bounded_vector();
-    explicit bounded_vector(size_t max_size);
+    explicit bounded_vector(size_t capacity);
     ~bounded_vector();
 
     // BEGIN C++11
@@ -28,7 +28,7 @@ public:
     bool full() const;
     bool empty() const;
 
-    void recreate(size_t new_max_size, bool size_exact = false);
+    void recreate(size_t new_capacity, bool size_exact = false);
     void *alloc(); // returns pointer to memory for object allocation
     void push_allocated(); // adds last allocated object to the container
     void pop_back();
@@ -120,9 +120,9 @@ void swap(bounded_vector<T> &o1, bounded_vector<T> &o2) noexcept;
 </synopsis>
 
 <synopsis>
-<prototype>explicit bounded_vector(size_t max_size)</prototype>
-<p>Создаёт контейнер ёмкости <tt>max_size</tt> элементов.</p>
-<postcondition><tt>capacity() == max_size</tt></postcondition>
+<prototype>explicit bounded_vector(size_t capacity)</prototype>
+<p>Создаёт контейнер ёмкости <tt>capacity</tt> элементов.</p>
+<postcondition><tt>this->capacity() == capacity</tt></postcondition>
 </synopsis>
 
 <synopsis>
@@ -154,12 +154,12 @@ void swap(bounded_vector<T> &o1, bounded_vector<T> &o2) noexcept;
 </synopsis>
 
 <synopsis>
-<prototype>void recreate(size_t new_max_size, bool size_exact = false)</prototype>
+<prototype>void recreate(size_t new_capacity, bool size_exact = false)</prototype>
 <p>Пересоздаёт контейнер. Сначала вызывается <tt>clear()</tt>, затем
-перевыделяется буфер, если <tt>new_max_size > capacity()</tt> или <tt>size_exact
-== true</tt> и <tt>new_max_size != capacity()</tt>.</p>
-<postcondition><tt>capacity() >= new_max_size &amp;&amp; empty() == true</tt>
-(если <tt>size_exact == true</tt>, то <tt>capacity() == new_max_size &amp;&amp;
+перевыделяется буфер, если <tt>new_capacity > capacity()</tt> или <tt>size_exact
+== true</tt> и <tt>new_capacity != capacity()</tt>.</p>
+<postcondition><tt>capacity() >= new_capacity &amp;&amp; empty() == true</tt>
+(если <tt>size_exact == true</tt>, то <tt>capacity() == new_capacity &amp;&amp;
 empty() == true</tt>)</postcondition>
 </synopsis>
 

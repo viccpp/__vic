@@ -40,14 +40,10 @@ public:
         : begin_(b), end_(e) {}
     template<class Traits, class Alloc>
     basic_string_ref(const std::basic_string<charT,Traits,Alloc> &st)
-        : begin_(&*st.begin()), end_(&*st.end()) {}
-    basic_string_ref(
-        typename std::basic_string<charT>::const_iterator begin,
-        typename std::basic_string<charT>::const_iterator end
-    ) : begin_(&*begin), end_(&*end) {}
+        : begin_(st.data()), end_(st.data() + st.length()) {}
 #if __cpp_initializer_lists
     basic_string_ref(std::initializer_list<charT> il)
-        : begin_(&*il.begin()), end_(&*il.end()) {}
+        : begin_(il.begin()), end_(il.end()) {}
 #endif
 
 #if __cpp_lib_string_view

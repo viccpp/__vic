@@ -83,6 +83,36 @@ void run()
         assert(false);
     }
     catch(const __vic::base64::bad_length & ) {} // OK
+    try
+    {
+        decode("====");
+        assert(false);
+    }
+    catch(const __vic::base64::bad_padding & ) {} // OK
+    try
+    {
+        decode("A===");
+        assert(false);
+    }
+    catch(const __vic::base64::bad_padding & ) {} // OK
+    try
+    {
+        decode("QQ=Q");
+        assert(false);
+    }
+    catch(const __vic::base64::bad_padding & ) {} // OK
+    try
+    {
+        decode("Q=Q=");
+        assert(false);
+    }
+    catch(const __vic::base64::bad_padding & ) {} // OK
+    try
+    {
+        decode("QQ==QQ==");
+        assert(false);
+    }
+    catch(const __vic::base64::bad_padding & ) {} // OK
 }
 
 } // namespace

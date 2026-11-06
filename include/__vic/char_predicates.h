@@ -29,9 +29,9 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 class is_one_of_chars
 {
-    set_of_chars set;
+    const set_of_chars &set;
 public:
-    explicit is_one_of_chars(const char *chars) : set(chars) {}
+    explicit is_one_of_chars(const set_of_chars &chars) : set(chars) {}
     bool operator()(char ch) const { return set.contains(ch); }
 };
 //////////////////////////////////////////////////////////////////////////////

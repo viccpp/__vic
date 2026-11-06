@@ -4,14 +4,48 @@ Legend:
     * Changes
     ! Important
 
+2026-11-05  __vic
+    ! _cfg.h: no _GNU_SOURCE and _FILE_OFFSET_BITS 64 defines
+    * bits.h:
+        * rotl(), rotr(): the shift parameter is unsigned
+        - msb_ones(), lsb_ones(), get_lsbs(): strict preconditions and correct
+          corner cases
+    - utf8::writer: codepoints longers that 2 bytes
+    - utf8::reader: reject values more than U+10FFFF
+    - waitable_event (C++11 impl): could miss a wakeup
+    - base64::decode: correct padding handling
+    - bounded_vector: check the requested capacity for overflow
+    * string_buffer: cleanup
+
+2026-11-03  __vic
+    * set_of_chars: add(nullptr) creates an empty set
+    * strung_utils.h:
+        * trim & sift functions: set_of_chars is used instead of const char *
+        + trim & trim_if functions for std::string_view
+
+2026-10-29  __vic
+    + set_of_chars: std::string_view
+
+2026-10-27  __vic
+    * Renamed skip_if_{front,back}() -> skip_{front,back}_if()
+
 2026-09-15  __vic
     ! posix/iov.h: Renamed cut_prefix() -> remove_prefix()
+
+2026-04-09  __vic
+    ! logger: renamed *_visible() -> *_on()
 
 2026-03-30  __vic
     + macOS support
 
 2026-01-29  __vic
     - posix/dir_entries.h: __VIC_USE_READDIR detection
+
+2026-01-22  __vic
+    * is_[un]signed_integer should cover the extended integer types
+    ! string_ref: the string::const_iterator constructor removed
+    * No &*string.end(), which is UB
+>>>>>>> generic
 
 2025-11-28  __vic
     * waitable_event: takes timeouts by value

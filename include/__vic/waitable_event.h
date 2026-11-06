@@ -36,7 +36,7 @@ class waitable_event
         bool load() const { return v.load(std::memory_order_acquire); }
     } signaled_;
 #else // C++98
-    posix::mutex mtx;
+    mutable posix::mutex mtx;
     posix::cond_variable cond;
     bool signaled_;
 #endif
