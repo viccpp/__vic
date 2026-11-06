@@ -12,6 +12,7 @@ public:
     template<class Iter> constexpr set_of_chars(Iter begin, Iter end);
     constexpr set_of_chars(std::initializer_list<char> set); // C++11
     constexpr set_of_chars(const char *c_str);
+    constexpr set_of_chars(std::string_view chars); // C++17
 
     constexpr bool contains(char ch) const;
 
@@ -21,16 +22,18 @@ public:
     template<class Iter> constexpr void add(Iter begin, Iter end);
     constexpr void add(const char *c_str);
     constexpr void add(std::initializer_list<char> set); // C++11
+    constexpr void add(std::string_view chars); // C++17
 
     template<class Iter> void assign(Iter begin, Iter end);
     void assign(const char *c_str)
     void assign(std::initializer_list<char> set); // C++11
+    void assign(std::string_view chars); // C++17
 
     void clear();
 };
 ]]></code-block>
 
-<p>Compact (only 32 bytes) and very fast implemetation of a set of chars. The
+<p>Compact (only 32 bytes) and very fast implementation of a set of chars. The
 cost of the <tt>contains()</tt> operation is always constant regardles of the
 argument and number of elements in the set.</p>
 
@@ -46,6 +49,7 @@ argument and number of elements in the set.</p>
 <synopsis>
 <prototype>template&lt;class Iter> constexpr set_of_chars(Iter begin, Iter end)</prototype>
 <prototype>constexpr set_of_chars(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
+<prototype>constexpr set_of_chars(std::string_view chars) <badge>C++17</badge></prototype>
 <p>Creates a set filled with characters from the specified range of values.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
@@ -53,7 +57,7 @@ argument and number of elements in the set.</p>
 <synopsis>
 <prototype>constexpr set_of_chars(const char *c_str)</prototype>
 <p>Creates a set filled with characters from the specified C-string excluding
-NULL-terminator.</p>
+the NULL-terminator. <tt>nullptr</tt> creates an empty set.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
 
@@ -79,6 +83,7 @@ NULL-terminator.</p>
 <synopsis>
 <prototype>template&lt;class Iter> constexpr void add(Iter begin, Iter end)</prototype>
 <prototype>constexpr void add(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
+<prototype>constexpr void add(std::string_view chars) <badge>C++17</badge></prototype>
 <p>Calls <tt>add(ch)</tt> for each value in the range.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
@@ -86,7 +91,7 @@ NULL-terminator.</p>
 <synopsis>
 <prototype>constexpr void add(const char *c_str)</prototype>
 <p>Calls <tt>add(ch)</tt> for each character in the C-string excluding
-NULL-terminator.</p>
+the NULL-terminator. <tt>nullptr</tt> creates an empty set.</p>
 <note><tt>constexpr</tt> since C++14 only!</note>
 </synopsis>
 
@@ -94,6 +99,7 @@ NULL-terminator.</p>
 <prototype>template&lt;class Iter> void assign(Iter begin, Iter end)</prototype>
 <prototype>void assign(const char *c_str)</prototype>
 <prototype>void assign(std::initializer_list&lt;char> set) <badge>C++11</badge></prototype>
+<prototype>void assign(std::string_view chars) <badge>C++17</badge></prototype>
 <p>Calls <tt>clear()</tt> then <tt>add()</tt> with the specified parameters.
 </p>
 </synopsis>

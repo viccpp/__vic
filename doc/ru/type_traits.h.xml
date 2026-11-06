@@ -119,8 +119,8 @@ constexpr To byte_cast(From v);
 template<class T> struct is_signed_integer;
 ]]></code-block>
 
-<p>Предикат. Истинен, если <tt>T</tt> - «стандартный целый тип со знаком»
-(см. Стандарт).</p>
+<p>Предикат. Истинен, если <tt>T</tt> - «стандартный либо расширенный целый
+тип со знаком» (см. Стандарт).</p>
 
 </chapter>
 
@@ -132,8 +132,8 @@ template<class T> struct is_signed_integer;
 template<class T> struct is_unsigned_integer;
 ]]></code-block>
 
-<p>Предикат. Истинен, если <tt>T</tt> - «стандартный целый беззнаковый тип»
-(см. Стандарт).</p>
+<p>Предикат. Истинен, если <tt>T</tt> - «стандартный либо расширенный целый
+беззнаковый тип» (см. Стандарт).</p>
 
 </chapter>
 

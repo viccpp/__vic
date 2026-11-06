@@ -14,15 +14,15 @@ namespace {
 
 //----------------------------------------------------------------------------
 template<class charT, class Pred>
-inline void trim_if_back(charT *st, Pred pred)
+inline void trim_back_if(charT *st, Pred pred)
 {
     charT *end = tchar::end(st);
-    charT *p = skip_if_back(st, end, pred);
+    charT *p = skip_back_if(st, end, pred);
     if(p != end) *p = charT();
 }
 //----------------------------------------------------------------------------
 template<class charT, class Pred>
-inline void trim_if_front(charT *st, Pred pred)
+inline void trim_front_if(charT *st, Pred pred)
 {
     charT *p = st;
     while(*p && pred(*p)) p++;
@@ -34,10 +34,10 @@ inline void trim_if(charT *st, Pred pred)
 {
     charT *end = tchar::end(st);
     // trim back
-    charT *e = skip_if_back(st, end, pred);
+    charT *e = skip_back_if(st, end, pred);
     if(e != end) *e = charT();
     // trim front
-    charT *b = skip_if_front(st, e, pred);
+    charT *b = skip_front_if(st, e, pred);
     if(b != st) std::memmove(st, b, (e - b + 1) * sizeof(charT));
 }
 //----------------------------------------------------------------------------
@@ -53,13 +53,13 @@ char *trim(char *st) noexcept
 //----------------------------------------------------------------------------
 char *trim_back(char *st) noexcept
 {
-    if(st) trim_if_back(st, is_ascii_ws());
+    if(st) trim_back_if(st, is_ascii_ws());
     return st;
 }
 //----------------------------------------------------------------------------
 char *trim_front(char *st) noexcept
 {
-    if(st) trim_if_front(st, is_ascii_ws());
+    if(st) trim_front_if(st, is_ascii_ws());
     return st;
 }
 //----------------------------------------------------------------------------
@@ -71,31 +71,31 @@ char *trim(char *st, char ch) noexcept
 //----------------------------------------------------------------------------
 char *trim_back(char *st, char ch) noexcept
 {
-    if(st) trim_if_back(st, is_eq_char(ch));
+    if(st) trim_back_if(st, is_eq_char(ch));
     return st;
 }
 //----------------------------------------------------------------------------
 char *trim_front(char *st, char ch) noexcept
 {
-    if(st) trim_if_front(st, is_eq_char(ch));
+    if(st) trim_front_if(st, is_eq_char(ch));
     return st;
 }
 //----------------------------------------------------------------------------
-char *trim(char *st, const char *set) noexcept
+char *trim(char *st, const set_of_chars &set) noexcept
 {
-    if(st && set) trim_if(st, is_one_of_chars(set));
+    if(st) trim_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------
-char *trim_back(char *st, const char *set) noexcept
+char *trim_back(char *st, const set_of_chars &set) noexcept
 {
-    if(st && set) trim_if_back(st, is_one_of_chars(set));
+    if(st) trim_back_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------
-char *trim_front(char *st, const char *set) noexcept
+char *trim_front(char *st, const set_of_chars &set) noexcept
 {
-    if(st && set) trim_if_front(st, is_one_of_chars(set));
+    if(st) trim_front_if(st, is_one_of_chars(set));
     return st;
 }
 //----------------------------------------------------------------------------

@@ -9,6 +9,8 @@ import std;
 import __vic;
 #endif
 
+void implicit(__vic::set_of_chars) {}
+
 void run_tests()
 {
     __vic::set_of_chars set;
@@ -33,6 +35,7 @@ void run_tests()
 
 #if __cpp_initializer_lists
     set.assign({'1', '2', '3'});
+    implicit({'1', '2', '3'});
     assert(set.contains('1'));
     assert(set.contains('2'));
     assert(set.contains('3'));
@@ -40,6 +43,41 @@ void run_tests()
     assert(!set.contains('b'));
     assert(!set.contains('0'));
     assert(!set.contains('4'));
+#endif
+
+    {
+        __vic::set_of_chars set("123");
+        implicit("123");
+        assert(set.contains('1'));
+        assert(set.contains('2'));
+        assert(set.contains('3'));
+        assert(!set.contains('4'));
+        set.add('4');
+        assert(set.contains('4'));
+        set.assign("0");
+        assert(!set.contains('4'));
+        assert(set.contains('0'));
+    }
+    {
+        __vic::set_of_chars set((const char *) 0);
+        set.add((const char *) 0);
+        for(int c = 0; c < 256; c++)
+            assert(!set.contains((unsigned char) c));
+    }
+#if __cpp_lib_string_view // C++17
+    {
+        __vic::set_of_chars set{std::string_view{"123"}};
+        implicit(std::string_view{"123"});
+        assert(set.contains('1'));
+        assert(set.contains('2'));
+        assert(set.contains('3'));
+        assert(!set.contains('4'));
+        set.add('4');
+        assert(set.contains('4'));
+        set.assign(std::string_view{"0"});
+        assert(!set.contains('4'));
+        assert(set.contains('0'));
+    }
 #endif
 
 #if __cpp_constexpr >= 201304 && __cpp_static_assert

@@ -57,6 +57,22 @@ struct base64::bad_length : public base64::bad_format
 </chapter>
 
 
+<chapter xml:id="base64--bad_padding">
+<title><tt>base64::bad_padding</tt></title>
+
+<code-block lang="C++">
+struct base64::bad_padding : public base64::bad_format
+{
+    const char *what() const noexcept;
+};
+</code-block>
+
+<p>Класс исключений, бросаемый <xref to="base64--decode"/> если входная
+последовательность некорректно использует символ <tt>=</tt>.</p>
+
+</chapter>
+
+
 <chapter xml:id="base64--status">
 <title><tt>base64::status</tt></title>
 
@@ -65,7 +81,8 @@ enum class base64::status
 {
     ok,
     invalid_length,
-    invalid_digit
+    invalid_digit,
+    invalid_padding
 };
 using base64::status_t = base64::status; // for C++98
 </code-block>

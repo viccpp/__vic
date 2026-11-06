@@ -10,6 +10,8 @@
 
 #include<__vic/defs.h>
 #include<new>
+#include<limits>
+#include<stdexcept>
 #include __VIC_SWAP_HEADER
 
 namespace __vic {
@@ -21,7 +23,10 @@ class bounded_vector : private non_copyable
     T *mem, *next, *limit;
 
     static T *allocate(size_t n)
-        { return static_cast<T *>(::operator new[](sizeof(T) * n)); }
+    {
+        if(n > max_size()) throw std::length_error("bounded_vector: too large");
+        return static_cast<T *>(::operator new[](sizeof(T) * n));
+    }
     static void deallocate(T *p) { ::operator delete[](p); }
     static void destroy(T *p) { p->~T(); }
 public:
@@ -49,6 +54,12 @@ public:
     // size in objects
     size_t size() const { return next - mem; }
     size_t capacity() const { return limit - mem; }
+    static size_t max_size()
+    {
+        return static_cast<size_t>(
+            std::numeric_limits<std::ptrdiff_t>::max()) / sizeof(T);
+    }
+
     bool full() const { return next == limit; }
     bool empty() const { return next == mem; }
 
@@ -90,10 +101,10 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
 template<class T>
-bounded_vector<T>::bounded_vector(size_t max_size)
+bounded_vector<T>::bounded_vector(size_t capacity)
 {
-    mem = next = this->allocate(max_size);
-    limit = mem + max_size;
+    mem = next = this->allocate(capacity);
+    limit = mem + capacity;
 }
 //----------------------------------------------------------------------------
 template<class T>
@@ -104,15 +115,15 @@ bounded_vector<T>::~bounded_vector()
 }
 //----------------------------------------------------------------------------
 template<class T>
-void bounded_vector<T>::recreate(size_t max_size, bool exact)
+void bounded_vector<T>::recreate(size_t new_capacity, bool exact)
 {
     clear();
-    if(max_size > capacity() || (exact && max_size != capacity()))
+    if(new_capacity > capacity() || (exact && new_capacity != capacity()))
     {
-        T *p = this->allocate(max_size);;
+        T *p = this->allocate(new_capacity);
         deallocate(mem);
         mem = next = p;
-        limit = mem + max_size;
+        limit = mem + new_capacity;
     }
 }
 //----------------------------------------------------------------------------

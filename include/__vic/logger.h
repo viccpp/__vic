@@ -183,13 +183,13 @@ public:
     }
 #endif
 
-    bool trace_visible() const { return level() <= severity::trace; }
-    bool debug_visible() const { return level() <= severity::debug; }
-    bool info_visible() const { return level() <= severity::info; }
-    bool notice_visible() const { return level() <= severity::notice; }
-    bool warning_visible() const { return level() <= severity::warning; }
-    bool error_visible() const { return level() <= severity::error; }
-    bool fatal_visible() const { return level() <= severity::fatal; }
+    __VIC_NODISCARD bool trace_on() const { return level() <= severity::trace; }
+    __VIC_NODISCARD bool debug_on() const { return level() <= severity::debug; }
+    __VIC_NODISCARD bool info_on() const { return level() <= severity::info; }
+    __VIC_NODISCARD bool notice_on() const { return level() <= severity::notice; }
+    __VIC_NODISCARD bool warning_on() const { return level() <= severity::warning; }
+    __VIC_NODISCARD bool error_on() const { return level() <= severity::error; }
+    __VIC_NODISCARD bool fatal_on() const { return level() <= severity::fatal; }
 private:
     output *out;
     //severity log_level; // moved to make the struct more compact

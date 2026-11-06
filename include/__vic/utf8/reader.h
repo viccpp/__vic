@@ -81,8 +81,8 @@ read_result reader<ByteSReader>::parse()
             ch <<= 6;
             ch |= uchar_value(rr) & 0x3F;
         }
-        if(ch < length_thresholds[seqlen-2])
-            return status::overlong_encoding;
+        if(ch < length_thresholds[seqlen-2]) return status::overlong_encoding;
+        if(ch > unicode_max) return status::code_point_too_big;
         return ch;
     }
     else return status::no_leading_byte; // not a start byte
