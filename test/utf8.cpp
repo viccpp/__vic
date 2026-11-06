@@ -161,6 +161,37 @@ void code_point_too_big_test()
     }
 }
 //----------------------------------------------------------------------------
+void test_surrogate(unicode_t cp)
+{
+    std::string s;
+    utf8_string_writer w(s);
+    w.write(cp);
+
+    utf8_string_reader r(s);
+    assert(r.parse().status() == (__vic::is_unicode_surrogate(cp) ?
+                                  __vic::utf8::status::surrogate_code_point :
+                                  __vic::utf8::status::ok));
+}
+//----------------------------------------------------------------------------
+void surrogates_test()
+{
+    test_surrogate(0xD800);
+    test_surrogate(0xDFFF);
+    test_surrogate(0xD7FF);
+    test_surrogate(0xE000);
+    {
+        // CESU-8: U+1F600 encoded as two 3-byte surrogates (U+D83D U+DE00)
+        std::string s;
+        utf8_string_writer w(s);
+        w.write(0xD83D);
+        w.write(0xDE00);
+
+        utf8_string_reader r(s);
+        assert(r.parse().status() == __vic::utf8::status::surrogate_code_point);
+        assert(r.parse().status() == __vic::utf8::status::surrogate_code_point);
+    }
+}
+//----------------------------------------------------------------------------
 void truncated_code_point_test()
 {
     const char str[] = "\xD0" // <- truncated code point
@@ -266,9 +297,10 @@ void replace_invalid_test()
     const char str[] = /*"\xE2"*/"\x82\xAC""xz";
     assert(!is_valid(utf8_cstring_reader(str)));
     std::string fixed = replace_invalid(str, '?');
-    std::cout << fixed << '\n';
     assert(fixed == "?xz");
     assert(is_valid(utf8_string_reader(fixed)));
+
+    // TODO: handle this: "\xC3" "\xE2\x82\xAC" "!"
 }
 //----------------------------------------------------------------------------
 void run()
@@ -277,6 +309,7 @@ void run()
     long_code_point();
     valid_encoding_test();
     code_point_too_big_test();
+    surrogates_test();
     truncated_code_point_test();
     no_leading_byte_test();
     overlong_encoding_test();

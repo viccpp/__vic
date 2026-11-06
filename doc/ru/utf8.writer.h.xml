@@ -31,6 +31,11 @@ utf8::writer<ByteSWriter> utf8::make_writer(ByteSWriter w);
 используется <tt>ByteSWriter</tt>, моделирующий <tt>swriter&lt;unsigned char></tt>
 (см. <xref to="swriters"/>).</p>
 
+<note><tt>utf8::writer</tt> принимает и кодирует любые переданные значения,
+даже если они не являются валидными Unicode code point. Вы можете использовать
+<xref to="is_valid_unicode"/> для проверки значений перед передачей их в
+writer.</note>
+
 <section><title>Члены класса</title>
 
 <synopsis>

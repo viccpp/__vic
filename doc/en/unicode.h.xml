@@ -34,6 +34,31 @@ using <tt>w()</tt>.</p>
 </chapter>
 
 
+<chapter xml:id="is_valid_unicode">
+<title><tt>is_valid_unicode()</tt></title>
+
+<code-block lang="C++">
+constexpr bool is_valid_unicode(unicode_t c);
+</code-block>
+
+<p>Returns true if the specified value is a valid Unicode code point.</p>
+
+</chapter>
+
+
+<chapter xml:id="is_unicode_surrogate">
+<title><tt>is_unicode_surrogate()</tt></title>
+
+<code-block lang="C++">
+constexpr bool is_unicode_surrogate(unicode_t c);
+</code-block>
+
+<p>Returns true if the specified code point is a Unicode surrogate
+(<tt>U+D800</tt>..<tt>U+DFFF</tt>).</p>
+
+</chapter>
+
+
 <chapter xml:id="unicode_code_point_constants">
 <title><tt>Code point constants</tt></title>
 

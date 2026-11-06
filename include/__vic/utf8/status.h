@@ -21,7 +21,8 @@ __VIC_SCOPED_ENUM_UT_BEGIN(status, unsigned char)
     no_leading_byte,
     truncated_code_point,
     overlong_encoding,
-    code_point_too_big
+    code_point_too_big,
+    surrogate_code_point
 }
 __VIC_SCOPED_ENUM_END(status)
 //////////////////////////////////////////////////////////////////////////////

@@ -27,5 +27,10 @@ const char *code_point_too_big::what() const noexcept
     return "UTF-8 code point value is too big";
 }
 //------------------------------------------------------------------------------
+const char *surrogate_code_point::what() const noexcept
+{
+    return "UTF-8: surrogate code point";
+}
+//------------------------------------------------------------------------------
 
 }} // namespace

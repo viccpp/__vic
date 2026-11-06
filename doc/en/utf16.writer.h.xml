@@ -56,6 +56,7 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <prototype>void operator()(unicode_t cp)</prototype>
 <p>Writes the specified code point according to UTF-16 encoding rules.
 <tt>CodeUnitSWriter::operator()</tt> is used to write individual code units.</p>
+<precondition><tt>is_valid_unicode(cp)</tt></precondition>
 </synopsis>
 
 </section>

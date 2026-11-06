@@ -38,12 +38,13 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
+// Precondition: is_valid_unicode(cp)
 template<class CodeUnitSWriter>
 void writer<CodeUnitSWriter>::write(unicode_t cp)
 {
     if(cp <= 0xFFFF)
         write_unit(static_cast<code_unit_t>(cp));
-    else
+    else //if(cp <= unicode_max)
     {
         cp -= 0x10000; // 20 bits
         write_unit(hi_surrogate_min | (cp >> 10));   // hi 10 bits: 110110xx xxxxxxxx

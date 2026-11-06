@@ -31,6 +31,11 @@ utf8::writer<ByteSWriter> utf8::make_writer(ByteSWriter w);
 which models <tt>swriter&lt;unsigned char></tt> (see <xref to="swriters"/>)
 is used as a byte output.</p>
 
+<note><tt>utf8::writer</tt> accepts and encodes any value you pass, even if
+it does not represent a valid Unicode code point. You can use
+<xref to="is_valid_unicode"/> to check the values before passing them to
+the writer.</note>
+
 <section><title>Class members</title>
 
 <synopsis>

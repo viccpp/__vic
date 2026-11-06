@@ -4,13 +4,17 @@ Legend:
     * Changes
     ! Important
 
+2026-11-06  __vic
+    + unicode.h: is_unicode_surrogate(), is_valid_unicode()
+    + utf8::reader: rejects surrogates
+
 2026-11-05  __vic
     ! _cfg.h: no _GNU_SOURCE and _FILE_OFFSET_BITS 64 defines
     * bits.h:
         * rotl(), rotr(): the shift parameter is unsigned
         - msb_ones(), lsb_ones(), get_lsbs(): strict preconditions and correct
           corner cases
-    - utf8::writer: codepoints longers than 2 bytes
+    - utf8::writer: code points longer than 2 bytes
     - utf8::reader: reject values more than U+10FFFF
     - waitable_event (C++11 impl): could miss a wakeup
     - base64::decode: correct padding handling
