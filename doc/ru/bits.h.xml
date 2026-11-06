@@ -22,9 +22,12 @@ constexpr uint8_t hi_nibble(uint8_t byte);
 <title><tt>msb_ones()</tt>, <tt>lsb_ones()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-template<class T> constexpr T lsb_ones(unsigned bits_num);
-template<class T> constexpr T msb_ones(unsigned bits_num);
+template<class UInt> constexpr UInt lsb_ones(unsigned bits_num);
+template<class UInt> constexpr UInt msb_ones(unsigned bits_num);
 ]]></code-block>
+
+<precondition><tt>UInt</tt> - беззнаковый целый тип</precondition>
+<precondition><tt><![CDATA[0 < bits_num && bits_num <= sizeof(UInt)*CHAR_BIT]]></tt></precondition>
 
 <p>Возвращают значение типа <tt>T</tt> со всеми младшими/старшими
 <tt>bits_num</tt> битами заполненными <tt>1</tt>, соответственно. Все остальные
@@ -37,8 +40,11 @@ template<class T> constexpr T msb_ones(unsigned bits_num);
 <title><tt>get_lsbs()</tt></title>
 
 <code-block lang="C++">
-template&lt;class T> constexpr T get_lsbs(T v, unsigned bits_num);
+template&lt;class UInt> constexpr UInt get_lsbs(UInt v, unsigned bits_num);
 </code-block>
+
+<precondition><tt>UInt</tt> - беззнаковый целый тип</precondition>
+<precondition><tt><![CDATA[0 < bits_num && bits_num <= sizeof(v)*CHAR_BIT]]></tt></precondition>
 
 <p>Возвращает <tt>bits_num</tt> младших битов значения <tt>v</tt>. Другими
 словами, заполняет нулями все, кроме младших <tt>bits_num</tt> битов.</p>
@@ -179,22 +185,23 @@ unsigned floor_log2(UInt n);
 <title><tt>rotl()</tt>, <tt>rotr()</tt></title>
 
 <code-block lang="C++">
-unsigned long long rotl(unsigned long long v, int shift);
-unsigned long      rotl(unsigned long v, int shift);
-unsigned           rotl(unsigned v, int shift);
-unsigned short     rotl(unsigned short v, int shift);
-unsigned char      rotl(unsigned char v, int shift);
+unsigned long long rotl(unsigned long long v, unsigned shift);
+unsigned long      rotl(unsigned long v,      unsigned shift);
+unsigned           rotl(unsigned v,           unsigned shift);
+unsigned short     rotl(unsigned short v,     unsigned shift);
+unsigned char      rotl(unsigned char v,      unsigned shift);
 
-unsigned long long rotr(unsigned long long v, int shift);
-unsigned long      rotr(unsigned long v, int shift);
-unsigned           rotr(unsigned v, int shift);
-unsigned short     rotr(unsigned short v, int shift);
-unsigned char      rotr(unsigned char v, int shift);
+unsigned long long rotr(unsigned long long v, unsigned shift);
+unsigned long      rotr(unsigned long v,      unsigned shift);
+unsigned           rotr(unsigned v,           unsigned shift);
+unsigned short     rotr(unsigned short v,     unsigned shift);
+unsigned char      rotr(unsigned char v,      unsigned shift);
 </code-block>
+
+<precondition><tt>shift &lt; sizeof(v)*CHAR_BIT</tt></precondition>
 
 <p>Функции выполняют циклический побитовый сдвиг (rotation) влево
 (<tt>rotl</tt>) или вправо (<tt>rotr</tt>).</p>
-<precondition><tt>0 &lt;= shift &amp;&amp; shift &lt; sizeof(v)*CHAR_BIT</tt></precondition>
 
 </chapter>
 

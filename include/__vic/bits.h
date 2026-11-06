@@ -11,6 +11,7 @@
 #include<__vic/defs.h>
 #include<__vic/stdint.h>
 #include<climits>
+#include<limits>
 #if defined(_MSC_VER) && defined(__VIC_POPCNT)
 // __popcnt() call causes app crash if not supported by CPU
 #include<intrin.h>
@@ -39,27 +40,35 @@ __VIC_CONSTEXPR_FUNC uint8_t hi_nibble(uint8_t b)
     return b >> 4;
 }
 //------------------------------------------------------------------------------
-// Returns value with all most significant bits are 1 (others - 0)
+// Returns a value with all most significant bits set to 1 (others - 0)
 // Parameter specifies the number of "ones"
-template<class T>
-__VIC_CONSTEXPR_FUNC T msb_ones(unsigned bits_num)
+// Precondition: 0 < bits_num && bits_num <= sizeof(UInt)*CHAR_BIT
+template<class UInt>
+__VIC_CONSTEXPR_FUNC UInt msb_ones(unsigned bits_num)
 {
-    return ~T(0) << (sizeof(T) * CHAR_BIT - bits_num);
+    __VIC_ASSERT_UINT(UInt);
+    return static_cast<UInt>((std::numeric_limits<UInt>::max() + 0U) <<
+                             (sizeof(UInt) * CHAR_BIT - bits_num));
 }
 //------------------------------------------------------------------------------
-// Returns value with all least significant bits are 1 (others - 0)
+// Returns a value with all least significant bits set to 1 (others - 0)
 // Parameter specifies the number of "ones"
-template<class T>
-__VIC_CONSTEXPR_FUNC T lsb_ones(unsigned bits_num)
+// Precondition: 0 < bits_num && bits_num <= sizeof(UInt)*CHAR_BIT
+template<class UInt>
+__VIC_CONSTEXPR_FUNC UInt lsb_ones(unsigned bits_num)
 {
-    return ~(~T(0) << bits_num);
+    __VIC_ASSERT_UINT(UInt);
+    return static_cast<UInt>((std::numeric_limits<UInt>::max() + 0U) >>
+                             (sizeof(UInt) * CHAR_BIT - bits_num));
 }
 //------------------------------------------------------------------------------
 // Clears all but bits_num least significant bits
-template<class T>
-__VIC_CONSTEXPR_FUNC T get_lsbs(T v, unsigned bits_num)
+// Precondition: 0 < bits_num && bits_num <= sizeof(UInt)*CHAR_BIT
+template<class UInt>
+__VIC_CONSTEXPR_FUNC UInt get_lsbs(UInt v, unsigned bits_num)
 {
-    return v & lsb_ones<T>(bits_num);
+    __VIC_ASSERT_UINT(UInt);
+    return v & lsb_ones<UInt>(bits_num);
 }
 //----------------------------------------------------------------------------
 // Returns char code 0..255
@@ -71,7 +80,7 @@ __VIC_CONSTEXPR_FUNC int ord(char ch)
 // Swap high-order nibble with low-order one
 __VIC_CONSTEXPR_FUNC uint8_t swapped_nibbles(uint8_t b)
 {
-    return (b << 4) | (b >> 4);
+    return static_cast<uint8_t>((b << 4) | (b >> 4));
 }
 //----------------------------------------------------------------------------
 
@@ -209,38 +218,40 @@ inline unsigned msb_position(unsigned char v)
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
+// Precondition: shift < sizeof(UInt)*CHAR_BIT
 template<class UInt>
-inline UInt rotl_uint(UInt v, int shift)
+inline UInt rotl_uint(UInt v, unsigned shift)
 {
-    const int w = sizeof(UInt) * CHAR_BIT; // width in bits
+    const unsigned w = sizeof(UInt) * CHAR_BIT; // width in bits
     //return (v << shift) | (v >> (w - shift)); // UB if shift == 0
-    return (v << shift) | (v >> ((w - shift) & (w - 1)));
+    return static_cast<UInt>((v << shift) | (v >> ((w - shift) & (w - 1U))));
 }
 //----------------------------------------------------------------------------
+// Precondition: shift < sizeof(UInt)*CHAR_BIT
 template<class UInt>
-inline UInt rotr_uint(UInt v, int shift)
+inline UInt rotr_uint(UInt v, unsigned shift)
 {
-    const int w = sizeof(UInt) * CHAR_BIT; // width in bits
+    const unsigned w = sizeof(UInt) * CHAR_BIT; // width in bits
     //return (v >> shift) | (v << (w - shift)); // UB if shift == 0
-    return (v >> shift) | (v << ((w - shift) & (w - 1)));
+    return static_cast<UInt>((v >> shift) | (v << ((w - shift) & (w - 1U))));
 }
 //----------------------------------------------------------------------------
-inline unsigned rotl(unsigned v, int sh) { return rotl_uint(v, sh); }
-inline unsigned long rotl(unsigned long v, int sh) { return rotl_uint(v, sh); }
-inline unsigned short rotl(unsigned short v, int sh) { return rotl_uint(v, sh); }
-inline unsigned char rotl(unsigned char v, int sh) { return rotl_uint(v, sh); }
+inline unsigned rotl(unsigned v, unsigned sh) { return rotl_uint(v, sh); }
+inline unsigned long rotl(unsigned long v, unsigned sh) { return rotl_uint(v, sh); }
+inline unsigned short rotl(unsigned short v, unsigned sh) { return rotl_uint(v, sh); }
+inline unsigned char rotl(unsigned char v, unsigned sh) { return rotl_uint(v, sh); }
 //----------------------------------------------------------------------------
-inline unsigned rotr(unsigned v, int sh) { return rotr_uint(v, sh); }
-inline unsigned long rotr(unsigned long v, int sh) { return rotr_uint(v, sh); }
-inline unsigned short rotr(unsigned short v, int sh) { return rotr_uint(v, sh); }
-inline unsigned char rotr(unsigned char v, int sh) { return rotr_uint(v, sh); }
+inline unsigned rotr(unsigned v, unsigned sh) { return rotr_uint(v, sh); }
+inline unsigned long rotr(unsigned long v, unsigned sh) { return rotr_uint(v, sh); }
+inline unsigned short rotr(unsigned short v, unsigned sh) { return rotr_uint(v, sh); }
+inline unsigned char rotr(unsigned char v, unsigned sh) { return rotr_uint(v, sh); }
 //----------------------------------------------------------------------------
 #ifdef __VIC_LONGLONG
-inline unsigned __VIC_LONGLONG rotl(unsigned __VIC_LONGLONG v, int sh)
+inline unsigned __VIC_LONGLONG rotl(unsigned __VIC_LONGLONG v, unsigned sh)
 {
     return rotl_uint(v, sh);
 }
-inline unsigned __VIC_LONGLONG rotr(unsigned __VIC_LONGLONG v, int sh)
+inline unsigned __VIC_LONGLONG rotr(unsigned __VIC_LONGLONG v, unsigned sh)
 {
     return rotr_uint(v, sh);
 }

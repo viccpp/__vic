@@ -3,6 +3,7 @@
 // Hardware platforms (CPU):
 // __VIC_X86__      - Intel x86 (IA32)
 // __VIC_X64__      - x64 AKA x86-64 AKA AMD 64
+// __VIC_ARM64__    - AArch64 AKA ARM 64
 // __VIC_IA64__     - Intel IA64
 // __VIC_SPARC32__  - Sun SPARC 32-bit
 // __VIC_SPARC64__  - Sun SPARC 64-bit
@@ -16,6 +17,7 @@
 // __hpux       - HP-UX
 // _AIX         - AIX
 // _WIN32       - Windows
+// __APPLE__    - macOS
 //
 // Other defines:
 // __VIC_STRICT_RAM_ALIGNMENT__ - unaligned data cannot be fetched from RAM
@@ -37,10 +39,6 @@
 // GNU C++ 4.7 or higher
 //////////////////////////////////////////////////////////////////////////////
 #elif defined(__GNUC__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 7)
-
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE 1 // use all
-#endif
 
 #if defined(__GXX_EXPERIMENTAL_CXX0X__) && !defined(__VIC_NO_NULLPTR_DEF)
 #define __VIC_NO_NULLPTR_DEF 1
@@ -185,6 +183,9 @@
 #elif defined(__i386__)
 #define __VIC_X86__ 1
 #define __VIC_CPU_DEFINED 1
+#elif defined(__arm64__)
+#define __VIC_ARM64__ 1
+#define __VIC_CPU_DEFINED 1
 #elif defined(__IA64__)
 #define __VIC_IA64__ 1
 #define __VIC_CPU_DEFINED 1
@@ -214,12 +215,6 @@
 #if !(defined(__VIC_X86__) || defined(__VIC_X64__))
 // Memory access to unaligned data will cause bus error
 #define __VIC_STRICT_RAM_ALIGNMENT__ 1
-#endif
-
-// Always use Large File Support for Linux-x86
-#if defined(__linux__) && defined(__VIC_X86__) && \
-    !defined(__VIC_NO_LARGE_FILE_SUPPORT)
-#define _FILE_OFFSET_BITS 64
 #endif
 
 //////////////////////////////////////////////////////////////////////////////

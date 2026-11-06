@@ -66,12 +66,22 @@ caption.toc {
 	margin-bottom: 12pt;
 	margin-left: 0;
 }
-td.toc-chapter-no {
+table.toc {
+	font-size: 10pt;
+}
+table.toc td.toc-chapter-no {
 	padding-right: 1ex;
 	vertical-align: top;
 }
+table.toc td.toc-indent {
+	padding-left: 4ex;
+}
+table.toc tr.toc-gap td {
+	font-size: 5pt;
+}
 a { color: #0000EE; text-decoration: none; }
 a:hover { text-decoration: underline; }
+a.broken-link { color: red; }
 a.self-link {
 	font-weight: normal;
 	margin-left: -1.5ex;
@@ -123,6 +133,16 @@ span.badge {
 	font-size: 9pt;
 	font-weight: bold;
 }
+span.label {
+	text-decoration: underline;
+}
+span.label-strong {
+	text-decoration: underline;
+	font-weight: bold;
+}
+ul.nomarks {
+	list-style-type: none;
+}
 blockquote {
 	margin-top: 6pt;
 	margin-bottom: 0;
@@ -171,7 +191,7 @@ blockquote * {
 </xsl:template>
 
 <xsl:template name="toc">
-	<table style="font-size:10pt;" cellspacing="0" cellpadding="0">
+	<table class="toc" cellspacing="0" cellpadding="0">
 		<caption class="toc">
 			<xsl:choose>
 				<xsl:when test="$lang='ru'">Содержание</xsl:when>
@@ -194,11 +214,11 @@ blockquote * {
 			</td>
 			<td>
 				<xsl:if test="$level > 2">
-					<xsl:attribute name="style">padding-left:4ex</xsl:attribute>
+					<xsl:attribute name="class">toc-indent</xsl:attribute>
 				</xsl:if>
 				<a href="#{@xml:id}">
 					<xsl:if test="not(string(@xml:id))">
-						<xsl:attribute name="style">color:red;</xsl:attribute>
+						<xsl:attribute name="class">broken-link</xsl:attribute>
 					</xsl:if>
 					<xsl:apply-templates select="title" mode="toc"/>
 				</a>
@@ -210,7 +230,7 @@ blockquote * {
 		</xsl:call-template>
 		<xsl:if test="$level = 1">
 			<!-- Space between level 1 chapters -->
-			<tr><td colspan="2" style="font-size:5pt;">&#xA0;</td></tr>
+			<tr class="toc-gap"><td colspan="2">&#xA0;</td></tr>
 		</xsl:if>
 	</xsl:for-each>
 </xsl:template>
@@ -293,7 +313,7 @@ blockquote * {
 </xsl:template>
 
 <xsl:template match="list[@style='nomarks']">
-	<ul style="list-style-type:none">
+	<ul class="nomarks">
 		<xsl:for-each select="item">
 			<li><xsl:apply-templates/></li>
 		</xsl:for-each>
@@ -315,7 +335,17 @@ blockquote * {
 
 <xsl:template match="xref">
 	<a href="#{@to}">
-		<xsl:apply-templates select="key('chapters', @to)/title/node()"/>
+		<xsl:variable name="target" select="key('chapters', @to)"/>
+		<xsl:choose>
+			<xsl:when test="$target">
+				<xsl:apply-templates select="$target/title/node()"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:attribute name="class">broken-link</xsl:attribute>
+				<xsl:value-of select="@to"/>
+				<!--xsl:message terminate="yes">Unresolved xref: <xsl:value-of select="@to"/></xsl:message-->
+			</xsl:otherwise>
+		</xsl:choose>
 	</a>
 </xsl:template>
 
@@ -329,48 +359,48 @@ blockquote * {
 </xsl:template>
 
 <xsl:template match="note">
-	<div><u><b>
+	<div><span class="label-strong">
 		<xsl:choose>
 			<xsl:when test="$lang='ru'">Замечание</xsl:when>
 			<xsl:otherwise>Note</xsl:otherwise>
 		</xsl:choose>
-	</b></u>: <xsl:apply-templates/></div>
+	</span>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="note[parent::synopsis]">
-	<div><u>
+	<div><span class="label">
 		<xsl:choose>
 			<xsl:when test="$lang='ru'">Замечание</xsl:when>
 			<xsl:otherwise>Note</xsl:otherwise>
 		</xsl:choose>
-	</u>: <xsl:apply-templates/></div>
+	</span>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="precondition">
-	<div><u>
+	<div><span class="label">
 		<xsl:choose>
 			<xsl:when test="$lang='ru'">Предусловие</xsl:when>
 			<xsl:otherwise>Precondition</xsl:otherwise>
 		</xsl:choose>
-	</u>: <xsl:apply-templates/></div>
+	</span>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="postcondition">
-	<div><u>
+	<div><span class="label">
 		<xsl:choose>
 			<xsl:when test="$lang='ru'">Постусловие</xsl:when>
 			<xsl:otherwise>Postcondition</xsl:otherwise>
 		</xsl:choose>
-	</u>: <xsl:apply-templates/></div>
+	</span>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="invariant">
-	<div><u>
+	<div><span class="label">
 		<xsl:choose>
 			<xsl:when test="$lang='ru'">Инвариант</xsl:when>
 			<xsl:otherwise>Invariant</xsl:otherwise>
 		</xsl:choose>
-	</u>: <xsl:apply-templates/></div>
+	</span>: <xsl:apply-templates/></div>
 </xsl:template>
 
 <xsl:template match="synopsis">

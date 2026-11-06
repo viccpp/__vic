@@ -3,7 +3,6 @@
 //
 
 #include<__vic/string_utils.h>
-#include<cstring>
 
 namespace __vic {
 

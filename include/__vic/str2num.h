@@ -139,7 +139,7 @@ template<class T>
 __VIC_NODISCARD inline
 number_parse_result<T> parse_decimal(const std::string &s)
 {
-    return parse_decimal<T>(s.data(), &*s.end());
+    return parse_decimal<T>(s.data(), s.data() + s.length());
 }
 //----------------------------------------------------------------------------
 template<class T>
@@ -172,7 +172,7 @@ public:
         { return parse(s.data(), s.data() + s.length()); }
 #else
     __VIC_NODISCARD status parse(const std::string &s)
-        { return parse(s.data(), &*s.end()); }
+        { return parse(s.data(), s.data() + s.length()); }
     __VIC_NODISCARD status parse(const char *s)
         { return s ? parse(s, tchar::end(s)) : st::invalid_number; }
 #endif

@@ -25,7 +25,7 @@ template<
 #else
 template<class Iter, class Pred>
 #endif
-inline Iter skip_if_front(Iter begin, Iter end, Pred pred)
+inline Iter skip_front_if(Iter begin, Iter end, Pred pred)
 {
     while(begin != end && pred(*begin)) ++begin;
     return begin;
@@ -39,7 +39,7 @@ template<
 #else
 template<class Iter, class Pred>
 #endif
-inline Iter skip_if_back(Iter begin, Iter end, Pred pred)
+inline Iter skip_back_if(Iter begin, Iter end, Pred pred)
 {
     while(begin != end)
     {

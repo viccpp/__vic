@@ -14,9 +14,9 @@ char *trim_back(char *str);
 char *trim(char *str, char ch);
 char *trim_front(char *str, char ch);
 char *trim_back(char *str, char ch);
-char *trim(char *str, const char *set);
-char *trim_front(char *str, const char *set);
-char *trim_back(char *str, const char *set);
+char *trim(char *str, const set_of_chars &set);
+char *trim_front(char *str, const set_of_chars &set);
+char *trim_back(char *str, const set_of_chars &set);
 
 std::string &trim(std::string &str);
 std::string &trim_front(std::string &str);
@@ -24,19 +24,62 @@ std::string &trim_back(std::string &str);
 std::string &trim(std::string &str, char ch);
 std::string &trim_front(std::string &str, char ch);
 std::string &trim_back(std::string &str, char ch);
-std::string &trim(std::string &str, const char *set);
-std::string &trim_front(std::string &str, const char *set);
-std::string &trim_back(std::string &str, const char *set);
+std::string &trim(std::string &str, const set_of_chars &set);
+std::string &trim_front(std::string &str, const set_of_chars &set);
+std::string &trim_back(std::string &str, const set_of_chars &set);
 
+#if __cpp_lib_string_view // C++17
+template<class charT, class Traits, std::predicate<charT> Pred>
+constexpr std::basic_string_view<charT, Traits> &trim_if(
+    std::basic_string_view<charT, Traits> &str, Pred pred);
+
+template<class charT, class Traits, std::predicate<charT> Pred>
+constexpr std::basic_string_view<charT, Traits> &trim_front_if(
+    std::basic_string_view<charT, Traits> &str, Pred pred);
+
+template<class charT, class Traits, std::predicate<charT> Pred>
+constexpr std::basic_string_view<charT, Traits> &trim_back_if(
+    std::basic_string_view<charT, Traits> &str, Pred pred);
+
+constexpr std::string_view &trim(std::string_view &str);
+constexpr std::string_view &trim_front(std::string_view &str);
+constexpr std::string_view &trim_back(std::string_view &str);
+constexpr std::string_view &trim(std::string_view &str, char ch);
+constexpr std::string_view &trim_front(std::string_view &str, char ch);
+constexpr std::string_view &trim_back(std::string_view &str, char ch);
+constexpr std::string_view &trim(
+                            std::string_view &str, const set_of_chars &set);
+constexpr std::string_view &trim_front(
+                            std::string_view &str, const set_of_chars &set);
+constexpr std::string_view &trim_back(
+                            std::string_view &str, const set_of_chars &set);
+
+[[nodiscard]] constexpr std::string_view trimmed(std::string_view str);
+[[nodiscard]] constexpr std::string_view trimmed_front(std::string_view str);
+[[nodiscard]] constexpr std::string_view trimmed_back(std::string_view str);
+[[nodiscard]] constexpr std::string_view trimmed(
+                                            std::string_view str, char ch);
+[[nodiscard]] constexpr std::string_view trimmed_front(
+                                            std::string_view str, char ch);
+[[nodiscard]] constexpr std::string_view trimmed_back(
+                                            std::string_view str, char ch);
+[[nodiscard]] constexpr std::string_view trimmed(
+                            std::string_view str, const set_of_chars &set);
+[[nodiscard]] constexpr std::string_view trimmed_front(
+                            std::string_view str, const set_of_chars &set);
+[[nodiscard]] constexpr std::string_view trimmed_back(
+                            std::string_view str, const set_of_chars &set);
+#else // until C++17
 std::string trimmed(const std::string &str);
 std::string trimmed_front(const std::string &str);
 std::string trimmed_back(const std::string &str);
 std::string trimmed(const std::string &str, char ch);
 std::string trimmed_front(const std::string &str, char ch);
 std::string trimmed_back(const std::string &str, char ch);
-std::string trimmed(const std::string &str, const char *set);
-std::string trimmed_front(const std::string &str, const char *set);
-std::string trimmed_back(const std::string &str, const char *set);
+std::string trimmed(const std::string &str, const set_of_chars &set);
+std::string trimmed_front(const std::string &str, const set_of_chars &set);
+std::string trimmed_back(const std::string &str, const set_of_chars &set);
+#endif
 ]]></code-block>
 
 <p>Набор функций, обрезающих нежелательные символы по краям строки. Обрезаемые
@@ -56,6 +99,10 @@ ASCII-символы. Используются следующие правила
     <item><tt>trimmed</tt> – возвращает обрезанную строку в качестве выходного
         значения, не модифицируя входной параметр.</item>
 </list>
+
+<note>Используйте с осторожностью функции <tt>trimmed</tt>, возвращающие
+<tt>string_view</tt> - они могут приводить к возникновению болтающихся
+ссылок!</note>
 
 <p>Реализация функций <tt>trim</tt> выполнена с расчётом, что у строки может
 не быть символов, подлежащих обрезанию. В подобных случаях никаких модификаций
@@ -90,8 +137,8 @@ __vic::trim_back(st1, "123456789"); // result: "...value"
 <title><tt>sift()</tt></title>
 
 <code-block lang="C++"><![CDATA[
-char *sift(char *str, const char *trash_chars);
-std::string &sift(std::string &str, const char *trash_chars);
+char *sift(char *str, const set_of_chars &trash_chars);
+std::string &sift(std::string &str, const set_of_chars &trash_chars);
 ]]></code-block>
 
 <p>Удаляет из строки все символы из указанного набора. Все значения
@@ -113,9 +160,9 @@ assert(std::strcmp(st, "abcde") == 0);
 
 <code-block lang="C++"><![CDATA[
 template<class Pred>
-char *sift(char *str, Pred pred);
+char *sift_if(char *str, Pred pred);
 template<class Pred>
-std::string &sift(std::string &str, Pred pred);
+std::string &sift_if(std::string &str, Pred pred);
 ]]></code-block>
 
 <p>Удаляет из строки все символы, удовлетворяющие предикату <tt>pred</tt>.

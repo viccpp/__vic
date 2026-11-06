@@ -22,7 +22,8 @@ struct base64
     {
         ok,
         invalid_length,
-        invalid_digit
+        invalid_digit,
+        invalid_padding
     }
     __VIC_SCOPED_ENUM_END(status)
 
@@ -37,8 +38,14 @@ struct base64
     {
         const char *what() const noexcept;
     };
+    struct bad_padding : public bad_format
+    {
+        const char *what() const noexcept;
+    };
 
     static const char abc[64]; // BASE64 alphabet
+
+    static void throw_if_error(status_t );
 
     // Bytes -> Text
     template<class ByteSReader, class CharSWriter>
@@ -110,23 +117,30 @@ base64::status_t base64::try_decode(CharSReader r, ByteSWriter w)
         {
             for(int i=0; i<4; i++)
             {
-                if(quad[i] != '=')
+                if(quad[i] == '=')
                 {
-                    const char *p = static_cast<const char *>(
-                        std::memchr(abc, quad[i], sizeof abc));
-                    if(!p) return status::invalid_digit;
-                    code[i] = static_cast<unsigned char>(p - abc);
+                    if(i < 2) return status::invalid_padding; // "=..." or "x=.."
+                    code[i] = 255;
+                    if(i == 2)
+                    {
+                        if(quad[3] != '=') // "xx=x"
+                            return status::invalid_padding;
+                        code[3] = 255;
+                    }
+                    if(r()) return status::invalid_padding; // not the end
+                    break;
                 }
-                else code[i] = 255;
-            }
-            w((code[0] << 2) | (code[1] >> 4));
-            if(code[2] != 255)
-            {
-                w(((code[1] & 0x0F) << 4) | (code[2] >> 2));
-                if(code[3] != 255)
-                    w(((code[2] & 0x03) << 6) | code[3]);
+                const char *p = static_cast<const char *>(
+                    std::memchr(abc, quad[i], sizeof abc));
+                if(!p) return status::invalid_digit;
+                code[i] = static_cast<unsigned char>(p - abc);
             }
             pos = 0;
+            w(static_cast<unsigned char>((code[0] << 2) | (code[1] >> 4)));
+            if(code[2] == 255) break;
+            w(static_cast<unsigned char>(((code[1] & 0x0F) << 4) | (code[2] >> 2)));
+            if(code[3] == 255) break;
+            w(static_cast<unsigned char>(((code[2] & 0x03) << 6) | code[3]));
         }
         else pos++;
     }
@@ -137,13 +151,7 @@ base64::status_t base64::try_decode(CharSReader r, ByteSWriter w)
 template<class CharSReader, class ByteSWriter>
 void base64::decode(CharSReader r, ByteSWriter w)
 {
-    switch(base64::try_decode(__VIC_STD_MOVE(r), __VIC_STD_MOVE(w)))
-    {
-        case status::ok: return;
-        case status::invalid_length: throw bad_length();
-        case status::invalid_digit: throw bad_digit();
-    }
-    // UNREACHABLE
+    throw_if_error(base64::try_decode(__VIC_STD_MOVE(r), __VIC_STD_MOVE(w)));
 }
 //----------------------------------------------------------------------------
 

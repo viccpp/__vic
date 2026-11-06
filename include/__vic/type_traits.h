@@ -144,22 +144,26 @@ struct enable_if<false, T> {};
 
 //----------------------------------------------------------------------------
 
-template<class T> struct is_signed_integer : false_type {};
-template<> struct is_signed_integer<long> : true_type {};
-template<> struct is_signed_integer<int> : true_type {};
-template<> struct is_signed_integer<short> : true_type {};
-template<> struct is_signed_integer<signed char> : true_type {};
+template<class T> struct is_std_signed_integer : false_type {};
+template<> struct is_std_signed_integer<long> : true_type {};
+template<> struct is_std_signed_integer<int> : true_type {};
+template<> struct is_std_signed_integer<short> : true_type {};
+template<> struct is_std_signed_integer<signed char> : true_type {};
 
-template<class T> struct is_unsigned_integer : false_type {};
-template<> struct is_unsigned_integer<unsigned long> : true_type {};
-template<> struct is_unsigned_integer<unsigned int> : true_type {};
-template<> struct is_unsigned_integer<unsigned short> : true_type {};
-template<> struct is_unsigned_integer<unsigned char> : true_type {};
+template<class T> struct is_std_unsigned_integer : false_type {};
+template<> struct is_std_unsigned_integer<unsigned long> : true_type {};
+template<> struct is_std_unsigned_integer<unsigned int> : true_type {};
+template<> struct is_std_unsigned_integer<unsigned short> : true_type {};
+template<> struct is_std_unsigned_integer<unsigned char> : true_type {};
 
 #ifdef __VIC_LONGLONG
-template<> struct is_signed_integer<__VIC_LONGLONG> : true_type {};
-template<> struct is_unsigned_integer<unsigned __VIC_LONGLONG> : true_type {};
+template<> struct is_std_signed_integer<__VIC_LONGLONG> : true_type {};
+template<> struct is_std_unsigned_integer<unsigned __VIC_LONGLONG> : true_type {};
 #endif
+
+// TODO: extended integer types support
+template<class T> struct is_signed_integer : is_std_signed_integer<T> {};
+template<class T> struct is_unsigned_integer : is_std_unsigned_integer<T> {};
 
 //----------------------------------------------------------------------------
 
