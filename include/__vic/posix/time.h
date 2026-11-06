@@ -51,7 +51,7 @@ struct time_spec : ::timespec
     time_spec(time_t usecs, usec_units)
     {
         tv_sec = usecs / 1000000UL;
-        tv_nsec = usecs % 1000000UL * 1000000L;
+        tv_nsec = usecs % 1000000UL * 1000L;
     }
     time_spec(time_t nsecs, nsec_units)
     {
@@ -83,8 +83,8 @@ struct time_spec : ::timespec
     {
         auto sec = std::chrono::duration_cast<std::chrono::seconds>(d);
         auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(d - sec);
-        tv_sec += sec;
-        tv_nsec += ns;
+        tv_sec += sec.count();;
+        tv_nsec += ns.count();;
         normalize_big();
         return *this;
     }
@@ -93,8 +93,8 @@ struct time_spec : ::timespec
     {
         auto sec = std::chrono::duration_cast<std::chrono::seconds>(d);
         auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(d - sec);
-        tv_sec -= sec;
-        tv_nsec -= ns;
+        tv_sec -= sec.count();
+        tv_nsec -= ns.count();;
         normalize_small();
         return *this;
     }

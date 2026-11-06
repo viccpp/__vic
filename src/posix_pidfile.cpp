@@ -50,17 +50,18 @@ bool lock_exclusively(int fd)
 int flcreate(const char *fname)
 {
     errno = 0;
-    int fd = open(fname, O_CREAT | O_EXCL | O_WRONLY, 0644);
+    int fd = open(fname, O_CREAT | O_EXCL | O_WRONLY | O_CLOEXEC, 0644);
     if(fd == -1)
     {
         int err = errno;
         if(err != EEXIST) throw_errno("open: PID-file", err);
         errno = 0;
-        fd = open(fname, O_CREAT | O_WRONLY, 0644);
+        fd = open(fname, O_CREAT | O_WRONLY | O_CLOEXEC, 0644);
         if(fd == -1) throw_errno("open: PID-file");
     }
+    posix::file guard(fd); // closes fd on failure
     if(!lock_exclusively(fd)) return -1;
-    return fd;
+    return guard.detach_handle();
 }
 //----------------------------------------------------------------------------
 void write_pid(int fd)
@@ -103,7 +104,7 @@ void pidfile::prepare_to_daemon()
 void pidfile::rewrite_pid()
 {
 #ifndef HAVE_FLOCK
-    fd = open(name.c_str(), O_CREAT | O_WRONLY, 0644);
+    fd = open(name.c_str(), O_CREAT | O_WRONLY | O_CLOEXEC, 0644);
     // Reacquire lock
     if(fd == -1 || !lock_exclusively(fd))
         throw_errno("Reacquire PID-file lock failed");

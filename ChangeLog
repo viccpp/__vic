@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2026-11-06  __vic
+    - mutex.h: mutex::unlock() had no return
+    - posix/time.h: usec constructor and operator+=/-=(duration)
+    * posix::daemon_control: strict PID-file parsing
+    + posix::pidfile: using O_CLOEXEC
+
 2026-11-05  __vic
     ! _cfg.h: no _GNU_SOURCE and _FILE_OFFSET_BITS 64 defines
     * bits.h:

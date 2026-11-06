@@ -20,7 +20,7 @@ class mutex
 public:
     void lock() { m.lock(); }
     bool try_lock() { return m.try_lock(); }
-    bool unlock() noexcept { m.unlock(); }
+    bool unlock() noexcept { return m.unlock(); }
 };
 //////////////////////////////////////////////////////////////////////////////
 class mutex_lock : private non_copyable
