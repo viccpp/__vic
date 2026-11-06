@@ -7,6 +7,7 @@ Legend:
 2026-11-06  __vic
     + unicode.h: is_unicode_surrogate(), is_valid_unicode()
     + utf8::reader: rejects surrogates
+    - string_ref: compare() compares unsigned values
 
 2026-11-05  __vic
     ! _cfg.h: no _GNU_SOURCE and _FILE_OFFSET_BITS 64 defines
