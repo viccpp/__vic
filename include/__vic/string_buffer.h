@@ -31,10 +31,11 @@ class string_buffer : public std::string
         const_iterator
 #endif
             const_iterator11;
+    static const char *nz(const char *st) { return st ? st : ""; }
 public:
     string_buffer() __VIC_DEFAULT_CTR
     explicit string_buffer(size_type n) { base::reserve(n); }
-    string_buffer(const char *st) : base(st ? st : "") {}
+    string_buffer(const char *st) : base(nz(st)) {}
 #if __cpp_rvalue_references
     string_buffer(std::string st) : base(std::move(st)) {}
 #else
@@ -44,7 +45,6 @@ public:
                         size_type n = npos) : base(st, off, n) {}
     string_buffer(string_ref sr) : base(sr.begin(), sr.size()) {}
     string_buffer(const char *st, size_type n) : base(st, n) {}
-    string_buffer(const char *b, const char *e) : base(b, e - b) {}
     template<class InputIterator>
     string_buffer(InputIterator b, InputIterator e) : base(b, e) {}
 
@@ -70,14 +70,18 @@ public:
     string_buffer &operator=(const char *st) { return assign(st); }
     string_buffer &operator=(const std::string &st) { return assign(st); }
     string_buffer &operator=(string_ref sr) { return assign(sr); }
+#if __cpp_rvalue_references
+    string_buffer &operator=(std::string &&st) { base::operator=(std::move(st)); return *this; }
+    string_buffer &assign(std::string &&st) { base::assign(std::move(st)); return *this; }
+#endif
 
     string_buffer &operator+=(char ch) { base::operator+=(ch); return *this; }
     string_buffer &operator+=(const char *st) { return append(st); }
     string_buffer &operator+=(const std::string &st) { return append(st); }
     string_buffer &operator+=(string_ref sr) { return append(sr); }
 
-    string_buffer &assign(const char *st) { base::assign(st ? st : ""); return *this; }
-    string_buffer &assign(const char *st, size_type n) { if(st) base::assign(st,n) ; return *this; }
+    string_buffer &assign(const char *st) { base::assign(nz(st)); return *this; }
+    string_buffer &assign(const char *st, size_type n) { base::assign(st,n); return *this; }
     string_buffer &assign(const std::string &st) { base::assign(st); return *this; }
     string_buffer &assign(const std::string &st, size_type off, size_type n = npos) { base::assign(st,off,n); return *this; }
     string_buffer &assign(size_type n, char ch) { base::assign(n,ch); return *this; }
@@ -85,8 +89,8 @@ public:
     string_buffer &assign(InputIterator ib, InputIterator ie) { base::assign(ib,ie); return *this; }
     string_buffer &assign(string_ref sr) { base::assign(sr.begin(),sr.size()); return *this; }
 
-    string_buffer &append(const char *st) { if(st) base::append(st); return *this; }
-    string_buffer &append(const char *st, size_type n) { if(st) base::append(st,n); return *this; }
+    string_buffer &append(const char *st) { base::append(nz(st)); return *this; }
+    string_buffer &append(const char *st, size_type n) { base::append(st,n); return *this; }
     string_buffer &append(const std::string &st) { base::append(st); return *this; }
     string_buffer &append(const std::string &st, size_type off, size_type n = npos) { base::append(st,off,n); return *this; }
     string_buffer &append(size_type n, char ch) { base::append(n,ch); return *this; }
@@ -95,8 +99,8 @@ public:
     string_buffer &append(string_ref sr) { base::append(sr.begin(),sr.size()); return *this; }
 
     using base::insert;
-    string_buffer &insert(size_type pos, const char *st) { if(st) base::insert(pos,st); return *this; }
-    string_buffer &insert(size_type pos, const char *st, size_type n) { if(st) base::insert(pos,st,n); return *this; }
+    string_buffer &insert(size_type pos, const char *st) { base::insert(pos,nz(st)); return *this; }
+    string_buffer &insert(size_type pos, const char *st, size_type n) { base::insert(pos,st,n); return *this; }
     string_buffer &insert(size_type pos, const std::string &st) { base::insert(pos,st); return *this; }
     string_buffer &insert(size_type pos, const std::string &st, size_type off, size_type n = npos) { base::insert(pos,st,off,n); return *this; }
     string_buffer &insert(size_type pos, size_type n, char ch) { base::insert(pos,n,ch); return *this; }
@@ -104,14 +108,14 @@ public:
     using base::erase;
     string_buffer &erase(size_type pos=0, size_type n=npos) { base::erase(pos,n); return *this; }
 
-    string_buffer &replace(size_type pos, size_type n, const char *st) { if(st) base::replace(pos,n,st); return *this; }
-    string_buffer &replace(size_type pos, size_type n1, const char *st, size_type n2) { if(st) base::replace(pos,n1,st,n2); return *this; }
+    string_buffer &replace(size_type pos, size_type n, const char *st) { base::replace(pos,n,nz(st)); return *this; }
+    string_buffer &replace(size_type pos, size_type n1, const char *st, size_type n2) { base::replace(pos,n1,st,n2); return *this; }
     string_buffer &replace(size_type pos, size_type n, const std::string &st) { base::replace(pos,n,st); return *this; }
     string_buffer &replace(size_type pos1, size_type n1, const std::string &st, size_type pos2, size_type n2) { base::replace(pos1,n1,st,pos2,n2); return *this; }
     string_buffer &replace(size_type pos, size_type n, size_type count, char ch) { base::replace(pos,n,count,ch); return *this; }
-    string_buffer &replace(const_iterator11 b, const_iterator11 e, const char *st) { if(st) base::replace(b,e,st); return *this; }
+    string_buffer &replace(const_iterator11 b, const_iterator11 e, const char *st) { base::replace(b,e,nz(st)); return *this; }
     string_buffer &replace(const_iterator11 b, const_iterator11 e, const std::string &st) { base::replace(b,e,st); return *this; }
-    string_buffer &replace(const_iterator11 b, const_iterator11 e, const char *st, size_type n) { if(st) base::replace(b,e,st,n); return *this; }
+    string_buffer &replace(const_iterator11 b, const_iterator11 e, const char *st, size_type n) { base::replace(b,e,st,n); return *this; }
     string_buffer &replace(const_iterator11 b, const_iterator11 e, size_type n, char ch) { base::replace(b,e,n,ch); return *this; }
     template<class InputIterator>
     string_buffer &replace(const_iterator11 f, const_iterator11 l, InputIterator b, InputIterator e) { base::replace(f,l,b,e); return *this; }
@@ -171,6 +175,22 @@ inline string_buffer operator+(const string_buffer &s1, string_buffer &&s2)
 inline string_buffer operator+(string_buffer &&s1, string_buffer &&s2)
 {
     return std::move(s1 << s2);
+}
+inline string_buffer operator+(const string_buffer &s1, std::string &&s2)
+{
+    return string_buffer(std::move(s2.insert(0, s1)));
+}
+inline string_buffer operator+(std::string &&s1, const string_buffer &s2)
+{
+    return string_buffer(std::move(s1.append(s2)));
+}
+inline string_buffer operator+(string_buffer &&s1, std::string &&s2)
+{
+    return std::move(s1.append(s2));
+}
+inline string_buffer operator+(std::string &&s1, string_buffer &&s2)
+{
+    return std::move(s2.insert(0, s1));
 }
 inline string_buffer operator+(string_buffer &&s1, const char *s2)
 {
