@@ -10,7 +10,7 @@ Legend:
         * rotl(), rotr(): the shift parameter is unsigned
         - msb_ones(), lsb_ones(), get_lsbs(): strict preconditions and correct
           corner cases
-    - utf8::writer: codepoints longers that 2 bytes
+    - utf8::writer: codepoints longers than 2 bytes
     - utf8::reader: reject values more than U+10FFFF
     - waitable_event (C++11 impl): could miss a wakeup
     - base64::decode: correct padding handling
@@ -19,7 +19,7 @@ Legend:
 
 2026-11-03  __vic
     * set_of_chars: add(nullptr) creates an empty set
-    * strung_utils.h:
+    * string_utils.h:
         * trim & sift functions: set_of_chars is used instead of const char *
         + trim & trim_if functions for std::string_view
 

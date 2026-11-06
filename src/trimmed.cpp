@@ -78,17 +78,17 @@ std::string trimmed_front(const std::string &st, char ch)
 //----------------------------------------------------------------------------
 std::string trimmed(const std::string &st, const set_of_chars &set)
 {
-    return trimmed_if(st, is_one_of_chars(set));
+    return trimmed_if(st, is_one_of_chars(&set));
 }
 //----------------------------------------------------------------------------
 std::string trimmed_back(const std::string &st, const set_of_chars &set)
 {
-    return trimmed_back_if(st, is_one_of_chars(set));
+    return trimmed_back_if(st, is_one_of_chars(&set));
 }
 //----------------------------------------------------------------------------
 std::string trimmed_front(const std::string &st, const set_of_chars &set)
 {
-    return trimmed_front_if(st, is_one_of_chars(set));
+    return trimmed_front_if(st, is_one_of_chars(&set));
 }
 //----------------------------------------------------------------------------
 #endif

@@ -83,19 +83,19 @@ char *trim_front(char *st, char ch) noexcept
 //----------------------------------------------------------------------------
 char *trim(char *st, const set_of_chars &set) noexcept
 {
-    if(st) trim_if(st, is_one_of_chars(set));
+    if(st) trim_if(st, is_one_of_chars(&set));
     return st;
 }
 //----------------------------------------------------------------------------
 char *trim_back(char *st, const set_of_chars &set) noexcept
 {
-    if(st) trim_back_if(st, is_one_of_chars(set));
+    if(st) trim_back_if(st, is_one_of_chars(&set));
     return st;
 }
 //----------------------------------------------------------------------------
 char *trim_front(char *st, const set_of_chars &set) noexcept
 {
-    if(st) trim_front_if(st, is_one_of_chars(set));
+    if(st) trim_front_if(st, is_one_of_chars(&set));
     return st;
 }
 //----------------------------------------------------------------------------
