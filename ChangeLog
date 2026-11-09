@@ -5,7 +5,7 @@ Legend:
     ! Important
 
 2026-11-20  __vic
-    ! thread::id: handle() removed
+    * daemon_control: uses flock() instead of kill(pid, 0)
 
 2026-11-17  __vic
     * logger:

@@ -112,6 +112,29 @@ void pidfile::rewrite_pid()
     write_pid(fd);
 }
 //----------------------------------------------------------------------------
+bool pidfile::is_locked(int fd)
+{
+#ifdef HAVE_FLOCK
+    // There is no way to test without locking
+    if(::flock(fd, LOCK_SH | LOCK_NB) == 0)
+    {
+        ::flock(fd, LOCK_UN);
+        return false;
+    }
+    int err = errno;
+    if(err != EWOULDBLOCK) throw_errno("flock: PID-file", err);
+    return true;
+#else
+    struct flock lck;
+    lck.l_type = F_RDLCK; // conflicts with the owner's F_WRLCK
+    lck.l_whence = SEEK_SET;
+    lck.l_start = lck.l_len = 0;
+    if(::fcntl(fd, F_GETLK, &lck) == -1)
+        throw_errno("fcntl(F_GETLK): PID-file");
+    return lck.l_type != F_UNLCK;
+#endif
+}
+//----------------------------------------------------------------------------
 const char *pidfile::already_exists::what() const noexcept
 {
     return "PID-file already exists";

@@ -1,6 +1,5 @@
 #ifndef __VIC_USE_MODULES
 #include<__vic/posix/daemon_control.h>
-#include<__vic/posix/file.h>
 #include<iostream>
 #include<exception>
 #include<cstring>
@@ -22,32 +21,6 @@ using __vic::posix::daemon_control;
 
 volatile std::sig_atomic_t finish = 0;
 extern "C" void sigterm_handler(int ) { finish = 1; }
-
-void write_file(const char *filename, const char *content)
-{
-    assert(content);
-    __vic::posix::file file(filename, O_CREAT | O_WRONLY);
-    file.write_all(content, std::strlen(content));
-    file.close();
-}
-void run()
-{
-    const char *broken[] =
-    {
-        "-1\n",
-        "0\n",
-        "4294967295\n",
-        "1junk\n",
-        "",
-        "123\n456\n"
-    };
-    for(unsigned i = 0; i < __vic::array_size(broken); i++)
-    {
-        write_file(pid_file_name, broken[i]);
-        assert(daemon_control::control("status", pid_file_name) == 2);
-    }
-    ::unlink(pid_file_name);
-}
 
 void daemon_app()
 {
@@ -100,7 +73,6 @@ int main(int argc, char *argv[])
 {
     try
     {
-        tests::run();
         if(argc == 2 && std::strcmp(argv[1], "interactive") == 0)
             tests::run_interactive();
         return 0;

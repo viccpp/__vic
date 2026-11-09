@@ -31,6 +31,9 @@ public:
     void create();
     void prepare_to_daemon();
     void rewrite_pid();
+
+    // For a controlling process: fd is the PID-file opened for reading
+    static bool is_locked(int fd); // true if the owner (daemon) is running
 };
 //////////////////////////////////////////////////////////////////////////////
 

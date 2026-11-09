@@ -3,6 +3,7 @@
 //
 
 #include<__vic/posix/daemon_control.h>
+#include<__vic/posix/pidfile.h>
 #include<__vic/posix/file.h>
 #include<__vic/posix/error.h>
 #include<__vic/ascii_string.h>
@@ -23,17 +24,10 @@ namespace __vic { namespace posix {
 
 namespace {
 //----------------------------------------------------------------------------
-pid_t read_pid(const char *pid_file_name)
+pid_t read_pid(int fd)
 {
-    posix::file file(pid_file_name, O_RDONLY | O_CLOEXEC);
-    if(!file.is_open())
-    {
-        int err = errno;
-        if(posix::is_ENOENT(err)) return 0; // no PID-file - not running
-        throw_errno("open: PID-file", err);
-    }
     char buf[32];
-    size_t n = file.read_max(buf, sizeof buf);
+    size_t n = posix::file::read_max(fd, buf, sizeof buf);
     if(n < sizeof buf) // too long input is invalid
     {
         char *end = skip_back_if(buf, buf + n, is_ascii_ws());
@@ -41,6 +35,26 @@ pid_t read_pid(const char *pid_file_name)
         if(pid && pid.value() > 0) return pid.value();
     }
     throw exception("PID-file is broken");
+}
+//----------------------------------------------------------------------------
+// Returns the PID of the running daemon or 0 if it isn't running.
+// The PID-file is left open in `file`
+pid_t running_pid(const char *pid_file_name, posix::file &file)
+{
+    if(!file.open(pid_file_name, O_RDONLY | O_CLOEXEC))
+    {
+        int err = errno;
+        if(is_ENOENT(err)) return 0; // no PID-file
+        throw_errno("open: PID-file", err);
+    }
+    if(!pidfile::is_locked(file.handle())) return 0; // stale PID-file
+    return read_pid(file.handle());
+}
+//----------------------------------------------------------------------------
+pid_t running_pid(const char *pid_file_name)
+{
+    posix::file file;
+    return running_pid(pid_file_name, file);
 }
 //----------------------------------------------------------------------------
 void send_signal(pid_t pid, int signo)
@@ -56,7 +70,7 @@ void send_signal(pid_t pid, int signo)
 //----------------------------------------------------------------------------
 void send_signal(const char *pid_file_name, int signo)
 {
-    pid_t pid = read_pid(pid_file_name);
+    pid_t pid = running_pid(pid_file_name);
     if(pid == 0) throw exception("No running process found");
     send_signal(pid, signo);
 }
@@ -75,7 +89,7 @@ int daemon_control::control(const char *cmd, const char *pid_file_name)
     {
         try
         {
-            pid_t pid = read_pid(pid_file_name);
+            pid_t pid = running_pid(pid_file_name);
             if(pid != 0 && process_alive(pid))
                 return (std::fputs("Running\n", stdout), 0);
             else
@@ -93,13 +107,14 @@ int daemon_control::control(const char *cmd, const char *pid_file_name)
 //----------------------------------------------------------------------------
 void daemon_control::stop_and_wait(const char *pid_file_name)
 {
-    pid_t pid = read_pid(pid_file_name);
-    if(pid != 0) // process is running
-    {
-        send_signal(pid, SIGTERM); // stop the process
-        while(::kill(pid, 0) == 0) // and wait for termination
-            this_thread::sleep_ms(200);
-    }
+    posix::file file;
+    pid_t pid = running_pid(pid_file_name, file);
+    if(pid == 0) return; // not running
+    send_signal(pid, SIGTERM); // stop the process
+    // Wait for termination: the lock is released when the daemon exits.
+    // Unlike kill(pid, 0), this cannot be fooled by PID reuse
+    while(pidfile::is_locked(file.handle()))
+        this_thread::sleep_ms(200);
 }
 //----------------------------------------------------------------------------
 
