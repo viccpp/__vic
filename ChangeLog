@@ -4,6 +4,13 @@ Legend:
     * Changes
     ! Important
 
+2026-11-10  __vic
+    * ip_addr.h:
+        * ipv4_addr:
+            + Ordering (<=>) is consistent
+            + is_loopback() checks for 127.0.0.0/8
+            - &*end() was used
+
 2026-11-05  __vic
     ! _cfg.h: no _GNU_SOURCE and _FILE_OFFSET_BITS 64 defines
     * bits.h:

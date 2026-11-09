@@ -26,7 +26,10 @@ void run_ipv4_tests()
     assert(ipv4_addr(0,0,0,0).is_any());
     assert(ipv4_addr::any().is_any());
     assert(ipv4_addr(127,0,0,1).is_loopback());
+    assert(ipv4_addr(127,0,0,2).is_loopback());
+    assert(ipv4_addr(127,255,255,254).is_loopback());
     assert(ipv4_addr::loopback().is_loopback());
+    assert(!ipv4_addr(1,0,0,127).is_loopback());
     assert((ipv4_addr(10,1,2,3) & ipv4_addr(255,0,0,0)) == ipv4_addr(10,0,0,0));
 
     std::string st;
