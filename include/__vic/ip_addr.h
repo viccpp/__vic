@@ -157,15 +157,15 @@ public:
     bool is_ipv4_mapped() const
     {
         //return IN6_IS_ADDR_V4MAPPED(this);
-        uint64_t n64 = load_unaligned<uint64_t>(this->s6_addr);
-        uint32_t n32 = load_unaligned<uint32_t>(this->s6_addr + 8);
-        return n64 == 0 && n32 ==
+        return load_unaligned<uint64_t>(this->s6_addr) == 0
+            && load_unaligned<uint32_t>(this->s6_addr + 8) ==
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ // 0 == 0 if undefined (Windows)
             0xFFFF0000;
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             0x0000FFFF;
 #endif
     }
+    // Precondition: is_ipv4_mapped() == true
     ipv4_addr to_ipv4() const
     {
         return ipv4_addr(this->s6_addr[12], this->s6_addr[13],
