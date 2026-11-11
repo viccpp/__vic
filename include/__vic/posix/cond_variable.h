@@ -8,7 +8,6 @@
 #ifndef __VIC_POSIX_COND_VARIABLE_H
 #define __VIC_POSIX_COND_VARIABLE_H
 
-#include<__vic/posix/_cfg.h>
 #include<__vic/defs.h>
 #include<__vic/posix/mutex.h>
 #include<pthread.h>

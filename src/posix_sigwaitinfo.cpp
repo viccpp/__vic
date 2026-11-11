@@ -8,7 +8,7 @@
 
 namespace __vic { namespace posix {
 
-#ifdef __VIC_POSIX_RT__
+#ifdef __VIC_HAVE_POSIX_REALTIME_SIGNALS
 //----------------------------------------------------------------------------
 ::siginfo_t this_thread::sigwaitinfo(const ::sigset_t &set)
 {

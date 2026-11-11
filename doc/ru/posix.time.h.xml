@@ -171,7 +171,7 @@ public:
 
     static posix::time_spec get_time();
 };
-#ifdef _POSIX_MONOTONIC_CLOCK
+#ifdef __VIC_HAVE_POSIX_MONOTONIC_CLOCK
 class posix::monotonic_clock
 {
 public:
@@ -197,7 +197,7 @@ public:
 <tt>&lt;chrono></tt>. Отсутсвуют в системах, которые их не поддерживают
 (проверяется макросом <tt>__VIC_HAVE_POSIX_TIMERS</tt>). Дополнительно,
 <tt>monotonic_clock</tt> доступен только, если определён макрос
-<tt>_POSIX_MONOTONIC_CLOCK</tt>.</p>
+<tt>__VIC_HAVE_POSIX_MONOTONIC_CLOCK</tt>.</p>
 
 <section><title>Члены класса</title>
 

@@ -8,7 +8,6 @@
 #ifndef __VIC_POSIX_MUTEX_H
 #define __VIC_POSIX_MUTEX_H
 
-#include<__vic/posix/_cfg.h>
 #include<__vic/defs.h>
 #include<pthread.h>
 

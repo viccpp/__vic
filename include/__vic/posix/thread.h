@@ -8,10 +8,14 @@
 #ifndef __VIC_POSIX_THREAD_H
 #define __VIC_POSIX_THREAD_H
 
-#include<__vic/posix/_cfg.h>
 #include<__vic/defs.h>
+#include<unistd.h> // for _POSIX_REALTIME_SIGNALS
 #include<pthread.h>
 #include<signal.h>
+
+#if defined(_POSIX_REALTIME_SIGNALS) && _POSIX_REALTIME_SIGNALS >= 0
+#define __VIC_HAVE_POSIX_REALTIME_SIGNALS 1
+#endif
 
 namespace __vic { namespace posix {
 
@@ -19,7 +23,7 @@ namespace __vic { namespace posix {
 namespace this_thread
 {
     int sigwait(const ::sigset_t & );
-#ifdef __VIC_POSIX_RT__
+#ifdef __VIC_HAVE_POSIX_REALTIME_SIGNALS
     int sigwait_at_most(const ::sigset_t & , const ::timespec & );
 
     ::siginfo_t sigwaitinfo(const ::sigset_t & );

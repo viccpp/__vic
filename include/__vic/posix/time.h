@@ -6,11 +6,15 @@
 #ifndef __VIC_POSIX_TIME_H
 #define __VIC_POSIX_TIME_H
 
-#include<__vic/posix/_cfg.h>
 #include<__vic/defs.h>
+#include<unistd.h> // for _POSIX_TIMERS, _POSIX_MONOTONIC_CLOCK
 #include<time.h>
 #if _POSIX_TIMERS > 0 || defined(__APPLE__)
 #define __VIC_HAVE_POSIX_TIMERS 1
+#endif
+#if defined(_POSIX_MONOTONIC_CLOCK) && _POSIX_MONOTONIC_CLOCK >= 0 \
+ || defined(__APPLE__)
+#define __VIC_HAVE_POSIX_MONOTONIC_CLOCK 1
 #endif
 #if __cplusplus >= 201103L && !defined(__VIC_HAVE_STD_CHRONO)
 #define __VIC_HAVE_STD_CHRONO 1
@@ -220,7 +224,7 @@ struct clock_impl : public clock_base // internal implementation type
 template<> struct clock<CLOCK_REALTIME> : clock_impl<CLOCK_REALTIME> {};
 typedef clock<CLOCK_REALTIME> realtime_clock;
 
-#ifdef _POSIX_MONOTONIC_CLOCK
+#ifdef __VIC_HAVE_POSIX_MONOTONIC_CLOCK
 template<> struct clock<CLOCK_MONOTONIC> : clock_impl<CLOCK_MONOTONIC, true> {};
 typedef clock<CLOCK_MONOTONIC> monotonic_clock;
 #endif

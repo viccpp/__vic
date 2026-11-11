@@ -4,6 +4,9 @@
 
 #include<__vic/posix/time.h>
 #include<__vic/throw_errno.h>
+#ifndef __VIC_HAVE_POSIX_TIMERS
+#include<sys/time.h> // for gettimeofday()
+#endif
 
 namespace __vic { namespace posix {
 

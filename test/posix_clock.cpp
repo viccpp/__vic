@@ -22,7 +22,7 @@ void run_tests()
     std::strftime(st, sizeof st,
         "%H:%M:%S %d.%m.%Y", std::localtime(&t.tv_sec));
     std::cout << "Current (real) time: " << st << '\n';
-#ifdef _POSIX_MONOTONIC_CLOCK
+#ifdef __VIC_HAVE_POSIX_MONOTONIC_CLOCK
     std::cout << "Monotonic elapsed: " <<
         __vic::posix::monotonic_clock::get_time().tv_sec << " seconds \n";
 #endif

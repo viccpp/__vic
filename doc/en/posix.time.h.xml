@@ -175,7 +175,7 @@ public:
 
     static posix::time_spec get_time();
 };
-#ifdef _POSIX_MONOTONIC_CLOCK
+#ifdef __VIC_HAVE_POSIX_MONOTONIC_CLOCK
 class posix::monotonic_clock
 {
 public:
@@ -200,8 +200,8 @@ public:
 <p>POSIX system clocks (<tt>clock_gettime()</tt>) with
 <tt>&lt;chrono></tt>-clock interface. Absent in system not supporting them
 (check <tt>__VIC_HAVE_POSIX_TIMERS</tt> macro). Additionally
-<tt>monotonic_clock</tt> is available only if <tt>_POSIX_MONOTONIC_CLOCK</tt>
- macro is defined.</p>
+<tt>monotonic_clock</tt> is available only if
+<tt>__VIC_HAVE_POSIX_MONOTONIC_CLOCK</tt> macro is defined.</p>
 
 <section><title>Class members</title>
 
