@@ -9,6 +9,7 @@ Legend:
         ! thread is never movable
         ! thread::alive() cannot be implemented using pthread_kill on Linux
           so it was removed. Also destructor checks only for joinable()
+    - fs.h: copy_file_if_exists(std::string) ignored the repl param
 
 2026-11-10  __vic
     * ip_addr.h:
