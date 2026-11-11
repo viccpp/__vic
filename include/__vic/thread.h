@@ -22,11 +22,6 @@ public:
     thread();
     virtual ~thread();
 
-#if  __cpp_rvalue_references
-    thread(thread &&o) noexcept;
-    thread &operator=(thread && ) noexcept;
-#endif
-
     class id
     {
         typedef native_handle_type id::*unspecified_bool_type;

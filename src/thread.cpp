@@ -10,7 +10,7 @@ namespace __vic {
 //----------------------------------------------------------------------------
 thread::~thread()
 {
-    if(joinable() && alive())
+    if(joinable())
     {
         // Should never be executed!
         // Application logic corruption
@@ -18,18 +18,6 @@ thread::~thread()
         std::terminate();
     }
 }
-//----------------------------------------------------------------------------
-#if __cpp_rvalue_references
-thread &thread::operator=(thread &&o) noexcept
-{
-    if(&o != this)
-    {
-        if(joinable() && alive()) std::terminate();
-        // TODO
-    }
-    return *this;
-}
-#endif
 //----------------------------------------------------------------------------
 
 } // namespace

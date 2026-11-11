@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2026-11-11  __vic
+    * thread.h:
+        ! thread is never movable
+        ! thread::alive() cannot be implemented using pthread_kill on Linux
+          so it was removed. Also destructor checks only for joinable()
+
 2026-11-10  __vic
     * ip_addr.h:
         * ipv4_addr:
