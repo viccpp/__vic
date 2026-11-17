@@ -37,7 +37,9 @@ void run_tests()
         __vic::logger::record rec = log.warning();
         rec << "a ";
         rec << "b ";
-        rec << "c";
+#if __cpp_lib_format >= 202106L
+        rec.format_append("{}", "c");
+#endif
     }
 
 #if __cpp_lib_format >= 202106L

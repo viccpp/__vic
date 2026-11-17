@@ -4,6 +4,11 @@ Legend:
     * Changes
     ! Important
 
+2026-11-17  __vic
+    * logger:
+        + message(severity_t )
+        + record: format_append()
+
 2026-11-06  __vic
     + unicode.h: is_unicode_surrogate(), is_valid_unicode()
     + utf8::reader: rejects surrogates
