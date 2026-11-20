@@ -37,7 +37,7 @@ inline void copy_file(
 inline bool copy_file_if_exists(
     const std::string &src_path, const std::string &dest_path, bool repl = false)
 {
-    return copy_file_if_exists(src_path.c_str(), dest_path.c_str());
+    return copy_file_if_exists(src_path.c_str(), dest_path.c_str(), repl);
 }
 inline void copy_file_replace(
     const std::string &src_path, const std::string &dest_path)

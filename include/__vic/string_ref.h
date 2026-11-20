@@ -94,8 +94,9 @@ int basic_string_ref<charT>::compare(basic_string_ref<charT> s) const
     {
         if(p == end()) return q == s.end() ? 0 : -1; // s1 < s2
         if(q == s.end()) return 1; // s1 > s2
-        if(*p < *q) return -1; // s1 < s2
-        if(*p > *q) return  1; // s1 > s2
+        unsigned lhs = *p, rhs = *q;
+        if(lhs < rhs) return -1; // s1 < s2
+        if(lhs > rhs) return  1; // s1 > s2
     }
 }
 //----------------------------------------------------------------------------

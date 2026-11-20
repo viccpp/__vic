@@ -21,7 +21,6 @@ public:
     void cancel();
     void join();
 
-    bool alive() const;
     bool joinable() const;
 
     id get_id() const;
@@ -74,13 +73,6 @@ protected:
 его <tt>joinable() == false</tt>.</p>
 <precondition><tt>joinable() == true</tt></precondition>
 <postcondition><tt>joinable() == false</tt></postcondition>
-</synopsis>
-
-<synopsis>
-<prototype>bool alive() const</prototype>
-<p>Возращает <tt>true</tt>, если выполнение потока ещё не завершилось
-(он находится в функции <tt>worker()</tt>).</p>
-<precondition><tt>joinable() == true</tt></precondition>
 </synopsis>
 
 <synopsis>

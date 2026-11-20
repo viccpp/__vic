@@ -53,11 +53,6 @@ void thread::join()
     h = 0;
 }
 //----------------------------------------------------------------------------
-bool thread::alive() const
-{
-    return joinable() && !h.Wait(0);
-}
-//----------------------------------------------------------------------------
 thread::id thread::get_id() const
 {
     if(!joinable()) return id();

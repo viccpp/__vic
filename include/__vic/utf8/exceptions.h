@@ -31,6 +31,10 @@ struct code_point_too_big : public bad_encoding
 {
     const char *what() const noexcept;
 };
+struct surrogate_code_point : public bad_encoding
+{
+    const char *what() const noexcept;
+};
 //////////////////////////////////////////////////////////////////////////////
 
 }} // namespace

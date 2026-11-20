@@ -49,7 +49,6 @@ public:
     void cancel();
     void join();
 
-    bool alive() const;
     bool joinable() const { return h; }
 
     id get_id() const;

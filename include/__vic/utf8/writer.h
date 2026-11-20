@@ -41,6 +41,8 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
+// Accepts and encodes any code point value up to 0x7FFFFFFF (31-bit),
+// including surrogates and values greater than unicode_max
 template<class ByteSWriter>
 void writer<ByteSWriter>::write(unicode_t cp)
 {

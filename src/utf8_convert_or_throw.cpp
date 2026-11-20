@@ -20,6 +20,7 @@ sread_result<unicode_t> convert_or_throw(read_result r)
         case status::truncated_code_point: throw truncated_code_point();
         case status::overlong_encoding: throw overlong_encoding();
         case status::code_point_too_big: throw code_point_too_big();
+        case status::surrogate_code_point: throw surrogate_code_point();
     }
     // Must never happen
     throw __vic::exception(__vic::msg(64) <<

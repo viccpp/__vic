@@ -21,7 +21,6 @@ public:
     void cancel();
     void join();
 
-    bool alive() const;
     bool joinable() const;
 
     id get_id() const;
@@ -74,13 +73,6 @@ is violated.</note>
 <tt>joinable() == false</tt>.</p>
 <precondition><tt>joinable() == true</tt></precondition>
 <postcondition><tt>joinable() == false</tt></postcondition>
-</synopsis>
-
-<synopsis>
-<prototype>bool alive() const</prototype>
-<p>Returns <tt>true</tt> if the thread haven't been terminated yet
-(<tt>worker()</tt> function haven't returned).</p>
-<precondition><tt>joinable() == true</tt></precondition>
 </synopsis>
 
 <synopsis>

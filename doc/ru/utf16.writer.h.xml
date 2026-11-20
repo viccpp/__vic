@@ -58,6 +58,7 @@ explicit writer(Args&amp;&amp;... args) <badge>C++11</badge></prototype>
 <p>Выводит указанный code point согласно правилам кодирования UTF-16.
 Для записи отдельных code units ипользуется <tt>CodeUnitSWriter::operator()</tt>.
 </p>
+<precondition><tt>is_valid_unicode(cp)</tt></precondition>
 </synopsis>
 
 </section>

@@ -31,7 +31,9 @@ class is_one_of_chars
 {
     const set_of_chars &set;
 public:
-    explicit is_one_of_chars(const set_of_chars &chars) : set(chars) {}
+    // Pointer instead of reference in order to prevent dangling refs caused
+    // by the implicit set_of_chars constructors. Must not be null!
+    explicit is_one_of_chars(const set_of_chars *chars) : set(*chars) {}
     bool operator()(char ch) const { return set.contains(ch); }
 };
 //////////////////////////////////////////////////////////////////////////////
