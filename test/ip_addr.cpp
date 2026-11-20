@@ -26,7 +26,10 @@ void run_ipv4_tests()
     assert(ipv4_addr(0,0,0,0).is_any());
     assert(ipv4_addr::any().is_any());
     assert(ipv4_addr(127,0,0,1).is_loopback());
+    assert(ipv4_addr(127,0,0,2).is_loopback());
+    assert(ipv4_addr(127,255,255,254).is_loopback());
     assert(ipv4_addr::loopback().is_loopback());
+    assert(!ipv4_addr(1,0,0,127).is_loopback());
     assert((ipv4_addr(10,1,2,3) & ipv4_addr(255,0,0,0)) == ipv4_addr(10,0,0,0));
 
     std::string st;
@@ -66,9 +69,13 @@ void run_ipv6_tests()
     assert(!ipv6_addr::parse("1:2:3:4:5:6:7:8::", ip));
     assert(!ipv6_addr::parse("1::2::3", ip));
     // These cases are accepted by inet_pton() in Linux (disallowed by std)
-    assert(!ipv6_addr::parse("1:2:3:4:5:6:7::", ip));
-    assert(!ipv6_addr::parse("::1:2:3:4:5:6:7", ip));
-    assert(!ipv6_addr::parse("1:2:3::4:5:6:7", ip));
+    assert(ipv6_addr::parse("1:2:3:4:5:6:7::", ip));
+    assert(ipv6_addr::parse("::1:2:3:4:5:6:7", ip));
+    assert(ipv6_addr::parse("1:2:3::4:5:6:7", ip));
+
+    assert(ipv6_addr::parse("::ffff:1.2.3.4", ip));
+    assert(ip.is_ipv4_mapped());
+    assert(ip.to_ipv4() == ipv4_addr(1,2,3,4));
 
     assert(ipv6_addr(0,0,0,0,0,0,0,0).is_any());
     assert(ipv6_addr::any().is_any());

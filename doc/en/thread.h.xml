@@ -17,16 +17,10 @@ public:
     thread();
     virtual ~thread();
 
-    // BEGIN C++11
-    thread(thread &&o) noexcept;
-    thread &operator=(thread &&o) noexcept;
-    // END C++11
-
     void start();
     void cancel();
     void join();
 
-    bool alive() const;
     bool joinable() const;
     void kill(int signo); // POSIX only
 
@@ -57,19 +51,7 @@ is violated.</note>
 <synopsis>
 <prototype>~thread()</prototype>
 <p>Calls <tt>std::terminate()</tt> if precondition is not satisfied.</p>
-<precondition><tt>joinable() == false || alive() == false</tt></precondition>
-</synopsis>
-
-<synopsis>
-<prototype>thread(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
-<p>Move constructor for C++11 mode.</p>
-</synopsis>
-
-<synopsis>
-<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
-<p>Move assignment for C++11 mode. Calls <tt>std::terminate()</tt> if
-precondition is not satisfied.</p>
-<precondition><tt>joinable() == false || alive() == false</tt></precondition>
+<precondition><tt>joinable() == false</tt></precondition>
 </synopsis>
 
 <synopsis>
@@ -92,13 +74,6 @@ precondition is not satisfied.</p>
 <tt>joinable() == false</tt>.</p>
 <precondition><tt>joinable() == true</tt></precondition>
 <postcondition><tt>joinable() == false</tt></postcondition>
-</synopsis>
-
-<synopsis>
-<prototype>bool alive() const</prototype>
-<p>Returns <tt>true</tt> if the thread haven't been terminated yet
-(<tt>worker()</tt> function haven't returned).</p>
-<precondition><tt>joinable() == true</tt></precondition>
 </synopsis>
 
 <synopsis>
@@ -138,7 +113,6 @@ class thread::id
 public:
     id();
     explicit operator bool() const;
-    native_handle_type handle() const;
 };
 bool operator==(thread::id a, thread::id b);
 bool operator!=(thread::id a, thread::id b);
@@ -158,12 +132,6 @@ special distinct value not associated with any thread.</p>
 <synopsis>
 <prototype>explicit operator bool() const</prototype>
 <p>Returns <tt>true</tt> if the object holds ID of some thread.</p>
-</synopsis>
-
-<synopsis>
-<prototype>native_handle_type handle() const</prototype>
-<p>Returns a native OS-specific handle of the thread.</p>
-<precondition><tt>bool(*this) == true</tt></precondition>
 </synopsis>
 
 <synopsis>

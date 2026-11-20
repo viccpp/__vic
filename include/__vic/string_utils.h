@@ -137,15 +137,15 @@ std::string_view &trim_back(std::string_view &s, const set_of_chars &set)
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-constexpr std::string_view trimmed(std::string_view s)
+__VIC_NODISCARD constexpr std::string_view trimmed(std::string_view s)
 {
     return trim(s);
 }
-constexpr std::string_view trimmed_front(std::string_view s)
+__VIC_NODISCARD constexpr std::string_view trimmed_front(std::string_view s)
 {
     return trim_front(s);
 }
-constexpr std::string_view trimmed_back(std::string_view s)
+__VIC_NODISCARD constexpr std::string_view trimmed_back(std::string_view s)
 {
     return trim_back(s);
 }
@@ -216,14 +216,13 @@ inline char *sift_if(char *st, Pred pred)
 template<__VIC_STD_PREDICATE(char) Pred>
 inline std::string &sift_if(std::string &st, Pred pred)
 {
-    // data() is const in C++98
-    char *in = &st[0], *end = in + st.length();
+    std::string::iterator in = st.begin(), end = st.end();
     while(in != end && !pred(*in)) ++in;
     if(in == end) return st; // no trash chars
-    char *out = in;
+    std::string::iterator out = in;
     while(++in != end)
         if(!pred(*in)) *out++ = *in;
-    st.resize(out - st.data());
+    st.erase(out, end);
     return st;
 }
 //----------------------------------------------------------------------------

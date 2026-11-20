@@ -82,6 +82,7 @@ read_result reader<ByteSReader>::parse()
             ch |= uchar_value(rr) & 0x3F;
         }
         if(ch < length_thresholds[seqlen-2]) return status::overlong_encoding;
+        if(is_unicode_surrogate(ch)) return status::surrogate_code_point;
         if(ch > unicode_max) return status::code_point_too_big;
         return ch;
     }

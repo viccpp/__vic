@@ -27,7 +27,7 @@ namespace __vic {
 //////////////////////////////////////////////////////////////////////////////
 class ipv4_addr : public ::in_addr
 {
-    __VIC_CONSTEXPR_FUNC static ::in_addr_t to_in_addr_t(
+    static __VIC_CONSTEXPR_FUNC ::in_addr_t to_in_addr_t(
                                    uint8_t a, uint8_t b, uint8_t c, uint8_t d)
     {
         return
@@ -40,10 +40,20 @@ class ipv4_addr : public ::in_addr
 #endif
         ;
     }
+    static __VIC_CONSTEXPR_FUNC uint32_t to_host(::in_addr_t a)
+    {
+        return
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ // 0 == 0 if undefined (Windows)
+            (a >> 24) | ((a >> 8) & 0xFF00U) | ((a << 8) & 0xFF0000U) | (a << 24)
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            a
+#endif
+        ;
+    }
 public:
     ipv4_addr() __VIC_DEFAULT_CTR
     __VIC_CONSTEXPR_FUNC ipv4_addr(::in_addr a) : in_addr(a) {}
-    __VIC_CONSTEXPR_FUNC explicit ipv4_addr(::in_addr_t a)
+    explicit __VIC_CONSTEXPR_FUNC ipv4_addr(::in_addr_t a)
 #if __cpp_constexpr
         : in_addr{a} {}
 #else
@@ -60,11 +70,12 @@ public:
     static __VIC_CONSTEXPR_FUNC ipv4_addr any() { return ipv4_addr(0); }
     static __VIC_CONSTEXPR_FUNC ipv4_addr loopback() { return ipv4_addr(127,0,0,1); }
 
+    // Returns 1.2.3.4 as 0x01020304 (in the host order)
+    __VIC_CONSTEXPR_FUNC uint32_t as_uint() const { return to_host(this->s_addr); }
+    static __VIC_CONSTEXPR_FUNC uint32_t as_uint(::in_addr a) { return to_host(a.s_addr); }
+
     __VIC_CONSTEXPR_FUNC bool is_any() const { return this->s_addr == 0; }
-    __VIC_CONSTEXPR_FUNC bool is_loopback() const
-    {
-        return this->s_addr == to_in_addr_t(127,0,0,1);
-    }
+    __VIC_CONSTEXPR_FUNC bool is_loopback() const { return as_uint() >> 24 == 127; }
 
     static bool parse(const char * , const char * , ::in_addr & );
 #if __cpp_lib_string_view
@@ -72,7 +83,7 @@ public:
         { return parse(s.data(), s.data() + s.length(), res); }
 #else
     static bool parse(const std::string &s, ::in_addr &res)
-        { return parse(s.data(), &*s.end(), res); }
+        { return parse(s.data(), s.data() + s.length(), res); }
     static bool parse(const char *s, ::in_addr &res)
         { return parse(s, s + std::char_traits<char>::length(s), res); }
 #endif
@@ -146,15 +157,15 @@ public:
     bool is_ipv4_mapped() const
     {
         //return IN6_IS_ADDR_V4MAPPED(this);
-        uint64_t n64 = load_unaligned<uint64_t>(this->s6_addr);
-        uint32_t n32 = load_unaligned<uint32_t>(this->s6_addr + 8);
-        return n64 == 0 && n32 ==
+        return load_unaligned<uint64_t>(this->s6_addr) == 0
+            && load_unaligned<uint32_t>(this->s6_addr + 8) ==
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ // 0 == 0 if undefined (Windows)
             0xFFFF0000;
 #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
             0x0000FFFF;
 #endif
     }
+    // Precondition: is_ipv4_mapped() == true
     ipv4_addr to_ipv4() const
     {
         return ipv4_addr(this->s6_addr[12], this->s6_addr[13],
@@ -167,7 +178,7 @@ public:
         { return parse(s.data(), s.data() + s.length(), res); }
 #else
     static bool parse(const std::string &s, ::in6_addr &res)
-        { return parse(s.data(), &*s.end(), res); }
+        { return parse(s.data(), s.data() + s.length(), res); }
     static bool parse(const char *s, ::in6_addr &res)
         { return parse(s, s + std::char_traits<char>::length(s), res); }
 #endif
@@ -176,7 +187,8 @@ public:
 
 //----------------------------------------------------------------------------
 #define __VIC_DEFINE_OP(OP,A1,A2) \
-    __VIC_CONSTEXPR_FUNC bool operator OP(A1 a1, A2 a2) { return a1.s_addr OP a2.s_addr; }
+    __VIC_CONSTEXPR_FUNC bool operator OP(A1 a1, A2 a2) \
+        { return ipv4_addr::as_uint(a1) OP ipv4_addr::as_uint(a2); }
 
 __VIC_DEFINE_OP(==, ipv4_addr, ipv4_addr)
 __VIC_DEFINE_OP(==, ipv4_addr, ::in_addr)
@@ -188,15 +200,14 @@ __VIC_DEFINE_OP(!=, ipv4_addr, ::in_addr)
 __VIC_DEFINE_OP(!=, ::in_addr, ipv4_addr)
 #endif
 
-// Ordering depends on byte order but suitable for std::map etc
 #if __cpp_lib_three_way_comparison
 constexpr auto operator<=>(ipv4_addr a1, ipv4_addr a2)
 {
-    return a1.s_addr <=> a2.s_addr;
+    return a1.as_uint() <=> a2.as_uint();
 }
 constexpr auto operator<=>(ipv4_addr a1, ::in_addr a2)
 {
-    return a1.s_addr <=> a2.s_addr;
+    return a1.as_uint() <=> ipv4_addr::as_uint(a2);
 }
 #else
 __VIC_DEFINE_OP(<=, ipv4_addr, ipv4_addr)

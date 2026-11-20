@@ -120,6 +120,7 @@ public:
     record warning();
     record error();
     record fatal();
+    record message(severity_t );
 
 #if __cpp_lib_format >= 202106L // C++20 + P2508
 private:
@@ -226,6 +227,16 @@ public:
     record append(const char *s, size_t n)
         { log.cur_msg.append(s, n); return *this; }
 
+#if __cpp_lib_format >= 202106L
+    template<class... Args>
+    record format_append(std::format_string<Args...> fmt, Args&&... args)
+    {
+        std::format_to(std::back_inserter(log.cur_msg),
+                                fmt, std::forward<Args>(args)...);
+        return *this;
+    }
+#endif
+
     template<class T> record operator<<(const T &v)
     {
         log_value<T>::to_text(v, log.cur_msg);
@@ -234,13 +245,14 @@ public:
 };
 //////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
-inline logger::record logger::trace() { return record(*this, severity::trace); }
-inline logger::record logger::debug() { return record(*this, severity::debug); }
-inline logger::record logger::info() { return record(*this, severity::info); }
-inline logger::record logger::notice() { return record(*this, severity::notice); }
-inline logger::record logger::warning() { return record(*this, severity::warning); }
-inline logger::record logger::error() { return record(*this, severity::error); }
-inline logger::record logger::fatal() { return record(*this, severity::fatal); }
+inline logger::record logger::message(severity_t s) { return record(*this, s); }
+inline logger::record logger::trace() { return message(severity::trace); }
+inline logger::record logger::debug() { return message(severity::debug); }
+inline logger::record logger::info() { return message(severity::info); }
+inline logger::record logger::notice() { return message(severity::notice); }
+inline logger::record logger::warning() { return message(severity::warning); }
+inline logger::record logger::error() { return message(severity::error); }
+inline logger::record logger::fatal() { return message(severity::fatal); }
 //----------------------------------------------------------------------------
 inline const char *to_string(logger::severity_t s)
 {

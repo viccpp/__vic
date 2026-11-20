@@ -11,11 +11,14 @@ class ipv4_addr : public ::in_addr
 public:
     ipv4_addr() = default;
     constexpr ipv4_addr(::in_addr a);
-    constexpr explicit ipv4_addr(::in_addr_t a);
+    explicit constexpr ipv4_addr(::in_addr_t a);
     constexpr ipv4_addr(uint8_t a, uint8_t b, uint8_t c, uint8_t d);
 
     static constexpr ipv4_addr any();
     static constexpr ipv4_addr loopback();
+
+    constexpr uint32_t as_uint() const;
+    static constexpr uint32_t as_uint(::in_addr a);
 
     constexpr bool is_any() const;
     constexpr bool is_loopback() const;
@@ -95,13 +98,19 @@ template<> struct std::hash<ipv4_addr>;
 </synopsis>
 
 <synopsis>
+<prototype>constexpr uint32_t as_uint() const</prototype>
+<prototype>static constexpr uint32_t as_uint(::in_addr a)</prototype>
+<p>Returns <tt>1.2.3.4</tt> as <tt>0x01020304</tt> (in the host order).</p>
+</synopsis>
+
+<synopsis>
 <prototype>constexpr bool is_any() const</prototype>
 <p>Returns <tt>true</tt> if the address is <tt>0.0.0.0</tt>.</p>
 </synopsis>
 
 <synopsis>
 <prototype>constexpr bool is_loopback() const</prototype>
-<p>Returns <tt>true</tt> if the address is <tt>127.0.0.1</tt>.</p>
+<p>Returns <tt>true</tt> if the address is <tt>127.0.0.0/8</tt>.</p>
 </synopsis>
 
 <synopsis>
@@ -158,8 +167,7 @@ by dots.</note>
 <prototype>constexpr bool operator> (::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
 <prototype>constexpr bool operator&lt;=(::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
 <prototype>constexpr bool operator>=(::in_addr a1, ipv4_addr a2) <badge>until C++20</badge></prototype>
-<p>Relational comparison operators. The resulting order may differ across
-platforms, but always mathematically consistent within a given platform.</p>
+<p>Relational comparison operators. The order is consistent across platforms.</p>
 </synopsis>
 
 <synopsis>

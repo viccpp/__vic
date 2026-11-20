@@ -25,11 +25,6 @@ public:
     thread() {}
     virtual ~thread();
 
-#if  __cpp_rvalue_references
-    thread(thread &&o) noexcept : tid(o.tid) { o.tid = id(); }
-    thread &operator=(thread && ) noexcept;
-#endif
-
     class id
     {
         ::pthread_t tid;
@@ -55,7 +50,6 @@ public:
     void cancel();
     void join();
 
-    bool alive() const;
     bool joinable() const { return tid; }
     void kill(int );
 

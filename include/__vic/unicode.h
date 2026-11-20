@@ -28,6 +28,16 @@ __VIC_INLINE_CONSTEXPR_VAR unicode_t unicode_bom = 0xFEFF;
 __VIC_INLINE_CONSTEXPR_VAR unicode_t unicode_replacement_char = 0xFFFD;
 
 //----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool is_unicode_surrogate(unicode_t c)
+{
+    return 0xD800 <= c && c <= 0xDFFF;
+}
+//----------------------------------------------------------------------------
+__VIC_CONSTEXPR_FUNC bool is_valid_unicode(unicode_t c)
+{
+    return c <= unicode_max && !is_unicode_surrogate(c);
+}
+//----------------------------------------------------------------------------
 template<class UTFReader, class UTFWriter>
 inline void utf_transcode(UTFReader r, UTFWriter w)
 {
