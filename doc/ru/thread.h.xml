@@ -17,11 +17,6 @@ public:
     thread();
     virtual ~thread();
 
-    // BEGIN C++11
-    thread(thread &&o) noexcept;
-    thread &operator=(thread &&o) noexcept;
-    // END C++11
-
     void start();
     void cancel();
     void join();
@@ -56,19 +51,7 @@ protected:
 <synopsis>
 <prototype>~thread()</prototype>
 <p>Вызывает <tt>std::terminate()</tt>, если нарушено предусловие.</p>
-<precondition><tt>joinable() == false || alive() == false</tt></precondition>
-</synopsis>
-
-<synopsis>
-<prototype>thread(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
-<p>Перемещающий конструктор для режима C++11.</p>
-</synopsis>
-
-<synopsis>
-<prototype>thread &amp;operator=(thread &amp;&amp;o) noexcept <badge>C++11</badge></prototype>
-<p>Перемещающее присваивание для режима C++11. Вызывает
-<tt>std::terminate()</tt>, если нарушено предусловие.</p>
-<precondition><tt>joinable() == false || alive() == false</tt></precondition>
+<precondition><tt>joinable() == false</tt></precondition>
 </synopsis>
 
 <synopsis>
@@ -131,7 +114,6 @@ class thread::id
 public:
     id();
     explicit operator bool() const;
-    native_handle_type handle() const;
 };
 bool operator==(thread::id a, thread::id b);
 bool operator!=(thread::id a, thread::id b);
@@ -151,12 +133,6 @@ bool operator!=(thread::id a, thread::id b);
 <synopsis>
 <prototype>explicit operator bool() const</prototype>
 <p>Возвращает <tt>true</tt>, если объект хранит ID какого-то потока.</p>
-</synopsis>
-
-<synopsis>
-<prototype>native_handle_type handle() const</prototype>
-<p>Возвращает дескриптор потока, используемый в данной ОС.</p>
-<precondition><tt>bool(*this) == true</tt></precondition>
 </synopsis>
 
 <synopsis>

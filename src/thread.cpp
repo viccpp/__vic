@@ -15,27 +15,14 @@ namespace __vic {
 //----------------------------------------------------------------------------
 thread::~thread()
 {
-    if(joinable() && alive())
+    if(joinable())
     {
         // Should never be executed!
         // Application logic corruption
-        // Attempting to destruct thread-object with still active thread
+        // Attempting to destruct a thread object that was not joined
         std::terminate();
     }
 }
-//----------------------------------------------------------------------------
-#if __cpp_rvalue_references
-thread &thread::operator=(thread &&o) noexcept
-{
-    if(&o != this)
-    {
-        if(joinable() && alive()) std::terminate();
-        h = o.h;
-        o.h = 0;
-    }
-    return *this;
-}
-#endif
 //----------------------------------------------------------------------------
 void thread::start()
 {
@@ -53,7 +40,7 @@ void thread::cancel()
 {
     if(!::TerminateThread(handle(), DWORD(-1)))
         windows::throw_last_error("TerminateThread");
-    h = 0;
+    join();
 }
 //----------------------------------------------------------------------------
 void thread::join()
@@ -68,10 +55,16 @@ void thread::join()
 //----------------------------------------------------------------------------
 bool thread::alive() const
 {
-    DWORD res;
-    if(!::GetExitCodeThread(handle(), &res))
-        windows::throw_last_error("GetExitCodeThread");
-    return res == STILL_ACTIVE;
+    return joinable() && !h.Wait(0);
+}
+//----------------------------------------------------------------------------
+thread::id thread::get_id() const
+{
+    if(!joinable()) return id();
+    // Requires _WIN32_WINNT >= 0x0502 // Server 2003 SP1, XP SP2
+    DWORD tid = GetThreadId(h);
+    if(tid == 0) windows::throw_last_error("GetThreadId");
+    return id(tid);
 }
 //----------------------------------------------------------------------------
 __VIC_THREAD_RETURNTYPE __vic_thread_impl_func(void *that)

@@ -32,23 +32,17 @@ public:
     thread() : h(0) {}
     virtual ~thread();
 
-#if  __cpp_rvalue_references
-    thread(thread &&o) noexcept : h(o.h) { o.h = 0; }
-    thread &operator=(thread && ) noexcept;
-#endif
-
     class id
     {
-        HANDLE h;
-        typedef native_handle_type id::*unspecified_bool_type;
+        DWORD tid;
+        typedef DWORD id::*unspecified_bool_type;
     public:
-        explicit id(HANDLE h = 0) : h(h) {}
+        explicit id(DWORD tid = 0) : tid(tid) {}
 
-        operator unspecified_bool_type() const { return h ? &id::h : 0; }
-        native_handle_type handle() const { return h; }
+        operator unspecified_bool_type() const { return tid != 0 ? &id::tid : 0; }
 
-        friend bool operator==(id a, id b) { return a.h == b.h; }
-        friend bool operator!=(id a, id b) { return a.h != b.h; }
+        friend bool operator==(id a, id b) { return a.tid == b.tid; }
+        friend bool operator!=(id a, id b) { return a.tid != b.tid; }
     };
 
     void start();
@@ -58,7 +52,7 @@ public:
     bool alive() const;
     bool joinable() const { return h; }
 
-    id get_id() const { return id(handle()); }
+    id get_id() const;
     native_handle_type handle() const { return h; }
 protected:
     virtual void worker() = 0;
@@ -70,7 +64,7 @@ private:
 namespace this_thread
 {
     inline void sleep_ms(unsigned msec) { ::Sleep(msec); }
-    inline thread::id get_id() { return thread::id(::GetCurrentThread()); }
+    inline thread::id get_id() { return thread::id(::GetCurrentThreadId()); }
 }
 //////////////////////////////////////////////////////////////////////////////
 

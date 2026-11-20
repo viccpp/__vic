@@ -4,6 +4,12 @@ Legend:
     * Changes
     ! Important
 
+2026-11-20  __vic
+    * thread::id:
+        ! Uses thread id instead of thread handle
+        ! handle() getter is unavailable
+    - this_thread::get_id() returned a pseudo handle
+
 2026-11-05  __vic
     ! _cfg.h: no _GNU_SOURCE and _FILE_OFFSET_BITS 64 defines
     * bits.h:
