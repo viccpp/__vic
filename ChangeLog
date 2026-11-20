@@ -4,6 +4,9 @@ Legend:
     * Changes
     ! Important
 
+2026-11-20  __vic
+    ! thread::id: handle() removed
+
 2026-11-11  __vic
     * thread.h:
         ! thread is never movable

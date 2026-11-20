@@ -106,7 +106,6 @@ class thread::id
 public:
     id();
     explicit operator bool() const;
-    native_handle_type handle() const;
 };
 bool operator==(thread::id a, thread::id b);
 bool operator!=(thread::id a, thread::id b);
@@ -126,12 +125,6 @@ special distinct value not associated with any thread.</p>
 <synopsis>
 <prototype>explicit operator bool() const</prototype>
 <p>Returns <tt>true</tt> if the object holds ID of some thread.</p>
-</synopsis>
-
-<synopsis>
-<prototype>native_handle_type handle() const</prototype>
-<p>Returns a native OS-specific handle of the thread.</p>
-<precondition><tt>bool(*this) == true</tt></precondition>
 </synopsis>
 
 <synopsis>

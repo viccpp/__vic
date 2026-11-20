@@ -106,7 +106,6 @@ class thread::id
 public:
     id();
     explicit operator bool() const;
-    native_handle_type handle() const;
 };
 bool operator==(thread::id a, thread::id b);
 bool operator!=(thread::id a, thread::id b);
@@ -126,12 +125,6 @@ bool operator!=(thread::id a, thread::id b);
 <synopsis>
 <prototype>explicit operator bool() const</prototype>
 <p>Возвращает <tt>true</tt>, если объект хранит ID какого-то потока.</p>
-</synopsis>
-
-<synopsis>
-<prototype>native_handle_type handle() const</prototype>
-<p>Возвращает дескриптор потока, используемый в данной ОС.</p>
-<precondition><tt>bool(*this) == true</tt></precondition>
 </synopsis>
 
 <synopsis>

@@ -29,7 +29,6 @@ public:
         id();
 
         operator unspecified_bool_type() const;
-        native_handle_type handle() const;
 
         friend bool operator==(id a, id b);
         friend bool operator!=(id a, id b);
