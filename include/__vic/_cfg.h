@@ -183,7 +183,7 @@
 #elif defined(__i386__)
 #define __VIC_X86__ 1
 #define __VIC_CPU_DEFINED 1
-#elif defined(__arm64__)
+#elif defined(__arm64__) || defined(__aarch64__)
 #define __VIC_ARM64__ 1
 #define __VIC_CPU_DEFINED 1
 #elif defined(__IA64__)
@@ -201,6 +201,9 @@
 #define __VIC_CPU_DEFINED 1
 #elif defined(_M_IX86)
 #define __VIC_X86__ 1
+#define __VIC_CPU_DEFINED 1
+#elif defined(_M_ARM64)
+#define __VIC_ARM64__ 1
 #define __VIC_CPU_DEFINED 1
 #endif
 
@@ -224,7 +227,7 @@
 #define noexcept throw()
 #endif
 
-#if defined(_MSC_VER) && _MSC_VER < 0x1400 // VC 8.0 (VS 2005)
+#if defined(_MSC_VER) && _MSC_VER < 1400 // VC 8.0 (VS 2005)
 #define __VIC_LONGLONG __int64
 #define __VIC_PRINTF_ll "I64"
 #else
